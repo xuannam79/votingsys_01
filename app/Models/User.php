@@ -73,4 +73,9 @@ class User extends Authenticatable
     {
         $this->attributes['password'] = bcrypt($value);
     }
+
+    public function getAvatarPath()
+    {
+        return asset('/' . config('settings.avatar_path') . '/' . $this->avatar);
+    }
 }
