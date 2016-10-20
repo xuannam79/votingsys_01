@@ -13,6 +13,15 @@
     <!-- Styles -->
     {!! Html::style('css/app.css') !!}
 
+    <!-- Bootstrap CSS -->
+    {!! Html::style('bower/bootstrap/dist/css/bootstrap.min.css') !!}
+
+    <!-- Bootstrap theme CSS -->
+    {!! Html::style('bower/bootstrap/dist/css/bootstrap-theme.min.css') !!}
+
+    <!-- Bootstrap datatable CSS -->
+    {!! Html::style('bower/datatables.net-bs/css/dataTables.bootstrap.min.css') !!}
+
     <!-- Scripts -->
     <script>
         window.Laravel = <?php echo json_encode([
@@ -84,6 +93,18 @@
     </div>
 
     <!-- Scripts -->
-    <script src="/js/app.js"></script>
+    {!! Html::script('/js/app.js') !!}
+
+    <!-- jQuery -->
+    {!! Html::script('/bower/jquery/dist/jquery.min.js') !!}
+
+    <!-- Bootstrap Core JavaScript -->
+    {!! Html::script('/bower/bootstrap/dist/js/bootstrap.min.js') !!}
+
+    <!-- jQuery Datatable JavaScript -->
+    {!! Html::script('/bower/datatables.net/js/jquery.dataTables.min.js') !!}
+
+    <!-- Bootstrap Datatable JavaScript -->
+    {!! Html::script('/bower/datatables.net-bs/js/dataTables.bootstrap.min.js') !!}
 </body>
 </html>
