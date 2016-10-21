@@ -24,3 +24,6 @@ Route::group(['prefix' => 'user', 'middleware' => 'auth'], function() {
         'only' => ['index', 'update']
      ]);
 });
+
+Route::get('/redirect/{provider}', 'SocialAuthController@redirectToProvider');
+Route::get('/callback/{provider}', 'SocialAuthController@handleProviderCallback');

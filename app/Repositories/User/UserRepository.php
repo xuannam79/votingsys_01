@@ -15,6 +15,16 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
         $this->model = $user;
     }
 
+    public function createUserSocial($data)
+    {
+        return $this->model->create($data);
+    }
+
+    public function getUserWithEmail($providerUser)
+    {
+        return $this->model->whereEmail($providerUser->getEmail())->first();
+    }
+
     public function register(array $data)
     {
         if (isset($data['avatar'])) {
