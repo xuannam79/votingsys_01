@@ -1,0 +1,24 @@
+{
+  "name": "voting",
+  "description": "",
+  "main": "",
+  "authors": [
+    "hoquochai <hoquochaibkdn@gmail.com>"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/hoquochai/fts_69",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "public/bower",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "adminbsb-materialdesign": "^1.0.3",
+    "components-font-awesome": "^4.6.3",
+    "bootstrap": "^3.3.7",
+    "bootstrap-toggle": "^2.2.2"
+  }
+}

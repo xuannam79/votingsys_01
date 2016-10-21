@@ -27,3 +27,19 @@ Route::group(['prefix' => 'user', 'middleware' => 'auth'], function() {
 
 Route::get('/redirect/{provider}', 'SocialAuthController@redirectToProvider');
 Route::get('/callback/{provider}', 'SocialAuthController@handleProviderCallback');
+
+/*
+ /--------------------------------------------------------------------
+ / Route Admin
+ /--------------------------------------------------------------------
+ */
+Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'as' => 'admin.'], function () {
+    Route::resource('poll', 'PollController');
+});
+
+/*
+ * Route check token of link
+ */
+Route::resource('link', 'LinkController', ['only' => [
+    'store'
+]]);

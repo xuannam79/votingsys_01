@@ -6,14 +6,35 @@ return [
     'register' => 'Register',
     'forgot_password' => 'Forgot Your Password?',
     'remember' => 'Remember me',
-    'register' => 'Register',
     'email' => 'Email',
     'password' => 'Password',
     'avatar' => 'Avatar',
     'confirm_password' => 'Confirm password',
-    'email' => 'Email',
     'name' => 'Name',
     'gender' => 'Gender',
     'profile' => 'Profile',
     'edit' => 'Edit',
+    'home' => 'Home',
+
+    /**
+     * MASTER ADMIN
+     */
+    'placeholder_search' => 'START TYPING...',
+    'name_admin_page' => 'ADMIN - VOTING',
+    'main_menu' => 'MAIN MENU',
+    'footer' => 'Copyright &copy; 2016',
+    'nav_menu' => [
+        'user' => 'User',
+        'poll' => 'Poll',
+    ],
+
+    /**
+     * EMAIL
+     */
+    'mail' => [
+        'head' => 'POLL - VOTING',
+        'link_vote' => 'Link to vote:',
+        'link_admin' => 'Link manager vote:',
+        'subject' => 'Voting',
+    ],
 ];
