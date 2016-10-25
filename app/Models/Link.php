@@ -10,6 +10,7 @@ class Link extends Model
     protected $fillable = [
         'poll_id',
         'token',
+        'link_admin',
     ];
 
     public function poll()
