@@ -50,4 +50,33 @@ class Poll extends Model
     {
         return $this->hasMany(Comment::class);
     }
+
+    public function countComments()
+    {
+        return $this->comments->count() ? $this->comments->count() : config('settings.default_value');
+    }
+
+    public function countParticipants()
+    {
+        if (!$this->options) {
+            return config('settings.default_value');
+        }
+
+        $listVotes = collect();
+        foreach($this->options as $option) {
+            $votes = $option->votes->pluck('user_id')->unique();
+
+            if (!$votes->isEmpty()) {
+                $listVotes->push($votes);
+            }
+
+            $participantVotes = $option->participantVotes->pluck('participant_id')->unique();
+
+            if (!$participantVotes->isEmpty()) {
+                $listVotes->push($participantVotes);
+            }
+        }
+
+        return $listVotes->unique()->count();
+    }
 }

@@ -13,6 +13,8 @@
     <!-- Styles -->
     {!! Html::style('css/app.css') !!}
 
+    {!! Html::style('css/user.css') !!}
+
     <!-- Bootstrap CSS -->
     {!! Html::style('bower/bootstrap/dist/css/bootstrap.min.css') !!}
 
@@ -52,7 +54,11 @@
                 <div class="collapse navbar-collapse" id="app-navbar-collapse">
                     <!-- Left Side Of Navbar -->
                     <ul class="nav navbar-nav">
-                        &nbsp;
+                        <li>
+                            <a href="{{ URL::action('User\PollController@index') }}">
+                                {{ trans('polls.poll_history') }}
+                            </a>
+                        </li>
                     </ul>
 
                     <!-- Right Side Of Navbar -->

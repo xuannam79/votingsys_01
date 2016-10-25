@@ -17,6 +17,38 @@ use Mail;
 
 class PollRepository extends BaseRepository implements PollRepositoryInterface
 {
+    public function __construct(Poll $poll)
+    {
+        $this->model = $poll;
+    }
+
+    public function find($id)
+    {
+        return $this->model->where('status', true)->with('user', 'settings', 'comments.user', 'options')->find($id);
+    }
+
+    public function getInitiatedPolls()
+    {
+        $currentUserId = auth()->user()->id;
+
+        return $this->model->where('user_id', $currentUserId)->with('activities')->get();
+    }
+
+    public function getParticipatedPolls($voteRepository)
+    {
+        $listPollIds = $voteRepository->getListPollIdOfCurrentUser();
+        $participantPolls = $this->model->whereIn('id', $listPollIds)->with('activities')->get();
+
+        return $participantPolls;
+    }
+
+    public function getClosedPolls()
+    {
+        $currentUserId = auth()->user()->id;
+
+        return $this->model->where('user_id', $currentUserId)->where('status', false)->with('activities')->get();
+    }
+
     public function store($input)
     {
         try {

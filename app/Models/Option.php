@@ -29,4 +29,24 @@ class Option extends Model
     {
         return $this->hasMany(ParticipantVote::class);
     }
+
+    public function countVotes()
+    {
+        $count = config('settings.default_value');
+
+        if ($this->votes) {
+            $count += $this->votes->count();
+        }
+
+        if ($this->participant_votes) {
+            $count += $this->participant_votes->count();
+        }
+
+        return $count;
+    }
+
+    public function showImage()
+    {
+       return asset('/' . config('settings.image_path') . '/' . $this->image);
+    }
 }
