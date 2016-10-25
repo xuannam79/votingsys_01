@@ -22,7 +22,13 @@ Route::get('/home', 'HomeController@index');
 Route::group(['prefix' => 'user', 'middleware' => 'auth'], function() {
     Route::resource('profile', 'User\UsersController', [
         'only' => ['index', 'update']
-     ]);
+    ]);
+});
+
+Route::group(['prefix' => 'user'], function() {
+    Route::resource('poll', 'User\PollController', [
+        'only' => ['index', 'show']
+    ]);
 });
 
 Route::get('/redirect/{provider}', 'SocialAuthController@redirectToProvider');
