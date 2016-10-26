@@ -167,4 +167,5 @@ return [
     'message_poll_closed' => 'Sorry, Poll closed. You can not view and vote this poll',
     'comment_name' => 'Please enter your name in the input field',
     'comment_content' => 'Please enter a comment in the text area',
+    'confirmRemove' => 'Are you sure?',
 ];

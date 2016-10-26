@@ -12,6 +12,8 @@ return [
     'confirm_password' => 'Confirm password',
     'name' => 'Name',
     'gender' => 'Gender',
+    'male' => 'Male',
+    'female' => 'Female',
     'profile' => 'Profile',
     'edit' => 'Edit',
     'home' => 'Home',
