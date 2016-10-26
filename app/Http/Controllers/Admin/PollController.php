@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Filter\PollsFilter;
 use App\Http\Controllers\Controller;
 use App\Models\Poll;
 use App\Repositories\Poll\PollRepositoryInterface;
@@ -21,9 +22,24 @@ class PollController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(PollsFilter $filters)
     {
-        //
+        $polls =  Poll::with('user')->filter($filters)->paginate(config('settings.length_poll.number_record'));
+        $input = $filters->input();
+        $linkFilter = $polls->appends($input)->links();
+        $data = [
+            'type' => [
+                config('settings.search_all') => trans('polls.label.search_all'),
+                config('settings.type.multiple_choice') => trans('polls.label.multiple_choice'),
+                config('settings.type.single_choice') => trans('polls.label.single_choice'),
+            ],
+            'status' => [
+                config('settings.search_all') => trans('polls.label.search_all'),
+                config('settings.status.open') => trans('polls.label.opening'),
+                config('settings.status.close') => trans('polls.label.closed'),
+            ],
+        ];
+        return view('admins.poll.index', compact('polls', 'input', 'data', 'linkFilter'));
     }
 
     /**

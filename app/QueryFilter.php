@@ -1,0 +1,41 @@
+<?php
+
+namespace App;
+
+use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\Builder;
+
+abstract class QueryFilter
+{
+    protected $request;
+
+    protected $builder;
+
+    public function __construct(Request $request)
+    {
+        $this->request = $request;
+    }
+
+    public function apply(Builder $builder)
+    {
+        $this->builder = $builder;
+        $params = [];
+
+        foreach ($this->filters() as $name => $value) {
+            if ($value !== null && $value !== false && $value !== '') {
+                $params[$name] = $value;
+            }
+        }
+
+        foreach ($params as $name => $value) {
+            call_user_func_array([$this, $name], [$value]);
+        }
+
+        return $this->builder;
+    }
+
+    public function filters()
+    {
+        return $this->request->only('name', 'email', 'title', 'type', 'status');
+    }
+}

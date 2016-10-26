@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\QueryFilter;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
 use App\Models\Option;
@@ -78,5 +79,10 @@ class Poll extends Model
         }
 
         return $listVotes->unique()->count();
+    }
+
+    public function scopeFilter($query, QueryFilter $filters)
+    {
+        return $filters->apply($query);
     }
 }

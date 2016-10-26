@@ -39,4 +39,5 @@ return [
         'link_admin' => 'Link manager vote:',
         'subject' => 'Voting',
     ],
+    'paginations' => 'Showing :start to :finish of :numberOfRecords entry|Showing :start to :finish of :numberOfRecords entries',
 ];

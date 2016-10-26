@@ -28,6 +28,7 @@ return [
         'description' => 255,
         'link' => 16,
         'option' => 5,
+        'number_record' => 10,
     ],
     'type' => [
         'single_choice' => 0,
@@ -67,4 +68,5 @@ return [
         'vote' => 0,
         'admin' => 1,
     ],
+    'search_all' => 3,
 ];
