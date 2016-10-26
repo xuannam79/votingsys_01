@@ -28,5 +28,9 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('administer', function ($user, $participatedPoll) {
             return $user->id == $participatedPoll->user_id;
         });
+
+        Gate::define('ownerPoll', function ($user, $poll) {
+            return $user->id == $poll->user_id;
+        });
     }
 }

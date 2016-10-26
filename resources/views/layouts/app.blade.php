@@ -8,6 +8,8 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
+    @yield('meta')
+
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Styles -->
@@ -103,6 +105,10 @@
 
     <!-- jQuery -->
     {!! Html::script('/bower/jquery/dist/jquery.min.js') !!}
+
+    {!! Html::script('js/shareSocial.js') !!}
+
+    {!! Html::script('js/comment.js') !!}
 
     <!-- Bootstrap Core JavaScript -->
     {!! Html::script('/bower/bootstrap/dist/js/bootstrap.min.js') !!}

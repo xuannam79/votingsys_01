@@ -78,4 +78,9 @@ class User extends Authenticatable
     {
         return asset('/' . config('settings.avatar_path') . '/' . $this->avatar);
     }
+
+    public function showGender()
+    {
+        return $this->gender ? trans('label.male') : trans('label.female');
+    }
 }

@@ -24,4 +24,9 @@ class Comment extends Model
     {
         return $this->belongsTo(Poll::class);
     }
+
+    public function showDefaultAvatar()
+    {
+        return asset('/' . config('settings.avatar_path') . '/' . config('settings.avatar_default'));
+    }
 }

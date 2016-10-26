@@ -25,9 +25,13 @@ Route::group(['prefix' => 'user', 'middleware' => 'auth'], function() {
     ]);
 });
 
-Route::group(['prefix' => 'user'], function() {
+Route::group(['prefix' => 'user', 'middleware' => 'XSS'], function() {
     Route::resource('poll', 'User\PollController', [
         'only' => ['index', 'show']
+    ]);
+
+    Route::resource('comment', 'User\CommentController', [
+        'only' => ['store', 'destroy']
     ]);
 });
 

@@ -8,6 +8,15 @@ return [
         '1' => 'Male',
         '2' => 'Other',
     ],
+    'activity' => [
+        'participated' => '1',
+        'all_participants_deleted' => '2',
+        'added_a_comment' => '3',
+        'reset_link' => '4',
+        'delete_comment' => '5',
+        'edit_vote' => '6',
+    ],
+    'image_default_path' => 'uploads/avatar/default.jpg',
 
     /**-------------------------------
      * Poll config
