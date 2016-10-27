@@ -265,3 +265,7 @@ function setButtonWavesEffect(event) {
     $(event.currentTarget).find('[role="menu"] li a').removeClass('waves-effect');
     $(event.currentTarget).find('[role="menu"] li:not(.disabled) a').addClass('waves-effect');
 }
+
+function confirmDelete(message) {
+    return confirm(message);
+}

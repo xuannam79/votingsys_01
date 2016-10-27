@@ -17,6 +17,8 @@ return [
         'type' => 'Type*',
         'single_choice' => 'Single choice',
         'multiple_choice' => 'Multiple choice',
+        'opening' => 'Opening',
+        'closed' => 'Closed',
         'poll_opening' => '<span class="label label-success">opening</span>',
         'poll_closed' => '<span class="label label-danger">closed</span>',
         'step_2' => 'Poll Option',
@@ -34,6 +36,7 @@ return [
         'invite_all' => 'Everyone with a link can participate',
         'invite_people' => 'Only invited people can participate',
         'search' => 'Search poll information...',
+        'search_all' => 'All',
     ],
     'label_for' => [
         'full_name' => 'name',
@@ -64,6 +67,8 @@ return [
     ],
     'button' => [
         'search_poll' => 'SEARCH NOW',
+        'reset_search' => 'Reset result',
+        'create_poll' => 'CREATE POLL',
     ],
     'message' => [
         'create_success' => 'Create poll SUCCESS',
@@ -73,6 +78,7 @@ return [
         'link_exists' => 'Link exist in system. Please enter a new link',
         'link_valid' => 'Link valid. You can use this link',
         'submit_form' => 'Good job!\', \'Saving...!\', \'success',
+        'not_found_polls' => 'Can\'t found poll lists in system',
     ],
     'validation' => [
         'name' => [
@@ -110,6 +116,26 @@ return [
             'setting' => 'Please enter password of poll',
         ],
     ],
+    'table' => [
+        'thead' => [
+            'STT' => 'No.',
+            'creator' => 'Creator info',
+            'title' => 'Title',
+            'status' => 'Status',
+            'type' => 'Type',
+        ],
+        'tbody' => [
+            'name' => 'Name: ',
+            'email' => 'Email: ',
+        ],
+    ],
+    'tooltip' => [
+        'edit' => 'Edit this poll',
+        'delete' => 'Delete this poll',
+        'show' => 'View detail this poll',
+        'open' => 'Open this poll',
+        'close' => 'Close this poll',
+    ],
     'poll' => 'Poll',
     'close' => 'Close',
     'name' => 'Name',
@@ -117,15 +143,6 @@ return [
     'no' => 'No',
     'poll_history' => 'Poll History',
     'show_vote_details' => 'Show vote details',
-    'placeholder' => [
-        'title' => 'Enter a title...',
-        'location' => 'Enter a location...',
-        'description' => 'Enter description...',
-        'your_name' => 'Enter your name...',
-        'email' => 'Enter your email...',
-        'enter_name' => 'Enter your name...',
-        'comment' => 'Enter a comment...',
-    ],
     'next' => 'Next',
     'optional' => 'optional',
     'one_answer' => 'One answer',
