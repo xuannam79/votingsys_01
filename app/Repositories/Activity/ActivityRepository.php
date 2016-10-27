@@ -12,4 +12,16 @@ class ActivityRepository extends BaseRepository implements ActivityRepositoryInt
     {
         $this->model = $activity;
     }
+
+    public function getActivityByPollId($id)
+    {
+        return $this->model->where('poll_id', $id)->with('user', 'poll.options')->orderBy('id', 'DESC')->get();
+    }
+
+    public function getOwnerOfPoll($id)
+    {
+        $currentPoll = $this->model->with('user')->find($id);
+
+        return $currentPoll->user->name;
+    }
 }

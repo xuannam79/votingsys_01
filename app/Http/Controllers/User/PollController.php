@@ -32,34 +32,4 @@ class PollController extends Controller
 
         return view('user.poll.list_polls', compact('initiatedPolls', 'participatedPolls', 'closedPolls'));
     }
-
-    public function show($id)
-    {
-        $poll = $this->pollRepository->find($id);
-
-        if (!$poll) {
-            return view('errors.show_errors')->with('message', trans('polls.poll_not_found'));
-        }
-
-        $isHideResult = false;
-        $voteLimit = null;
-
-        if ($poll->settings) {
-            foreach ($poll->settings as $setting) {
-                if ($setting->key == config('settings.hide_result')) {
-                    $isHideResult = true;
-                }
-
-                if ($setting->key == config('settings.set_limit')) {
-                    $voteLimit = $setting->value;
-                }
-            }
-
-            if ($voteLimit && $poll->countParticipants() >= $voteLimit) {
-                return view('errors.show_errors')->with('message', trans('polls.message_poll_limit'));
-            }
-        }
-
-        return view('user.poll.details', compact('poll', 'isHideResult'));
-    }
 }
