@@ -1,0 +1,16 @@
+h1 {
+  text-align: center;
+  color: white;
+}
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+th, td {
+  padding: 15px;
+}
+.header-mail {
+  background: #00bcd4;
+  box-shadow: 5px 5px 10px black !important;
+  padding: 15px;
+}

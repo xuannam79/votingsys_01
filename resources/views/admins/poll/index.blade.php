@@ -162,13 +162,6 @@
                                         ])
                                     }}
 
-                                        <!-- BUTTON SHOW DETAIL -->
-                                        <a href="{{ route('admin.poll.show', ['id' => $poll->id]) }}"
-                                           class="btn bg-cyan btn-xs" data-toggle="tooltip" data-placement="top"
-                                           title="" data-original-title="{{ trans('polls.tooltip.show') }}">
-                                            <i class="material-icons">details</i>
-                                        </a>
-
                                         <!-- BUTTON OPEN POLL -->
                                         @if ($poll->status == trans('polls.label.poll_closed'))
                                             <a href="{{ route('admin.poll.show', ['id' => $poll->id]) }}"

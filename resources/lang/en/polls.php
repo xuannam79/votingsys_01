@@ -1,10 +1,15 @@
 <?php
 
 return [
+
+/*------------------------------------------------------------
+*                  ADMIN - POLL
+*------------------------------------------------------------*/
     'title' => 'Poll',
     'head' => [
         'create' => 'CREATE A POLL',
         'index' => 'LIST ALL POLLS',
+        'edit' => 'EDIT A POLL',
     ],
     'label' => [
         'step_1' => 'Poll Information',
@@ -15,6 +20,7 @@ return [
         'description' => 'Description',
         'location' => 'Location',
         'type' => 'Type*',
+        'status' => 'Status*',
         'single_choice' => 'Single choice',
         'multiple_choice' => 'Multiple choice',
         'opening' => 'Opening',
@@ -22,6 +28,8 @@ return [
         'poll_opening' => '<span class="label label-success">opening</span>',
         'poll_closed' => '<span class="label label-danger">closed</span>',
         'step_2' => 'Poll Option',
+        'option' => 'Option',
+        'option_image' => 'Image',
         'step_3' => 'Poll Setting',
         'setting' => [
             'required_email' => 'Required email to voting',
@@ -30,6 +38,8 @@ return [
             'custom_link' => 'Optimize poll link',
             'set_limit' => 'Set voting limit',
             'set_password' => 'Set password',
+            'on' => 'ON',
+            'off' => 'OFF',
         ],
         'step_4' => 'Participant',
         'invite' => 'Invite*',
@@ -37,6 +47,7 @@ return [
         'invite_people' => 'Only invited people can participate',
         'search' => 'Search poll information...',
         'search_all' => 'All',
+        'add_invite' => 'If you want add a participant, please enter email below...',
     ],
     'label_for' => [
         'full_name' => 'name',
@@ -46,6 +57,21 @@ return [
         'description' => 'description',
         'location' => 'location',
         'type' => 'type',
+        'status' => 'status',
+        'opening' => 'opening',
+        'closed' => 'closed',
+        'option' => 'option',
+        'option_image' => 'image',
+        'setting' => [
+            'required_email' => 'enter_email',
+            'add_answer' => 'add_answer',
+            'hide_result' => 'hide_result',
+            'custom_link' => 'custom_link',
+            'set_limit' => 'enter_limit',
+            'set_password' => 'enter_password',
+            'on' => 'turn_on',
+            'off' => 'turn_off',
+        ],
         'single_choice' => 'single',
         'multiple_choice' => 'multiple',
         'invite' => 'invite',
@@ -69,6 +95,11 @@ return [
         'search_poll' => 'SEARCH NOW',
         'reset_search' => 'Reset result',
         'create_poll' => 'CREATE POLL',
+        'change_poll_infor' => 'CHANGE INFORMATION',
+        'change_poll_option' => 'CHANGE OPTION',
+        'change_poll_setting' => 'CHANGE SETTING',
+        'back' => 'BACK LIST POLLS',
+        'remove' => 'Remove',
     ],
     'message' => [
         'create_success' => 'Create poll SUCCESS',
@@ -79,6 +110,14 @@ return [
         'link_valid' => 'Link valid. You can use this link',
         'submit_form' => 'Good job!\', \'Saving...!\', \'success',
         'not_found_polls' => 'Can\'t found poll lists in system',
+        'update_poll_info_success' => 'Update information of poll SUCCESS',
+        'update_poll_info_fail' => 'Update information of poll FAIL',
+        'update_option_success' => 'Update option SUCCESS',
+        'update_option_fail' => 'Update option FAIL',
+        'update_setting_success' => 'Update setting of poll SUCCESS',
+        'update_setting_fail' => 'Update setting of poll FAIL',
+        'delete_poll_fail' => 'Delete poll FAIL',
+        'delete_poll_success' => 'Delete poll SUCCESS',
     ],
     'validation' => [
         'name' => [
@@ -136,6 +175,15 @@ return [
         'open' => 'Open this poll',
         'close' => 'Close this poll',
     ],
+    'nav_tab_edit' => [
+        'infor' => 'INFORMATION',
+        'option' => 'OPTION',
+        'setting' => 'SETTING',
+    ],
+
+/*------------------------------------------------------------
+*                  USER - POLL
+*------------------------------------------------------------*/
     'poll' => 'Poll',
     'close' => 'Close',
     'name' => 'Name',
