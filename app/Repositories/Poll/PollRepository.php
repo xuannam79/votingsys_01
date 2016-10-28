@@ -49,6 +49,11 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
         return $this->model->where('user_id', $currentUserId)->where('status', false)->with('activities')->get();
     }
 
+    public function findPollById($id)
+    {
+        return $this->model->find($id);
+    }
+
     public function store($input)
     {
         try {

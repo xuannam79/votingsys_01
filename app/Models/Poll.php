@@ -85,4 +85,30 @@ class Poll extends Model
     {
         return $filters->apply($query);
     }
+
+    public function getUserLink()
+    {
+        if (!$this->links) {
+            return false;
+        }
+
+        foreach ($this->links as $link) {
+            if ($link->link_admin == config('settings.default_value')) {
+                return url('link') . '/' . $link->token;
+            }
+        }
+    }
+
+    public function getAdminLink()
+    {
+        if (!$this->links) {
+            return false;
+        }
+
+        foreach ($this->links as $link) {
+            if ($link->link_admin != config('settings.default_value')) {
+                return url('link') . '/' . $link->token;
+            }
+        }
+    }
 }

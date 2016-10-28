@@ -110,6 +110,8 @@
 
     {!! Html::script('js/comment.js') !!}
 
+    {!! Html::script('js/vote.js') !!}
+
     <!-- Bootstrap Core JavaScript -->
     {!! Html::script('/bower/bootstrap/dist/js/bootstrap.min.js') !!}
 

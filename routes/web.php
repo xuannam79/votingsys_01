@@ -27,13 +27,23 @@ Route::group(['prefix' => 'user', 'middleware' => 'auth'], function() {
 
 Route::group(['prefix' => 'user', 'middleware' => 'XSS'], function() {
     Route::resource('poll', 'User\PollController', [
-        'only' => ['index', 'show']
+        'only' => ['index']
     ]);
 
     Route::resource('comment', 'User\CommentController', [
         'only' => ['store', 'destroy']
     ]);
+
+    Route::resource('vote', 'User\VoteController', [
+        'only' => ['store']
+    ]);
+
+    Route::resource('activity', 'User\ActivityController', [
+        'only' => ['show']
+    ]);
 });
+
+Route::get('link/{token?}', 'LinkController@show');
 
 Route::get('/redirect/{provider}', 'SocialAuthController@redirectToProvider');
 Route::get('/callback/{provider}', 'SocialAuthController@handleProviderCallback');

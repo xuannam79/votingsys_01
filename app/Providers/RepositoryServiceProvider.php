@@ -13,6 +13,8 @@ use App\Repositories\Comment\CommentRepository;
 use App\Repositories\Comment\CommentRepositoryInterface;
 use App\Repositories\Activity\ActivityRepository;
 use App\Repositories\Activity\ActivityRepositoryInterface;
+use App\Repositories\Link\LinkRepository;
+use App\Repositories\Link\LinkRepositoryInterface;
 
 class RepositoryServiceProvider extends ServiceProvider
 {
@@ -37,5 +39,6 @@ class RepositoryServiceProvider extends ServiceProvider
         App::bind(VoteRepositoryInterface::class, VoteRepository::class);
         App::bind(CommentRepositoryInterface::class, CommentRepository::class);
         App::bind(ActivityRepositoryInterface::class, ActivityRepository::class);
+        App::bind(LinkRepositoryInterface::class, LinkRepository::class);
     }
 }

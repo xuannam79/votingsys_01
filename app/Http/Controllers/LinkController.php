@@ -4,11 +4,27 @@ namespace App\Http\Controllers;
 
 use App\Models\Link;
 use Illuminate\Http\Request;
-
 use App\Http\Requests;
+use App\Repositories\Link\LinkRepositoryInterface;
+use App\Repositories\Poll\PollRepositoryInterface;
+use App\Repositories\Vote\VoteRepositoryInterface;
 
 class LinkController extends Controller
 {
+    protected $linkRepository;
+    protected $pollRepository;
+    protected $voteRepository;
+
+    public function __construct(
+        LinkRepositoryInterface $linkRepository,
+        PollRepositoryInterface $pollRepository,
+        VoteRepositoryInterface $voteRepository
+    ) {
+        $this->linkRepository = $linkRepository;
+        $this->pollRepository = $pollRepository;
+        $this->voteRepository = $voteRepository;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -58,9 +74,47 @@ class LinkController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($token)
     {
-        //
+        $link = $this->linkRepository->getPollByToken($token);
+
+        if (! $link) {
+            return view('errors.show_errors')->with('message', trans('polls.poll_not_found'));
+        }
+
+        if (! $link->poll->status) {
+            return view('errors.show_errors')->with('message', trans('polls.message_poll_closed'));
+        }
+
+        if (! $link->link_admin) {
+            $linkUser = url('link') . '/' . $link->token;
+            $poll = $link->poll;
+            $voteLimit = null;
+            $isRequiredEmail = false;
+
+            $isHideResult = false;
+            $voteLimit = null;
+
+            if ($poll->settings) {
+                foreach ($poll->settings as $setting) {
+                    if ($setting->key == config('settings.hide_result')) {
+                        $isHideResult = true;
+                    }
+
+                    if ($setting->key == config('settings.set_limit')) {
+                        $voteLimit = $setting->value;
+                    }
+                }
+
+                if ($voteLimit && $poll->countParticipants() >= $voteLimit) {
+                    return view('errors.show_errors')->with('message', trans('polls.message_poll_limit'));
+                }
+            }
+
+            return view('user.poll.details', compact('poll', 'isHideResult', 'isRequiredEmail', 'linkUser'));
+        }
+
+        return false;
     }
 
     /**

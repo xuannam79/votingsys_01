@@ -1,7 +1,6 @@
 @extends('layouts.app')
 @section('meta')
-    <meta property="og:url" content="{{ action('User\PollController@show',
-    ['id' => $poll->id]) }}" />
+    <meta property="og:url" content="{{ $linkUser }}" />
     <meta property="og:type" content="article" />
     <meta property="og:title" ontent="{{ $poll->title }}" />
     <meta property="og:description" content="{{ $poll->description }}?" />
@@ -14,6 +13,9 @@
             <div class="panel panel-default">
                 <div class="panel-heading">{{ trans('polls.poll_details') }}</div>
                 <div class="panel-body">
+                     @if (auth()->check())
+                        <a href="{{ URL::action('User\ActivityController@show', $poll->id) }}">{{ trans('polls.view_history') }}</a>
+                    @endif
                     <h4> {{ $poll->title }} </h4>
                     {{ trans('polls.poll_initiate') }}
                     @include('user.poll.user_details_layouts', ['user' => $poll->user])
@@ -35,7 +37,7 @@
                     <br>
                     <i> {{ $poll->description }} </i>
                     <br><br>
-                    {!! Form::open() !!}
+                    {!! Form::open(['route' => 'vote.store']) !!}
                         @foreach ($poll->options as $option)
                             <div class="col-md-1 nopadding border">
                                 <center>
@@ -63,11 +65,34 @@
                             </div>
                         @endforeach
                         <br>
+                         <div class="col-md-10">
+                            <div class="col-md-8">
+                                <div class="col-md-12">
+                                    <p class="message-validate"> </p>
+                                </div>
+                                {!! Form::hidden('poll_id', $poll->id) !!}
+                                {!! Form::hidden('isRequiredEmail', $isRequiredEmail) !!}
+                                @if (!$isRequiredEmail)
+                                    <div class="col-md-10">
+                                        {!! Form::text('input', auth()->check() ? auth()->user()->name : null, ['class' => 'form-control input', 'placeholder' => trans('polls.placeholder.full_name')]) !!}
+                                    </div>
+                                    <div class="col-md-2" data-message-name="{{ trans('polls.message_name') }}">
+                                        {{ Form::button(trans('polls.vote'), ['class' => 'btn btn-success btn-vote-name']) }}
+                                    </div>
+                                @else
+                                    <div class="col-md-10">
+                                        {!! Form::email('input', auth()->check() ? auth()->user()->email : null, ['class' => 'form-control input', 'placeholder' => trans('polls.placeholder.email')]) !!}
+                                    </div>
+                                    <div class="col-md-2" data-message-email="{{ trans('polls.message_email') }}" data-message-validate-email="{{ trans('polls.message_validate_email') }}">
+                                        {{ Form::button(trans('polls.vote'), ['class' => 'btn btn-success btn-vote-email']) }}
+                                    </div>
+                                @endif
+                            </div>
+                        </div>
                     {!! Form::close() !!}
                     <div class="col-md-12">
                         <div class="fb-like social-share"
-                            data-href="{{ action('User\PollController@show',
-                                ['id' => $poll->id]) }}"
+                            data-href="{{ $linkUser }}"
                             data-layout="standard" data-action="like"
                             data-size="small" data-show-faces="true"
                             data-share="true">
@@ -116,7 +141,7 @@
                             <button class="btn btn-warning show" id="add-comment">{{ trans('polls.hide') }}</button>
                             {!! Form::open(['route' => 'comment.store', 'class' => 'form-horizontal', 'id' => 'form-comment']) !!}
                                 <div class="col-md-4 comment">
-                                {!! Form::text('name', auth()->check() ? auth()->user()->name : null, ['class' => 'form-control', 'id' => 'name' . $poll->id, 'placeholder' => trans('polls.placeholder.enter_name')]) !!}
+                                {!! Form::text('name', auth()->check() ? auth()->user()->name : null, ['class' => 'form-control', 'id' => 'name' . $poll->id, 'placeholder' => trans('polls.placeholder.full_name')]) !!}
                                 </div>
                                 <div class="col-md-10 comment" data-poll-id="{{ $poll->id }}" data-user="{{ auth()->check() ? auth()->user()->name : '' }}" data-comment-name="{{ trans('polls.comment_name') }}" data-comment-content="{{ trans('polls.comment_content') }}">
                                     {!! Form::textarea('content', null, ['class' => 'form-control', 'rows' => config('settings.poll.comment_row'), 'placeholder' => trans('polls.placeholder.comment'), 'id' => 'content' . $poll->id]) !!}
