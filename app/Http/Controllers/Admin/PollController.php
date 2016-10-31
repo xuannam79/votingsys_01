@@ -111,7 +111,32 @@ class PollController extends Controller
      */
     public function edit($id)
     {
-        //
+        $settings = [];
+        $data = json_encode([
+            'message' => [
+                'numberOfOptions' => config('common.length_poll.option'),
+                'config' => [
+                    'invite_all' => config('common.participant.invite_all'),
+                    'invite_people' => config('common.participant.invite_people'),
+                ],
+                'link_exists' => trans('polls.message.link_exists'),
+                'link_valid' => trans('polls.message.link_valid'),
+                'confirm_delete_option' => trans('polls.message.confirm_delete_option')
+            ],
+            'view' => [
+                'option' => view('layouts.poll-option')->render(),
+                'email' => view('layouts.poll-email')->render(),
+            ],
+            'oldInput' => session("_old_input"),
+        ]);
+
+        $poll = Poll::with('user', 'options', 'settings')->find($id);
+
+        foreach ($poll->settings as $setting) {
+            $settings[$setting->key] = $setting->value;
+        }
+
+        return view('admins.poll.edit', compact('poll', 'data', 'settings'));
     }
 
     /**
@@ -123,7 +148,28 @@ class PollController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $button = $request->btn_edit;
+
+        if ($button == trans('polls.button.change_poll_infor')) {
+            $input = $request->only(
+                'status', 'name', 'email', 'chatwork_id', 'title', 'location', 'description', 'type'
+            );
+
+            $message = $this->pollRepository->editInfor($input, $id);
+        } elseif ($button == trans('polls.button.change_poll_option')) {
+            $input = $request->only(
+                'option', 'image', 'optionImage', 'optionText'
+            );
+            $message = $this->pollRepository->editPollOption($input, $id);
+        } elseif ($button == trans('polls.button.change_poll_setting')) {
+            $input = $request->only(
+                'setting', 'value', 'participant'
+            );
+
+            $message = $this->pollRepository->editPollSetting($input, $id);
+        }
+
+        return redirect()->route('admin.poll.edit', $id)->with('message', $message);
     }
 
     /**
@@ -134,6 +180,7 @@ class PollController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $message = $this->pollRepository->delete($id);
+        return redirect()->route('admin.poll.index')->with('message', $message);
     }
 }

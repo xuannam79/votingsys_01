@@ -107,8 +107,17 @@ function readURL(input, idShow) {
 }
 
 //remove option
-function removeOpion(idOption) {
-    $("#" + idOption).remove();
+function removeOpion(idOption, action) {
+    var dataPage = $('.hide').data("poll");
+
+    if (typeof dataPage !== "undefined" && typeof action !== "undefined") {
+        if (confirmDelete(dataPage.message.confirm_delete_option)) {
+            $("#" + idOption).remove();
+        }
+    } else {
+        $("#" + idOption).remove();
+    }
+
 }
 
 //add option

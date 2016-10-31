@@ -39,7 +39,8 @@ return [
         'close' => 0,
     ],
     'option' => [
-        'path_image' => '/images/options/',
+        'path_image' => '/uploads/options/',
+        'path_image_default' => '/uploads/images/default-thumb.gif',
     ],
     'setting' => [
         'required_email' => 1,

@@ -111,4 +111,18 @@ class Poll extends Model
             }
         }
     }
+
+    public function getMultipleAttribute($value)
+    {
+        return ($value == config('common.type.multiple_choice')
+            ? trans('polls.label.multiple_choice')
+            : trans('polls.label.single_choice'));
+    }
+
+    public function getStatusAttribute($value)
+    {
+        return ($value == config('common.status.open')
+            ? trans('polls.label.poll_opening')
+            : trans('polls.label.poll_closed'));
+    }
 }

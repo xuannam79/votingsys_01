@@ -38,6 +38,17 @@ return [
         'link_vote' => 'Link to vote:',
         'link_admin' => 'Link manager vote:',
         'subject' => 'Voting',
+        'edit_poll' => [
+            'head' => 'Voting - Change',
+            'summary' => 'Poll of you changed by admin!',
+            'thead' => [
+                'STT' => 'NO.',
+                'info' => 'INFORMATION',
+                'old_data' => 'OLD DATA',
+                'new_data' => 'NEW DATA',
+                'date' => 'DATE',
+            ],
+        ],
     ],
     'paginations' => 'Showing :start to :finish of :numberOfRecords entry|Showing :start to :finish of :numberOfRecords entries',
 ];
