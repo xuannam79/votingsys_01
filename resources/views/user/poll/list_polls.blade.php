@@ -1,4 +1,4 @@
- @extends('layouts.app')
+@extends('layouts.app')
 
 @section('content')
 <div class="container">
@@ -7,80 +7,52 @@
             <div class="panel panel-default">
                 <div class="panel-heading">{{ trans('polls.list_polls') }}</div>
                 <div class="panel-body">
-                    @if ($initiatedPolls->count())
-                        <h3 class="poll-history">{{ trans('polls.polls_initiated') }}</h3>
-                        <table class="table table-striped">
-                            <thead>
-                                <th>{{ trans('polls.subject') }}</th>
-                                <th>{{ trans('polls.participants') }}</th>
-                                <th>{{ trans('polls.latest_activity') }}</th>
-                                <th></th>
-                            </thead>
-                            <tbody>
-                            @foreach ($initiatedPolls as $initiatedPoll)
-                                <tr>
-                                    <td>
-                                        <a href="{{ URL::action('User\PollController@show', ['id' => $initiatedPoll->id]) }}">
-                                            {{ $initiatedPoll->title }}
-                                        </a>
-                                    </td>
-                                    <td>{{ $initiatedPoll->countParticipants() }}</td>
-                                    <td>{{ $initiatedPoll->activities->sortBy('id')->last()->created_at->diffForHumans() }}</td>
-                                    <td><a href="{{ URL::action('User\PollController@show', ['id' => $initiatedPoll->id]) }}">{{ trans('polls.administer') }}</a></td>
-                                </tr>
-                            @endforeach
-                            </tbody>
-                        </table>
-                    @endif
+                    <div class="hide" data-route-initiated="{{ url('load-initiated-poll') }}"
+                        data-route-participanted="{{ url('load-participanted-in-poll') }}"
+                        data-route-closed="{{ url('load-closed-poll') }}"
+                        data-message="{{ trans('polls.load_latest_polls') }}">
+                    </div>
+                    <h3 class="poll-history">
+                        {{ trans('polls.polls_initiated') }}
+                    </h3>
+                    <button id="list-all-polls-initiated" class="btn btn-primary btn-initiated">
+                        {{ trans('polls.list_all_polls') }}
+                    </button>
                     <br>
-                    @if ($participatedPolls->count())
-                        <h3 class="poll-history">{{ trans('polls.polls_participated_in') }}</h3>
-                        <table class="table table-striped">
-                            <thead>
-                                <th>{{ trans('polls.subject') }}</th>
-                                <th>{{ trans('polls.participants') }}</th>
-                                <th>{{ trans('polls.latest_activity') }}</th>
-                                <th></th>
-                            </thead>
-                            <tbody>
-                            @foreach ($participatedPolls as $participatedPoll)
-                                <tr>
-                                    <td>
-                                        <label>{{ $participatedPoll->title }}</label>
-                                    </td>
-                                    <td>{{ $participatedPoll->countParticipants() }}</td>
-                                    <td>{{ $participatedPoll->activities->sortBy('id')->last()->created_at->diffForHumans() }}</td>
-                                    @if (Gate::allows('administer', $participatedPoll))
-                                        <td><a href="{{ URL::action('User\PollController@show', ['id' => $participatedPoll->id]) }}">{{ trans('polls.administer') }}</a></td>
-                                    @else
-                                        <td></td>
-                                    @endif
-                                </tr>
-                            @endforeach
-                            </tbody>
-                        </table>
-                    @endif
+                    <span class="message-initiated-poll lastest-poll-message"></span>
+                    <div class="polls-initiated">
+                        @if ($initiatedPolls->count())
+                            @include('user.poll.list_polls_layouts', ['polls' => $initiatedPolls])
+                        @endif
+                    </div>
                     <br>
-                    @if ($closedPolls->count())
-                        <h3 class="poll-history">{{ trans('polls.polls_closed') }}</h3>
-                        <table class="table table-striped">
-                            <thead>
-                                <th>{{ trans('polls.subject') }}</th>
-                                <th>{{ trans('polls.participants') }}</th>
-                                <th>{{ trans('polls.latest_activity') }}</th>
-                                <th></th>
-                            </thead>
-                            <tbody>
-                            @foreach ($closedPolls as $closedPoll)
-                                <tr>
-                                    <td>{{ $closedPoll->title }}</td>
-                                    <td>{{ $closedPoll->countParticipants() }}</td>
-                                    <td>{{ $closedPoll->activities->sortBy('id')->last()->created_at->diffForHumans() }}</td>
-                                </tr>
-                            @endforeach
-                            </tbody>
-                        </table>
-                    @endif
+                    <h3 class="poll-history">
+                        {{ trans('polls.polls_participated_in') }}
+                    </h3>
+                    <button id="list-all-polls-participated" class="btn btn-primary btn-participanted-in">
+                        {{ trans('polls.list_all_polls') }}
+                    </button>
+                    <br>
+                    <span class="message-participanted-in-poll lastest-poll-message"></span>
+                    <div class="polls-participanted-in">
+                        @if ($participatedPolls->count())
+                            @include('user.poll.list_polls_layouts', ['polls' => $participatedPolls])
+                        @endif
+                    </div>
+                    <br>
+                    <h3 class="poll-history">
+                        {{ trans('polls.polls_closed') }}
+                    </h3>
+                    <button id="list-all-polls-participated" class="btn btn-primary btn-closed">
+                        {{ trans('polls.list_all_polls') }}
+                    </button>
+                    <br>
+                    <span class="message-closed-poll lastest-poll-message"></span>
+                    <div class="polls-closed">
+                        @if ($closedPolls->count())
+                            @include('user.poll.list_opened_polls_layouts', ['polls' => $closedPolls])
+                        @endif
+                    </div>
                 </div>
             </div>
         </div>

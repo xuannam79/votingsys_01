@@ -112,9 +112,18 @@ class LinkController extends Controller
             }
 
             return view('user.poll.details', compact('poll', 'isHideResult', 'isRequiredEmail', 'linkUser'));
-        }
+        } else {
+            $poll = $link->poll;
+            foreach ($poll->links as $link) {
+                if ($link->link_admin) {
+                    $tokenLinkAdmin = $link->token;
+                } else {
+                    $tokenLinkUser = $link->token;
+                }
+            }
 
-        return false;
+            return view('user.poll.manage_poll', compact('poll', 'tokenLinkUser', 'tokenLinkAdmin'));
+        }
     }
 
     /**

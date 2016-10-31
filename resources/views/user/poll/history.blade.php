@@ -8,7 +8,7 @@
                 <div class="panel-heading">{{ trans('history.history') }}</div>
                 <div class="panel-body col-md-offset-1">
                 <span class="poll-history">{{ $poll->created_at->format(config('settings.date_format')) }}</span>
-                <h4> {{ trans('history.poll_created', ['name' => $ownerOfPoll]) }} </h4>
+                <h4> {{ trans('history.poll_created', ['name' => $poll->user->name]) }} </h4>
                 <br>
                 @if ($activities->count())
                     @foreach ($activities as $activity)

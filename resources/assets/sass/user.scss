@@ -126,3 +126,25 @@ li {
 .dropdown:hover .dropdown-content {
     display: block;
 }
+
+.btn-administration {
+    float: right;
+    margin-left: 20px;
+}
+
+.lastest-poll-message {
+    color: green;
+}
+
+.comment-name-validate {
+    color: red;
+}
+
+.comment-content-validate {
+    color: red;
+}
+
+.disable-link {
+   pointer-events: none;
+   cursor: default;
+}

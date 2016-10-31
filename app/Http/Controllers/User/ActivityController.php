@@ -29,9 +29,8 @@ class ActivityController extends Controller
             return view('errors.show_errors')->with('message', trans('polls.activity_not_found'));
         }
 
-        $ownerOfPoll = $this->activityRepository->getOwnerOfPoll($id);
         $poll = $this->pollRepository->find($id);
 
-        return view('user.poll.history', compact('activities', 'ownerOfPoll', 'poll'));
+        return view('user.poll.history', compact('activities', 'poll'));
     }
 }
