@@ -112,6 +112,10 @@
 
     {!! Html::script('js/vote.js') !!}
 
+    {!! Html::script('js/listPolls.js') !!}
+
+    {!! Html::script('js/managePoll.js') !!}
+
     <!-- Bootstrap Core JavaScript -->
     {!! Html::script('/bower/bootstrap/dist/js/bootstrap.min.js') !!}
 

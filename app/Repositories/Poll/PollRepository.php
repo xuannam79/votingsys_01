@@ -31,13 +31,25 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
     {
         $currentUserId = auth()->user()->id;
 
-        return $this->model->where('user_id', $currentUserId)->with('activities')->get();
+        return $this->model->where('user_id', $currentUserId)->with('activities')->orderBy('id', 'DESC')->get();
     }
 
     public function getParticipatedPolls($voteRepository)
     {
         $listPollIds = $voteRepository->getListPollIdOfCurrentUser();
-        $participantPolls = $this->model->whereIn('id', $listPollIds)->with('activities')->get();
+        $participantPolls = $this->model->whereIn('id', $listPollIds)->with('activities')->orderBy('id', 'DESC')->get();
+        $participants = auth()->user()->participants;
+
+        if ($participants) {
+            foreach ($participants as $participant) {
+                $participantVotes = $participant->participantVotes;
+                if ($participantVotes) {
+                    foreach ($participantVotes as $participantVote) {
+                        $participantPolls->push($participantVote->option->poll);
+                    }
+                }
+            }
+        }
 
         return $participantPolls;
     }
@@ -46,12 +58,17 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
     {
         $currentUserId = auth()->user()->id;
 
-        return $this->model->where('user_id', $currentUserId)->where('status', false)->with('activities')->get();
+        return $this->model->where('user_id', $currentUserId)->where('status', false)->with('activities')->orderBy('id', 'DESC')->get();
     }
 
     public function findPollById($id)
     {
         return $this->model->find($id);
+    }
+
+    public function findClosedPoll($id)
+    {
+        return $this->model->where('status', false)->find($id);
     }
 
 /*------------------------------------------------------------

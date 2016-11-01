@@ -27,7 +27,7 @@ Route::group(['prefix' => 'user', 'middleware' => 'auth'], function() {
 
 Route::group(['prefix' => 'user', 'middleware' => 'XSS'], function() {
     Route::resource('poll', 'User\PollController', [
-        'only' => ['index']
+        'only' => ['index', 'edit', 'destroy']
     ]);
 
     Route::resource('comment', 'User\CommentController', [
@@ -42,6 +42,12 @@ Route::group(['prefix' => 'user', 'middleware' => 'XSS'], function() {
         'only' => ['show']
     ]);
 });
+
+Route::get('load-initiated-poll', 'User\LoadPollsController@loadInitiatedPolls');
+
+Route::get('load-participanted-in-poll', 'User\LoadPollsController@loadParticipantedPolls');
+
+Route::get('load-closed-poll', 'User\LoadPollsController@loadClosedPolls');
 
 Route::get('link/{token?}', 'LinkController@show');
 

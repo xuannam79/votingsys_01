@@ -6,6 +6,8 @@ elixir(function (mix) {
     mix.copy('resources/assets/js/comment.js', 'public/js/comment.js');
     mix.copy('resources/assets/js/vote.js', 'public/js/vote.js');
     mix.copy('resources/assets/js/shareSocial.js', 'public/js/shareSocial.js');
+    mix.copy('resources/assets/js/listPolls.js', 'public/js/listPolls.js');
+    mix.copy('resources/assets/js/managePoll.js', 'public/js/managePoll.js');
     mix.copy('resources/assets/sass/user.scss', 'public/css/user.css');
     mix.copy('resources/assets/sass/layout/mail_notification.scss', 'public/css/layout/mail_notification.css');
 });

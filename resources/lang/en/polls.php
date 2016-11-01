@@ -233,4 +233,9 @@ return [
     'comment_name' => 'Please enter your name in the input field',
     'comment_content' => 'Please enter a comment in the text area',
     'confirmRemove' => 'Are you sure?',
+    'load_latest_polls' => 'List latest polls only',
+    'edit_link_admin' => 'Edit link Admin',
+    'edit_link_user' => 'Edit link User',
+    'participation_link' => 'Participation link',
+    'administer_link' => 'Administer link',
 ];
