@@ -56,13 +56,16 @@
                 <div class="collapse navbar-collapse" id="app-navbar-collapse">
                     <!-- Left Side Of Navbar -->
                     <ul class="nav navbar-nav">
-                        <li>
-                            <a href="{{ URL::action('User\PollController@index') }}">
-                                {{ trans('polls.poll_history') }}
-                            </a>
-                        </li>
+                        @if (auth()->check())
+                            <ul class="nav navbar-nav">
+                                <li>
+                                    <a href="{{ URL::action('User\PollController@index') }}">
+                                        {{ trans('polls.poll_history') }}
+                                    </a>
+                                </li>
+                            </ul>
+                        @endif
                     </ul>
-
                     <!-- Right Side Of Navbar -->
                     <ul class="nav navbar-nav navbar-right">
                         <!-- Authentication Links -->

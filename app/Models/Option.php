@@ -33,14 +33,8 @@ class Option extends Model
     public function countVotes()
     {
         $count = config('settings.default_value');
-
-        if ($this->votes) {
-            $count += $this->votes->count();
-        }
-
-        if ($this->participant_votes) {
-            $count += $this->participant_votes->count();
-        }
+        $this->votes ? $count += $this->votes->count() : '';
+        $this->participantVotes ? $count += $this->participantVotes->count() : '';
 
         return $count;
     }

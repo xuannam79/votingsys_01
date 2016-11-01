@@ -35,7 +35,7 @@ Route::group(['prefix' => 'user', 'middleware' => 'XSS'], function() {
     ]);
 
     Route::resource('vote', 'User\VoteController', [
-        'only' => ['store']
+        'only' => ['store', 'destroy']
     ]);
 
     Route::resource('activity', 'User\ActivityController', [

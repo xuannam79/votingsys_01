@@ -90,6 +90,7 @@ return [
         'password_poll' => 'Enter password of poll...',
         'option' => 'Enter option of poll...',
         'email_participant' => 'Enter email of participant...',
+        'comment' => 'Enter a comment...',
     ],
     'button' => [
         'search_poll' => 'SEARCH NOW',
@@ -238,4 +239,10 @@ return [
     'edit_link_user' => 'Edit link User',
     'participation_link' => 'Participation link',
     'administer_link' => 'Administer link',
+    'administration' => 'Administration',
+    'vote_empty' => 'Vote empty, You can vote this poll',
+    'confirm_delete_vote' => 'Are you sure delete this vote',
+    'email_exist' => 'Email exist, You need to login to vote or chose another email',
+    'remove_vote_successfully' => 'You deleted vote successfully',
+    'vote_successfully' => 'You voted this poll successfully',
 ];

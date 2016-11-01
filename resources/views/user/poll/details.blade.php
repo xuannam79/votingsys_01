@@ -3,7 +3,7 @@
     <meta property="og:url" content="{{ $linkUser }}" />
     <meta property="og:type" content="article" />
     <meta property="og:title" ontent="{{ $poll->title }}" />
-    <meta property="og:description" content="{{ $poll->description }}?" />
+    <meta property="og:description" content="{{ $poll->description }}" />
 @endsection
 
 @section('content')
@@ -13,7 +13,8 @@
             <div class="panel panel-default">
                 <div class="panel-heading">{{ trans('polls.poll_details') }}</div>
                 <div class="panel-body">
-                     @if (auth()->check())
+                @include('message')
+                    @if (auth()->check())
                         <a href="{{ URL::action('User\ActivityController@show', $poll->id) }}">{{ trans('polls.view_history') }}</a>
                     @endif
                     <h4> {{ $poll->title }} </h4>
@@ -37,59 +38,165 @@
                     <br>
                     <i> {{ $poll->description }} </i>
                     <br><br>
-                    {!! Form::open(['route' => 'vote.store']) !!}
-                        @foreach ($poll->options as $option)
-                            <div class="col-md-1 nopadding border">
-                                <center>
-                                @if ($poll->multiple)
-                                    {!! Form::checkbox('option[]', $option->id, false, ['class' => 'poll-option']) !!}
-                                @else
-                                    {!! Form::radio('option[]', $option->id, false, ['class' => 'poll-option']) !!}
-                                @endif
-                                </center>
-                            </div>
-                            <div class="col-md-11 nopadding border">
-                                <div class="col-md-9">
-                                    {!! Form::label('option_name', $option->name, ['class' => 'poll-option']) !!}
-                                </div>
-                                @if ($option->image)
-                                    <div class="col-md-2">
-                                        <img class="poll-option img-option" src="{{ $option->showImage() }}">
-                                    </div>
-                                @endif
-                                <div class="col-md-1">
-                                    @if (!$isHideResult)
-                                        <h1><span class="label label-default dropbtn">{{ $option->countVotes() }}</span></h1>
+                    @if (Gate::allows('administer', $poll))
+                        <a class="btn btn-primary btn-administration" href="{{ $poll->getAdminLink() }}">
+                            <span class="glyphicon glyphicon-cog"></span>
+                            {{ trans('polls.administration') }}
+                        </a>
+                    @endif
+                    @if (!$isHideResult || Gate::allows('administer', $poll))
+                    <button type="button" class="btn btn-primary btn-model" data-toggle="modal" data-target="#myModal">
+                        <span class="glyphicon glyphicon-eye-open"></span>
+                        {{ trans('polls.show_vote_details') }}
+                    </button>
+                        <div class="modal fade" id="myModal" role="dialog">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-body">
+                                    @if ($mergedParticipantVotes->count())
+                                    <table class="table table-bordered">
+                                        <thead>
+                                        <th><center>{{ trans('polls.no') }}</center></th>
+                                        <th><center>{{ $isRequiredEmail ? trans('polls.email') : trans('polls.name')}}</center></th>
+                                        @foreach ($poll->options as $option)
+                                            <th>
+                                                <center>
+                                                    @if (!empty($option->image))
+                                                        <img class="img-option" src="{{ $option->showImage() }}">
+                                                        <br>
+                                                    @endif
+                                                    {{ $option->name }}
+                                                </center>
+                                            </th>
+                                        @endforeach
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($mergedParticipantVotes as $vote)
+                                                <tr>
+                                                    <td><center>{{ ++$numberOfVote }}</center></td>
+                                                    @php
+                                                        $isShowVoteName = false;
+                                                    @endphp
+                                                    @foreach ($poll->options as $option)
+                                                        @php
+                                                            $isShowOptionUserVote = false;
+                                                        @endphp
+                                                        @foreach ($vote as $item)
+                                                            @if (! $isShowVoteName)
+                                                                <td>
+                                                                    @if (isset($item->user_id))
+                                                                        {{ Form::open(['route' => ['vote.destroy', $item->user->id], 'method' => 'delete']) }}
+                                                                        {{ Form::hidden('type', config('settings.type.user')) }}
+                                                                        {{ $isRequiredEmail ? $item->user->email : $item->user->name }}
+                                                                    @else
+                                                                        {{ Form::open(['route' => ['vote.destroy', $item->participant->id], 'method' => 'delete']) }}
+                                                                        {{ Form::hidden('type', config('settings.type.participant')) }}
+                                                                        {{ $isRequiredEmail ? $item->participant->email : $item->participant->name }}
+                                                                    @endif
+                                                                        @if (Gate::allows('administer', $poll))
+                                                                            {{ Form::hidden('poll_id', $poll->id) }}
+                                                                            {{ Form::button('<i class="glyphicon glyphicon-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-xs remove-vote', 'onclick' => 'return confirm("' . trans('polls.confirm_delete_vote') . '")']) }}
+                                                                        @endif
+                                                                        {{ Form::close() }}
+                                                                </td>
+                                                                @php
+                                                                    $isShowVoteName = true;
+                                                                @endphp
+                                                            @endif
+                                                            @if ($item->option_id == $option->id)
+                                                                <td>
+                                                                    <center><label class="label label-default"><span class="glyphicon glyphicon-ok"> </span></label></center>
+                                                                </td>
+                                                                @php
+                                                                    $isShowOptionUserVote = true;
+                                                                @endphp
+                                                            @endif
+                                                        @endforeach
+                                                        @if (!$isShowOptionUserVote)
+                                                            <td></td>
+                                                        @endif
+                                                    @endforeach
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                    @else
+                                        <center>
+                                            <p>{{ trans('polls.vote_empty') }}</p>
+                                        </center>
                                     @endif
                                 </div>
-                            </div>
-                        @endforeach
-                        <br>
-                         <div class="col-md-10">
-                            <div class="col-md-8">
-                                <div class="col-md-12">
-                                    <p class="message-validate"> </p>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">{{ trans('polls.close') }}</button>
                                 </div>
-                                {!! Form::hidden('poll_id', $poll->id) !!}
-                                {!! Form::hidden('isRequiredEmail', $isRequiredEmail) !!}
-                                @if (!$isRequiredEmail)
-                                    <div class="col-md-10">
-                                        {!! Form::text('input', auth()->check() ? auth()->user()->name : null, ['class' => 'form-control input', 'placeholder' => trans('polls.placeholder.full_name')]) !!}
-                                    </div>
-                                    <div class="col-md-2" data-message-name="{{ trans('polls.message_name') }}">
-                                        {{ Form::button(trans('polls.vote'), ['class' => 'btn btn-success btn-vote-name']) }}
-                                    </div>
-                                @else
-                                    <div class="col-md-10">
-                                        {!! Form::email('input', auth()->check() ? auth()->user()->email : null, ['class' => 'form-control input', 'placeholder' => trans('polls.placeholder.email')]) !!}
-                                    </div>
-                                    <div class="col-md-2" data-message-email="{{ trans('polls.message_email') }}" data-message-validate-email="{{ trans('polls.message_validate_email') }}">
-                                        {{ Form::button(trans('polls.vote'), ['class' => 'btn btn-success btn-vote-email']) }}
-                                    </div>
-                                @endif
                             </div>
                         </div>
-                    {!! Form::close() !!}
+                    </div>
+                    @endif
+                    <div class="col-md-12">
+                        {!! Form::open(['route' => 'vote.store']) !!}
+                            @foreach ($poll->options as $option)
+                                <div class="col-md-1">
+                                    @if (auth()->check() && ! $isUserVoted || ! auth()->check() && ! $isParticipantVoted)
+                                        <center>
+                                            @if ($poll->multiple)
+                                                {!! Form::checkbox('option[]', $option->id, false, ['class' => 'poll-option']) !!}
+                                            @else
+                                                {!! Form::radio('option[]', $option->id, false, ['class' => 'poll-option']) !!}
+                                            @endif
+                                        </center>
+                                    @endif
+                                </div>
+                                <div class="col-md-11">
+                                    <div class="col-md-9">
+                                        {!! Form::label('option_name', $option->name, ['class' => 'poll-option']) !!}
+                                    </div>
+                                    @if (!empty($option->image))
+                                        <div class="col-md-2">
+                                            <img class="poll-option img-option" src="{{ $option->showImage() }}">
+                                        </div>
+                                    @endif
+                                    <div class="col-md-1">
+                                        @if (!$isHideResult || Gate::allows('administer', $poll))
+                                            <h1><span class="label label-default dropbtn">{{ $option->countVotes() }}</span></h1>
+                                        @endif
+                                    </div>
+                                </div>
+                            @endforeach
+                            <br>
+                            @if (auth()->check() && ! $isUserVoted || !auth()->check() && ! $isParticipantVoted)
+                                <div class="col-md-10">
+                                    <div class="col-md-8">
+                                        <div class="col-md-12">
+                                            <label class="message-validate"> </label>
+                                        </div>
+                                        {!! Form::hidden('poll_id', $poll->id) !!}
+                                        {!! Form::hidden('isRequiredEmail', $isRequiredEmail) !!}
+                                        @if (!$isRequiredEmail)
+                                            <div class="col-md-10">
+                                                {!! Form::text('input', auth()->check() ? auth()->user()->name : null, ['class' => 'form-control input', 'placeholder' => trans('polls.placeholder.enter_name')]) !!}
+                                            </div>
+                                            <div class="col-md-2" data-message-name="{{ trans('polls.message_name') }}">
+                                                {{ Form::button(trans('polls.vote'), ['class' => 'btn btn-success btn-vote-name', !$isUserVoted ? 'disabled' : '' ]) }}
+                                            </div>
+                                        @else
+                                            <div class="col-md-10">
+                                                {!! Form::email('input', auth()->check() ? auth()->user()->email : null, ['class' => 'form-control input', 'placeholder' => trans('polls.placeholder.email')]) !!}
+                                            </div>
+                                            <div class="col-md-2" data-message-email="{{ trans('polls.message_email') }}" data-message-validate-email="{{ trans('polls.message_validate_email') }}">
+                                                {{ Form::button(trans('polls.vote'), ['class' => 'btn btn-success btn-vote-email', !$isUserVoted ? 'disabled' : '']) }}
+                                            </div>
+                                        @endif
+                                        <div class="col-md-12">
+                                            @if ($isUserVoted)
+                                                <label class="show-message">{{ trans('polls.voted_poll') }}</label>
+                                            @endif
+                                        </div>
+                                    </div>
+                                </div>
+                            @endif
+                        {!! Form::close() !!}
+                    </div>
                     <div class="col-md-12">
                         <div class="fb-like social-share"
                             data-href="{{ $linkUser }}"

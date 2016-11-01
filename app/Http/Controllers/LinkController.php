@@ -8,21 +8,25 @@ use App\Http\Requests;
 use App\Repositories\Link\LinkRepositoryInterface;
 use App\Repositories\Poll\PollRepositoryInterface;
 use App\Repositories\Vote\VoteRepositoryInterface;
+use App\Repositories\ParticipantVote\ParticipantVoteRepositoryInterface;
 
 class LinkController extends Controller
 {
     protected $linkRepository;
     protected $pollRepository;
     protected $voteRepository;
+    protected $participantVoteRepository;
 
     public function __construct(
         LinkRepositoryInterface $linkRepository,
         PollRepositoryInterface $pollRepository,
-        VoteRepositoryInterface $voteRepository
+        VoteRepositoryInterface $voteRepository,
+        ParticipantVoteRepositoryInterface $participantVoteRepository
     ) {
         $this->linkRepository = $linkRepository;
         $this->pollRepository = $pollRepository;
         $this->voteRepository = $voteRepository;
+        $this->participantVoteRepository = $participantVoteRepository;
     }
 
     /**
@@ -74,7 +78,7 @@ class LinkController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($token)
+    public function show($token, Request $request)
     {
         $link = $this->linkRepository->getPollByToken($token);
 
@@ -88,22 +92,20 @@ class LinkController extends Controller
 
         if (! $link->link_admin) {
             $linkUser = url('link') . '/' . $link->token;
-            $poll = $link->poll;
+            $numberOfVote = config('settings.default_value');
             $voteLimit = null;
             $isRequiredEmail = false;
-
             $isHideResult = false;
-            $voteLimit = null;
+            $poll = $link->poll;
 
             if ($poll->settings) {
                 foreach ($poll->settings as $setting) {
-                    if ($setting->key == config('settings.hide_result')) {
-                        $isHideResult = true;
-                    }
-
-                    if ($setting->key == config('settings.set_limit')) {
+                    if ($setting->key == config('settings.setting.set_limit')) {
                         $voteLimit = $setting->value;
                     }
+
+                    $isRequiredEmail = ($setting->key == config('settings.setting.required_email'));
+                    $isHideResult = ($setting->key == config('settings.setting.hide_result'));
                 }
 
                 if ($voteLimit && $poll->countParticipants() >= $voteLimit) {
@@ -111,7 +113,50 @@ class LinkController extends Controller
                 }
             }
 
-            return view('user.poll.details', compact('poll', 'isHideResult', 'isRequiredEmail', 'linkUser'));
+            $voteIds = $this->pollRepository->getVoteIds($poll->id);
+            $votes = $this->voteRepository->getVoteWithOptionsByVoteId($voteIds);
+            $participantVoteIds = $this->pollRepository->getParticipantVoteIds($poll->id);
+            $participantVotes = $this->participantVoteRepository->getVoteWithOptionsByVoteId($participantVoteIds);
+            $mergedParticipantVotes = $votes->toBase()->merge($participantVotes->toBase());
+
+            if ($mergedParticipantVotes->count()) {
+                foreach ($mergedParticipantVotes as $mergedParticipantVote) {
+                    $createdAt[] = $mergedParticipantVote->first()->created_at;
+                }
+
+                $sortedParticipantVotes = collect($createdAt)->sort();
+                $resultParticipantVotes = collect();
+                foreach ($sortedParticipantVotes as $sortedParticipantVote) {
+                    foreach ($mergedParticipantVotes as $mergedParticipantVote) {
+                        foreach ($mergedParticipantVote as $participantVote) {
+                            if ($participantVote->created_at == $sortedParticipantVote) {
+                                $resultParticipantVotes->push($mergedParticipantVote);
+                                break;
+                            }
+
+                        }
+                    }
+                }
+                $mergedParticipantVotes = $resultParticipantVotes;
+            }
+
+            $isUserVoted = false;
+            $isParticipantVoted = false;
+
+            if (auth()->check()) {
+                $isUserVoted = $this->pollRepository->checkUserVoted($poll->id, $this->voteRepository);
+            } else {
+                foreach ($participantVotes as $participantVote) {
+                    foreach($participantVote as $item) {
+                        if (isset($item->participant) && $item->participant->ip_address == $request->ip()) {
+                            $isParticipantVoted = true;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            return view('user.poll.details', compact('poll', 'isRequiredEmail', 'isUserVoted', 'isHideResult', 'numberOfVote', 'linkUser', 'mergedParticipantVotes', 'isParticipantVoted'));
         } else {
             $poll = $link->poll;
             foreach ($poll->links as $link) {
