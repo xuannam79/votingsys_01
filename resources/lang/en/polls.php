@@ -101,6 +101,9 @@ return [
         'change_poll_setting' => 'CHANGE SETTING',
         'back' => 'BACK LIST POLLS',
         'remove' => 'Remove',
+        'continue' => 'Continue',
+        'previous' => 'Previous',
+        'finish' => 'Finish',
     ],
     'message' => [
         'create_success' => 'Create poll SUCCESS',
@@ -120,6 +123,8 @@ return [
         'update_setting_fail' => 'Update setting of poll FAIL',
         'delete_poll_fail' => 'Delete poll FAIL',
         'delete_poll_success' => 'Delete poll SUCCESS',
+        'email_exists' => 'Email exist in system. Please enter a new email or login into system',
+        'email_valid' => 'Email valid. You can use this email',
     ],
     'validation' => [
         'name' => [
@@ -144,17 +149,11 @@ return [
         'option' => [
             'option' => 'Please enter one option of poll',
         ],
-        'email_poll' => [
-            'email_poll' => 'Please enter one email of participant',
+        'setting' => [
+            'setting' => 'Config setting invalid. Please check again!',
         ],
-        'custom_link' => [
-            'setting' => 'Please enter link of poll',
-        ],
-        'set_limit' => [
-            'setting' => 'Please enter number vote of poll',
-        ],
-        'set_password' => [
-            'setting' => 'Please enter password of poll',
+        'participant' => [
+            'email' => 'Please enter one email of participant',
         ],
     ],
     'table' => [
@@ -181,6 +180,17 @@ return [
         'infor' => 'INFORMATION',
         'option' => 'OPTION',
         'setting' => 'SETTING',
+    ],
+    'validate_client' => [
+        'required' => 'Please enter ',
+        'max' => 'Please enter a value less than or equal to ',
+        'email' => 'Email invalid!',
+        'number' => 'Value must is number!',
+        'choose' => 'Please choose ',
+        'option_empty' => 'You must add a new option',
+        'option_required' => 'You must enter content of option',
+        'participant_empty' => 'You must add a email',
+        'character' => ' characters',
     ],
 
 /*------------------------------------------------------------

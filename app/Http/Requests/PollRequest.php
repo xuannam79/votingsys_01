@@ -30,11 +30,9 @@ class PollRequest extends FormRequest
             'title' => 'required|max:' . $config['title'],
             'description' => 'max:' . $config['description'],
             'type' => 'required',
-            'option' => 'option:optionImage',
-            'email_poll' => 'email_poll:invite',
-            'custom_link' => 'setting:link',
-            'set_limit' => 'setting:limit',
-            'set_password' => 'setting:password_poll',
+            'optionText' => 'option:optionImage',
+            'value' => 'setting:setting',
+            'member' => 'participant:participant',
         ];
     }
 
@@ -56,11 +54,9 @@ class PollRequest extends FormRequest
             'title.max' => $trans['title']['max'],
             'description.max' => $trans['description']['max'],
             'type.required' => $trans['type']['required'],
-            'option.option' => $trans['option']['option'],
-            'email_poll.email_poll' => $trans['email_poll']['email_poll'],
-            'custom_link.setting' => $trans['custom_link']['setting'],
-            'set_limit.setting' => $trans['set_limit']['setting'],
-            'set_password.setting' => $trans['set_password']['setting'],
+            'optionText.option' => $trans['option']['option'],
+            'value.setting' => $trans['setting']['setting'],
+            'member.participant' => $trans['participant']['email'],
         ];
     }
 }
