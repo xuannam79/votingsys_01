@@ -68,6 +68,9 @@
                     </ul>
                     <!-- Right Side Of Navbar -->
                     <ul class="nav navbar-nav navbar-right">
+                        <div data-route="{{ url('language') }}">
+                            {{ Form::select('lang', config('settings.language'),  Session::get('locale'), ['class' => 'form-control btn-multiple-language']) }}
+                        </div>
                         <!-- Authentication Links -->
                         @if (Auth::guest())
                             <li><a href="{{ url('/login') }}">Login</a></li>
@@ -120,6 +123,8 @@
     {!! Html::script('js/managePoll.js') !!}
 
     {!! Html::script('js/editLink.js') !!}
+
+    {!! Html::script('js/multipleLanguage.js') !!}
 
     <!-- Bootstrap Core JavaScript -->
     {!! Html::script('/bower/bootstrap/dist/js/bootstrap.min.js') !!}

@@ -76,4 +76,15 @@ return [
     'view' => [
         'poll_mail' => 'layouts.poll_mail',
     ],
+    'type' => [
+        'user' => 'user',
+        'participant' => 'participant',
+    ],
+    'date_format' => 'h:i:s A d/m/Y',
+    'language' => [
+        'vi' => 'Việt Nam',
+        'en' => 'English',
+        'ja' => 'Japanish',
+    ],
+    'locale' => ['vi', 'en', 'ja'],
 ];
