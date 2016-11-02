@@ -27,7 +27,7 @@ Route::group(['prefix' => 'user', 'middleware' => 'auth'], function() {
 
 Route::group(['prefix' => 'user', 'middleware' => 'XSS'], function() {
     Route::resource('poll', 'User\PollController', [
-        'only' => ['index', 'edit', 'destroy']
+        'except' => ['show']
     ]);
 
     Route::resource('comment', 'User\CommentController', [
@@ -42,6 +42,18 @@ Route::group(['prefix' => 'user', 'middleware' => 'XSS'], function() {
         'only' => ['show']
     ]);
 });
+
+Route::post('exportPDF', [
+    'as' => 'exportPDF',
+    'uses' => 'User\ExportController@exportPDF'
+]);
+
+Route::post('exportExcel', [
+    'as' => 'exportExcel',
+    'uses' => 'User\ExportController@exportExcel'
+]);
+
+Route::get('delete-all-participant', 'User\ParticipantController@deleteAllParticipant');
 
 Route::get('load-initiated-poll', 'User\LoadPollsController@loadInitiatedPolls');
 

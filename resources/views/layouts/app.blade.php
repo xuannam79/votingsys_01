@@ -119,6 +119,8 @@
 
     {!! Html::script('js/managePoll.js') !!}
 
+    {!! Html::script('js/editLink.js') !!}
+
     <!-- Bootstrap Core JavaScript -->
     {!! Html::script('/bower/bootstrap/dist/js/bootstrap.min.js') !!}
 

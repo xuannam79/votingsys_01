@@ -12,6 +12,7 @@ class Activity extends Model
         'user_id',
         'poll_id',
         'type',
+        'name',
     ];
 
     public function user()

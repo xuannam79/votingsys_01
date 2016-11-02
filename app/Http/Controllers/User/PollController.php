@@ -47,6 +47,39 @@ class PollController extends Controller
         return redirect()->to($poll->getUserLink())->with('message', trans('polls.reopen_poll_successfully'));
     }
 
+    public function update($id, Request $request)
+    {
+        $defaultResult = [
+            'success' => false,
+            'is_exist' => false,
+        ];
+
+        if ($request->ajax()) {
+            $inputs = $request->only('token_input', 'is_link_admin');
+            $poll = $this->pollRepository->find($id);
+
+            if (! $poll) {
+                return response()->json($defaultResult);
+            }
+
+            if (! $inputs['is_link_admin']) {
+                foreach ($poll->links as $link) {
+                    if (! $link->link_admin) {
+                        return $link->editToken($inputs['token_input']);
+                    }
+                }
+            } else {
+                foreach ($poll->links as $link) {
+                    if ($link->link_admin) {
+                        return $link->editToken($inputs['token_input']);
+                    }
+                }
+            }
+        }
+
+        return response()->json($defaultResult);
+    }
+
     public function destroy($id)
     {
         $poll = $this->pollRepository->find($id);

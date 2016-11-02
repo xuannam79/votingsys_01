@@ -13,7 +13,7 @@
             <div class="panel panel-default">
                 <div class="panel-heading">{{ trans('polls.poll_details') }}</div>
                 <div class="panel-body">
-                    <div class="hide" data-poll-id="{{ $poll->id }}" data-route="{{ url('poll') }}"
+                    <div class="hide" data-poll-id="{{ $poll->id }}" data-route="{{ url('user/poll') }}"
                         data-link-exist="{{ trans('polls.link_exist') }}" data-link-invalid="{{ trans('polls.link_invalid') }}"
                         data-edit-link-success="{{ trans('polls.edit_link_successfully') }}"
                         data-link="{{ url('link') }}">
@@ -28,10 +28,38 @@
                                 ])
                             }}
                         {{ Form::close() }}
+                        @if ($poll->countParticipants())
+                            <a href="{{ URL::action('User\ParticipantController@deleteAllParticipant', ['poll_id' => $poll->id]) }}" class="btn btn-danger  btn-administration">
+                                <span class="glyphicon glyphicon-remove-sign"></span>
+                                {{ trans('polls.delete_all_participants') }}
+                            </a>
+                        @else
+                            <a class="btn btn-danger btn-administration disable-link">
+                                <span class="glyphicon glyphicon-remove-sign"></span>
+                                {{ trans('polls.delete_all_participants') }}
+                            </a>
+                        @endif
                         <a href="{{ URL::action('User\ActivityController@show', $poll->id) }}" class="btn btn-primary  btn-administration">
                             <span class="glyphicon glyphicon-star-empty"></span>
                             {{ trans('polls.view_history') }}
                         </a>
+                        {{ Form::open(['route' => ['exportPDF', 'poll_id' => $poll->id]]) }}
+                            {{
+                                Form::button('<span class="glyphicon glyphicon-export"></span>' . ' ' . trans('polls.export_pdf'), [
+                                    'type' => 'submit',
+                                    'class' => 'btn btn-primary btn-administration'
+                                ])
+                            }}
+                        {{ Form::close() }}
+
+                        {{ Form::open(['route' => ['exportExcel', 'poll_id' => $poll->id]]) }}
+                            {{
+                                Form::button('<span class="glyphicon glyphicon-export"></span>' . ' ' . trans('polls.export_excel'), [
+                                    'type' => 'submit',
+                                    'class' => 'btn btn-primary btn-administration'
+                            ])
+                        }}
+                        {{ Form::close() }}
                         <br><br>
                         <div class="col-md-12">
                             <i>{{ trans('polls.participation_link') }}</i>

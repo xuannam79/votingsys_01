@@ -10,7 +10,9 @@
         "doctrine/dbal": "^2.5",
         "laravelcollective/html": "5.3.*",
         "laravel/socialite": "^2.0",
-        "guzzlehttp/guzzle": "~4.0"
+        "guzzlehttp/guzzle": "~4.0",
+        "vsmoraes/laravel-pdf": "^1.0",
+        "maatwebsite/excel": "~2.0.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
