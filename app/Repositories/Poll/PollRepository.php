@@ -8,7 +8,9 @@ use App\Models\Option;
 use App\Models\Participant;
 use App\Models\Poll;
 use App\Models\Setting;
+use App\Models\User;
 use Auth;
+use Carbon\Carbon;
 use File;
 use Exception;
 use DB;
@@ -175,207 +177,328 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
 
     /**
      *
-     * Admin save a new poll
+     * Add information of Poll into database USER and POLL
      *
      * @param $input
      *
-     * @return string|\Symfony\Component\Translation\TranslatorInterface
+     * @return bool
      */
+    public function addInfo($input)
+    {
+        try {
+            $userId = User::insertGetId([
+                'name' => $input['name'],
+                'email' => $input['email'],
+                'chatwork_id' => ($input['chatwork_id']) ? $input['chatwork_id'] : null,
+            ]);
+            $pollId = Poll::insertGetId([
+                'user_id' => $userId,
+                'title' => $input['title'],
+                'description' => ($input['description']) ? $input['description'] : null,
+                'location' => ($input['location']) ? $input['location'] : null,
+                'multiple' => $input['type'],
+            ]);
+
+            return $pollId;
+        } catch (Exception $ex) {
+            return false;
+        }
+    }
+
+    /**
+     *
+     * Add all option of a poll into database OPTION
+     *
+     * @param $input
+     * @param $pollId
+     *
+     * @return bool
+     */
+    public function addOption($input, $pollId)
+    {
+        try {
+            $options = $input['optionText'];
+            $images = $input['optionImage'];
+            $dataOptionInserted = [];
+            $imageNames = $this->createFileName($images);
+            $now = Carbon::now();
+
+            foreach ($options as $key => $option) {
+                $image = empty($images[$key]) ? null : $imageNames['optionImage'][$key];
+
+                if ($option) {
+                    $dataOptionInserted[] = [
+                        'poll_id' => $pollId,
+                        'name' => $option,
+                        'image' => $image,
+                        'created_at' => $now,
+                    ];
+                }
+            }
+
+            if ($dataOptionInserted) {
+                Option::insert($dataOptionInserted);
+            }
+
+            $this->updateImage($images, $imageNames);
+
+            return true;
+        } catch (Exception $ex) {
+            return false;
+        }
+
+    }
+
+    /**
+     *
+     * Create a array contain name of image randed by system
+     *
+     * @param $arrInputImage
+     *
+     * @return array
+     */
+    public function createFileName($arrInputImage)
+    {
+        $imageNames = [];
+
+        foreach ($arrInputImage as $key => $image) {
+            do {
+                $imageNames['optionImage'][$key] = uniqid(rand(), true) . '.' . $image->getClientOriginalExtension();
+                $path = public_path() . config('settings.option.path_image') . $imageNames['optionImage'][$key];
+            } while (File::exists($path));
+        }
+
+        return $imageNames;
+    }
+
+    /**
+     *
+     * Delete old image and upload a new image
+     *
+     * @param $images
+     * @param $imageNames
+     * @param array $oldImages
+     * @throws Exception
+     */
+    public function updateImage($images, $imageNames, $oldImages = [])
+    {
+        try {
+            /*
+             * delete old image
+             */
+            if (is_array($oldImages) && $oldImages) {
+                foreach ($oldImages as $image) {
+                    $path = public_path() . config('settings.option.path_image') . $image;
+                    if (File::exists($path)) {
+                        File::delete($path);
+                    }
+                }
+            }
+
+            /*
+             * upload new image
+             */
+            $pathTo = public_path() . config('settings.option.path_image');
+
+            foreach ($images as $key => $image) {
+                $pathFrom = $pathTo . $imageNames['optionImage'][$key];
+                $image->move($pathTo, $pathFrom);
+            }
+        } catch (Exception $ex) {
+            throw new Exception(trans('polls.message.upload_image_fail'));
+        }
+    }
+
+    /**
+     *
+     * Add all setting of a poll into database SETTING
+     *
+     * @param $input
+     * @param $pollId
+     *
+     * @return bool
+     */
+    public function addSetting($input, $pollId)
+    {
+        try {
+            $settings = $input['setting'];
+            $value = $input['value'];
+            $dataSettingInserted = [];
+            $now = Carbon::now();
+
+            foreach ($settings as $setting) {
+                $dataSettingInserted[] = [
+                    'poll_id' => $pollId,
+                    'key' => $setting,
+                    'value' => $this->getValueOfSetting($setting, $value),
+                    'created_at' => $now,
+                ];
+            }
+
+            if ($dataSettingInserted) {
+                Setting::insert($dataSettingInserted);
+            }
+
+            return true;
+        } catch (Exception $ex) {
+            return false;
+        }
+
+    }
+
+    /**
+     *
+     * Get value of settings have value
+     *
+     * @param $setting
+     * @param $values
+     *
+     * @return null|string
+     */
+    public function getValueOfSetting($setting, $values)
+    {
+        $config = config('common.setting');
+
+        if ($setting == $config['custom_link']) {
+            return $values['link'];
+        }
+
+        if ($setting == $config['set_limit']) {
+            return $values['limit'];
+        }
+
+        if ($setting == $config['set_password']) {
+            return bcrypt($values['password']);
+        }
+
+        return null;
+    }
+
+    /**
+     *
+     * Add link of poll into table LINK
+     *
+     * @param $pollId
+     * @param $input
+     * @return array|bool
+     */
+    public function addLink($pollId, $input)
+    {
+        try {
+            $participantLink = str_random(config('settings.length_poll.link'));
+            $administrationLink = str_random(config('settings.length_poll.link'));
+            $linkConfig =  url("/") . config('settings.email.link_vote');
+
+            if ($input['value']['link']) {
+                $participantLink = $input['value']['link'];
+            }
+            /*
+             * insert link of participant
+             */
+            Link::create([
+                'poll_id' => $pollId,
+                'token' => $participantLink,
+                'link_admin' => config('settings.link_poll.vote'),
+            ]);
+
+            /*
+             * insert link of administration
+             */
+            Link::create([
+                'poll_id' => $pollId,
+                'token' => $administrationLink,
+                'link_admin' => config('settings.link_poll.admin'),
+            ]);
+            $linkReturn = [
+                'participant' => $linkConfig . $participantLink,
+                'administration' => $linkConfig . $administrationLink,
+            ];
+
+            return $linkReturn;
+        } catch (Exception $ex) {
+            return false;
+        }
+    }
+
+
+    /**
+     *
+     * Send mail for participant and creator
+     *
+     * @param $email
+     * @param $view
+     * @param $viewData
+     * @param $subject
+     *
+     * @throws Exception
+     */
+    public function sendEmail($email, $view, $viewData, $subject)
+    {
+        try {
+            Mail::send($view, $viewData, function ($message) use ($email, $subject) {
+                $message->to($email)->subject($subject);
+            });
+        } catch (Exception $ex) {
+            throw new Exception(trans('polls.message.send_mail_fail'));
+        }
+    }
+
     public function store($input)
     {
         try {
             DB::beginTransaction();
-            $now = Carbon::now();
+            $pollId = $this->addInfo($input);
 
-            //insert poll information
-            $pollId = Poll::insertGetId([
-                'user_id' => auth()->user()->id,
-                'title' => $input['title'],
-                'description' => $input['description'],
-                'multiple' => $input['type'],
-            ]);
+            if (! $pollId || ! ($this->addOption($input, $pollId) && $this->addSetting($input, $pollId))) {
+                DB::rollback();
 
-            //insert link of poll
-            $linkVote = str_random(config('settings.length_poll.link'));
-            $linkAdmin = str_random(config('settings.length_poll.link'));
-
-            //link user
-            if ($input[config('settings.input_setting.link')]) {
-                $linkVote = (isset($input['link']) && $input['link'] ? $input['link'] : $linkVote);
+                return false;
             }
 
-            Link::firstOrCreate([
-                'poll_id' => $pollId,
-                'token' => $linkVote,
-                'link_admin' => config('settings.link_poll.vote'),
-            ]);
+            $links =  $this->addLink($pollId, $input);
 
-            //link admin
-            Link::firstOrCreate([
-                'poll_id' => $pollId,
-                'token' => $linkAdmin,
-                'link_admin' => config('settings.link_poll.admin'),
-            ]);
+            if (! $links) {
+                DB::rollback();
 
-            //insert settting of poll
-            $dataSetting = [];
+                return false;
+            }
 
-            if ($input[config('settings.input_setting.email')]) {
-                $dataSetting[] = [
-                    'poll_id' => $pollId,
-                    'key' => config('settings.setting.required_email'), //1: key required_mail
-                    'value' => null,
-                    'created_at' => $now,
+            /*
+             * send mail participant
+             */
+            $participant = $input['participant'];
+
+            if ($participant == config('settings.participant.invite_people')) {
+                $members = explode(",", $input['member']);
+                $view = config('settings.view.poll_mail');
+                $data = [
+                    'link' => $links['participant'],
+                    'administration' => false,
                 ];
+                $subject = trans('label.mail.subject');
+                $this->sendEmail($members, $view, $data, $subject);
             }
 
-            if ($input[config('settings.input_setting.answer')]) {
-                $dataSetting[] = [
-                    'poll_id' => $pollId,
-                    'key' => config('settings.setting.add_answer'), //2: add answer
-                    'value' => null,
-                    'created_at' => $now,
-                ];
-            }
-
-            if ($input[config('settings.input_setting.result')]) {
-                $dataSetting[] = [
-                    'poll_id' => $pollId,
-                    'key' => config('settings.setting.hide_result'), //3: hide result
-                    'value' => null,
-                    'created_at' => $now,
-                ];
-            }
-
-            if ($input[config('settings.input_setting.link')]) {
-                $dataSetting[] = [
-                    'poll_id' => $pollId,
-                    'key' => config('settings.setting.custom_link'), //4: custom link
-                    'value' => (isset($input['link']) && $input['link']) ? $input['link'] : $linkVote,
-                    'created_at' => $now,
-                ];
-            }
-
-            if ($input[config('settings.input_setting.limit')]) {
-                $dataSetting[] = [
-                    'poll_id' => $pollId,
-                    'key' => config('settings.setting.set_limit'), //5: set limit
-                    'value' => (isset($input['limit']) && $input['limit']) ? $input['limit'] : null,
-                    'created_at' => $now,
-                ];
-            }
-
-            if ($input[config('settings.input_setting.password')]) {
-                $dataSetting[] = [
-                    'poll_id' => $pollId,
-                    'key' => config('settings.setting.set_password'), //6: set password
-                    'value' => (isset($input['password_poll']) && $input['password_poll'])
-                        ? $input['password_poll'] : null,
-                    'created_at' => $now,
-                ];
-            }
-
-            if ($dataSetting) {
-                Setting::insert($dataSetting);
-            }
-
-            //insert poll options
-            $dataOption = [];
-
-            if (is_array($input['option']) && $input['option']) {
-                foreach ($input['option'] as $key => $option) {
-                    $optionImage = array_get($input['optionImage'], $key) ? $input['optionImage'][$key] : null;
-                    if ($option && $optionImage) {
-                        $dataOption[] = [
-                            'poll_id' => $pollId,
-                            'name' => $option,
-                            'image' => $optionImage->getClientOriginalName(),
-                            'created_at' => $now,
-                        ];
-                    } elseif (! $option && $optionImage) {
-                        $dataOption[] = [
-                            'poll_id' => $pollId,
-                            'name' => $option,
-                            'image' => null,
-                            'created_at' => $now,
-                        ];
-                    } elseif ($option && ! $optionImage) {
-                        $dataOption[] = [
-                            'poll_id' => $pollId,
-                            'name' => null,
-                            'image' => $optionImage->getClientOriginalName(),
-                            'created_at' => $now,
-                        ];
-                    }
-                }
-            }
-
-            if ($dataOption) {
-                Option::insert($dataOption);
-            }
-
+            /*
+             * send mail creator
+             */
+            $creatorView = config('settings.view.poll_mail');
+            $email = $input['email'];
+            $data = [
+                'link' => $links['participant'],
+                'administration' => true,
+                'linkAdmin' => $links['administration'],
+            ];
+            $subject = trans('label.mail.subject');
+            $this->sendEmail($email, $creatorView, $data, $subject);
             DB::commit();
 
-            //upload image of option
-            if (is_array($input['optionImage']) && $input['optionImage']) {
-                foreach ($input['optionImage'] as $optionImage) {
-                    if (! $optionImage) {
-                        continue;
-                    }
-
-                    try {
-                        $path = public_path() . config('settings.option.path_image');
-                        $pathFileOption = '';
-
-                        do {
-                            //upload file
-                            $fileOption =  uniqid(rand(), true) . '.' . $optionImage->getClientOriginalExtension();
-                            $pathFileOption = $path . $fileOption;
-                        } while (File::exists($pathFileOption));
-
-                        $optionImage->move($path, $pathFileOption);
-                    } catch (Exception $ex) {
-                        throw new Exception(trans('polls.message.upload_image_fail'));
-                    }
-                }
-            }
-
-            //send mail
-            $linkMail = url("/") . config('settings.email.link_vote') . $linkVote;
-            $linkAdminPoll = url("/") . config('settings.email.link_vote') . $linkAdmin;
-            $mailCreator = $input['email'];
-            $participants = [];
-
-            if ($input['invite'] == config('settings.participant.invite_people')) {
-
-                //list participants
-                $participants = array_filter($input['email_poll']);
-            }
-
-            //send mail participant
-            if ($participants) {
-                Mail::send('layouts.participant_mail', [
-                    'link' => $linkMail,
-                ], function ($message) use ($participants) {
-                    $message->to($participants)->subject(trans('label.mail.subject'));
-                });
-            }
-
-            //send mail admin
-            Mail::send('layouts.creator_mail', [
-                'linkAdmin' => $linkAdminPoll,
-                'link' => $linkMail,
-            ], function ($message) use ($mailCreator) {
-                $message->to($mailCreator)->subject(trans('label.mail.subject'));
-            });
-
-            $message = trans('polls.message.create_success');
+            return true;
         } catch (Exception $ex) {
-            DB::rollBack();
-            $message = trans('polls.message.create_fail');
-        }
+            DB::rollback();
 
-        return $message;
+            return false;
+        }
     }
 
     /**

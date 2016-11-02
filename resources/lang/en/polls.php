@@ -106,6 +106,7 @@ return [
         'create_success' => 'Create poll SUCCESS',
         'create_fail' => 'Create poll FAIL',
         'upload_image_fail' => 'Can\'t upload image of option',
+        'send_mail_fail' => 'Can\'t send mail to invite other people.',
         'confirm_delete' => 'Are you sure you want to delete this poll?',
         'link_exists' => 'Link exist in system. Please enter a new link',
         'link_valid' => 'Link valid. You can use this link',

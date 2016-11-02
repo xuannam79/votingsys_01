@@ -131,6 +131,11 @@
         <!--END POLL SEARCH FORM -->
 
             @if ($polls->count())
+                    <div class="hide" data-route="{{ route('status.store') }}"
+                         data-token="{{ csrf_token() }}"
+                         data-status-open="{{ trans('polls.label.poll_opening') }}"
+                         data-tooltip-open="{{ trans('polls.tooltip.open') }}"
+                         data-tooltip-close="{{ trans('polls.tooltip.close') }}"></div>
                 <table class="table table-bordered table-hover">
                     <thead>
                         <tr>
@@ -152,7 +157,7 @@
                                 </td>
                                 <td>{{ str_limit($poll->title, 50) }}</td>
                                 <td>{{ $poll->multiple }}</td>
-                                <td>{!! $poll->status !!}</td>
+                                <td id="status_{{ $poll->id }}">{!! $poll->status !!}</td>
                                 <td>
                                     {{
                                         Form::open([
@@ -164,19 +169,19 @@
 
                                         <!-- BUTTON OPEN POLL -->
                                         @if ($poll->status == trans('polls.label.poll_closed'))
-                                            <a href="{{ route('admin.poll.show', ['id' => $poll->id]) }}"
+                                            <button type="button" id="btn_{{ $poll->id }}" onclick="changeStatusOfPoll({{ $poll->id }})"
                                                class="btn bg-brown btn-xs" data-toggle="tooltip" data-placement="top"
                                                title="" data-original-title="{{ trans('polls.tooltip.open') }}">
                                                 <i class="material-icons">lock_open</i>
-                                            </a>
+                                            </button>
                                         @else
 
                                         <!-- BUTTON CLOSE POLL -->
-                                            <a href="{{ route('admin.poll.show', ['id' => $poll->id]) }}"
+                                            <button type="button" id="btn_{{ $poll->id }}" onclick="changeStatusOfPoll({{ $poll->id }})"
                                                class="btn bg-brown btn-xs" data-toggle="tooltip" data-placement="top"
                                                title="" data-original-title="{{ trans('polls.tooltip.close') }}">
                                                 <i class="material-icons">lock</i>
-                                            </a>
+                                            </button>
                                         @endif
 
                                         <!-- BUTTON EDIT POLL -->

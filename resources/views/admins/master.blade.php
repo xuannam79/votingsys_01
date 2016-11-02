@@ -15,6 +15,9 @@
         <!-- Bootstrap Core Css -->
         <link href="{{ asset('bower/adminbsb-materialdesign/plugins/bootstrap/css/bootstrap.css') }}" rel="stylesheet">
 
+        <!-- Bootstrap Tagsinput Css -->
+        <link href="{{ asset('bower/adminbsb-materialdesign/plugins/bootstrap-tagsinput/bootstrap-tagsinput.css') }}" rel="stylesheet">
+
         <!-- Waves Effect Css -->
         <link href="{{ asset('bower/adminbsb-materialdesign/plugins/node-waves/waves.css') }}" rel="stylesheet" />
 
@@ -33,6 +36,9 @@
         <!-- Custom Css -->
         <link href="{{ asset('bower/adminbsb-materialdesign/css/style.css') }}" rel="stylesheet">
         <link href="{{ asset('css/admin/master.css') }}" rel="stylesheet">
+
+        <!-- Bootstrap Select Css -->
+        <link href="{{ asset('bower/adminbsb-materialdesign/plugins/bootstrap-select/css/bootstrap-select.css') }}" rel="stylesheet" />
 
         <!-- AdminBSB Themes. You can choose a theme from css/themes instead of get all themes -->
         <link href="{{ asset('bower/adminbsb-materialdesign/css/themes/all-themes.css') }}" rel="stylesheet" />
@@ -208,6 +214,7 @@
 
         <!-- Custom Js -->
         <script src="{{ asset('bower/adminbsb-materialdesign/js/admin.js') }}"></script>
+        <script src="{{ asset('bower/adminbsb-materialdesign/js/pages/ui/tooltips-popovers.js') }}"></script>
 
         <!-- Demo Js -->
         <script src="{{ asset('bower/adminbsb-materialdesign/js/demo.js') }}"></script>
@@ -231,5 +238,11 @@
 
         <!--Bootstrap Toggle JS-->
         <script src="{{ asset('bower/bootstrap-toggle/js/bootstrap-toggle.min.js') }}"></script>
+
+        <!-- Bootstrap Tags Input Plugin Js -->
+        <script src="{{ asset('bower/adminbsb-materialdesign/plugins/bootstrap-tagsinput/bootstrap-tagsinput.js') }}"></script>
+
+        <!-- Select Plugin Js -->
+        <script src="{{ asset('bower/adminbsb-materialdesign/plugins/bootstrap-select/js/bootstrap-select.js') }}"></script>
     </body>
 </html>

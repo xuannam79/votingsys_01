@@ -71,3 +71,10 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'as' => 'admin.'], fu
 Route::resource('link', 'LinkController', ['only' => [
     'store'
 ]]);
+
+/*
+ * Route change status of poll
+ */
+Route::resource('status', 'StatusController', ['only' => [
+    'store'
+]]);

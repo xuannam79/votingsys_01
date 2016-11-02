@@ -278,3 +278,35 @@ function setButtonWavesEffect(event) {
 function confirmDelete(message) {
     return confirm(message);
 }
+
+/**
+ *
+ * change status of poll: open <---> close
+ *
+ * @param pollId
+ */
+function changeStatusOfPoll(pollId) {
+    var route = $('.hide').data("route");
+    var token = $('.hide').data("token");
+    var statusOpening = $('.hide').data("statusOpen");
+    $.ajax({
+        url: route,
+        type: 'post',
+        data: {
+            'id': pollId,
+            '_token': token,
+        },
+        success: function (data) {
+            if (data.success) {
+                $('#status_' + pollId).html(data.status);
+                if (data.status === statusOpening) {
+                    $('#btn_' + pollId).html("<i class='material-icons'>lock</i>");
+                    $('#btn_' + pollId).attr("data-original-title", $('.hide').data("tooltipClose"));
+                } else {
+                    $('#btn_' + pollId).html("<i class='material-icons'>lock_open</i>");
+                    $('#btn_' + pollId).attr("data-original-title", $('.hide').data("tooltipOpen"));
+                }
+            }
+        }
+    });
+}
