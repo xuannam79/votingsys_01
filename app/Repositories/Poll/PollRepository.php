@@ -71,6 +71,104 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
         return $this->model->where('status', false)->find($id);
     }
 
+    public function getVoteIds($pollId)
+    {
+        $poll = $this->model->find($pollId);
+        $options = $poll->options;
+        $voteIds = [];
+
+        if ($options) {
+            foreach ($options as $option) {
+                $votes = $option->votes;
+
+                if ($votes) {
+                    foreach ($votes as $vote) {
+                        $voteIds[] = $vote->id;
+                    }
+                }
+            }
+        }
+
+        return $voteIds;
+    }
+
+    public function getParticipantVoteIds($pollId)
+    {
+        $poll = $this->model->find($pollId);
+        $options = $poll->options;
+        $participantVoteIds = [];
+
+        if ($options) {
+            foreach ($options as $option) {
+                $participantVotes = $option->participantVotes;
+
+                if ($participantVotes) {
+                    foreach ($participantVotes as $participantVote) {
+                        $participantVoteIds[] = $participantVote->id;
+                    }
+                }
+            }
+        }
+
+        return $participantVoteIds;
+    }
+
+    public function checkUserVoted($pollId, $voteRepository)
+    {
+        $voteIds = $this->getAllVoteIds($pollId);
+
+        if ($voteIds) {
+            $currentUserId = auth()->user()->id;
+            $votes = $voteRepository->getVotesByVoteId($voteIds);
+            foreach ($votes as $vote) {
+                if ($vote->user_id == $currentUserId) {
+                    return true;
+                }
+            }
+        }
+
+        $participants = auth()->user()->participants;
+
+        if ($participants) {
+            foreach ($participants as $participant) {
+                $participantVotes = $participant->participantVotes;
+                if ($participantVotes) {
+                    foreach ($participantVotes as $participantVote) {
+                        if ($participantVote->option->poll->id == $pollId) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
+    public function getAllVoteIds($pollId)
+    {
+        $currentUserId = auth()->user()->id;
+        $poll = $this->model->find($pollId);
+        $options = $poll->options;
+        $voteIds = [];
+
+        if ($options) {
+            foreach ($options as $option) {
+                $votes = $option->votes;
+
+                if ($votes) {
+                    foreach ($votes as $vote) {
+                        if ($vote->user_id == $currentUserId) {
+                            $voteIds[] = $vote->id;
+                        }
+                    }
+                }
+            }
+        }
+
+        return $voteIds;
+    }
+
 /*------------------------------------------------------------
  *                  [ADMIN] - POLL
  *------------------------------------------------------------*/

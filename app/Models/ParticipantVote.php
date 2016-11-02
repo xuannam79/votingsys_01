@@ -11,6 +11,8 @@ class ParticipantVote extends Model
     protected $fillable = [
         'participant_id',
         'option_id',
+        'created_at',
+        'updated_at',
     ];
 
     public function option()

@@ -28,4 +28,22 @@ class VoteRepository extends BaseRepository implements VoteRepositoryInterface
 
         return array_unique($listPollIds);
     }
+
+    public function getVoteWithOptionsByVoteId($voteIds)
+    {
+        return $this->model->whereIn('id', $voteIds)->with('user', 'option')->get()->groupBy('user_id');
+    }
+
+    public function getVotesByVoteId($voteIds)
+    {
+        return $this->model->whereIn('id', $voteIds)->get();
+    }
+
+    public function deleteVote($voteIds)
+    {
+        $currentUserId = auth()->user()->id;
+        $voteIds =  $this->model->where('user_id', $currentUserId)->whereIn('id', $voteIds)->pluck('id')->toArray();
+
+        return $this->delete($voteIds);
+    }
 }

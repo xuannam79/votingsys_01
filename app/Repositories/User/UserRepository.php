@@ -15,6 +15,11 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
         $this->model = $user;
     }
 
+    public function checkEmailExist($email)
+    {
+        return $this->model->where('email', $email)->count();
+    }
+
     public function createUserSocial($data)
     {
         return $this->model->create($data);
