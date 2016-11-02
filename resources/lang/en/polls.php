@@ -91,6 +91,7 @@ return [
         'option' => 'Enter option of poll...',
         'email_participant' => 'Enter email of participant...',
         'comment' => 'Enter a comment...',
+        'enter_name' => 'Enter your name...',
     ],
     'button' => [
         'search_poll' => 'SEARCH NOW',
@@ -197,6 +198,8 @@ return [
 *                  USER - POLL
 *------------------------------------------------------------*/
     'poll' => 'Poll',
+    'vote' => 'Vote',
+    'vote_page' => 'Vote page',
     'close' => 'Close',
     'name' => 'Name',
     'email' => 'Email',
@@ -256,4 +259,10 @@ return [
     'email_exist' => 'Email exist, You need to login to vote or chose another email',
     'remove_vote_successfully' => 'You deleted vote successfully',
     'vote_successfully' => 'You voted this poll successfully',
+    'export_pdf' => 'Export poll to PDF',
+    'export_excel' => 'Export poll to Excel',
+    'link_exist' => 'Link exist',
+    'link_invalid' => 'Link invalid',
+    'edit_link_successfully' => 'Edit successfully',
+    'delete_all_participants_successfully' => 'Delete all participants successfully',
 ];

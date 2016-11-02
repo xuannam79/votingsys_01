@@ -14,12 +14,14 @@
                     @foreach ($activities as $activity)
                         @if ($activity->type)
                             <h4>
-                                @if ($activity->user_id)
+                                @if ($activity->name)
+                                    {!! $activity->getActivity($activity->name) !!}
+                                @elseif ($activity->user_id)
                                     {!! $activity->getActivity($activity->user->name) !!}
-                                    <span>
-                                        {{ $activity->created_at->diffForHumans() }}
-                                    </span>
                                 @endif
+                                <span>
+                                    {{ $activity->created_at->diffForHumans() }}
+                                </span>
                             </h4>
                         @endif
                     @endforeach
