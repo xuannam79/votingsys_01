@@ -16,8 +16,8 @@ class ValidationServiceProvider extends ServiceProvider
     public function boot()
     {
         Validator::extendImplicit('option', 'App\Services\PollValidator@option');
-        Validator::extendImplicit('email_poll', 'App\Services\PollValidator@email');
         Validator::extendImplicit('setting', 'App\Services\PollValidator@setting');
+        Validator::extendImplicit('participant', 'App\Services\PollValidator@participant');
     }
 
     /**

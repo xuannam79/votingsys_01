@@ -29,6 +29,9 @@ return [
         'link' => 16,
         'option' => 5,
         'number_record' => 10,
+        'number_option' => 1,
+        'number_limit' => 2,
+        'password_poll' => 16,
     ],
     'type' => [
         'single_choice' => 0,

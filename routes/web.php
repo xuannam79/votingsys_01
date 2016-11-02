@@ -65,10 +65,19 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'as' => 'admin.'], fu
     ]]);
 });
 
+Route::resource('poll', 'PollController');
+
 /*
  * Route check token of link
  */
 Route::resource('link', 'LinkController', ['only' => [
+    'store'
+]]);
+
+/*
+ * Route check email of creator
+ */
+Route::resource('email', 'EmailController', ['only' => [
     'store'
 ]]);
 

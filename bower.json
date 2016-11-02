@@ -19,6 +19,8 @@
     "adminbsb-materialdesign": "^1.0.3",
     "components-font-awesome": "^4.6.3",
     "bootstrap": "^3.3.7",
-    "bootstrap-toggle": "^2.2.2"
+    "bootstrap-toggle": "^2.2.2",
+    "jquery.steps": "^1.1.0",
+    "bootstrap-tagsinput": "git://github.com/bootstrap-tagsinput/bootstrap-tagsinput.git#^0.8.0"
   }
 }
