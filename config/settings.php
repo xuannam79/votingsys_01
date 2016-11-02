@@ -70,4 +70,7 @@ return [
         'admin' => 1,
     ],
     'search_all' => 3,
+    'view' => [
+        'poll_mail' => 'layouts.poll_mail',
+    ],
 ];

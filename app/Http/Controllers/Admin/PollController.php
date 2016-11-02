@@ -124,8 +124,8 @@ class PollController extends Controller
                 'confirm_delete_option' => trans('polls.message.confirm_delete_option')
             ],
             'view' => [
-                'option' => view('layouts.poll-option')->render(),
-                'email' => view('layouts.poll-email')->render(),
+                'option' => view('layouts.poll_option')->render(),
+                'email' => view('layouts.poll_email')->render(),
             ],
             'oldInput' => session("_old_input"),
         ]);
