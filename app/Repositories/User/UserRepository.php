@@ -2,11 +2,19 @@
 
 namespace App\Repositories\User;
 
+use App\Models\Activity;
+use App\Models\Comment;
+use App\Models\Link;
+use App\Models\Option;
+use App\Models\ParticipantVote;
+use App\Models\Setting;
+use App\Models\Vote;
 use Auth;
 use App\Models\User;
 use Input;
 use App\Repositories\BaseRepository;
 use App\Repositories\User\UserRepositoryInterface;
+use DB;
 
 class UserRepository extends BaseRepository implements UserRepositoryInterface
 {
@@ -77,7 +85,7 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
 
             $data = $this->model->where('id', $id)->update($inputs);
         } catch (Exception $e) {
-            return view('user.home')->withError(trans('message.update_error'));
+            throw new Exception(trans('user.message.update_fail'));
         }
 
         return $data;
@@ -94,5 +102,49 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
         }
 
         return $fileName;
+    }
+
+    public function delete($ids)
+    {
+        try {
+            DB::beginTransaction();
+            $user = User::with(
+                'polls', 'participants', 'comments', 'socialAccounts', 'activities', 'votes'
+            )->findOrFail($ids);
+
+            foreach ($user->polls as $poll) {
+                $options = Option::where('poll_id', $poll->id)->get();
+
+                foreach ($options as $option) {
+                    Vote::where('option_id', $option->id)->delete();
+                    ParticipantVote::where('option_id', $option->id)->delete();
+
+                    $option->delete();
+                    Comment::where('poll_id', $poll->id)->delete();
+                    Activity::where('poll_id', $poll->id)->delete();
+                    Link::where('poll_id', $poll->id)->delete();
+                    Setting::where('poll_id', $poll->id)->delete();
+                }
+            }
+
+            foreach ($user->participants as $participant) {
+                ParticipantVote::where('participant_id', $participant->id)->delete();
+            }
+
+            $user->polls()->delete();
+            $user->participants()->delete();
+            $user->comments()->delete();
+            $user->socialAccounts()->delete();
+            $user->activities()->delete();
+            $user->votes()->delete();
+            $user->delete();
+            DB::commit();
+            $message = trans('user.message.delete_success');
+        } catch (Exception $ex) {
+            DB::rollback();
+            $message = trans('user.message.delete_fail');
+        }
+
+        return $message;
     }
 }
