@@ -1,12 +1,26 @@
 <?php
 
 return [
+
+    'number_of_record_user' => 10,
+    'length_user' => [
+        'name' => 255,
+        'email' => 255,
+        'chatwork' => 255,
+        'password' => 16,
+        'avatar'=> 10000,
+    ],
     'avatar_path' => 'uploads/avatar',
     'avatar_default' => 'default.jpg',
     'gender' => [
         '0' => 'Female',
         '1' => 'Male',
         '2' => 'Other',
+    ],
+    'gender_constant' => [
+        'male' => 1,
+        'female' => 0,
+        'other' => 2,
     ],
     'activity' => [
         'participated' => '1',

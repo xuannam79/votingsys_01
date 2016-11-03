@@ -79,6 +79,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'as' => 'admin.'], fu
     Route::resource('poll', 'PollController', ['except' => [
         'show'
     ]]);
+    Route::resource('user', 'UserController');
 });
 
 Route::resource('poll', 'PollController');

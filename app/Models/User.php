@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\QueryFilter;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Models\Poll;
@@ -81,6 +82,23 @@ class User extends Authenticatable
 
     public function showGender()
     {
-        return $this->gender ? trans('label.male') : trans('label.female');
+        $trans = trans('user.label.gender');
+        $config = config('settings.gender_constant');
+        $data = $trans['other'];
+
+        if ($this->gender == $config['male']) {
+            $data = $trans['male'];
+        }
+
+        if ($this->gender == $config['female']) {
+            $data = $trans['female'];
+        }
+
+        return $data;
+    }
+
+    public function scopeFilter($query, QueryFilter $filters)
+    {
+        return $filters->apply($query);
     }
 }
