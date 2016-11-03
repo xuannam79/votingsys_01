@@ -63,6 +63,10 @@ Route::get('load-closed-poll', 'User\LoadPollsController@loadClosedPolls');
 
 Route::get('link/{token?}', 'LinkController@show');
 
+Route::resource('language', 'User\LanguageController', [
+    'only' => ['store']
+]);
+
 Route::get('/redirect/{provider}', 'SocialAuthController@redirectToProvider');
 Route::get('/callback/{provider}', 'SocialAuthController@handleProviderCallback');
 
