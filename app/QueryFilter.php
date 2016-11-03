@@ -36,6 +36,6 @@ abstract class QueryFilter
 
     public function filters()
     {
-        return $this->request->only('name', 'email', 'title', 'type', 'status');
+        return $this->request->except('page');
     }
 }

@@ -41,6 +41,7 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
         $user = [
             'name' => $data['name'],
             'email' => $data['email'],
+            'chatwork_id' => isset($data['chatwork_id']) ? $data['chatwork_id'] : null,
             'avatar' => $fileName,
             'gender' => $data['gender'],
             'password' => $data['password'],
