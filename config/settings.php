@@ -96,8 +96,8 @@ return [
     ],
     'date_format' => 'h:i:s A d/m/Y',
     'language' => [
-        'vi' => 'Việt Nam',
         'en' => 'English',
+        'vi' => 'Việt Nam',
         'ja' => 'Japanish',
     ],
     'locale' => ['vi', 'en', 'ja'],

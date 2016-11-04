@@ -159,7 +159,7 @@
 
                                     <!-- Multiple choice -->
                                     {{
-                                        Form::radio('type', config('settings.type.multiple_choice'),
+                                        Form::radio('type', config('settings.type_poll.multiple_choice'),
                                             ($poll->multiple == trans('polls.label.multiple_choice') ? "true" : null), [
                                                 'class' => 'form-control',
                                                 'id' => trans('polls.label_for.multiple_choice')
@@ -169,7 +169,7 @@
 
                                     <!-- Single choice -->
                                     {{
-                                        Form::radio('type', config('settings.type.single_choice'),
+                                        Form::radio('type', config('settings.type_poll.single_choice'),
                                             ($poll->multiple == trans('polls.label.single_choice') ? "true" : null), [
                                                 'class' => 'form-control',
                                                 'id' => trans('polls.label_for.single_choice')

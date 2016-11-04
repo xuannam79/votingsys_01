@@ -4,6 +4,7 @@ return [
     'login' => 'Login',
     'logout' => 'Logout',
     'register' => 'Register',
+    'create_poll' => 'Create poll',
     'forgot_password' => 'Forgot Your Password?',
     'remember' => 'Remember me',
     'email' => 'Email',
@@ -17,6 +18,7 @@ return [
     'profile' => 'Profile',
     'edit' => 'Edit',
     'home' => 'Home',
+    'admin_page' => 'ADMIN PAGE',
 
     /**
      * MASTER ADMIN

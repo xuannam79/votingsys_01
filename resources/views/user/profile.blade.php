@@ -63,7 +63,15 @@
                         </div>
                     {{ Form::close() }}
                 </div>
+
             </div>
+            @if (auth()->user()->role == config('roles.admin'))
+                <div class="row">
+                    <a href="{{ route('admin.user.index') }}" class="btn btn-warning btn-large btn-block">
+                        {{ trans('label.admin_page') }}
+                    </a>
+                </div>
+            @endif
         </div>
     </div>
 </div>

@@ -9,7 +9,6 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     @yield('meta')
-
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Styles -->
@@ -25,6 +24,12 @@
 
     <!-- Bootstrap datatable CSS -->
     {!! Html::style('bower/datatables.net-bs/css/dataTables.bootstrap.min.css') !!}
+
+    <!-- Bootstrap Tag Input css -->
+    <link href="{{ asset('bower/bootstrap-tagsinput/dist/bootstrap-tagsinput.css') }}" rel="stylesheet">
+
+    <!-- Master layout css -->
+    <link href="{{ asset('css/layout/master.css') }}" rel="stylesheet">
 
     <!-- Scripts -->
     <script>
@@ -49,14 +54,14 @@
 
                     <!-- Branding Image -->
                     <a class="navbar-brand" href="{{ url('/') }}">
-                        {{ config('app.name', 'Laravel') }}
+                        <h3>{{ config('app.name', 'Laravel') }}</h3>
                     </a>
                 </div>
 
                 <div class="collapse navbar-collapse" id="app-navbar-collapse">
                     <!-- Left Side Of Navbar -->
                     <ul class="nav navbar-nav">
-                        @if (auth()->check())
+                        @if (auth()->check() && auth()->user()->role == config('roles.user'))
                             <ul class="nav navbar-nav">
                                 <li>
                                     <a href="{{ URL::action('User\PollController@index') }}">
@@ -73,8 +78,8 @@
                         </div>
                         <!-- Authentication Links -->
                         @if (Auth::guest())
-                            <li><a href="{{ url('/login') }}">Login</a></li>
-                            <li><a href="{{ url('/register') }}">Register</a></li>
+                            <li><a href="{{ url('/login') }}">{{ trans('label.login') }}</a></li>
+                            <li><a href="{{ url('/register') }}">{{ trans('label.register') }}</a></li>
                         @else
                         <li>
                             <a href="{{ URL::action('User\UsersController@index') }}">
@@ -136,5 +141,14 @@
 
     <!-- Bootstrap Datatable JavaScript -->
     {!! Html::script('/bower/datatables.net-bs/js/dataTables.bootstrap.min.js') !!}
+
+    <!-- Google api -->
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCzfBLqeROyZ1xGhOWb_oG7zmdYcCQdaI8&v=3.exp&sensor=false&libraries=places"></script>
+
+    <!-- Bootstrap Tag Input js -->
+    <script src="{{ asset('bower/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js') }}" type="text/javascript"></script>
+
+    <!-- Master layout js -->
+    <script src="{{ asset('js/layout/master.js') }}" type="text/javascript"></script>
 </body>
 </html>

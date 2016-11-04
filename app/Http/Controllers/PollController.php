@@ -106,14 +106,15 @@ class PollController extends Controller
             'setting', 'value',
             'participant', 'member'
         );
+        $link = $this->pollRepository->store($input);
 
-        if ($this->pollRepository->store($input)) {
+        if ($link) {
             $message = trans('polls.message.create_success');
         } else {
             $message = trans('polls.message.create_fail');
         }
 
-        return redirect()->route('poll.create')->with('message', $message);
+        return redirect($link['participant'])->with('message', $message);
     }
 
     /**
