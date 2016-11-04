@@ -146,10 +146,10 @@
                                         <div class="form-group" id="type">
                                             {{ Form::label(trans('polls.label_for.type'), trans('polls.label.type')) }}
                                             <label class="radio-inline">
-                                                {{ Form::radio('type', config('settings.type.single_choice')) }} {{ trans('polls.label.single_choice') }}
+                                                {{ Form::radio('type', config('settings.type_poll.single_choice')) }} {{ trans('polls.label.single_choice') }}
                                             </label>
                                             <label class="radio-inline">
-                                                {{ Form::radio('type', config('settings.type.multiple_choice')) }} {{ trans('polls.label.multiple_choice') }}
+                                                {{ Form::radio('type', config('settings.type_poll.multiple_choice')) }} {{ trans('polls.label.multiple_choice') }}
                                             </label>
                                         </div>
                                     </div>
@@ -237,7 +237,7 @@
 
                                             <!-- SETTING: CUSTOM LINK -->
                                             @if ($key == config('settings.setting.custom_link'))
-                                                <div class="form-group setting-advance" id="new-link">
+                                                <div class="form-group {{ is_null($dataView['oldInput']) ? "setting-advance" : "" }}" id="new-link">
                                                     {{
                                                         Form::label(
                                                             trans('polls.label_for.setting.custom_link'),
@@ -260,7 +260,7 @@
 
                                             <!-- SETTING: SET LIMIT -->
                                             @elseif ($key == config('settings.setting.set_limit'))
-                                                <div class="form-group setting-advance" id="set-limit">
+                                                <div class="form-group {{ is_null($dataView['oldInput']) ? "setting-advance" : "" }}" id="set-limit">
                                                     {{
                                                         Form::label(
                                                             trans('polls.label_for.setting.set_limit'),
@@ -277,7 +277,7 @@
 
                                             <!-- SETTING: SET PASSWORD -->
                                             @elseif ($key == config('settings.setting.set_password'))
-                                                <div class="form-group setting-advance" id="set-password">
+                                                <div class="form-group {{ is_null($dataView['oldInput']) ? "setting-advance" : "" }}" id="set-password">
                                                     {{
                                                         Form::label(
                                                             trans('polls.label_for.setting.set_password'),

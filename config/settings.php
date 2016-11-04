@@ -47,7 +47,7 @@ return [
         'number_limit' => 2,
         'password_poll' => 16,
     ],
-    'type' => [
+    'type_poll' => [
         'single_choice' => 0,
         'multiple_choice' => 1,
     ],

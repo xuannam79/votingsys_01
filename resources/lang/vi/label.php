@@ -50,5 +50,5 @@ return [
             ],
         ],
     ],
-    'paginations' => 'Hiển thị :start đến :finish của :numberOfRecords entry|Đang hiển thị :start đến :finish of :numberOfRecords thực thể',
+    'paginations' => 'Hiển thị :start đến :finish của :numberOfRecords mục|Đang hiển thị :start đến :finish of :numberOfRecords mục',
 ];

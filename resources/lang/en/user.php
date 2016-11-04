@@ -86,5 +86,5 @@ return [
             'required' => 'Please enter password!',
             'max' => 'Please enter a value less than or equal to ' . config('common.length_user.password'),
         ],
-    ]
+    ],
 ];

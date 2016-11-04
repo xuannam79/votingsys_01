@@ -47,16 +47,16 @@
     </head>
     <body>
         <div class="head-participant">
-            <h1>{{ trans('mails.participant.head') }}</h1>
+            <h1>{{ trans('polls.mail.participant.head') }}</h1>
         </div>
         <div class="introduction-website">
             <div class="panel">
                 <div class="panel-header">
-                    <h3>{{ trans('mails.label.introduction') }}</h3>
+                    <h3>{{ trans('polls.mail.label.introduction') }}</h3>
                 </div>
                 <div class="panel-body">
-                    <p>{!! trans('mails.introduction') !!} </p>
-                    <h3>{{ trans('mails.participant.link') }} <a href="{{ $link }}" target="_blank">{{ $link }}</a></h3>
+                    <p>{!! trans('polls.mail.introduction') !!} </p>
+                    <h3>{{ trans('polls.mail.participant.link') }} <a href="{{ $link }}" target="_blank">{{ $link }}</a></h3>
                     @if ($administration)
                         <a href="{{ $linkAdmin }}">
                             <button class="btn-admin"><h3>{{ trans('polls.button.administration') }}</h3></button>

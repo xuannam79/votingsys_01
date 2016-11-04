@@ -26,11 +26,18 @@ class UserController extends Controller
      */
     public function index(UsersFilter $filters)
     {
-        $users =  User::filter($filters)->paginate(config('settings.number_of_record_user'));
+        $users =  User::filter($filters)->where('role', config('roles.user'))->paginate(config('settings.number_of_record_user'));
         $input = $filters->input();
         $linkFilter = $users->appends($input)->links();
+        $data = [
+            'gender' => [
+                config('settings.gender_constant.male') => trans('user.label.gender.male'),
+                config('settings.gender_constant.female') => trans('user.label.gender.female'),
+                config('settings.gender_constant.other') => trans('user.label.gender.other'),
+            ],
+        ];
 
-        return view('admins.user.index', compact('users', 'input', 'linkFilter'));
+        return view('admins.user.index', compact('users', 'input', 'linkFilter', 'data'));
     }
 
     /**
