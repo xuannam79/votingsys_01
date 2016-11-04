@@ -280,4 +280,6 @@ return [
     'link_invalid' => 'Link không đúng',
     'edit_link_successfully' => 'Sửa thành công',
     'delete_all_participants_successfully' => 'Xóa tất cả những người bầu chọn thành công',
+    'incorrect_password' => 'Mật khẩu chưa chính xác',
+    'enter_password' => 'Vui lòng nhập mật khẩu để xem poll này',
 ];
