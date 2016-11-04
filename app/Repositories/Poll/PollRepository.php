@@ -6,9 +6,11 @@ use App\Models\Activity;
 use App\Models\Link;
 use App\Models\Option;
 use App\Models\Participant;
+use App\Models\ParticipantVote;
 use App\Models\Poll;
 use App\Models\Setting;
 use App\Models\User;
+use App\Models\Vote;
 use Auth;
 use Carbon\Carbon;
 use File;
@@ -443,7 +445,6 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
                 $message->to($email)->subject($subject);
             });
         } catch (Exception $ex) {
-            dd("send mail: " . $ex);
             throw new Exception(trans('polls.message.send_mail_fail'));
         }
     }
@@ -498,7 +499,7 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
             $this->sendEmail($email, $creatorView, $data, $subject);
             DB::commit();
 
-            return true;
+            return $links;
         } catch (Exception $ex) {
             DB::rollback();
             return false;
@@ -742,16 +743,21 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
                 }
             }
 
+
+
             //handle images
             if ($input['image']) {
                 foreach ($input['image'] as $optionId => $image) {
                     try {
-                        //remove old file
-                        $option = Option::findOrFail($optionId);
-                        $oldImagePath = public_path() . config('settings.option.path_image') . $option->image;
 
-                        if (File::exists($oldImagePath)) {
-                            File::delete($oldImagePath);
+                        //remove old file
+                        $option = Option::find($optionId);
+                        if ($option) {
+                            $oldImagePath = public_path() . config('settings.option.path_image') . $option->image;
+
+                            if (File::exists($oldImagePath)) {
+                                File::delete($oldImagePath);
+                            }
                         }
 
                         //add new file

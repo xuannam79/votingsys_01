@@ -4,6 +4,7 @@ return [
     'login' => 'Đăng nhập',
     'logout' => 'Đăng xuất',
     'register' => 'Đăng ký',
+    'create_poll' => 'Tạo poll',
     'forgot_password' => 'Quên mật khẩu?',
     'remember' => 'Nhớ mật khẩu',
     'email' => 'Địa chỉ email',
@@ -17,6 +18,7 @@ return [
     'profile' => 'Thông tin cá nhân',
     'edit' => 'Chỉnh sửa',
     'home' => 'Trang chủ',
+    'admin_page' => 'TRANG CHỦ ADMIN',
 
     /**
      * MASTER ADMIN

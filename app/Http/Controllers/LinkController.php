@@ -90,29 +90,30 @@ class LinkController extends Controller
             return view('errors.show_errors')->with('message', trans('polls.message_poll_closed'));
         }
 
-        if (! $link->link_admin) {
-            $linkUser = url('link') . '/' . $link->token;
-            $numberOfVote = config('settings.default_value');
-            $poll = $link->poll;
-            $voteLimit = null;
-            $isRequiredEmail = false;
-            $isHideResult = false;
-            $requiredPassword = null;
-            $passwordSetting = $poll->settings->whereIn('key', [config('settings.setting.set_password')])->first();
+        $linkUser = url('link') . '/' . $link->token;
+        $numberOfVote = config('settings.default_value');
+        $voteLimit = null;
+        $isRequiredEmail = false;
+        $isHideResult = false;
+        $poll = $link->poll;
 
-            if ($passwordSetting) {
-                $requiredPassword = $passwordSetting->value;
-            }
+        if ($poll->settings) {
+            foreach ($poll->settings as $setting) {
+                if ($setting->key == config('settings.setting.set_limit')) {
+                    $voteLimit = $setting->value;
+                }
 
-            $voteLimitSetting = $poll->settings->whereIn('key', [config('settings.setting.set_limit')])->first();
-
-            if ($voteLimitSetting) {
-                $voteLimit = $voteLimitSetting->value;
+                $isRequiredEmail = ($setting->key == config('settings.setting.required_email'));
+                $isHideResult = ($setting->key == config('settings.setting.hide_result'));
             }
 
             if ($voteLimit && $poll->countParticipants() >= $voteLimit) {
                 return view('errors.show_errors')->with('message', trans('polls.message_poll_limit'));
             }
+        }
+
+        if (! $link->link_admin) {
+
 
             $isRequiredEmail = $poll->settings->whereIn('key', [config('settings.setting.required_email')])->count() != config('settings.default_value');
             $isHideResult = $poll->settings->whereIn('key', [config('settings.setting.hide_result')])->count() != config('settings.default_value');
@@ -162,6 +163,34 @@ class LinkController extends Controller
             return view('user.poll.details', compact('poll', 'isRequiredEmail', 'isUserVoted', 'isHideResult', 'numberOfVote', 'linkUser', 'mergedParticipantVotes', 'isParticipantVoted', 'requiredPassword'));
         } else {
             $poll = $link->poll;
+
+            $voteIds = $this->pollRepository->getVoteIds($poll->id);
+            $votes = $this->voteRepository->getVoteWithOptionsByVoteId($voteIds);
+            $participantVoteIds = $this->pollRepository->getParticipantVoteIds($poll->id);
+            $participantVotes = $this->participantVoteRepository->getVoteWithOptionsByVoteId($participantVoteIds);
+            $mergedParticipantVotes = $votes->toBase()->merge($participantVotes->toBase());
+
+            if ($mergedParticipantVotes->count()) {
+                foreach ($mergedParticipantVotes as $mergedParticipantVote) {
+                    $createdAt[] = $mergedParticipantVote->first()->created_at;
+                }
+
+                $sortedParticipantVotes = collect($createdAt)->sort();
+                $resultParticipantVotes = collect();
+                foreach ($sortedParticipantVotes as $sortedParticipantVote) {
+                    foreach ($mergedParticipantVotes as $mergedParticipantVote) {
+                        foreach ($mergedParticipantVote as $participantVote) {
+                            if ($participantVote->created_at == $sortedParticipantVote) {
+                                $resultParticipantVotes->push($mergedParticipantVote);
+                                break;
+                            }
+
+                        }
+                    }
+                }
+                $mergedParticipantVotes = $resultParticipantVotes;
+            }
+
             foreach ($poll->links as $link) {
                 if ($link->link_admin) {
                     $tokenLinkAdmin = $link->token;
@@ -170,7 +199,7 @@ class LinkController extends Controller
                 }
             }
 
-            return view('user.poll.manage_poll', compact('poll', 'tokenLinkUser', 'tokenLinkAdmin'));
+            return view('user.poll.manage_poll', compact('poll', 'tokenLinkUser', 'tokenLinkAdmin', 'isRequiredEmail', 'isUserVoted', 'isHideResult', 'numberOfVote', 'linkUser', 'mergedParticipantVotes', 'isParticipantVoted'));
         }
     }
 

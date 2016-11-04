@@ -1,4 +1,4 @@
-@extends('layouts.master')
+@extends('layouts.app')
 @section('title')
     {{ trans('polls.title') }}
 @endsection

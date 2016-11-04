@@ -275,7 +275,7 @@ return [
     'remove_vote_successfully' => 'Bạn đã xóa bầu chọn thành công',
     'vote_successfully' => 'Bạn đã bầu chọn thành công',
     'export_pdf' => 'Xuất file PDF',
-    'export_excel' => 'Xuất file PDF',
+    'export_excel' => 'Xuất file EXCEL',
     'link_exist' => 'Link này đã tồn tại',
     'link_invalid' => 'Link không đúng',
     'edit_link_successfully' => 'Sửa thành công',
