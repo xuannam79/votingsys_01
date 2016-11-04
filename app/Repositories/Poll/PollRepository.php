@@ -185,11 +185,14 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
      */
     public function addInfo($input)
     {
+        $now = Carbon::now();
+
         try {
             $userId = User::insertGetId([
                 'name' => $input['name'],
                 'email' => $input['email'],
                 'chatwork_id' => ($input['chatwork_id']) ? $input['chatwork_id'] : null,
+                'created_at' => $now,
             ]);
             $pollId = Poll::insertGetId([
                 'user_id' => $userId,
@@ -197,6 +200,7 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
                 'description' => ($input['description']) ? $input['description'] : null,
                 'location' => ($input['location']) ? $input['location'] : null,
                 'multiple' => $input['type'],
+                'created_at' => $now,
             ]);
 
             return $pollId;
@@ -226,10 +230,10 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
             foreach ($options as $key => $option) {
                 $image = empty($images[$key]) ? null : $imageNames['optionImage'][$key];
 
-                if ($option) {
+                if ($option || $image) {
                     $dataOptionInserted[] = [
                         'poll_id' => $pollId,
-                        'name' => $option,
+                        'name' => ($option) ? $option : null,
                         'image' => $image,
                         'created_at' => $now,
                     ];
@@ -357,7 +361,7 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
      */
     public function getValueOfSetting($setting, $values)
     {
-        $config = config('common.setting');
+        $config = config('settings.setting');
 
         if ($setting == $config['custom_link']) {
             return $values['link'];
@@ -439,6 +443,7 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
                 $message->to($email)->subject($subject);
             });
         } catch (Exception $ex) {
+            dd("send mail: " . $ex);
             throw new Exception(trans('polls.message.send_mail_fail'));
         }
     }
@@ -496,7 +501,6 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
             return true;
         } catch (Exception $ex) {
             DB::rollback();
-
             return false;
         }
     }
@@ -991,7 +995,7 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
 
     public function getType($type, $isKey)
     {
-        $config = config('settings.type');
+        $config = config('settings.type_poll');
         $trans = trans('polls.label');
 
         if ($isKey) {

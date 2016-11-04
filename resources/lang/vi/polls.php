@@ -108,6 +108,7 @@ return [
         'continue' => 'Tiếp tục',
         'previous' => 'Trước',
         'finish' => 'Kết thúc',
+        'administration' => 'QUẢN LÝ POLL',
     ],
     'message' => [
         'create_success' => 'Tạo Poll THÀNH CÔNG',
@@ -196,6 +197,16 @@ return [
         'option_required' => 'Bạn phải nhập nội dung của tùy chọn',
         'participant_empty' => 'Bạn phải thêm một địa chỉ email',
         'character' => ' kí tự',
+    ],
+    'mail' => [
+        'label' => [
+            'introduction' => 'GIỚI THIỆU',
+        ],
+        'introduction' => 'Chúng tôi sẽ giúp bạn tạo một poll một cách dễ dàng và nhanh chóng. Hãy truy cập vào <a href="' . url("/") .'">' .url("/") . '</a>',
+        'participant' => [
+            'head' => 'POLL - VOTING',
+            'link' => 'Link để vote: ',
+        ],
     ],
 
 /*------------------------------------------------------------

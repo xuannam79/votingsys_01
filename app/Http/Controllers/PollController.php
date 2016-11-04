@@ -87,6 +87,7 @@ class PollController extends Controller
                 $settingConfig['set_limit'] => $settingTrans['set_limit'],
                 $settingConfig['set_password'] => $settingTrans['set_password'],
             ],
+            'oldInput' => session("_old_input"),
         ];
         return view('user.poll.create', compact('dataJson', 'dataView'));
     }
@@ -199,11 +200,11 @@ class PollController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  PollEditRequest $request
+     * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(PollEditRequest $request, $id)
+    public function update(Request $request, $id)
     {
         $button = $request->btn_edit;
 

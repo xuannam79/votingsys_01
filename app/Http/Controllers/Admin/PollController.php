@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Admin;
 
 use App\Filter\PollsFilter;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\PollEditRequest;
 use App\Models\Poll;
 use App\Repositories\Poll\PollRepositoryInterface;
 use Illuminate\Http\Request;
@@ -143,11 +142,11 @@ class PollController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  PollEditRequest $request
+     * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(PollEditRequest $request, $id)
+    public function update(Request $request, $id)
     {
         $button = $request->btn_edit;
 

@@ -75,7 +75,7 @@ Route::get('/callback/{provider}', 'SocialAuthController@handleProviderCallback'
  / Route Admin
  /--------------------------------------------------------------------
  */
-Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'as' => 'admin.'], function () {
+Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'as' => 'admin.','middleware' => 'admin'], function () {
     Route::resource('poll', 'PollController', ['except' => [
         'show'
     ]]);

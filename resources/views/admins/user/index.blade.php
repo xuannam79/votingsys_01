@@ -81,7 +81,7 @@
                             <b>{{ trans('user.label.gender.name') }}</b>
                             <div class="form-line">
                                 {{
-                                    Form::select('gender', config('settings.gender'), (isset($input['gender']) ? $input['gender'] : null), [
+                                    Form::select('gender', $data['gender'], (isset($input['gender']) ? $input['gender'] : null), [
                                         'class' => 'form-control',
                                         'placeholder' => trans('user.placeholder.gender'),
                                     ])

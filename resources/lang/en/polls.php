@@ -108,6 +108,7 @@ return [
         'continue' => 'Continue',
         'previous' => 'Previous',
         'finish' => 'Finish',
+        'administration' => 'ADMINISTRATION',
     ],
     'message' => [
         'create_success' => 'Create poll SUCCESS',
@@ -196,6 +197,16 @@ return [
         'option_required' => 'You must enter content of option',
         'participant_empty' => 'You must add a email',
         'character' => ' characters',
+    ],
+    'mail' => [
+        'label' => [
+            'introduction' => 'INTRODUCTION',
+        ],
+        'introduction' => 'They will help your create a poll very fast and easily to you use it. Let\'s access into <a href="' . url("/") .'">' .url("/") . '</a>',
+        'participant' => [
+            'head' => 'POLL - VOTING',
+            'link' => 'Link to vote:',
+        ],
     ],
 
 /*------------------------------------------------------------

@@ -114,7 +114,7 @@ class Poll extends Model
 
     public function getMultipleAttribute($value)
     {
-        return ($value == config('settings.type.multiple_choice')
+        return ($value == config('settings.type_poll.multiple_choice')
             ? trans('polls.label.multiple_choice')
             : trans('polls.label.single_choice'));
     }
