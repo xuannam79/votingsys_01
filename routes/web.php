@@ -41,6 +41,10 @@ Route::group(['prefix' => 'user', 'middleware' => 'XSS'], function() {
     Route::resource('activity', 'User\ActivityController', [
         'only' => ['show']
     ]);
+
+    Route::resource('set-password', 'User\SetPasswordController', [
+        'only' => ['store']
+    ]);
 });
 
 Route::post('exportPDF', [

@@ -280,4 +280,6 @@ return [
     'link_invalid' => 'Link invalid',
     'edit_link_successfully' => 'Edit successfully',
     'delete_all_participants_successfully' => 'Delete all participants successfully',
+    'incorrect_password' => 'Password incorrect, Please enter another password to view this poll',
+    'enter_password' => 'Enter password to view this poll',
 ];

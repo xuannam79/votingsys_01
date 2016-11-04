@@ -126,6 +126,8 @@
 
     {!! Html::script('js/multipleLanguage.js') !!}
 
+    {!! Html::script('js/requiredPassword.js') !!}
+
     <!-- Bootstrap Core JavaScript -->
     {!! Html::script('/bower/bootstrap/dist/js/bootstrap.min.js') !!}
 

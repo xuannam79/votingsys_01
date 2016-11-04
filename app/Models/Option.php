@@ -41,6 +41,10 @@ class Option extends Model
 
     public function showImage()
     {
-       return asset('/' . config('settings.image_path') . '/' . $this->image);
+        if ($this->image) {
+            return asset('/' . config('settings.image_path') . '/' . $this->image);
+        }
+
+        return asset(config('settings.option.path_image_default'));
     }
 }

@@ -68,7 +68,7 @@ class ExportController extends Controller
                 $sheet->loadView('user.poll.details_layouts', $this->getDataRender($inputs['poll_id']));
             });
         })->store('xls', storage_path('exports'));
-           $voteExcelFilePath = storage_path('exports') . '\\' . trans('polls.vote') . '.xls';
+        $voteExcelFilePath = storage_path('exports') . '/' . trans('polls.vote') . '.xls';
 
         return response()->download($voteExcelFilePath, trans('polls.vote') . '.xls', [
             'Content-Type' => 'application/vnd.ms-excel',

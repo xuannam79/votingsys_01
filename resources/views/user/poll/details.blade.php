@@ -12,7 +12,35 @@
         <div class="col-md-10 col-md-offset-1">
             <div class="panel panel-default">
                 <div class="panel-heading">{{ trans('polls.poll_details') }}</div>
-                <div class="panel-body">
+                <div class="hide-password" data-link-password="{{ url('user/set-password') }}" data-poll-id="{{ $poll->id }}" data-required-password="{{ $requiredPassword }}" data-message-required-password="{{ trans('polls.incorrect_password') }}"></div>
+                @if ($requiredPassword)
+                    <div class="modal-dialog-password">
+                        <div class="modal-content-password">
+                            <div class="modal-header-password">
+                                <center>
+                                    <h2 class="modal-title">{{ trans('polls.enter_password') }}</h2>
+                                </center>
+                            </div>
+                            <br>
+                            <div class="modal-bodymodal-dialog-password">
+                                <fieldset>
+                                    <div class="form-group">
+                                        <div class="col-md-8 col-md-offset-3">
+                                            <label class="col-md-2 control-label" for="labelInput">{{ trans('label.password') }}</label>
+                                            <div class="col-md-6">
+                                                {{ Form::text('password', null, ['class' => 'form-control password']) }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12 col-md-offset-4">
+                                            <p class="message-required-password message-validate"></p>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </div>
+                         </div>
+                    </div>
+                @endif
+                <div class="panel-body details-poll">
                 @include('message')
                     @if (auth()->check())
                         <a href="{{ URL::action('User\ActivityController@show', $poll->id) }}">{{ trans('polls.view_history') }}</a>
@@ -61,10 +89,8 @@
                                         @foreach ($poll->options as $option)
                                             <th>
                                                 <center>
-                                                    @if (!empty($option->image))
-                                                        <img class="img-option" src="{{ $option->showImage() }}">
-                                                        <br>
-                                                    @endif
+                                                    <img class="img-option" src="{{ $option->showImage() }}">
+                                                    <br>
                                                     {{ $option->name }}
                                                 </center>
                                             </th>
@@ -151,11 +177,9 @@
                                     <div class="col-md-9">
                                         {!! Form::label('option_name', $option->name, ['class' => 'poll-option']) !!}
                                     </div>
-                                    @if (!empty($option->image))
-                                        <div class="col-md-2">
-                                            <img class="poll-option img-option" src="{{ $option->showImage() }}">
-                                        </div>
-                                    @endif
+                                    <div class="col-md-2">
+                                        <img class="poll-option img-option" src="{{ $option->showImage() }}">
+                                    </div>
                                     <div class="col-md-1">
                                         @if (!$isHideResult || Gate::allows('administer', $poll))
                                             <h1><span class="label label-default dropbtn">{{ $option->countVotes() }}</span></h1>
