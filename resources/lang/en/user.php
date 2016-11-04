@@ -5,6 +5,7 @@ return [
     'panel_head' => [
         'index' => 'LIST ALL USERS',
         'create' => 'CREATE A NEW USER',
+        'edit' => 'EDIT A USER',
     ],
     'button' => [
         'create' => 'CREATE USER',

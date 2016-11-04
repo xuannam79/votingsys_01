@@ -78,19 +78,25 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        //
+        $user = User::findOrFail($id);
+        return view('admins.user.edit', compact('user'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  UserEditRequest $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UserEditRequest $request, $id)
     {
-        //
+        $input = $request->only(
+            'name', 'email', 'chatwork_id', 'gender', 'avatar'
+        );
+        $this->userRepository->update($input, $id);
+
+        return redirect()->route('admin.user.index')->with('message', trans('user.message.update_success'));
     }
 
     /**
@@ -101,6 +107,8 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $message = $this->userRepository->delete($id);
+
+        return redirect()->route('admin.user.index')->with('message', $message);
     }
 }
