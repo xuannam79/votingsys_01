@@ -12,7 +12,7 @@ return [
     | any other location as required by the application or its packages.
     */
 
-    'name' => 'Voting System',
+    'name' => 'Fpoll',
 
     /*
     |--------------------------------------------------------------------------
@@ -38,7 +38,7 @@ return [
     |
     */
 
-    'debug' => env('APP_DEBUG', false),
+    'debug' => env('APP_DEBUG', true),
 
     /*
     |--------------------------------------------------------------------------
@@ -64,7 +64,7 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    'timezone' => 'Asia/Ho_Chi_Minh',
 
     /*
     |--------------------------------------------------------------------------
@@ -166,6 +166,7 @@ return [
         Laravel\Socialite\SocialiteServiceProvider::class,
         Vsmoraes\Pdf\PdfServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
+        App\Providers\SocialiteCustomServiceProvider::class,
 
         /*
          * Package Service Providers...
@@ -183,6 +184,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         App\Providers\RepositoryServiceProvider::class,
         App\Providers\ValidationServiceProvider::class,
+        MercurySeries\Flashy\FlashyServiceProvider::class,
 
     ],
 
@@ -237,6 +239,7 @@ return [
         'Socialite' => Laravel\Socialite\Facades\Socialite::class,
         'PDF' => Vsmoraes\Pdf\PdfFacade::class,
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
+        'Flashy' => MercurySeries\Flashy\Flashy::class,
 
     ],
 

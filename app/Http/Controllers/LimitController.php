@@ -2,11 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
+use App\Repositories\Poll\PollRepositoryInterface;
 use Illuminate\Http\Request;
 
-class EmailController extends Controller
+class LimitController extends Controller
 {
+    protected $pollRepository;
+
+    public function __construct(PollRepositoryInterface $pollRepository) {
+        $this->pollRepository = $pollRepository;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -35,12 +40,23 @@ class EmailController extends Controller
      */
     public function store(Request $request)
     {
-        $email = User::where('email', $request->email)->count();
-        $dataRtn = [
-            'success' => ($email) ? true : false,
-        ];
-
-        return response()->json($dataRtn);
+//        $input = $request->only('limit', 'id');
+//
+//        $voteTotal = 0;
+//
+//        foreach ($poll->options as $option) {
+//            $voteTotal += $option->countVotes();
+//        }
+//
+//        return $voteTotal;
+//
+//        $links = Link::where('token', $token)->get();
+//
+//        if ($links->count()) {
+//            return response()->json(['success' => true]);
+//        }
+//
+//        return response()->json(['success' => false]);
     }
 
     /**

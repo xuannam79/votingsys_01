@@ -8,6 +8,7 @@
         <style>
             html, body {
                 height: 100%;
+                background: black;
             }
 
             body {
@@ -40,7 +41,8 @@
     <body>
         <div class="container">
             <div class="content">
-                <div class="title">Be right back.</div>
+                <img class="img-errors" src="{{ asset('/uploads/images/error.jpg') }}">
+                <div class="title">503 Error</div>
             </div>
         </div>
     </body>

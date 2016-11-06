@@ -16,12 +16,9 @@ class DatabaseSeeder extends Seeder
         $this->call(UsersTableSeeder::class);
         $this->call(PollTableSeeder::class);
         $this->call(OptionTableSeeder::class);
-        $this->call(ParticipantTableSeeder::class);
         $this->call(CommentTableSeeder::class);
-        $this->call(ActivityTableSeeder::class);
         $this->call(SettingTableSeeder::class);
-        $this->call(VoteTableSeeder::class);
-        $this->call(ParticipantVoteTableSeeder::class);
+        $this->call(LinkTableSeeder::class);
         Model::reguard();
     }
 }

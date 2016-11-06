@@ -1,9 +1,9 @@
 <div class="col-md-12" id="{{ $commentId }}">
     <br>
-    <div class="col-md-1">
-        <img class="img-comment" src="{!! !auth()->check() ? asset(config('settings.image_default_path')) : auth()->user()->getAvatarPath() !!}">
+    <div class="col-md-1 col-lg-1">
+        <img class="img-comment img-circle" src="{!! $imageComment !!}">
     </div>
-    <div class="col-md-11">
+    <div class="col-md-11 col-lg-11">
         <label data-comment-id="{{ $commentId }}" data-poll-id="{{ $poll->id }}">
             <label class="user-comment">{{ $name }}</label>
             {{ $createdAt }}

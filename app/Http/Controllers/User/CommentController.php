@@ -40,19 +40,25 @@ class CommentController extends Controller
                 'poll_id' => $inputs['poll_id'],
                 'type' => config('settings.activity.added_a_comment'),
             ];
+            $imageComment = asset(config('settings.image_default_path'));
 
             if (isset($inputs['user_id'])) {
                 $activity['user_id'] = $inputs['user_id'];
+                $activity['name'] = $inputs['name'];
+
+                if (auth()->user()->name == $inputs['name']) {
+                    $imageComment = auth()->user()->getAvatarPath();
+                }
             }
 
             $this->activityRepository->create($activity);
-
             $html = view('user.poll.comment_layouts', [
                 'commentId' => $comment->id,
                 'content' => $inputs['content'],
                 'name' => $inputs['name'],
                 'poll' => $poll,
                 'createdAt' => $comment->created_at->diffForHumans(),
+                'imageComment' => $imageComment,
             ])->render();
             $result = [
                 'success' => true,

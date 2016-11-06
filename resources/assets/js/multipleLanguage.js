@@ -3,7 +3,7 @@ $(document).ready(function(){
     $('.btn-multiple-language').change(function(e) {
         e.preventDefault();
         divChangeAmount = $(this).parent();
-        var route = divChangeAmount.data('route');
+        var route = $('.hide_language').data('route');
         var lang = $('.btn-multiple-language').val();
 
         $.ajax({

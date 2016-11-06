@@ -18,6 +18,6 @@ class Admin
         if (Auth::check() && Auth::user()->role == config('roles.admin')) {
             return $next($request);
         }
-        return redirect('/home');
+        return url('/');
     }
 }

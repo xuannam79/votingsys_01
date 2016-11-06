@@ -55,7 +55,7 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
             }
         }
 
-        return $participantPolls;
+        return $participantPolls->unique();
     }
 
     public function getClosedPolls()
@@ -173,9 +173,48 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
         return $voteIds;
     }
 
-/*------------------------------------------------------------
- *                  [ADMIN] - POLL
- *------------------------------------------------------------*/
+
+    public function getDataPollSystem()
+    {
+        $settingText = trans('polls.label.setting');
+
+        //get data to send javascript file
+        $jsonData = json_encode([
+            'message' => trans('polls.message_client'),
+            'config' => [
+                'length' => config('settings.length_poll'),
+                'setting' => config('settings.setting'),
+                'link' => url('/') . config('settings.email.link_vote'),
+            ],
+            'view' => [
+                'option' => view('layouts.poll_option')->render(),
+                'email' => view('layouts.poll_email')->render(),
+            ],
+            'oldInput' => session("_old_input"),
+        ]);
+
+        //get data to send view file
+        $viewData = [
+            'types' => array_combine(config('settings.type_poll'), [
+                trans('polls.label.single_choice'),
+                trans('polls.label.multiple_choice')
+            ]),
+            'settings' => array_combine(config('settings.setting'), [
+                $settingText['required_email'],
+                $settingText['hide_result'],
+                $settingText['custom_link'],
+                $settingText['set_limit'],
+                $settingText['set_password'],
+                $settingText['is_set_ip'],
+            ]),
+        ];
+
+        return compact('jsonData', 'viewData');
+    }
+
+    /*------------------------------------------------------------
+     *                  [ADMIN] - POLL
+     *------------------------------------------------------------*/
 
     /**
      *
@@ -190,12 +229,18 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
         $now = Carbon::now();
 
         try {
-            $userId = User::insertGetId([
-                'name' => $input['name'],
-                'email' => $input['email'],
-                'chatwork_id' => ($input['chatwork_id']) ? $input['chatwork_id'] : null,
-                'created_at' => $now,
-            ]);
+            $userId = null;
+
+            if (auth()->user() && ! auth()->user()->email) {
+                User::where('id', auth()->user()->id)->update(['email' => $input['email'], 'is_active' => true]);
+                $userId = auth()->user()->id;
+            } else {
+                $user = User::where('email', $input['email'])->first();
+                if ($user) {
+                    $userId = $user->id;
+                }
+            }
+
             $pollId = Poll::insertGetId([
                 'user_id' => $userId,
                 'title' => $input['title'],
@@ -203,10 +248,14 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
                 'location' => ($input['location']) ? $input['location'] : null,
                 'multiple' => $input['type'],
                 'created_at' => $now,
+                'date_close' => ($input['closingTime']) ? $input['closingTime'] : null,
+                'name' => ($userId) ? null : $input['name'],
+                'email' => ($userId) ? null : $input['email'],
             ]);
 
             return $pollId;
         } catch (Exception $ex) {
+            dd($ex);
             return false;
         }
     }
@@ -250,6 +299,7 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
 
             return true;
         } catch (Exception $ex) {
+            dd($ex);
             return false;
         }
 
@@ -267,12 +317,14 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
     {
         $imageNames = [];
 
-        foreach ($arrInputImage as $key => $image) {
-            do {
-                $imageNames['optionImage'][$key] = uniqid(rand(), true) . '.' . $image->getClientOriginalExtension();
-                $path = public_path() . config('settings.option.path_image') . $imageNames['optionImage'][$key];
-            } while (File::exists($path));
-        }
+        if ($arrInputImage) {
+            foreach ($arrInputImage as $key => $image) {
+                do {
+                    $imageNames['optionImage'][$key] = uniqid(rand(), true) . '.' . $image->getClientOriginalExtension();
+                    $path = public_path() . config('settings.option.path_image') . $imageNames['optionImage'][$key];
+                } while (File::exists($path));
+            }
+          }
 
         return $imageNames;
     }
@@ -304,13 +356,16 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
             /*
              * upload new image
              */
-            $pathTo = public_path() . config('settings.option.path_image');
+            if ($images) {
+                $pathTo = public_path() . config('settings.option.path_image');
 
-            foreach ($images as $key => $image) {
-                $pathFrom = $pathTo . $imageNames['optionImage'][$key];
-                $image->move($pathTo, $pathFrom);
+                 foreach ($images as $key => $image) {
+                    $pathFrom = $pathTo . $imageNames['optionImage'][$key];
+                    $image->move($pathTo, $pathFrom);
+                }
             }
         } catch (Exception $ex) {
+            dd($ex);
             throw new Exception(trans('polls.message.upload_image_fail'));
         }
     }
@@ -332,13 +387,15 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
             $dataSettingInserted = [];
             $now = Carbon::now();
 
-            foreach ($settings as $setting) {
-                $dataSettingInserted[] = [
-                    'poll_id' => $pollId,
-                    'key' => $setting,
-                    'value' => $this->getValueOfSetting($setting, $value),
-                    'created_at' => $now,
-                ];
+            if ($settings) {
+                foreach ($settings as $setting) {
+                    $dataSettingInserted[] = [
+                        'poll_id' => $pollId,
+                        'key' => $setting,
+                        'value' => $this->getValueOfSetting($setting, $value),
+                        'created_at' => $now,
+                    ];
+                }
             }
 
             if ($dataSettingInserted) {
@@ -347,6 +404,7 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
 
             return true;
         } catch (Exception $ex) {
+            dd($ex);
             return false;
         }
 
@@ -374,7 +432,7 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
         }
 
         if ($setting == $config['set_password']) {
-            return bcrypt($values['password']);
+            return $values['password'];
         }
 
         return null;
@@ -419,9 +477,9 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
                 'participant' => $linkConfig . $participantLink,
                 'administration' => $linkConfig . $administrationLink,
             ];
-
             return $linkReturn;
         } catch (Exception $ex) {
+            dd($ex);
             return false;
         }
     }
@@ -438,13 +496,20 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
      *
      * @throws Exception
      */
-    public function sendEmail($email, $view, $viewData, $subject)
+    public function sendEmail($email, $view, $viewData, $subject, $receive)
     {
         try {
-            Mail::send($view, $viewData, function ($message) use ($email, $subject) {
-                $message->to($email)->subject($subject);
-            });
+            if ($receive == 'participant') {
+                Mail::queue($view, $viewData, function ($message) use ($email, $subject) {
+                    $message->to($email)->subject($subject);
+                });
+            } else {
+                Mail::send($view, $viewData, function ($message) use ($email, $subject) {
+                    $message->to($email)->subject($subject);
+                });
+            }
         } catch (Exception $ex) {
+            dd($ex);
             throw new Exception(trans('polls.message.send_mail_fail'));
         }
     }
@@ -461,6 +526,7 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
                 return false;
             }
 
+
             $links =  $this->addLink($pollId, $input);
 
             if (! $links) {
@@ -469,39 +535,54 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
                 return false;
             }
 
+            $poll = Poll::with('user')->find($pollId);
+
             /*
              * send mail participant
              */
-            $participant = $input['participant'];
+            $password = false;
 
-            if ($participant == config('settings.participant.invite_people')) {
-                $members = explode(",", $input['member']);
-                $view = config('settings.view.poll_mail');
-                $data = [
-                    'link' => $links['participant'],
-                    'administration' => false,
-                ];
-                $subject = trans('label.mail.subject');
-                $this->sendEmail($members, $view, $data, $subject);
+            if (count($input['setting'])) {
+                $password = (in_array(config('settings.setting.set_password'), $input['setting'])) ? $input['value']['password'] : false;
             }
 
+            $dataRtn = [
+                'poll' => $poll,
+                'link' => $links,
+                'password' => $password,
+            ];
+
+            if ($input['member']) {
+                $members = explode(",", $input['member']);
+                $view = config('settings.view.participant_mail');
+                $data = [
+                    'linkVote' => $links['participant'],
+                    'poll' => $poll,
+                    'password' => $password,
+                ];
+                $subject = trans('label.mail.subject');
+                $this->sendEmail($members, $view, $data, $subject, 'participant');
+            }
             /*
              * send mail creator
              */
             $creatorView = config('settings.view.poll_mail');
             $email = $input['email'];
             $data = [
-                'link' => $links['participant'],
-                'administration' => true,
+                'userName' => $input['name'],
+                'linkVote' => $links['participant'],
                 'linkAdmin' => $links['administration'],
+                'poll' => $poll,
+                'password' => $password,
             ];
             $subject = trans('label.mail.subject');
-            $this->sendEmail($email, $creatorView, $data, $subject);
+            $this->sendEmail($email, $creatorView, $data, $subject, 'creator');
             DB::commit();
 
-            return $links;
+            return $dataRtn;
         } catch (Exception $ex) {
             DB::rollback();
+            dd($ex);
             return false;
         }
     }
@@ -519,6 +600,14 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
     {
         $poll = Poll::with('user')->find($id);
 
+        if ($poll->user_id) {
+            $users = User::where('email', $input['email'])->where('email', '<>', $poll->user->email)->count();
+
+            if ($users) {
+                return trans('polls.message.email_exists');
+            }
+        }
+
         //data changed
         $data = [];
         $old = [];
@@ -528,21 +617,8 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
             DB::beginTransaction();
 
             foreach ($input as $key => $value) {
-                if ($key == 'status') {
-                    $status = $this->getStatus($poll->status, true);
-
-                    if ($value != $status) {
-                        $data[] = [
-                            $key => $this->getStatus($value, false),
-                        ];
-                        $old[] = [
-                            $key => $this->getStatus($poll->status, false),
-                        ];
-                        $poll->status = $value;
-                    }
-                } elseif ($key == 'type') {
+                if ($key == 'type') {
                     $type = $this->getType($poll->multiple, true);
-
                     if ($value != $type) {
                         $data[] = [
                             $key => $this->getType($poll->multiple, false),
@@ -552,38 +628,43 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
                         ];
                         $poll->multiple = $value;
                     }
-                } elseif ($key == 'name' || $key == 'email' || $key == 'chatwork_id') {
-                    if ($value != $poll->user->$key) {
-                        $data[] = [
-                            $key => $value,
-                        ];
-                        $old[] = [
-                            $key => $poll->user->$key,
-                        ];
-                        $poll->user->$key = $value;
-                    }
                 } else {
-                    if ($value != $poll->$key) {
-                        $data[] = [
-                            $key => $value,
-                        ];
-                        $old[] = [
-                            $key => $poll->$key,
-                        ];
-                        $poll->$key = $value;
+                    if ($poll->user_id && ($key == 'name' || $key == 'email')) {
+                        if ($value != $poll->user->$key) {
+                            $data[] = [
+                                $key => $value,
+                            ];
+                            $old[] = [
+                                $key => $poll->user->$key,
+                            ];
+                            $poll->user->$key = $value;
+                        }
+                    } else {
+                        if ($value != $poll->$key) {
+                            $data[] = [
+                                $key => $value,
+                            ];
+                            $old[] = [
+                                $key => $poll->$key,
+                            ];
+                            $poll->$key = $value;
+                        }
                     }
                 }
             }
 
             $poll->save();
-            $poll->user->save();
+            if ($poll->user_id) {
+                $poll->user->save();
+            }
 
             //If have change about poll, system will send a email to poll creator
             if ($data) {
-                $creatorMail = $poll->user->email;
+                $creatorMail = ($poll->user_id) ? $poll->user->email : $poll->mail;
+                $creatorName = ($poll->user_id) ? $poll->user->name : $poll->name;
 
                 //send mail to creator
-                Mail::send('layouts.mail_notification', compact('data', 'old', 'now'),
+                Mail::queue('layouts.mail_notification', compact('data', 'old', 'now', 'creatorName'),
                     function ($message) use ($creatorMail) {
                     $message->to($creatorMail)->subject(trans('label.mail.edit_poll.head'));
                 });
@@ -593,6 +674,7 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
             DB::commit();
         } catch (Exception $ex) {
             DB::rollBack();
+            dd($ex);
             $message = trans('polls.message.update_poll_info_fail');
         }
 
@@ -611,10 +693,12 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
     public function editPollOption($input, $id)
     {
         $poll = Poll::with('options')->find($id);
+        $pollId = $id;
         $now = Carbon::now();
         $options = [];
 
         try {
+            $oldOptions = $poll->options;
             DB::beginTransaction();
 
             /*
@@ -654,7 +738,15 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
 
             if ($input['optionImage']) {
                 foreach ($input['optionImage'] as $key => $image) {
-                    $nameOptionImage['optionImage'][$key] = uniqid(rand(), true) . '.' . $image->getClientOriginalExtension();
+                    $path = public_path() . config('settings.option.path_image');
+                    $pathFileOption = '';
+
+                    do {
+                        //upload file
+                        $fileOption =  uniqid(rand(), true) . '.' . $image->getClientOriginalExtension();
+                        $pathFileOption = $path . $fileOption;
+                        $nameOptionImage['optionImage'][$key] = $fileOption;
+                    } while (File::exists($pathFileOption));
                 }
             }
 
@@ -699,14 +791,7 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
 
                     try {
                         $path = public_path() . config('settings.option.path_image');
-                        $pathFileOption = '';
-
-                        do {
-                            //upload file
-                            $fileOption =  uniqid(rand(), true) . '.' . $nameOptionImage['optionImage'][$key];
-                            $pathFileOption = $path . $fileOption;
-                        } while (File::exists($pathFileOption));
-
+                        $pathFileOption = $path . $nameOptionImage['optionImage'][$key];;
                         $optionImage->move($path, $pathFileOption);
                     } catch (Exception $ex) {
                         throw new Exception(trans('polls.message.upload_image_fail'));
@@ -784,6 +869,16 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
             }
 
             DB::commit();
+            $newPoll = Poll::with('options', 'user')->findOrFail($pollId);
+            $newOptions = $newPoll->options;
+            $creatorName = $newPoll->user->name;
+            $creatorMail = $newPoll->user->email;
+
+            //send mail to creator
+            Mail::queue(config('settings.view.mail_edit_option'), compact('oldOptions', 'newOptions', 'now', 'creatorName'),
+                function ($message) use ($creatorMail) {
+                    $message->to($creatorMail)->subject(trans('label.mail.edit_poll.head'));
+            });
             $message = trans('polls.message.update_option_success');
         } catch (Exception $ex) {
             DB::rollBack();
@@ -796,122 +891,103 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
     public function editPollSetting($input, $id)
     {
         $poll = Poll::with('settings')->find($id);
+        $pollId = $id;
         $now = Carbon::now();
-
         try {
+            $oldSettings = $this->showSetting($poll->settings);
             DB::beginTransaction();
 
             /* ---------------------------------
              *              SETTING
              *-----------------------------------*/
             // remove setting
-            foreach ($poll->settings as $setting) {
-                if (! in_array($setting->key, $input['setting'])) {
-                    Setting::find($setting->id)->delete();
-                }
-            }
-
-            // add setting
-            $oldSetting = $poll->settings->pluck('value', 'key')->toArray();
-            $newData = [];
-
-            foreach ($input['setting'] as $inputName => $setting) {
-                $value = null;
-
-                if (isset($input['value'][$inputName]) && $input['value'][$inputName]) {
-                    $value = $input['value'][$inputName];
-
-                    if ($setting == config('settings.setting.set_password')) {
-                        $value = bcrypt($input['value'][$inputName]);
+            if (is_null($input['setting'])) {
+                Setting::where('poll_id', $id)->delete();
+            } else {
+                foreach ($poll->settings as $setting) {
+                    if (! in_array($setting->key, $input['setting'])) {
+                        Setting::find($setting->id)->delete();
                     }
                 }
 
-                if (empty($oldSetting[$setting])) {
-                    $newData[] = [
-                        'poll_id' => $id,
-                        'key' => $setting,
-                        'value' => $value,
-                        'created_at' => $now,
-                    ];
-                }
-            }
+                // add setting
+                $oldSetting = $poll->settings->pluck('value', 'key')->toArray();
+                $newData = [];
+                $settingConfig = config('settings.setting');
 
-            if ($newData) {
-                Setting::insert($newData);
-            }
+                foreach ($input['setting'] as $setting) {
+                    $value = null;
 
-            // edit value of setting
-            $settingId = $poll->settings->pluck('id', 'key')->toArray();
-            foreach ($input['setting'] as $name => $key) {
-                if (empty($input['value'][$name])) {
-                    continue;
-                }
+                    if ($setting == $settingConfig['custom_link']) {
+                        $value = $input['value']['link'];
+                    } elseif ($setting == $settingConfig['set_limit']) {
+                        $value = $input['value']['limit'];
+                    } elseif ($setting == $settingConfig['set_password']) {
+                        $value = $input['value']['password'];
+                    }
 
-                $value = ($key == config('settings.setting.set_password')) ? bcrypt($input['value'][$name]) : $input['value'][$name];
-
-                if ($oldSetting[$key] != $input['value'][$name]) {
-                    Setting::find($settingId[$key])->update([
-                        'value' => $value
-                    ]);
-                }
-            }
-
-            DB::commit();
-
-            /* ---------------------------------
-             *              PARTICIPANT
-             *-----------------------------------*/
-            if ($input['participant']) {
-                $participants = explode(',', $input['participant']);
-                $emails = [];
-
-                foreach ($participants as $participant) {
-                    if (filter_var($participant, FILTER_VALIDATE_EMAIL)) {
-                        $emails[] = $participant;
+                    if (! array_key_exists($setting, $oldSetting)) {
+                        $newData[] = [
+                            'poll_id' => $id,
+                            'key' => $setting,
+                            'value' => $value,
+                            'created_at' => $now,
+                        ];
                     }
                 }
 
-                if ($emails) {
-                    $settingToken = Setting::where([
-                        'poll_id' => $id,
-                        'key' => config('settings.setting.custom_link')
-                    ])->first();
+                if ($newData) {
+                    Setting::insert($newData);
+                } else {
+                    // edit value of setting
+                    $settingId = $poll->settings->pluck('id', 'key')->toArray();
 
-                    if ($settingToken) {
-                        $token = $settingToken->value;
-                    } else {
-                        $pollToken = Link::where([
-                            'poll_id'=> $id,
-                            'link_admin'=> config('settings.link_poll.vote'),
-                        ])->first();
-
-                        if ($pollToken) {
-                            $token = $pollToken->token;
-                        } else {
-                            $token = str_random(16);
-                            Link::firstOrCreate([
-                                'poll_id' => $id,
-                                'token' => $token,
-                                'link_admin' => config('settings.link_poll.vote'),
+                    foreach ($input['setting'] as $key) {
+                        if ($key == $settingConfig['custom_link']) {
+                            Setting::find($settingId[$key])->update([
+                                'value' => $input['value']['link']
+                            ]);
+                            Link::where(['poll_id' => $id, 'link_admin' => config('settings.link_poll.vote')])->update([
+                                'token' => $input['value']['link']
+                            ]);
+                        } elseif ($key == $settingConfig['set_limit']) {
+                            Setting::find($settingId[$key])->update([
+                                'value' => $input['value']['limit']
+                            ]);
+                        } elseif ($setting == $settingConfig['set_password']) {
+                            Setting::find($settingId[$key])->update([
+                                'value' => $input['value']['password']
                             ]);
                         }
                     }
-
-                    $linkMail = url("/") . config('settings.email.link_vote') . $token;
-
-                    //send mail for member
-                    Mail::send('layouts.participant-mail', [
-                        'link' => $linkMail,
-                    ], function ($message) use ($emails) {
-                        $message->to($emails)->subject(trans('label.mail.subject'));
-                    });
                 }
 
+
+
             }
+
+            DB::commit();
+            $newPoll = Poll::with('user', 'settings')->findOrFail($pollId);
+            $newSettings = $this->showSetting($newPoll->settings);
+
+            if ($poll->user_id) {
+                $creatorName = $newPoll->user->name;
+                $creatorMail = $newPoll->user->email;
+            } else {
+                $creatorName = $newPoll->name;
+                $creatorMail = $newPoll->email;
+            }
+
+            //send mail to creator
+            Mail::queue(config('settings.view.mail_edit_setting'), compact('newSettings', 'oldSettings', 'now', 'creatorName'),
+                function ($message) use ($creatorMail) {
+                    $message->to($creatorMail)->subject(trans('label.mail.edit_poll.head'));
+                });
 
             $message = trans('polls.message.update_setting_success');
         } catch (Exception $ex) {
             DB::rollBack();
+            dd($ex);
             $message = trans('polls.message.update_setting_fail');
         }
 
@@ -984,7 +1060,7 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
 
         if ($isKey) {
             //return result status key: 0, 1
-            if ($status =  $trans['poll_opening'] || $status == $trans['poll_opening']) {
+            if ($status ==  $trans['opening'] || $status == $trans['poll_opening']) {
                 return $config['open'];
             }
 
@@ -993,10 +1069,10 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
 
         //return result type text: closed, opening
         if ($status == $trans['poll_opening'] || $status == $config['open']) {
-            return $trans['open'];
+            return $trans['opening'];
         }
 
-        return $trans['close'];
+        return $trans['closed'];
     }
 
     public function getType($type, $isKey)
@@ -1013,4 +1089,198 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
         return ($type == $config['multiple_choice'] ? $trans['multiple_choice']: $trans['single_choice']);
     }
 
+    /*
+     * get vote first of poll
+     */
+    public function getTimeFirstVote($poll) {
+        $now = Carbon::now();
+        $timeFirstVotePoll = $now;
+
+        foreach ($poll->options as $option) {
+            $voteFirst = Vote::where('option_id', $option->id)->orderBy('created_at', 'asc')->get()->first();
+            $participantFirst = ParticipantVote::where('option_id', $option->id)->orderBy('created_at', 'asc')->get()->first();
+            $userVoteFirst = ($voteFirst) ? $voteFirst->created_at : $timeFirstVotePoll;
+            $participantVoteFirst = ($participantFirst) ? $participantFirst->created_at : $timeFirstVotePoll;
+            $timeFirstVoteOption = (strcmp($userVoteFirst, $participantVoteFirst) < 0) ? $userVoteFirst : $participantVoteFirst;
+            $timeFirstVotePoll = ($timeFirstVoteOption < $timeFirstVotePoll) ? $timeFirstVoteOption: $timeFirstVotePoll;
+        }
+        return ($timeFirstVotePoll == $now) ? '' : $timeFirstVotePoll;
+    }
+
+    /*
+    * get vote last of poll
+    */
+    public function getTimeLastVote($poll)
+    {
+        $timeLastVotePoll = $poll->created_at;
+
+        foreach ($poll->options as $option) {
+            $voteLast = Vote::where('option_id', $option->id)->orderBy('created_at', 'desc')->get()->first();
+            $participantLast = ParticipantVote::where('option_id', $option->id)->orderBy('created_at', 'desc')->get()->first();
+            $userVoteLast = ($voteLast) ? $voteLast->created_at : $timeLastVotePoll;
+            $participantVoteLast = ($participantLast) ? $participantLast->created_at : $timeLastVotePoll;
+            $timeLastVoteOption = (strcmp($userVoteLast, $participantVoteLast) < 0) ? $participantVoteLast : $userVoteLast;
+            $timeLastVotePoll = ($timeLastVoteOption > $timeLastVotePoll) ? $timeLastVoteOption: $timeLastVotePoll;
+        }
+
+        return ($timeLastVotePoll == $poll->created_at) ? '' : $timeLastVotePoll;
+    }
+
+    /*
+     * get total vote of poll
+     */
+    public function getTotalVotePoll($poll)
+    {
+        $voteTotal = 0;
+
+        foreach ($poll->options as $option) {
+            $voteTotal += $option->countVotes();
+        }
+
+        return $voteTotal;
+    }
+
+    public function getOptionLargestVote($poll)
+    {
+        $numberOfLargestVote = 0;
+        $largestVote = null;
+
+        foreach ($poll->options as $option) {
+            if ($option->countVotes() > $numberOfLargestVote) {
+                $numberOfLargestVote = $option->countVotes();
+                $largestVote = $option;
+            }
+        }
+
+        $optionLargestVote = [];
+
+        foreach ($poll->options as $option) {
+            if ($option->countVotes() == $numberOfLargestVote) {
+                $optionLargestVote[] = $option;
+            }
+        }
+
+        return [
+            'number' => $numberOfLargestVote,
+            'option' => $optionLargestVote,
+        ];
+    }
+
+    /*
+    * get option have number vote least
+    */
+    public function getOptionLeastVote($poll)
+    {
+        $numberOfLeastVote = $this->getTotalVotePoll($poll);
+        $leastVote = null;
+
+        foreach ($poll->options as $option) {
+            if ($option->countVotes() < $numberOfLeastVote) {
+                $numberOfLeastVote = $option->countVotes();
+                $leastVote = $option;
+            }
+        }
+
+        $optionLeastVote = [];
+
+        foreach ($poll->options as $option) {
+            if ($option->countVotes() == $numberOfLeastVote) {
+                $optionLeastVote[] = $option;
+            }
+        }
+
+        return [
+            'number' => $numberOfLeastVote,
+            'option' => $optionLeastVote,
+        ];
+    }
+    /*
+     * get option return table
+     */
+    public function getDataTableResult($poll, $isRequiredEmail)
+    {
+        $dataTableResult = [];
+
+        foreach ($poll->options as $option) {
+
+            //Get vote last of option
+            $voteLast = Vote::where('option_id', $option->id)->get()->last();
+            $participantLast = ParticipantVote::where('option_id', $option->id)->get()->last();
+            $userVoteLast = ($voteLast) ? $voteLast->created_at : '';
+            $participantVoteLast = ($participantLast) ? $participantLast->created_at : '';
+
+            $dataTableResult[] = [
+                'name' => $option->name,
+                'image' => $option->showImage(),
+                'numberOfVote' => $option->countVotes(),
+                'lastVoteDate' => (strcmp($userVoteLast, $participantVoteLast) < 0) ? $participantVoteLast : $userVoteLast,
+                'vote' => $option->getListOwnerVoted($isRequiredEmail),
+            ];
+        }
+
+        return $dataTableResult;
+    }
+
+    public function showSetting($settings)
+    {
+        $dataRtn = [];
+        $trans = trans('polls.label.setting');
+        $config = config('settings.setting');
+
+        foreach ($settings as $setting) {
+            if ($setting->key == $config['required_email']) {
+                $dataRtn[] = [
+                    $trans['required_email'] => null
+                ];
+            }
+            if ($setting->key == $config['hide_result']) {
+                $dataRtn[] = [
+                    $trans['hide_result'] => null
+                ];
+            }
+            if ($setting->key == $config['custom_link']) {
+                $dataRtn[] = [
+                    $trans['custom_link'] => $setting->value
+                ];
+            }
+            if ($setting->key == $config['set_limit']) {
+                $dataRtn[] = [
+                    $trans['set_limit'] => $setting->value
+                ];
+            }
+            if ($setting->key == $config['set_password']) {
+                $dataRtn[] = [
+                    $trans['set_password'] => $setting->value
+                ];
+            }
+            if ($setting->key == $config['is_set_ip']) {
+                $dataRtn[] = [
+                    $trans['is_set_ip'] => null
+                ];
+            }
+        }
+
+        return $dataRtn;
+    }
+
+    public function sendMailAgain($poll, $link, $password)
+    {
+        $creatorView = config('settings.view.poll_mail');
+        $email = ($poll['user_id']) ? $poll['user']['email'] : $poll['email'];
+        $data = [
+            'userName' => ($poll['user_id']) ? $poll['user']['name'] : $poll['name'],
+            'title' => $poll['title'],
+            'type' => $this->getType($poll['multiple'], false),
+            'location' => $poll['location'],
+            'description' => $poll['description'],
+            'closeDate' => $poll['date_close'],
+            'createdAt' => $poll['created_at'],
+            'linkVote' => $link['participant'],
+            'linkAdmin' => $link['administration'],
+            'password' => $password,
+        ];
+        $subject = trans('label.mail.subject');
+        $this->sendEmail($email, $creatorView, $data, $subject, 'creator');
+    }
 }
+

@@ -15,8 +15,8 @@ return [
 
     'failed' => 'These credentials do not match our records.',
     'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
-    'facebook_login' => 'Sign in with Facebook',
-    'twitter_login' => 'Sign in with Twitter',
-    'google_login' => 'Sign in with Google',
+    'facebook_login' => 'Facebook',
+    'twitter_login' => 'Twitter',
+    'google_login' => 'Google',
 
 ];

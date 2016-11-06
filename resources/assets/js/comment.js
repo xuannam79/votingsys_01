@@ -10,7 +10,7 @@ $(document).ready(function(){
     $('#add-comment').on('click', function() {
         divChangeAmount = $(this).parent();
 
-        if ( $('#form-comment').css('display') == 'none' ) {
+        if ($('#form-comment').css('display') == 'none') {
             $('#form-comment').show();
             var labelHide = divChangeAmount.data('labelHide');
             $('#add-comment').html(labelHide);
@@ -25,7 +25,7 @@ $(document).ready(function(){
     $('#show-hide-list-comment').on('click', function() {
         divChangeAmount = $(this).parent();
 
-        if ( $('.comments').css('display') == 'none' ) {
+        if ($('.comments').css('display') == 'none') {
             $('.comments').show();
             var labelHide = divChangeAmount.data('labelHide');
             $('#show-hide-list-comment').html(labelHide);
@@ -49,16 +49,22 @@ $(document).ready(function(){
         var isInputCorrect = true;
 
         if (name == '') {
-            $('.comment-name-validate').html(commentName);
+            $('.comment-name-validate').addClass('alert alert-warning');
+            var message = "<span class='glyphicon glyphicon-warning-sign'></span>" + ' ' + commentName;
+            $('.comment-name-validate').html(message);
             isInputCorrect = false;
         } else {
+            $('.comment-name-validate').removeClass('alert alert-warning');
             $('.comment-name-validate').html('');
         }
 
         if (content == '') {
-            $('.comment-content-validate').html(commentContent);
+            $('.comment-content-validate').addClass('alert alert-warning');
+            var message = "<span class='glyphicon glyphicon-warning-sign'></span>" + ' ' + commentContent;
+            $('.comment-content-validate').html(message);
             isInputCorrect = false;
         } else {
+            $('.comment-content-validate').removeClass('alert alert-warning');
             $('.comment-content-validate').html('');
         }
 

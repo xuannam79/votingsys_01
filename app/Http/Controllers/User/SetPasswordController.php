@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\User;
 
+use Session;
 use App\Models\Setting;
 use App\Http\Requests;
 use Illuminate\Http\Request;
@@ -19,21 +20,22 @@ class SetPasswordController extends Controller
 
     public function store(Request $request)
     {
-        if ($request->ajax()) {
-            $inputs = $request->only('poll_id', 'password');
-            $poll = $this->pollRepository->find($inputs['poll_id']);
+        $inputs = $request->only('poll_id', 'password', 'token');
+        $poll = $this->pollRepository->find($inputs['poll_id']);
 
-            if (! $poll) {
-                return response()->json(['success' => false]);
-            }
-
-            $password = Setting::where('poll_id', $inputs['poll_id'])->where('key', config('settings.setting.set_password'))->first()->value;
-
-            if ($password && $password == $inputs['password']) {
-                return response()->json(['success' => true]);
-            }
+        if (! $poll) {
+            return view('errors.show_errors')->with('message', trans('polls.poll_not_found'));
         }
 
-        return response()->json(['success' => false]);
+        $password = Setting::where('poll_id', $inputs['poll_id'])->where('key', config('settings.setting.set_password'))->first()->value;
+        $url = url('/link') . '/' . $inputs['token'];
+
+        if ($password && $password == $inputs['password']) {
+            Session::put('isInputPassword', true);
+        } else {
+            Session::put('isInputPassword', false);
+        }
+
+        return redirect()->to($url);
     }
 }

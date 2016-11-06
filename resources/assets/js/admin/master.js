@@ -128,37 +128,6 @@ function addOption(data) {
     createOption(view, number);
 }
 
-//create email participants
-function createEmailParticipant(viewEmail, number, oldInput) {
-    number = (typeof number == 'undefined') ? 3 : number;
-
-    if (oldInput) {
-        $(".email-participant").show();
-        var oldEmailParticipant = oldInput.email_poll;
-        jQuery.each( oldEmailParticipant, function( id, val ) {
-            var emailParticipant = "";
-            emailParticipant = viewEmail.replace(/idEmail/g, id);
-            $('.email-invited').append(emailParticipant);
-            $('#email-poll-' + id).val(val);
-        });
-    } else {
-        for (var i = 0; i < number; i++) {
-            var id = rand();
-            var emailParticipant = "";
-            emailParticipant = viewEmail.replace(/idEmail/g, id);
-            $('.email-invited').append(emailParticipant);
-        }
-    }
-}
-
-//add email
-function addEmail(data) {
-    var number = $('#number-email').val();
-    var view = data.view.email;
-    number = (typeof number == 'undefined' || number == "") ? 1 : number;
-    createEmailParticipant(view, number);
-}
-
 //setting
 $(function() {
     $('#custom_link').change(function() {
@@ -227,7 +196,7 @@ $(document).ready(function() {
     if (typeof data !== 'undefined') {
 
         //change participant
-        $('input[type=radio][name=invite]').change(function () {
+        $('input[type=radio][name=participant]').change(function () {
             if (this.value == data.message.config.invite_all) {
                 $('.email-participant').hide('slow');
             }
@@ -310,3 +279,18 @@ function changeStatusOfPoll(pollId) {
         }
     });
 }
+
+//show advance setting: custom link, set limit, set password
+ function settingAdvance(key) {
+     var dataCreatePoll = $('.hide').data("poll");
+        console.log(dataCreatePoll);
+    if (typeof dataCreatePoll !== "undefined") {
+         if (key == dataCreatePoll.message.setting.link) {
+             $("#new-link").slideToggle();
+         } else if (key == dataCreatePoll.message.setting.limit) {
+             $("#set-limit").slideToggle();
+         } else if (key == dataCreatePoll.message.setting.password) {
+             $("#set-password").slideToggle();
+         }
+     }
+ }

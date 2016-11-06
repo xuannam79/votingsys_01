@@ -18,6 +18,7 @@ return [
         '2' => 'Other',
     ],
     'gender_constant' => [
+        '' => 3,
         'male' => 1,
         'female' => 0,
         'other' => 2,
@@ -31,6 +32,10 @@ return [
         'edit_vote' => '6',
     ],
     'image_default_path' => 'uploads/avatar/default.jpg',
+    'user' => [
+        'register' => 1,
+        'create_poll' => 0,
+    ],
 
     /**-------------------------------
      * Poll config
@@ -41,7 +46,7 @@ return [
         'title' => 255,
         'description' => 255,
         'link' => 16,
-        'option' => 5,
+        'option' => 3,
         'number_record' => 10,
         'number_option' => 1,
         'number_limit' => 2,
@@ -61,19 +66,11 @@ return [
     ],
     'setting' => [
         'required_email' => 1,
-        'add_answer' => 2,
-        'hide_result' => 3,
-        'custom_link' => 4,
-        'set_limit' => 5,
-        'set_password' => 6,
-    ],
-    'input_setting' => [
-        'email' => 'required_email',
-        'answer' => 'add_answer',
-        'result' => 'hide_result',
-        'link' => 'custom_link',
-        'limit' => 'set_limit',
-        'password' => 'set_password',
+        'hide_result' => 2,
+        'custom_link' => 3,
+        'set_limit' => 4,
+        'set_password' => 5,
+        'is_set_ip' => 6,
     ],
     'participant' => [
         'invite_all' => 0,
@@ -89,6 +86,9 @@ return [
     'search_all' => 3,
     'view' => [
         'poll_mail' => 'layouts.poll_mail',
+        'participant_mail' => 'layouts.participant_mail',
+        'mail_edit_option' => 'layouts.mail_edit_option',
+        'mail_edit_setting' => 'layouts.mail_edit_setting'
     ],
     'type' => [
         'user' => 'user',
@@ -97,8 +97,12 @@ return [
     'date_format' => 'h:i:s A d/m/Y',
     'language' => [
         'en' => 'English',
-        'vi' => 'Việt Nam',
-        'ja' => 'Japanish',
+        'vi' => 'Tiếng Việt',
+        'ja' => '日本語',
     ],
     'locale' => ['vi', 'en', 'ja'],
+    'default_value' => 0,
+    'limit_link' => 60,
+    'limit_name' => 80,
+    'is_active' => 1,
 ];

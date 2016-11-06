@@ -1,5 +1,315 @@
+/*-----------------------------
+/*        CUSTOM MENU         *
+-------------------------------*/
+.navbar-default .navbar-nav > li > a:hover, .navbar-default .navbar-nav > li > a:focus {
+  color: #000;  /*Sets the text hover color on navbar*/
+}
+
+.navbar-default .navbar-nav > .active > a, .navbar-default .navbar-nav > .active >
+a:hover, .navbar-default .navbar-nav > .active > a:focus {
+  color: white; /*BACKGROUND color for active*/
+  background: #ff8d00 !important
+}
+
+.navbar-default {
+  background: darkcyan !important;
+  border: darkcyan !important;
+  box-shadow: 2px 2px 20px black;
+  border-radius: 0 !important;
+}
+
+.dropdown-menu > li > a:hover {
+  color: #262626;
+  text-decoration: none;
+  background-color: #66CCFF;  /*change color of links in drop down here*/
+}
+
+.nav > li > a {
+  transition: all ease 0.5s;
+  -moz-transition: all ease 0.5s;
+  -webkit-transition: all ease 0.5s;
+  -o-transition: all ease 0.5s;
+  position: relative;
+}
+
+.nav > li > a::after {
+  content: '';
+  display: block;
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  height: 5px;
+  width: 0;
+  background: transparent;
+  transition: width .5s ease, background-color .5s ease, left .5s ease;
+}
+
+.nav-menu > li > a:hover::after {
+  width: 100%;
+  left: 0;
+  background: #EE7600;
+}
+
+.voting>li>a:focus, .voting>li>a:hover {
+  border-color: transparent !important;
+  background: transparent !important;
+}
+
+.nav-menu>li>a:focus, .nav-menu>li>a:hover {
+  color: white !important;
+}
+
+.panel-body-explain {
+  background: -webkit-linear-gradient(#F9EFAF, #F7E98D);
+  background: -moz-linear-gradient(#F9EFAF, #F7E98D);
+  background: -o-linear-gradient(#F9EFAF, #F7E98D);
+  background: -ms-linear-gradient(#F9EFAF, #F7E98D);
+  background: linear-gradient(#F9EFAF, #F7E98D);
+  box-shadow:0 4px 6px rgba(0,0,0,0.1);
+}
+
+.navbar-default .navbar-nav > li > a {
+  color: white; /*Change active text color here*/
+}
+
+.navbar-brand {
+  color: white !important;
+}
+/*-------------------------------
+/*       END CUSTOM MENU         *
+-------------------------------*/
+
+/*-------------------------------
+    BackToTop button css
+--------------------------------*/
+#scroll {
+  position:fixed;
+  right:10px;
+  bottom:10px;
+  cursor:pointer;
+  width:50px;
+  height:50px;
+  background-color: #EE7600;
+  text-indent:-9999px;
+  display:none;
+  -webkit-border-radius:60px;
+  -moz-border-radius:60px;
+  border-radius:60px;
+  z-index: 1000;
+}
+#scroll span {
+  position:absolute;
+  top:50%;
+  left:50%;
+  margin-left:-8px;
+  margin-top:-12px;
+  height:0;
+  width:0;
+  border:8px solid transparent;
+  border-bottom-color:#ffffff
+}
+#scroll:hover {
+  background-color: red;
+  opacity:1;filter:"alpha(opacity=100)";
+  -ms-filter:"alpha(opacity=100)";
+}
+
+/*-------------------------------
+/*       START ICON ADD POLL    *
+-------------------------------*/
+.board .nav-tabs {
+  position: relative;
+  /* border-bottom: 0; */
+  /* width: 80%; */
+  margin-bottom: 0;
+  box-sizing: border-box;
+
+}
+
+.board > div.board-inner > .nav-tabs {
+  border: none;
+}
+
+p.narrow{
+  width: 60%;
+  margin: 10px auto;
+}
+
+.liner{
+  height: 2px;
+  background: #ddd;
+  position: absolute;
+  width: 100%;
+  left: 0;
+  right: 0;
+  top: 50%;
+  z-index: 1;
+}
+
+.nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
+  color: #555555;
+  cursor: default;
+  border: 0;
+  border-bottom-color: transparent;
+  outline: 0;
+}
+
+span.round-tabs{
+  width: 35px;
+  height: 35px;
+  line-height: 30px;
+  display: inline-block;
+  border-radius: 100px;
+  background: white;
+  z-index: 2;
+  position: absolute;
+  left: 0;
+  text-align: center;
+  font-size: 25px;
+}
+
+span.round-tabs.one{
+  border: 2px solid #ddd;
+  color: #ddd;
+}
+
+li.active span.round-tabs.one,
+li.active span.round-tabs.two,
+li.active span.round-tabs.three,
+li.active span.round-tabs.four{
+  background: darkcyan !important;
+  border: 2px solid darkcyan;
+  color: #fff;
+}
+
+span.round-tabs.two{
+  border: 2px solid #ddd;
+  color: #ddd;
+}
+
+span.round-tabs.three{
+  border: 2px solid #ddd;
+  color: #ddd;
+}
+
+span.round-tabs.four{
+  border: 2px solid #ddd;
+  color: #ddd;
+}
+
+.nav-tabs > li.active > a span.round-tabs{
+  background: #fafafa;
+}
+.nav-tabs > li {
+  width: 23%;
+}
+
+.nav-tabs > li a{
+  width: 70px;
+  height: 35px;
+  border-radius: 100%;
+  padding: 0;
+}
+
+.nav-tabs > li a:hover{
+  background: transparent;
+}
+
+.tab-pane{
+  position: relative;
+}
+
+.btn-outline-rounded{
+  padding: 10px 40px;
+  margin: 20px 0;
+  border: 2px solid transparent;
+  border-radius: 25px;
+}
+
+.btn.green{
+  background-color:darkcyan;
+  color: #ffffff;
+}
+
+@media( max-width : 585px ){
+
+  .board {
+    width: 90%;
+    height:auto !important;
+  }
+  span.round-tabs {
+    font-size:16px;
+    width: 50px;
+    height: 50px;
+    line-height: 50px;
+  }
+  .tab-content .head{
+    font-size:20px;
+  }
+  .nav-tabs > li a {
+    width: 50px;
+    height: 50px;
+    line-height:50px;
+  }
+
+  li.active:after {
+    content: " ";
+    position: absolute;
+    left: 35%;
+  }
+
+  .btn-outline-rounded {
+    padding:12px 20px;
+  }
+}
+
+.step:hover {
+  border-color: white !important;
+}
+.step:focus {
+  border-color: white !important;
+}
+.step:active {
+  border-color: white !important;
+  background: white !important;
+}
+
+.step{
+  border: none !important;
+  display: block;
+  margin: 0 auto;
+}
+
+/*-------------------------------
+/*       END ICON ADD POLL    *
+-------------------------------*/
+
+/*----------------------------
+/*  CREATE POLL               *
+/*----------------------------*/
+#create_poll_wizard .tab-pane {
+  padding-top: 0;
+}
+#create_poll_wizard .progress {
+  margin-bottom: 0 !important;
+  height: 10px;
+  border-radius: 0 !important;
+}
+/*-------------------------------------------/
+/               LAYOUT.APP                  /
+/-------------------------------------------*/
+
 body {
-  background: url("http://www.ibox-security.co.uk/wp-content/uploads/2013/06/Website-Design-Background-1.jpg") repeat;
+  background: rgba(0, 139, 139, 0.65) !important
+}
+
+.navbar-app {
+  border-radius: 0 !important;
+}
+
+.char-app {
+  font-size: 50px;
+  font-family: serif;
 }
 
 .create-poll {
@@ -7,19 +317,129 @@ body {
   border-radius: 10px;
 }
 
+.multiple-lang {
+  margin-top: 10px;
+}
+
+.content {
+  margin-top: 20px;
+  min-height: 900px
+}
+
+/*-------------------------------------------/
+/               AUTH.LOGIN                   /
+/-------------------------------------------*/
+.login {
+  margin-top: 20px;
+}
+
+.btn-login {
+  border-radius: 0 !important;
+  transition: all 1s;
+  -moz-transition: all 1s;
+  -webkit-transition: all 1s;
+  -o-transition: all 1s;
+}
+
+.btn-login:hover {
+  font-size: 20px;
+}
+
+.btn-social-login {
+  margin-top: 10px;
+}
+
+.register-text {
+  float: right !important;
+}
+
+/*-------------------------------------------/
+/               AUTH.REGISTER                /
+/-------------------------------------------*/
+.register {
+  margin-top: 20px;
+}
+
+.btn-register {
+  border-radius: 0 !important;
+  transition: all 1s;
+  -moz-transition: all 1s;
+  -webkit-transition: all 1s;
+  -o-transition: all 1s;
+}
+
+.btn-register:hover {
+  font-size: 20px;
+}
+
+/*-------------------------------------------/
+/               USER.POLL.DETAIL             /
+/-------------------------------------------*/
+.title {
+  text-align: center;
+}
+
+.panel-poll {
+  transition: all 1s;
+  -moz-transition: all 1s;
+  -webkit-transition: all 1s;
+  -o-transition: all 1s;
+}
+
+.panel-poll:hover {
+  box-shadow: 2px 2px 2px black;
+}
+
+.selection-option {
+  position: fixed;
+}
+
+#vote-layout {
+  position: fixed;
+}
+
+.nav-pills>li>a {
+  border-radius: 0 !important;
+}
+
+.panel-content {
+  border-radius: 0 !important;
+}
+
+.img-option {
+  cursor: pointer;
+}
+
+#imageOfOptionPreview {
+  width: 350px;
+  height:350px;
+}
+
+/*-------------------------------------------/
+/               USER.POLL.MANAGER             /
+/-------------------------------------------*/
+.activity-poll {
+  margin-top: 10px;
+}
+
+.image-option {
+  width: 100px;
+  height: 100px;
+}
+
+.btn-delete-option-duplicate {
+  float: right;
+}
+
 .file {
   display: none !important;
 }
 
 .preview-image {
+  margin-top: 10px;
   display: none;
-  height: 200px;
-  margin-top: 20px;
-  width: 200px;
-}
-
-.email-participant {
-  display: none;
+  height: 100px;
+  width:100px;
 }
 
 .setting-advance {
@@ -30,18 +450,15 @@ body {
   border: 1px solid red !important;
 }
 
-#email-participant {
-  display: none;
-}
 
 .wizard {
-  margin: 20px auto;
+  margin: 10px auto;
   background: #fff;
 }
 
 .wizard .nav-tabs {
   position: relative;
-  margin: 40px auto;
+  margin: 10px auto;
   margin-bottom: 0;
   border-bottom-color: #e0e0e0;
 }
@@ -173,4 +590,187 @@ span.round-tab:hover {
     position: absolute;
     left: 35%;
   }
+}
+
+.required::after {
+  content: '(*)';
+  color: red;
+  position: absolute;
+}
+
+.wrap-poll {
+  min-height: 400px !important;
+}
+
+.bootstrap-tagsinput {
+  min-height: 100px;
+  min-width: 100%;
+}
+
+.wizard {
+  background: none !important;
+}
+
+.btn-change-step {
+  color: white !important;
+}
+
+.btn-change-step:hover, .btn-change-step:focus {
+  background-position: 0 !important;
+}
+
+#title-success {
+  color: green;
+}
+
+.btn-finish {
+  float: right;
+}
+
+#title-warning {
+  color: orange;
+}
+
+.image_edit {
+  margin-top: 0 !important;
+}
+
+.footer {
+  clear: both;
+  margin-top: 10px;
+  background: black;
+  color: #9d9d9d;
+  padding: 10px;
+  z-index: 3;
+  width:100%;
+  bottom: 0;;
+  height: 100px;
+}
+
+.triangle {
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 50px 0 50px 80px;
+  border-color: transparent transparent transparent black;
+}
+
+.btn-darkcyan {
+  background: darkcyan !important;
+  border-color: darkcyan !important;
+  box-shadow: 1px 1px 1px black;
+  border-radius: 0;
+}
+
+.bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-primary, .bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-primary {
+  background: darkcyan !important;
+}
+
+.nav-pills>li.active>a, .nav-pills>li.active>a:focus, .nav-pills>li.active>a:hover {
+  background: darkcyan !important;
+  color: white !important;
+}
+
+.panel-voted {
+  transition: all ease 0.5s;
+  -moz-transition: all ease 0.5s;
+  -webkit-transition: all ease 0.5s;
+  -o-transition: all ease 0.5s;
+}
+
+.panel-voted:hover {
+  box-shadow: 2px 2px 2px black;
+}
+.btn-vote {
+  background: darkcyan !important;
+  color: white !important;
+  border-color: darkcyan !important;
+}
+
+.addComment {
+  background: darkcyan;
+  margin-top: 10px;
+  border-color: darkcyan;
+  color: white;
+}
+
+.addComment:hover, .addComment:focus, .addComment:active {
+  color: white;
+}
+
+.error-input {
+  border-color: red;
+}
+.title-warning {
+  color: orange;
+}
+
+@media (max-width: 1200px) {
+  body > .container-fluid {
+    margin-bottom: 400px ;
+  }
+  footer {
+    height: 400px;
+  }
+}
+
+@media (min-width: 1200px) {
+  body > .container-fluid {
+    margin-bottom: 140px;
+  }
+  footer {
+    height: 140px;
+  }
+}
+
+.btn-input-password {
+  background: darkcyan;
+  border-color: darkcyan;
+  color: white;
+  border-radius: 0;
+}
+
+.btn-input-password:hover, .btn-input-password:focus, .btn-input-password:active {
+  color: white;
+  background: darkcyan;
+  box-shadow: 2px 2px 2px black;
+  border-color: darkcyan;
+}
+
+.btn-edit-info {
+  background: darkcyan;
+  border-color: darkcyan;
+  border-radius: 0;
+  color: white;
+  box-shadow: 1px 1px 1px black;
+}
+
+
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 5px;
+  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5);
+}
+
+.table-detail-result th, .table-detail-result td{
+  text-align: center;
+}
+
+#preview-avatar {
+  width: 200px !important;
+  height: 150px !important;
+}
+
+.btn-center {
+  float: none !important;
 }

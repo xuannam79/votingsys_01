@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
 use App\Models\Poll;
+use Session;
 
 class Activity extends Model
 {
@@ -27,6 +28,14 @@ class Activity extends Model
 
     public function getActivity($name)
     {
+        if ($name == "Ẩn danh") {
+            if (Session::get('locale') == 'en') {
+                $name = trans('polls.no_name');
+            } elseif (Session::get('locale') == 'ja'){
+                $name = trans('polls.no_name');
+            }
+        }
+
         $types = [
             config('settings.activity.participated') => [
                 'level' => 'primary',

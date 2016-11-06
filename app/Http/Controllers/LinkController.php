@@ -3,12 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Models\Link;
+use App\Models\ParticipantVote;
+use App\Models\User;
+use App\Models\Vote;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Repositories\Link\LinkRepositoryInterface;
 use App\Repositories\Poll\PollRepositoryInterface;
 use App\Repositories\Vote\VoteRepositoryInterface;
 use App\Repositories\ParticipantVote\ParticipantVoteRepositoryInterface;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
+use Session;
 
 class LinkController extends Controller
 {
@@ -34,9 +40,23 @@ class LinkController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($tokenRegister)
     {
-        //
+        $user = User::where('token_verification', $tokenRegister)->first();
+
+        if (! $user) {
+            return view('errors.show_errors')->with('message', trans('polls.link_not_found'));
+        }
+
+        $user->is_active = true;
+        $user->token_verification = '';
+        $user->save();
+
+        if (! Auth::login($user)) {
+            return redirect()->to(url('/'))->withMessage(trans('user.register_account_successfully'));
+        } else {
+            return redirect()->to(url('/'))->withMessage(trans('user.register_account_fail'));
+        }
     }
 
     /**
@@ -57,19 +77,14 @@ class LinkController extends Controller
      */
     public function store(Request $request)
     {
-        $token = $request->value;
+        $token = $request->token;
         $links = Link::where('token', $token)->get();
 
-        if (! $links->count()) {
-            return [
-                'success' => false,
-            ];
+        if ($links->count()) {
+            return response()->json(['success' => true]);
         }
 
-        return [
-            'success' => true,
-            'link' => $links,
-        ];
+        return response()->json(['success' => false]);
     }
 
     /**
@@ -80,40 +95,110 @@ class LinkController extends Controller
      */
     public function show($token, Request $request)
     {
+        //get MAC address
+        $client  = @$_SERVER['HTTP_CLIENT_IP'];
+        $forward = @$_SERVER['HTTP_X_FORWARDED_FOR'];
+        $remote  = $_SERVER['REMOTE_ADDR'];
+
+        if(filter_var($client, FILTER_VALIDATE_IP)){
+            $ip = $client;
+        }elseif(filter_var($forward, FILTER_VALIDATE_IP)){
+            $ip = $forward;
+        }else{
+            $ip = $remote;
+        }
+
         $link = $this->linkRepository->getPollByToken($token);
 
         if (! $link) {
             return view('errors.show_errors')->with('message', trans('polls.poll_not_found'));
         }
 
-        if (! $link->poll->status) {
-            return view('errors.show_errors')->with('message', trans('polls.message_poll_closed'));
-        }
-
         $linkUser = url('link') . '/' . $link->token;
         $numberOfVote = config('settings.default_value');
         $voteLimit = null;
         $isRequiredEmail = false;
+        $isLimit = false;
         $isHideResult = false;
         $poll = $link->poll;
+        $totalVote = config('settings.default_value');
+        $isSetIp = false;
+
+        foreach ($poll->options as $option) {
+            $totalVote += $option->countVotes();
+        }
+
+        $optionRatePieChart = [];
+        $optionRateBarChart = [];
+
+        if ($totalVote) {
+            foreach ($poll->options as $option) {
+                $countOption = $option->countVotes();
+                $optionRatePieChart[$option->name] = (int) ($countOption * 100 / $totalVote);
+                if ($countOption > 0) {
+                    $optionRateBarChart[] = [str_limit($option->name, 40), $countOption];
+                }
+            }
+        } else {
+            $optionRatePieChart = null;
+            $optionRateBarChart = null;
+        }
+
+        $optionRateBarChart = json_encode($optionRateBarChart);
+        $requiredPassword = null;
+        $passwordSetting = $poll->settings->whereIn('key', [config('settings.setting.set_password')])->first();
 
         if ($poll->settings) {
             foreach ($poll->settings as $setting) {
-                if ($setting->key == config('settings.setting.set_limit')) {
-                    $voteLimit = $setting->value;
-                }
-
                 $isRequiredEmail = ($setting->key == config('settings.setting.required_email'));
-                $isHideResult = ($setting->key == config('settings.setting.hide_result'));
-            }
-
-            if ($voteLimit && $poll->countParticipants() >= $voteLimit) {
-                return view('errors.show_errors')->with('message', trans('polls.message_poll_limit'));
             }
         }
 
         if (! $link->link_admin) {
+            if ($link->poll->isClosed()) {
+                return view('errors.show_errors')->with('message', trans('polls.message_poll_closed'));
+            }
 
+            //check time close poll
+            if (Carbon::now()->format('y/m/d h:i') > Carbon::parse($poll->date_close)->format('y/m/d h:i')) {
+                $poll->status = false;
+                $poll->save();
+
+                return view('errors.show_errors')->with('message', trans('polls.message_poll_closed'));
+            }
+
+            if ($poll->settings) {
+                foreach ($poll->settings as $setting) {
+                    if ($setting->key == config('settings.setting.set_limit')) {
+                        $voteLimit = $setting->value;
+                    }
+
+                    if ($setting->key == config('settings.setting.is_set_ip')) {
+                        $isSetIp = true;
+                    }
+
+                    $isHideResult = ($setting->key == config('settings.setting.hide_result'));
+                }
+            }
+
+            if ($voteLimit && $poll->countParticipants() >= $voteLimit) {
+                $isLimit = true;
+            }
+
+            if(! Session::has('isInputPassword')) {
+                if ($passwordSetting) {
+                    $requiredPassword = $passwordSetting->value;
+
+                    return view('user.poll.input_password', compact('poll', 'requiredPassword', 'token'));
+                }
+            } elseif (! Session::get('isInputPassword')) {
+                $requiredPassword = $passwordSetting->value;
+                Session::forget('isInputPassword');
+
+                return view('user.poll.input_password', compact('poll', 'requiredPassword', 'token'))->withErrors(trans('polls.incorrect_password'));
+            }
+
+            Session::forget('isInputPassword');
 
             $isRequiredEmail = $poll->settings->whereIn('key', [config('settings.setting.required_email')])->count() != config('settings.default_value');
             $isHideResult = $poll->settings->whereIn('key', [config('settings.setting.hide_result')])->count() != config('settings.default_value');
@@ -152,7 +237,7 @@ class LinkController extends Controller
             } else {
                 foreach ($participantVotes as $participantVote) {
                     foreach($participantVote as $item) {
-                        if (isset($item->participant) && $item->participant->ip_address == $request->ip()) {
+                        if (isset($item->participant) && $item->participant->ip_address == $ip) {
                             $isParticipantVoted = true;
                             break;
                         }
@@ -160,10 +245,14 @@ class LinkController extends Controller
                 }
             }
 
-            return view('user.poll.details', compact('poll', 'isRequiredEmail', 'isUserVoted', 'isHideResult', 'numberOfVote', 'linkUser', 'mergedParticipantVotes', 'isParticipantVoted', 'requiredPassword'));
+            $dataTableResult = $this->pollRepository->getDataTableResult($poll, $isRequiredEmail);
+
+            return view('user.poll.details', compact(
+                'poll', 'isRequiredEmail', 'isUserVoted', 'isHideResult', 'numberOfVote', 'linkUser', 'mergedParticipantVotes', 'isParticipantVoted', 'requiredPassword',
+                'optionRatePieChart', 'isSetIp', 'optionRateBarChart', 'isLimit', 'dataTableResult'
+            ));
         } else {
             $poll = $link->poll;
-
             $voteIds = $this->pollRepository->getVoteIds($poll->id);
             $votes = $this->voteRepository->getVoteWithOptionsByVoteId($voteIds);
             $participantVoteIds = $this->pollRepository->getParticipantVoteIds($poll->id);
@@ -199,7 +288,36 @@ class LinkController extends Controller
                 }
             }
 
-            return view('user.poll.manage_poll', compact('poll', 'tokenLinkUser', 'tokenLinkAdmin', 'isRequiredEmail', 'isUserVoted', 'isHideResult', 'numberOfVote', 'linkUser', 'mergedParticipantVotes', 'isParticipantVoted'));
+            $isRequiredEmail = $poll->settings->whereIn('key', [config('settings.setting.required_email')])->count() != config('settings.default_value');
+
+            //get data contain config or message return view and js
+            $data = $this->pollRepository->getDataPollSystem();
+            $page = 'manager';
+
+            //statistic
+            $statistic = [
+                'total' => $this->pollRepository->getTotalVotePoll($poll),
+                'firstTime' => $this->pollRepository->getTimeFirstVote($poll),
+                'lastTime' => $this->pollRepository->getTimeLastVote($poll),
+                'largestVote' => $this->pollRepository->getOptionLargestVote($poll),
+                'leastVote' => $this->pollRepository->getOptionLeastVote($poll),
+            ];
+
+            //table result
+            $dataTableResult = $this->pollRepository->getDataTableResult($poll, $isRequiredEmail);
+
+            foreach ($poll->options as $option) {
+                $totalVote += $option->countVotes();
+            }
+
+            $settings = $this->pollRepository->showSetting($poll->settings);
+
+            return view('user.poll.manage_poll', compact(
+                'poll', 'tokenLinkUser', 'tokenLinkAdmin',
+                'isRequiredEmail', 'isUserVoted', 'isHideResult', 'numberOfVote',
+                'linkUser', 'mergedParticipantVotes', 'isParticipantVoted',
+                'settings', 'data', 'page', 'statistic', 'dataTableResult', 'optionRateBarChart', 'optionRatePieChart', 'isSetIp'
+            ));
         }
     }
 

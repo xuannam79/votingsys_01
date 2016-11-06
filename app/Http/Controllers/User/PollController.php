@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\User;
 
+use Mail;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Requests\PollGeneralRequest;
@@ -28,9 +29,11 @@ class PollController extends Controller
             $initiatedPolls = $this->pollRepository->getInitiatedPolls();
             $participatedPolls = $this->pollRepository->getParticipatedPolls($this->voteRepository);
             $closedPolls = $this->pollRepository->getClosedPolls();
+
+            return view('user.poll.list_polls', compact('initiatedPolls', 'participatedPolls', 'closedPolls'));
         }
 
-        return view('user.poll.list_polls', compact('initiatedPolls', 'participatedPolls', 'closedPolls'));
+        return redirect()->to(url('/'));
     }
 
     public function edit($id)
@@ -41,10 +44,30 @@ class PollController extends Controller
             return view('errors.show_errors')->with('message', trans('polls.reopen_poll_fail'));
         }
 
+        $emails = $poll->email;
+
+        if ($poll->user_id) {
+            $emails = $poll->user->email;
+        }
+
+        if ($emails) {
+            Mail::queue('layouts.open_poll_mail', [
+                'link' => $poll->getAdminLink(),
+            ], function ($message) use ($emails) {
+                $message->to($emails)->subject(trans('label.mail.subject'));
+            });
+
+            if (count(Mail::failures()) == config('settings.default_value')) {
+                $poll->status = true;
+                $poll->date_close = null;
+                $poll->save();
+            }
+        }
+
         $poll->status = true;
         $poll->save();
 
-        return redirect()->to($poll->getUserLink())->with('message', trans('polls.reopen_poll_successfully'));
+        return redirect()->to($poll->getAdminLink())->with('messages', trans('polls.reopen_poll_successfully'));
     }
 
     public function update($id, Request $request)
@@ -88,9 +111,28 @@ class PollController extends Controller
             return view('errors.show_errors')->with('message', trans('polls.close_poll_fail'));
         }
 
+        $emails = $poll->email;
+
+        if ($poll->user_id) {
+            $emails = $poll->user->email;
+        }
+
+        if ($emails) {
+            Mail::queue('layouts.close_poll_mail', [
+                'link' => $poll->getAdminLink(),
+            ], function ($message) use ($emails) {
+                $message->to($emails)->subject(trans('label.mail.subject'));
+            });
+
+            if (count(Mail::failures()) == config('settings.default_value')) {
+                $poll->status = false;
+                $poll->save();
+            }
+        }
+
         $poll->status = false;
         $poll->save();
 
-        return redirect()->action('User\PollController@index');
+        return redirect()->to($poll->getAdminLink())->with('messages', trans('polls.close_poll_successfully'));
     }
 }

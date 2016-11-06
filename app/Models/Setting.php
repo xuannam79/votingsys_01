@@ -17,4 +17,5 @@ class Setting extends Model
     {
         return $this->belongsTo(Poll::class);
     }
+
 }

@@ -25,6 +25,7 @@ return [
             'male' => 'Male',
             'female' => 'Female',
             'other' => 'Other',
+            '' => null,
         ],
         'avatar' => 'Avatar',
         'password' => 'Password',
@@ -85,6 +86,28 @@ return [
         'password' => [
             'required' => 'Please enter password!',
             'max' => 'Please enter a value less than or equal to ' . config('common.length_user.password'),
+            'min' => 'Please enter a value larger than or equal to 6 characters',
+            'confirmed' => 'Password confirm incorrect, please check again!',
+        ],
+    ],
+    'update_profile_successfully' => 'You updated profile successfully',
+    'register_account_successfully' => 'You actived account successfully',
+    'register_account_fail' => 'You actived account fail',
+    'register_account' => 'You registered account, Please check mail to active account',
+    'account_unactive' => 'Please check mail and active this account',
+    'login_successfully' => 'Login successfully',
+    'login' => [
+        'placeholder' => [
+            'email' => 'Enter your email...',
+            'password' => 'Enter your password...',
+        ],
+    ],
+    'register' => [
+        'placeholder' => [
+            'name' => 'Enter your name...',
+            'email' => 'Enter your email...',
+            'password' => 'Enter your password...',
+            'password_confirm' => 'Enter confirm password...',
         ],
     ],
 ];

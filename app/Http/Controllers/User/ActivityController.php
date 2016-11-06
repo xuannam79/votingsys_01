@@ -25,7 +25,7 @@ class ActivityController extends Controller
     {
         $activities = $this->activityRepository->getActivityByPollId($id);
 
-        if (!$activities) {
+        if (! $activities) {
             return view('errors.show_errors')->with('message', trans('polls.activity_not_found'));
         }
 

@@ -28,7 +28,7 @@ return [
         'array'   => 'The :attribute must have between :min and :max items.',
     ],
     'boolean'              => 'The :attribute field must be true or false.',
-    'confirmed'            => 'The :attribute confirmation does not match.',
+    'confirmed'            => 'The :attribute nhập lại không chính xác.',
     'date'                 => 'The :attribute is not a valid date.',
     'date_format'          => 'The :attribute does not match the format :format.',
     'different'            => 'The :attribute and :other must be different.',
@@ -64,7 +64,7 @@ return [
     'numeric'              => 'The :attribute must be a number.',
     'present'              => 'The :attribute field must be present.',
     'regex'                => 'The :attribute format is invalid.',
-    'required'             => 'The :attribute field is required.',
+    'required'             => 'The :attribute không được bỏ trống.',
     'required_if'          => 'The :attribute field is required when :other is :value.',
     'required_unless'      => 'The :attribute field is required unless :other is in :values.',
     'required_with'        => 'The :attribute field is required when :values is present.',
@@ -94,7 +94,8 @@ return [
     | specify a specific custom language line for a given attribute rule.
     |
     */
-
+    'info' => '選出が閉じる時間は必ず、現在の時間よりです',
+    'update_email' => 'このメールアドレスが存在ました。他のメールアドレスを選んでください',
     'custom' => [
         'attribute-name' => [
             'rule-name' => 'custom-message',

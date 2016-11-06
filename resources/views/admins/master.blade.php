@@ -74,7 +74,7 @@
                        data-target="#navbar-collapse" aria-expanded="false">
                     </a>
                     <a href="javascript:void(0);" class="bars"></a>
-                    <a class="navbar-brand" href="index.html">{{ trans('label.name_admin_page') }}</a>
+                    <a class="navbar-brand">{{ trans('label.name_admin_page') }}</a>
                 </div>
             </div>
         </nav>
@@ -85,18 +85,22 @@
                 <!-- User Info -->
                 <div class="user-info">
                     <div class="image">
-                        <img src="{{ asset('uploads/avatars/default.jpg') }}" width="48" height="48" alt="User" />
+                        <img src="{{ auth()->user()->getAvatarPath() }}" width="48" height="48" alt="User" />
                     </div>
                     <div class="info-container">
-                        <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Admin</div>
-                        <div class="email">admin@gmail.com</div>
+                        <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ auth()->user()->name }}</div>
+                        <div class="email">{{ auth()->user()->email }}</div>
                         <div class="btn-group user-helper-dropdown">
                             <i class="material-icons" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">keyboard_arrow_down</i>
                             <i class="material-icons" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"></i>
                             <ul class="dropdown-menu pull-right">
-                                <li><a href="#"><i class="material-icons">person</i>{{ trans('label.profile') }}</a></li>
+                                <li>
+                                    <a href="{{ URL::action('User\UsersController@index') }}"><i class="material-icons">person</i>{{ trans('label.profile') }}</a>
+                                </li>
                                 <li role="seperator" class="divider"></li>
-                                <li><a href="#"><i class="material-icons">input</i>{{ trans('label.logout') }}</a></li>
+                                <li>
+                                    <a href="{{ url('/logout') }}"><i class="material-icons">input</i>{{ trans('label.logout') }}</a>
+                                </li>
                             </ul>
                         </div>
                     </div>
@@ -107,7 +111,7 @@
                     <ul class="list">
                         <li class="header">{{ trans('label.main_menu') }}</li>
                         <li class="active">
-                            <a href="#">
+                            <a href="{{ URL::action('HomeController@index') }}">
                                 <i class="material-icons">home</i>
                                 <span>{{ trans('label.home') }}</span>
                             </a>
@@ -158,7 +162,7 @@
                 <!-- Footer -->
                 <div class="legal">
                     <div class="copyright">
-                         {{ trans('label.footer') }}
+                         {{ trans('label.footer.copyright') }}
                     </div>
                 </div>
                 <!-- #Footer -->

@@ -108,7 +108,7 @@
                 </div>
                 <div class="row clearfix">
                     <div class="col-lg-3">
-                        <img src="{{ $user->avatar }}" class="avatar-new">
+                        <img src="{{ $user->getAvatarPath() }}" class="avatar-new">
                     </div>
                     <div class="col-lg-3">
                         <img id="preview-avatar" src="#" class="preview-image avatar-new" />

@@ -23,6 +23,11 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        if (auth()->user()->isAdmin()) {
+            //redirect to admin page
+            return redirect()->route('admin.user.index');
+        }
+
+        return redirect()->route('user-poll.create');
     }
 }
