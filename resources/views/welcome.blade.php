@@ -72,7 +72,7 @@
                 </div>
 
                 <div class="links">
-                    <a href="{{ route('poll.create') }}">{{ trans('label.create_poll') }}</a>
+                    <a href="{{ route('user-poll.create') }}">{{ trans('label.create_poll') }}</a>
                     @if (Route::has('login'))
                         <a href="{{ url('/login') }}">{{ trans('label.login') }}</a>
                         <a href="{{ url('/register') }}">{{ trans('label.register') }}</a>

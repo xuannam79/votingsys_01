@@ -42,8 +42,8 @@ class PollsFilter extends QueryFilter
 
     public function type($input = '')
     {
-        if ($input == config('settings.type.single_choice') ||
-            $input == config('settings.type.multiple_choice')) {
+        if ($input == config('settings.type_poll.single_choice') ||
+            $input == config('settings.type_poll.multiple_choice')) {
             return $this->builder->where('polls.multiple', $input);
         }
 

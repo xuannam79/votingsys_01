@@ -8,6 +8,7 @@ use App\Http\Requests\UpdateUserRequest;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Repositories\User\UserRepositoryInterface;
+use App\Http\Requests\RegisterRequest;
 
 class UsersController extends Controller
 {
@@ -26,6 +27,13 @@ class UsersController extends Controller
         return view('user.profile', compact('currentUser'));
     }
 
+    public function store(RegisterRequest $request)
+    {
+        $inputs = $request->only('name', 'email', 'password', 'avatar', 'gender');
+
+        return $this->userRepository->register($inputs);
+    }
+
     /**
      * Update the specified resource in storage.
      *
@@ -38,9 +46,9 @@ class UsersController extends Controller
             $data = $request->only(['email', 'name', 'password', 'avatar', 'gender']);
             $this->userRepository->update($data, $id);
         } catch (Exception $e) {
-            return view('home')->withError(trans('message.update_error'));
+            return view('user.poll.create')->withErrors(trans('message.update_error'));
         }
 
-        return redirect()->action('HomeController@index');
+        return redirect()->to(url('/'))->withMessage(trans('user.update_profile_successfully'));
     }
 }

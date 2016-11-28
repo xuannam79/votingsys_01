@@ -25,6 +25,7 @@ return [
             'male' => 'Nam',
             'female' => 'Nữ',
             'other' => 'Khác',
+            '' => null,
         ],
         'avatar' => 'Hình đại diện',
         'password' => 'Mật khẩu',
@@ -66,11 +67,11 @@ return [
     ],
     'validate' => [
         'name' => [
-            'required' => 'Hãy nhập tên!',
+            'required' => 'Hãy nhập tên của bạn',
             'max' => 'Giá trị phải nhỏ hơn hoặc bằng ' . config('common.length_user.name') . ' ký tự',
         ],
         'email' => [
-            'required' => 'Hãy nhập email!',
+            'required' => 'Hãy nhập email của bạn',
             'max' => 'Giá trị phải nhỏ hơn hoặc bằng ' . config('common.length_user.email') . ' ký tự',
             'email' => 'Email không hợp lệ',
             'unique' => 'Email đã tồn tại trong hệ thống. Hãy nhập một email khác!',
@@ -83,8 +84,30 @@ return [
             'max' => 'Kích thước hình ảnh phải nhỏ hơn hoặc bằng ' . config('common.length_user.name') . ' MB',
         ],
         'password' => [
-            'required' => 'Hãy nhập mật khẩu',
+            'required' => 'Hãy nhập mật khẩu của bạn',
             'max' => 'Giá trị phải nhỏ hơn hoặc bằng ' . config('common.length_user.password') . ' ký tự',
+            'min' => 'Nhập mật khẩu lớn hơn hoặc bằng 6 ký tự',
+            'confirmed' => 'Mật khẩu xác nhận chưa chính xác, hãy kiểm tra lại!',
+        ],
+    ],
+    'update_profile_successfully' => 'Bạn đã cập nhật thông tin cá nhân thành công',
+    'register_account_successfully' => 'Bạn đã kích hoạt tài khoản thành công',
+    'register_account_fail' => 'Kích hoạt tài khoản thất bại',
+    'register_account' => 'Bạn đã đăng ký tài khoản thành công, Vui lòng check mail để kích hoạt tài khoản',
+    'account_unactive' => 'Vui lòng mở mail và kích hoạt tài khoản này',
+    'login_successfully' => 'Đăng nhập thành công',
+    'login' => [
+        'placeholder' => [
+            'email' => 'Nhập địa chỉ emai...',
+            'password' => 'Nhập mật khẩu...',
+        ],
+    ],
+    'register' => [
+        'placeholder' => [
+            'name' => 'Nhập tên của bạn...',
+            'email' => 'Nhập địa chỉ email của bạn...',
+            'password' => 'Nhập mật khẩu...',
+            'password_confirm' => 'Xác nhận mật khẩu...',
         ],
     ],
 ];

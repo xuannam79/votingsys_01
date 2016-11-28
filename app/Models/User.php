@@ -16,6 +16,8 @@ class User extends Authenticatable
 {
     use Notifiable;
 
+    const IS_ADMIN = 1;
+
     /**
      * The attributes that are mass assignable.
      *
@@ -29,6 +31,8 @@ class User extends Authenticatable
         'gender',
         'avatar',
         'role',
+        'is_active',
+        'token_verification',
     ];
 
     /**
@@ -82,6 +86,7 @@ class User extends Authenticatable
 
     public function showGender()
     {
+
         $trans = trans('user.label.gender');
         $config = config('settings.gender_constant');
         $data = $trans['other'];
@@ -94,11 +99,20 @@ class User extends Authenticatable
             $data = $trans['female'];
         }
 
+        if ($this->gender == $config['']) {
+            $data = $trans[''];
+        }
+
         return $data;
     }
 
     public function scopeFilter($query, QueryFilter $filters)
     {
         return $filters->apply($query);
+    }
+
+    public function isAdmin()
+    {
+        return $this->role == User::IS_ADMIN;
     }
 }

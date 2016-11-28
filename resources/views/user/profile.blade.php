@@ -3,19 +3,23 @@
 @section('content')
 <div class="container">
     <div class="row">
-        <div class="col-md-8 col-md-offset-2">
+        <div class="col-md-6 col-md-offset-3">
             <div class="panel panel-default">
                 <div class="panel-heading">{{ trans('label.profile') }}</div>
                 <div class="panel-body">
                     @include('errors.errors')
 
                     {{ Form::model($currentUser, ['method' => 'PATCH', 'route' => ['profile.update', $currentUser->id], 'class' => 'form-horizontal', 'role' => 'form', 'files' => true]) }}
-                        <img class="edit-profile" id="output" src="{{ asset($currentUser->getAvatarPath()) }}"/>
+                        <div class="form-group">
+                        <div class="col-md-12 col-md-offset-4">
+                            <img class="img-profile" id="output" src="{{ asset($currentUser->getAvatarPath()) }}"/>
+                        </div>
+                        </div>
 
                         <div class="form-group">
                             {{ Form::label('avatar', trans('label.avatar'), ['class' => 'col-md-4 control-label']) }}
                             <div class="col-md-6">
-                                {{ Form::file('avatar') }}
+                                {{ Form::file('avatar', ['onchange' => 'loadFile(event)']) }}
                             </div>
                         </div>
 
@@ -34,9 +38,9 @@
                         </div>
 
                         <div class="form-group">
-                            {{ Form::label('gender', trans('label.gender'), ['class' => 'col-md-4 control-label']) }}
+                            {{ Form::label('gender', trans('label.label_gender'), ['class' => 'col-md-4 control-label']) }}
                             <div class="col-md-6">
-                                {{ Form::select('gender', config('settings.gender'), $currentUser->gender, ['id' => 'gender', 'class' => 'form-control']) }}
+                                {{ Form::select('gender', trans('label.gender'), $currentUser->gender, ['id' => 'gender', 'class' => 'form-control']) }}
                             </div>
                         </div>
 

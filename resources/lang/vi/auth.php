@@ -15,8 +15,8 @@ return [
 
     'failed' => 'Bản ghi không chính xác.',
     'throttle' => 'Đăng nhập không chính xác quá nhiều lần. Vui lòng thử lại sau :seconds giây.',
-    'facebook_login' => 'Đăng nhập với Facebook',
-    'twitter_login' => 'Đăng nhập với Twitter',
-    'google_login' => 'Đăng nhập với Google',
+    'facebook_login' => 'Facebook',
+    'twitter_login' => 'Twitter',
+    'google_login' => 'Google',
 
 ];

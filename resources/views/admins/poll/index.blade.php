@@ -143,6 +143,9 @@
                             <th>{{ trans('polls.table.thead.creator') }}</th>
                             <th>{{ trans('polls.table.thead.title') }}</th>
                             <th>{{ trans('polls.table.thead.type') }}</th>
+                            <th>
+                               {{ trans('polls.table.thead.link') }}
+                            </th>
                             <th>{{ trans('polls.table.thead.status') }}</th>
                             <th></th>
                         </tr>
@@ -157,6 +160,13 @@
                                 </td>
                                 <td>{{ str_limit($poll->title, 50) }}</td>
                                 <td>{{ $poll->multiple }}</td>
+                                <td>
+                                     <b>{{ trans('polls.table.tbody.link_participant') }}</b> <br>
+                                     {{ (empty($links['participant'][$poll->id])) ? "" : $links['participant'][$poll->id] }}<br>
+                                    <b>{{ trans('polls.table.tbody.link_administration') }}</b> <br>
+                                     {{ (empty($links['administration'][$poll->id])) ? "" : $links['administration'][$poll->id] }}
+                                </td>
+
                                 <td id="status_{{ $poll->id }}">{!! $poll->status !!}</td>
                                 <td>
                                     {{

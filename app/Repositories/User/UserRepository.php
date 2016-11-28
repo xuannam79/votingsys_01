@@ -15,6 +15,8 @@ use Input;
 use App\Repositories\BaseRepository;
 use App\Repositories\User\UserRepositoryInterface;
 use DB;
+use Mail;
+use Flashy;
 
 class UserRepository extends BaseRepository implements UserRepositoryInterface
 {
@@ -25,7 +27,7 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
 
     public function checkEmailExist($email)
     {
-        return $this->model->where('email', $email)->count();
+        return $this->model->where('email', $email)->where('is_active', 1)->count();
     }
 
     public function createUserSocial($data)
@@ -46,6 +48,10 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
             $fileName =  config('settings.avatar_default');
         }
 
+        if ($data['gender'] == '') {
+            $data['gender'] = null;
+        }
+
         $user = [
             'name' => $data['name'],
             'email' => $data['email'],
@@ -53,15 +59,29 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
             'avatar' => $fileName,
             'gender' => $data['gender'],
             'password' => $data['password'],
+            'is_active' => false,
+            'token_verification' => str_random(20),
         ];
-
         $createUser = User::create($user);
+
+        //check email exist
+        $emails = $data['email'];
+        try {
+            Mail::send('layouts.register_mail', [
+                'name' => $data['name'],
+                'link' => url('/link/verification') . '/' . $user['token_verification'],
+            ], function ($message) use ($emails) {
+                $message->to($emails)->subject(trans('label.mail.subject'));
+            });
+        } catch(Exception $ex) {
+            return view('errors.show_errors')->with('message', trans('polls.register_with_mail_not_exist'));
+        }
 
         if (!$createUser) {
             throw new Exception('message.create_error');
         }
 
-        return $createUser;
+        return redirect()->to(url('/login'))->withMessages(trans('user.register_account'));
     }
 
     public function update($inputs, $id)
@@ -73,6 +93,10 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
                 $inputs['password'] = bcrypt($inputs['password']);
             } else {
                 unset($inputs['password']);
+            }
+
+            if ($inputs['gender'] == '') {
+                $inputs['gender'] = null;
             }
 
             $oldImage = $currentUser->avatar;

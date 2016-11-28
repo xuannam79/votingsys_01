@@ -24,14 +24,26 @@ class PollController extends Controller
      */
     public function index(PollsFilter $filters)
     {
-        $polls =  Poll::with('user')->filter($filters)->paginate(config('settings.length_poll.number_record'));
+        $polls =  Poll::with('user', 'links')->filter($filters)->orderBy('created_at', 'desc')->paginate(config('settings.length_poll.number_record'));
+        $links = [];
+
+         foreach ($polls as $poll) {
+             foreach ($poll->links as $link) {
+                 if ($link->link_admin == config('settings.link_poll.vote')) {
+                     $links['participant'][$poll->id] = $link->token;
+                 } else {
+                     $links['administration'][$poll->id] = $link->token;
+                 }
+             }
+         }
+
         $input = $filters->input();
         $linkFilter = $polls->appends($input)->links();
         $data = [
             'type' => [
                 config('settings.search_all') => trans('polls.label.search_all'),
-                config('settings.type.multiple_choice') => trans('polls.label.multiple_choice'),
-                config('settings.type.single_choice') => trans('polls.label.single_choice'),
+                config('settings.type_poll.multiple_choice') => trans('polls.label.multiple_choice'),
+                config('settings.type_poll.single_choice') => trans('polls.label.single_choice'),
             ],
             'status' => [
                 config('settings.search_all') => trans('polls.label.search_all'),
@@ -39,7 +51,7 @@ class PollController extends Controller
                 config('settings.status.close') => trans('polls.label.closed'),
             ],
         ];
-        return view('admins.poll.index', compact('polls', 'input', 'data', 'linkFilter'));
+        return view('admins.poll.index', compact('polls', 'input', 'data', 'linkFilter', 'links'));
     }
 
     /**
@@ -49,6 +61,8 @@ class PollController extends Controller
      */
     public function create()
     {
+        $settingConfig = config('settings.setting');
+       $settingTrans = trans('polls.label.setting');
         $data = json_encode([
             'message' => [
                 'numberOfOptions' => config('settings.length_poll.option'),
@@ -59,6 +73,11 @@ class PollController extends Controller
                 'link_exists' => trans('polls.message.link_exists'),
                 'link_valid' => trans('polls.message.link_valid'),
                 'submit_form' => trans('polls.message.submit_form'),
+                'setting' => [
+                     'link' => $settingConfig['custom_link'],
+                     'limit' => $settingConfig['set_limit'],
+                     'password' => $settingConfig['set_password'],
+                 ],
             ],
             'view' => [
                 'option' => view('layouts.poll_option')->render(),
@@ -67,7 +86,18 @@ class PollController extends Controller
             'oldInput' => session('_old_input'),
         ]);
 
-        return view('admins.poll.create', compact('data'));
+        $dataView = [
+             'setting' => [
+                 $settingConfig['required_email'] => $settingTrans['required_email'],
+                 $settingConfig['hide_result'] => $settingTrans['hide_result'],
+                 $settingConfig['custom_link'] => $settingTrans['custom_link'],
+                 $settingConfig['set_limit'] => $settingTrans['set_limit'],
+                 $settingConfig['set_password'] => $settingTrans['set_password'],
+             ],
+             'oldInput' => session("_old_input"),
+         ];
+
+        return view('admins.poll.create', compact('data', 'dataView'));
     }
 
     /**
@@ -76,20 +106,23 @@ class PollController extends Controller
      * @param  PollRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(PollRequest $request)
+    public function store(Request $request)
     {
         $input = $request->only(
-            'email', 'title', 'description', 'location', 'type',
-            'option', 'optionImage',
-            'required_email', 'add_answer', 'hide_result',
-            'custom_link', 'link',
-            'set_limit', 'limit',
-            'set_password', 'password_poll',
-            'invite', 'email_poll'
+             'name', 'email', 'title', 'description', 'location', 'type', 'chatwork_id',
+             'optionText', 'optionImage',
+             'setting', 'value',
+             'participant', 'member'
         );
-        $message = $this->pollRepository->store($input);
+        $data = $this->pollRepository->store($input);
 
-        return redirect()->route('admin.poll.index')->with('message', $message);
+         if ($data) {
+             $message = trans('polls.message.create_success');
+             return redirect()->route('admin.poll.index')->with('message', $message);
+         } else {
+            $message = trans('polls.message.create_fail');
+             return redirect()->route('admin.poll.create')->with('message', $message);
+         }
     }
 
     /**

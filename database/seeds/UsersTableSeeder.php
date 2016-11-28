@@ -23,6 +23,8 @@ class UsersTableSeeder extends Seeder
             'chatwork_id' => '12345678',
             'gender' => 1,
             'role' => 1,
+            'token_verification' => '',
+            'is_active' => 1,
         ]);
     }
 }

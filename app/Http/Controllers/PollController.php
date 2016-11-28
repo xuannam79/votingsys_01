@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Poll;
 use App\Http\Requests\PollEditRequest;
 use App\Http\Requests\PollRequest;
 use App\Repositories\Poll\PollRepositoryInterface;
 use Illuminate\Http\Request;
+use Mail;
+use Flashy;
 
 class PollController extends Controller
 {
@@ -32,89 +35,36 @@ class PollController extends Controller
      */
     public function create()
     {
-        $settingConfig = config('settings.setting');
-        $settingTrans = trans('polls.label.setting');
-        $dataJson = json_encode([
-            'message' => [
-                'numberOfOptions' => config('settings.length_poll.option'),
-                'length' => [
-                    'title' => config('settings.length_poll.title'),
-                    'description' => config('settings.length_poll.description'),
-                    'name' => config('settings.length_poll.name'),
-                    'email' => config('settings.length_poll.email'),
-                    'link' => config('settings.length_poll.link'),
-                    'limit' => config('settings.length_poll.number_limit'),
-                    'password' => config('settings.length_poll.password_poll'),
-                ],
-                'config' => [
-                    'invite_all' => config('settings.participant.invite_all'),
-                    'invite_people' => config('settings.participant.invite_people'),
-                ],
-                'setting' => [
-                    'link' => $settingConfig['custom_link'],
-                    'limit' => $settingConfig['set_limit'],
-                    'password' => $settingConfig['set_password'],
-                ],
-                'validate' => [
-                    'required' => trans('polls.validate_client.required'),
-                    'max' => trans('polls.validate_client.max'),
-                    'email' => trans('polls.validate_client.email'),
-                    'number' => trans('polls.validate_client.number'),
-                    'choose' => trans('polls.validate_client.choose'),
-                    'option_empty' => trans('polls.validate_client.option_empty'),
-                    'option_required' => trans('polls.validate_client.option_required'),
-                    'participant_empty' => trans('polls.validate_client.participant_empty'),
-                    'character' => trans('polls.validate_client.character'),
-                    'email_exists' => trans('polls.message.email_exists'),
-                    'email_valid' => trans('polls.message.email_valid'),
-                    'link_exists' => trans('polls.message.link_exists'),
-                    'link_valid' => trans('polls.message.link_valid'),
-                ],
-            ],
-            'view' => [
-                'option' => view('layouts.poll_option')->render(),
-                'email' => view('layouts.poll_email')->render(),
-            ],
-            'oldInput' => session("_old_input"),
-        ]);
+        $data = $this->pollRepository->getDataPollSystem();
 
-        $dataView = [
-            'setting' => [
-                $settingConfig['required_email'] => $settingTrans['required_email'],
-                $settingConfig['add_answer'] => $settingTrans['add_answer'],
-                $settingConfig['hide_result'] => $settingTrans['hide_result'],
-                $settingConfig['custom_link'] => $settingTrans['custom_link'],
-                $settingConfig['set_limit'] => $settingTrans['set_limit'],
-                $settingConfig['set_password'] => $settingTrans['set_password'],
-            ],
-            'oldInput' => session("_old_input"),
-        ];
-        return view('user.poll.create', compact('dataJson', 'dataView'));
+        return view('user.poll.create', compact('data'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  PollRequest $request
+     * @param  Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(PollRequest $request)
+    public function store(Request $request)
     {
         $input = $request->only(
-            'title', 'location', 'description', 'name', 'email', 'chatwork_id', 'type',
+            'title', 'location', 'description', 'name', 'email', 'chatwork_id', 'type', 'closingTime',
             'optionText', 'optionImage',
             'setting', 'value',
-            'participant', 'member'
+            'member'
         );
-        $link = $this->pollRepository->store($input);
+        $data = $this->pollRepository->store($input);
 
-        if ($link) {
-            $message = trans('polls.message.create_success');
+        if ($data) {
+            $poll = $data['poll'];
+
+            return redirect()->route('result-poll.show', ['id' => $poll->id]);
         } else {
             $message = trans('polls.message.create_fail');
-        }
 
-        return redirect($link['participant'])->with('message', $message);
+            return redirect()->route('user-poll.create')->with('message', $message);
+        }
     }
 
     /**
@@ -136,66 +86,13 @@ class PollController extends Controller
      */
     public function edit($id)
     {
-        $settingConfig = config('settings.setting');
-        $settingTrans = trans('polls.label.setting');
-        $dataJson = json_encode([
-            'message' => [
-                'numberOfOptions' => config('settings.length_poll.option'),
-                'length' => [
-                    'title' => config('settings.length_poll.title'),
-                    'description' => config('settings.length_poll.description'),
-                    'name' => config('settings.length_poll.name'),
-                    'email' => config('settings.length_poll.email'),
-                    'link' => config('settings.length_poll.link'),
-                    'limit' => config('settings.length_poll.number_limit'),
-                    'password' => config('settings.length_poll.password_poll'),
-                ],
-                'confirm_delete_option' => trans('polls.message.confirm_delete'),
-                'config' => [
-                    'invite_all' => config('settings.participant.invite_all'),
-                    'invite_people' => config('settings.participant.invite_people'),
-                ],
-                'setting' => [
-                    'link' => $settingConfig['custom_link'],
-                    'limit' => $settingConfig['set_limit'],
-                    'password' => $settingConfig['set_password'],
-                ],
-                'validate' => [
-                    'required' => trans('polls.validate_client.required'),
-                    'max' => trans('polls.validate_client.max'),
-                    'email' => trans('polls.validate_client.email'),
-                    'number' => trans('polls.validate_client.number'),
-                    'choose' => trans('polls.validate_client.choose'),
-                    'option_empty' => trans('polls.validate_client.option_empty'),
-                    'option_required' => trans('polls.validate_client.option_required'),
-                    'participant_empty' => trans('polls.validate_client.participant_empty'),
-                    'character' => trans('polls.validate_client.character'),
-                    'email_exists' => trans('polls.message.email_exists'),
-                    'email_valid' => trans('polls.message.email_valid'),
-                    'link_exists' => trans('polls.message.link_exists'),
-                    'link_valid' => trans('polls.message.link_valid'),
-                ],
-            ],
-            'view' => [
-                'option' => view('layouts.poll-option')->render(),
-                'email' => view('layouts.poll-email')->render(),
-            ],
-            'oldInput' => session("_old_input"),
-        ]);
-        $dataView = [
-            'setting' => [
-                $settingConfig['required_email'] => $settingTrans['required_email'],
-                $settingConfig['add_answer'] => $settingTrans['add_answer'],
-                $settingConfig['hide_result'] => $settingTrans['hide_result'],
-                $settingConfig['custom_link'] => $settingTrans['custom_link'],
-                $settingConfig['set_limit'] => $settingTrans['set_limit'],
-                $settingConfig['set_password'] => $settingTrans['set_password'],
-            ],
-        ];
+        $data = $this->pollRepository->getDataPollSystem();
         $poll = Poll::with('user', 'options', 'settings')->find($id);
         $setting = $poll->settings->pluck('value', 'key')->toArray();
+        $page = 'edit';
+        $totalVote = $this->pollRepository->getTotalVotePoll($poll);
 
-        return view('users.polls.edit', compact('poll', 'dataJson', 'dataView', 'setting'));
+        return view('user.poll.edit', compact('poll', 'data', 'setting', 'page', 'totalVote'));
     }
 
     /**
@@ -208,11 +105,14 @@ class PollController extends Controller
     public function update(Request $request, $id)
     {
         $button = $request->btn_edit;
+        $poll = Poll::with('options')->findOrFail($id);
 
         if ($button == trans('polls.button.save_info')) {
             $input = $request->only(
-                'status', 'name', 'email', 'chatwork_id', 'title', 'location', 'description', 'type'
+                'name', 'email', 'chatwork_id', 'title', 'location', 'description', 'type'
             );
+            $input['date_close'] = $request->closingTime;
+
             $message = $this->pollRepository->editInfor($input, $id);
         } elseif ($button == trans('polls.button.save_option')) {
             $input = $request->only(
@@ -221,12 +121,12 @@ class PollController extends Controller
             $message = $this->pollRepository->editPollOption($input, $id);
         } elseif ($button == trans('polls.button.save_setting')) {
             $input = $request->only(
-                'setting', 'value', 'participant'
+                'setting', 'value'
             );
             $message = $this->pollRepository->editPollSetting($input, $id);
         }
 
-        return redirect()->route('poll.edit', $id)->with('message', $message);
+        return redirect()->to($poll->getAdminLink())->with('message', $message);
     }
 
     /**
@@ -237,6 +137,34 @@ class PollController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $poll = $this->pollRepository->find($id);
+
+        if (! $poll) {
+            return view('errors.show_errors')->with('message', trans('polls.close_poll_fail'));
+        }
+
+        $emails = $poll->email;
+
+        if ($poll->user_id) {
+            $emails = $poll->user->email;
+        }
+
+        if ($emails) {
+            Mail::queue('layouts.close_poll_mail', [
+                'link' => $poll->getAdminLink(),
+            ], function ($message) use ($emails) {
+                $message->to($emails)->subject(trans('label.mail.subject'));
+            });
+
+            if (count(Mail::failures()) == config('settings.default_value')) {
+                $poll->status = false;
+                $poll->save();
+            }
+        }
+
+        $poll->status = false;
+        $poll->save();
+
+        return redirect()->to($poll->getAdminLink())->with('messages', trans('polls.close_poll_successfully'));
     }
 }

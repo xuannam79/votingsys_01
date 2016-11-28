@@ -6,8 +6,13 @@ $(document).ready(function(){
         }
     });
 
+    $('.loader').hide();
+    $('#label_link_user').attr('href', $('.token-user').val());
+    $('#label_link_admin').attr('href', $('.token-admin').val());
+
     $('.edit-link-user').click(function(e){
         e.preventDefault();
+        $('.loader').show();
         divChangeAmount = $(this).parent();
         var tokenLinkUser = divChangeAmount.data('tokenLinkUser');
         var pollId = $('.hide').data('pollId');
@@ -18,13 +23,13 @@ $(document).ready(function(){
         var tokenInput = $('.token-user').val();
 
         if (tokenInput == '') {
-            $('.message-link-user').html(linkInvalid);
+            $('.loader').hide();
 
             return;
         }
 
         if (tokenLinkUser == tokenInput) {
-            $('.message-link-user').html(linkExist);
+            $('.loader').hide();
 
             return;
         }
@@ -39,14 +44,11 @@ $(document).ready(function(){
                 'is_link_admin': 0,
             },
             success: function(data){
+                $('.loader').hide();
+
                 if (data.success) {
+                    $('#label_link_user').attr('href', $('.token-user').val());
                     $('.message-link-user').html(editLinkSuccess);
-                } else {
-                    if (data.is_exist) {
-                        $('.message-link-user').html(linkExist);
-                    } else {
-                        $('.message-link-user').html(linkInvalid);
-                    }
                 }
             }
         });
@@ -54,6 +56,7 @@ $(document).ready(function(){
 
     $('.edit-link-admin').click(function(e){
         e.preventDefault();
+        $('.loader').show();
         divChangeAmount = $(this).parent();
         var tokenLinkUser = divChangeAmount.data('tokenLinkAdmin');
         var pollId = $('.hide').data('pollId');
@@ -64,13 +67,13 @@ $(document).ready(function(){
         var tokenInput = $('.token-admin').val();
 
         if (tokenInput == '') {
-            $('.message-link-admin').html(linkInvalid);
+            $('.loader').hide();
 
             return;
         }
 
         if (tokenLinkUser == tokenInput) {
-            $('.message-link-admin').html(linkExist);
+            $('.loader').hide();
 
             return;
         }
@@ -85,14 +88,11 @@ $(document).ready(function(){
                 'is_link_admin': 1,
             },
             success: function(data){
+                $('.loader').hide();
+
                 if (data.success) {
+                    $('#label_link_admin').attr('href', $('.token-admin').val());
                     $('.message-link-admin').html(editLinkSuccess);
-                } else {
-                    if (data.is_exist) {
-                        $('.message-link-admin').html(linkExist);
-                    } else {
-                        $('.message-link-admin').html(linkInvalid);
-                    }
                 }
             }
         });

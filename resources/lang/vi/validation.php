@@ -28,7 +28,7 @@ return [
         'array'   => 'The :attribute must have between :min and :max items.',
     ],
     'boolean'              => 'The :attribute field must be true or false.',
-    'confirmed'            => 'The :attribute nhập lại không chính xác.',
+    'confirmed'            => 'Trường :attribute nhập lại không chính xác.',
     'date'                 => 'The :attribute is not a valid date.',
     'date_format'          => 'The :attribute does not match the format :format.',
     'different'            => 'The :attribute and :other must be different.',
@@ -36,7 +36,7 @@ return [
     'digits_between'       => 'The :attribute must be between :min and :max digits.',
     'dimensions'           => 'The :attribute has invalid image dimensions.',
     'distinct'             => 'The :attribute field has a duplicate value.',
-    'email'                => 'The :attribute must be a valid email address.',
+    'email'                => 'Trường :attribute chưa hợp lệ',
     'exists'               => 'The selected :attribute is invalid.',
     'file'                 => 'The :attribute must be a file.',
     'filled'               => 'The :attribute field is required.',
@@ -52,7 +52,7 @@ return [
         'string'  => 'The :attribute may not be greater than :max characters.',
         'array'   => 'The :attribute may not have more than :max items.',
     ],
-    'mimes'                => 'The :attribute must be a file of type: :values.',
+    'mimes'                => 'Trường :attribute phải là một file theo định dạng: :values.',
     'mimetypes'            => 'The :attribute must be a file of type: :values.',
     'min'                  => [
         'numeric' => 'The :attribute must be at least :min.',
@@ -64,7 +64,7 @@ return [
     'numeric'              => 'The :attribute must be a number.',
     'present'              => 'The :attribute field must be present.',
     'regex'                => 'The :attribute format is invalid.',
-    'required'             => 'The :attribute không được bỏ trống.',
+    'required'             => 'Trường :attribute không được bỏ trống.',
     'required_if'          => 'The :attribute field is required when :other is :value.',
     'required_unless'      => 'The :attribute field is required unless :other is in :values.',
     'required_with'        => 'The :attribute field is required when :values is present.',
@@ -81,7 +81,7 @@ return [
     'string'               => 'The :attribute must be a string.',
     'timezone'             => 'The :attribute must be a valid zone.',
     'unique'               => 'The :attribute has already been taken.',
-    'uploaded'             => 'The :attribute failed to upload.',
+    'uploaded'             => 'Hình ảnh không đúng định dạng',
     'url'                  => 'The :attribute format is invalid.',
 
     /*
@@ -94,7 +94,10 @@ return [
     | specify a specific custom language line for a given attribute rule.
     |
     */
-
+    'register' => 'Địa chỉ email này đã được đăng ký, Vui lòng kiểm tra mail và đăng nhập để sử dụng',
+    'info' => 'Thời gian đóng poll phải lớn hơn thời gian hiện tại',
+    'check_email' => 'Địa chỉ email này không tồn tại, Vui lòng chọn một địa chỉ email khác',
+    'update_email' => 'Địa chỉ email này đã tồn tại, Vui lòng lựa chọn email khác',
     'custom' => [
         'attribute-name' => [
             'rule-name' => 'custom-message',

@@ -94,7 +94,10 @@ return [
     | specify a specific custom language line for a given attribute rule.
     |
     */
-
+    'info' => 'Time invalid',
+    'register' => 'This email has been registed, Please check email and login',
+    'check_email' => 'Email not exist, Please chose another email',
+    'update_email' => 'Email exist, Please chose another email',
     'custom' => [
         'attribute-name' => [
             'rule-name' => 'custom-message',
