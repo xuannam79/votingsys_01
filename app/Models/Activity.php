@@ -28,7 +28,7 @@ class Activity extends Model
 
     public function getActivity($name)
     {
-        if ($name == "Ẩn danh") {
+        if ($name == config('settings.no_name')) {
             if (Session::get('locale') == 'en') {
                 $name = trans('polls.no_name');
             } elseif (Session::get('locale') == 'ja'){

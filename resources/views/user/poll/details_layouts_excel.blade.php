@@ -60,7 +60,7 @@
                                 <td>{{ $item->user->name }}</td>
                                 <td>{{ $item->user->email }}</td>
                             @else
-                                <td>{{ $item->participant->name }}</td>
+                                <td>{{ $item->participant->showName() }}</td>
                                 <td>{{ $item->participant->email }}</td>
                             @endif
                         </center>

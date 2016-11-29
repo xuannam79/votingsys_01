@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
 use App\Models\ParticipantVote;
+use Session;
 
 class Participant extends Model
 {
@@ -23,5 +24,20 @@ class Participant extends Model
     public function participantVotes()
     {
         return $this->hasMany(ParticipantVote::class);
+    }
+
+    public function showName()
+    {
+        if ($this->name == config('settings.no_name')) {
+            if (Session::get('locale') == 'en') {
+               return trans('polls.no_name');
+            }
+
+            if (Session::get('locale') == 'ja'){
+                return trans('polls.no_name');
+            }
+        }
+
+        return $this->name;
     }
 }

@@ -3,7 +3,9 @@
     {{ trans('polls.title') }}
 @endsection
 @section('content')
-    <div class="row" style="margin-bottom: 100px">
+
+    <!-- Create poll -->
+    <div class="row row-create-poll">
         <div class="loader"></div>
         <div class="hide"
              data-poll="{{ $data['jsonData'] }}"
@@ -26,12 +28,12 @@
                 @include('layouts.message')
                 <div class="progress">
                     <div class="progress-bar progress-bar-success progress-bar-striped bar" role="progressbar"
-                         aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="background: darkcyan">
+                         aria-valuenow="40" aria-valuemin="0" aria-valuemax="100">
                     </div>
                 </div>
                 <div class="navbar panel">
                     <div class="navbar-inner board">
-                        <div class="col-lg-10 col-lg-offset-1 panel-heading board-inner" style="padding: 5px">
+                        <div class="col-lg-10 col-lg-offset-1 panel-heading board-inner panel-heading-create-poll">
                             <ul class="nav nav-tabs voting">
                                 <div class="liner"></div>
                                 <li>
@@ -65,8 +67,8 @@
 
                 <div class="tab-content">
                     <div class="tab-pane" id="info">
-                        <div class="panel" style="margin: 0; border-radius: 0;border-color: darkcyan">
-                            <div class="panel-heading" style="background: darkcyan; border-color: darkcyan; border-radius: 0; color: white">
+                        <div class="panel panel-darkcyan">
+                            <div class="panel-heading panel-heading-darkcyan">
                                 {{ trans('polls.label.step_1') }}
                             </div>
                             <div class="panel-body">
@@ -75,8 +77,8 @@
                         </div>
                     </div>
                     <div class="tab-pane" id="option">
-                        <div class="panel" style="border-color: darkcyan; border-radius: 0">
-                            <div class="panel-heading" style="background: darkcyan; color: white; border-radius: 0">
+                        <div class="panel panel-darkcyan">
+                            <div class="panel-heading panel-heading-darkcyan">
                                 {{ trans('polls.label.step_2') }}
                             </div>
                             <div class="panel-body">
@@ -85,8 +87,8 @@
                         </div>
                     </div>
                     <div class="tab-pane" id="setting">
-                        <div class="panel" style="border-color: darkcyan; border-radius: 0">
-                            <div class="panel-heading" style="background: darkcyan; color: white; border-radius: 0">
+                        <div class="panel panel-darkcyan">
+                            <div class="panel-heading panel-heading-darkcyan">
                                 {{ trans('polls.label.step_3') }}
                             </div>
                             <div class="panel-body">
@@ -95,8 +97,8 @@
                         </div>
                     </div>
                     <div class="tab-pane" id="participant">
-                        <div class="panel" style="border-color: darkcyan; border-radius: 0">
-                            <div class="panel-heading" style="background: darkcyan; color: white; border-radius: 0">
+                        <div class="panel panel-darkcyan">
+                            <div class="panel-heading panel-heading-darkcyan">
                                 {{ trans('polls.label.step_4') }}
                             </div>
                             <div class="panel-body">
@@ -112,33 +114,34 @@
                 </div>
             </div>
         {{ Form::close() }}
-        </div>
+    </div>
 
-    <div class="row" style="background: #f3f4f4; min-height: 300px; padding-top: 20px">
-        <h2 style="text-align: center; margin-bottom: 50px">{{ trans('label.feature.name') }}</h2>
+    <!-- Feature -->
+    <div class="row feature">
+        <h2>{{ trans('label.feature.name') }}</h2>
         <div class="col-lg-2 animatedParent">
-            <img class="animated growIn slowest" src="{{ asset('uploads/images/Fpoll-vote.jpg') }}" style="display: block; margin: 0 auto; width: 100px; height: 100px; border-radius: 50%">
-            <p class="animated fadeInLeft" style="text-align: center">{{ trans('label.feature.vote') }}</p>
+            <img class="animated growIn slowest feature-img" src="{{ asset('uploads/images/Fpoll-vote.jpg') }}">
+            <p class="animated fadeInLeft feature-text">{{ trans('label.feature.vote') }}</p>
         </div>
         <div class="col-lg-2 animatedParent">
-            <img class="animated growIn slowest" src="{{ asset('uploads/images/Fpoll-chart.png') }}" style="display: block; margin: 0 auto; width: 100px; height: 100px; border-radius: 50%">
-            <p class="animated fadeInUp" style="text-align: center">{{ trans('label.feature.chart') }}</p>
+            <img class="animated growIn slowest feature-img" src="{{ asset('uploads/images/Fpoll-chart.png') }}">
+            <p class="animated fadeInUp feature-text">{{ trans('label.feature.chart') }}</p>
         </div>
         <div class="col-lg-2 animatedParent">
-            <img class="animated growIn slowest" src="{{ asset('uploads/images/Fpoll-security.jpg') }}" style="display: block; margin: 0 auto; width: 100px; height: 100px; border-radius: 50%">
-            <p class="animated fadeInUp" style="text-align: center">{{ trans('label.feature.security') }}</p>
+            <img class="animated growIn slowest feature-img" src="{{ asset('uploads/images/Fpoll-security.jpg') }}">
+            <p class="animated fadeInUp feature-text">{{ trans('label.feature.security') }}</p>
         </div>
         <div class="col-lg-2 animatedParent">
-            <img class="animated growIn slowest" src="{{ asset('uploads/images/Fpoll-export.png') }}" style="display: block; margin: 0 auto; width: 100px; height: 100px; border-radius: 50%">
-            <p class="animated fadeInRight" style="text-align: center">{{ trans('label.feature.export') }}</p>
+            <img class="animated growIn slowest feature-img" src="{{ asset('uploads/images/Fpoll-export.png') }}">
+            <p class="animated fadeInRight feature-text">{{ trans('label.feature.export') }}</p>
         </div>
         <div class="col-lg-2 animatedParent">
-            <img class="animated growIn slowest" src="{{ asset('uploads/images/Fpoll-responsive.jpg') }}" style="display: block; margin: 0 auto; width: 100px; height: 100px; border-radius: 50%">
-            <p class="animated fadeInRight" style="text-align: center">{{ trans('label.feature.responsive') }}</p>
+            <img class="animated growIn slowest feature-img" src="{{ asset('uploads/images/Fpoll-responsive.jpg') }}">
+            <p class="animated fadeInRight feature-text">{{ trans('label.feature.responsive') }}</p>
         </div>
         <div class="col-lg-2 animatedParent">
-            <img class="animated growIn slowest" src="{{ asset('uploads/images/Fpoll-like-share.jpg') }}" style="display: block; margin: 0 auto; width: 100px; height: 100px; border-radius: 50%">
-            <p class="animated fadeInRight" style="text-align: center">{{ trans('label.feature.share') }}</p>
+            <img class="animated growIn slowest feature-img" src="{{ asset('uploads/images/Fpoll-like-share.jpg') }}">
+            <p class="animated fadeInRight feature-text">{{ trans('label.feature.share') }}</p>
         </div>
     </div>
 @endsection

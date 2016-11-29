@@ -1,86 +1,75 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!-- CSRF Token -->
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+        <!-- CSRF Token -->
+        <meta name="csrf-token" content="{{ csrf_token() }}">
+        <link rel="shortcut icon" href="{{ asset('uploads/images/fpoll_logo.png') }}"/>
+        @yield('meta')
+        <title>{{ config('app.name', 'Laravel') }}</title>
 
-    <link rel="shortcut icon" href="{{ asset('uploads/images/fpoll_logo.png') }}"/>
+        {!! Html::style('css/app.css') !!}
 
-    @yield('meta')
+        <!-- Dropdown multiple language -->
+        {!! Html::style('bower/ms-Dropdown/css/msdropdown/dd.css') !!}
+        {!! Html::style('bower/ms-Dropdown/css/msdropdown/flags.css') !!}
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+        <!-- scroll animation -->
+        {!! Html::style('bower/css3-animate-it/css/animations.css') !!}
 
-    <link rel="stylesheet" type="text/css" href="{{ asset('bower/ms-Dropdown/css/msdropdown/dd.css') }}" />
+        <!-- Sweet alert -->
+        {!! Html::style('bower/sweetalert/dist/sweetalert.css') !!}
 
-    <link rel="stylesheet" type="text/css" href="{{ asset('bower/ms-Dropdown/css/msdropdown/flags.css') }}" />
+        <!-- Bootstrap CSS -->
+        {!! Html::style('bower/bootstrap/dist/css/bootstrap.min.css') !!}
 
-    <link href="{{ asset('bower/css3-animate-it/css/animations.css') }}" rel="stylesheet">
+        <!-- Bootstrap theme CSS -->
+        {!! Html::style('bower/bootstrap/dist/css/bootstrap-theme.min.css') !!}
 
-    {!! Html::style('bower/sweetalert/dist/sweetalert.css') !!}
+        <!-- Styles -->
+        {!! Html::style('css/layout/master.css') !!}
+        {!! Html::style('css/user.css') !!}
 
-    <!-- Styles -->
-    {!! Html::style('css/app.css') !!}
+        <!-- Bootstrap datatable CSS -->
+        {!! Html::style('bower/datatables.net-bs/css/dataTables.bootstrap.min.css') !!}
 
-    {!! Html::style('css/user.css') !!}
+        <!-- Animate -->
+        {!! Html::style('bower/animate.css/animate.min.css') !!}
 
-    <!-- Bootstrap CSS -->
-    {!! Html::style('bower/bootstrap/dist/css/bootstrap.min.css') !!}
+        <!-- Social button -->
+        {!! Html::style('bower/font-awesome/css/font-awesome.min.css') !!}
+        {!! Html::style('bower/bootstrap-social/bootstrap-social.css') !!}
 
-    <!-- Bootstrap theme CSS -->
-    {!! Html::style('bower/bootstrap/dist/css/bootstrap-theme.min.css') !!}
+        <!-- Bootstrap Tag Input css -->
+        {!! Html::style('bower/bootstrap-tagsinput/dist/bootstrap-tagsinput.css') !!}
 
-{!! Html::style('css/layout/master.css') !!}
+        <!-- Bootstrap Switch css -->
+        {!! Html::style('bower/bootstrap-switch/dist/css/bootstrap2/bootstrap-switch.min.css') !!}
 
-    <!-- Bootstrap datatable CSS -->
-    {!! Html::style('bower/datatables.net-bs/css/dataTables.bootstrap.min.css') !!}
+        <!-- Datetime picker -->
+        {!! Html::style('bower/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css') !!}
 
-    <!-- Animate -->
-    {!! Html::style('bower/animate.css/animate.min.css') !!}
+        <!-- Google api -->
+        @if (Session::get('locale') == 'ja')
+            <script type="text/javascript"
+                    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCzfBLqeROyZ1xGhOWb_oG7zmdYcCQdaI8&v=3.exp&libraries=places&language=ja">
+            </script>
+        @elseif(Session::get('locale') == 'vi')
+            <script type="text/javascript"
+                    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCzfBLqeROyZ1xGhOWb_oG7zmdYcCQdaI8&v=3.exp&libraries=places&language=vi">
+            </script>
+        @else
+            <script type="text/javascript"
+                    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCzfBLqeROyZ1xGhOWb_oG7zmdYcCQdaI8&v=3.exp&libraries=places&language=en">
+            </script>
+        @endif
+    </head>
+    <body>
 
-    <!-- Social button -->
-    {!! Html::style('bower/font-awesome/css/font-awesome.min.css') !!}
-    {!! Html::style('bower/bootstrap-social/bootstrap-social.css') !!}
-
-    <!-- Bootstrap Tag Input css -->
-    <link href="{{ asset('bower/bootstrap-tagsinput/dist/bootstrap-tagsinput.css') }}" rel="stylesheet">
-
-    <!-- Bootstrap Switch css -->
-    <link href="{{ asset('bower/bootstrap-switch/dist/css/bootstrap2/bootstrap-switch.min.css') }}" rel="stylesheet">
-
-    <!-- Datetime picker -->
-    <link href="{{ asset('bower/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css') }}" rel="stylesheet">
-
-
-
-    <!-- Scripts -->
-    <script>
-        window.Laravel = <?php echo json_encode([
-            'csrfToken' => csrf_token(),
-        ]); ?>
-    </script>
-
-    <!-- Google api -->
-    @if (Session::get('locale') == 'ja')
-        <script type="text/javascript"
-                src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCzfBLqeROyZ1xGhOWb_oG7zmdYcCQdaI8&v=3.exp&libraries=places&language=ja">
-        </script>
-    @elseif(Session::get('locale') == 'vi')
-        <script type="text/javascript"
-                src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCzfBLqeROyZ1xGhOWb_oG7zmdYcCQdaI8&v=3.exp&libraries=places&language=vi">
-        </script>
-    @else
-        <script type="text/javascript"
-                src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCzfBLqeROyZ1xGhOWb_oG7zmdYcCQdaI8&v=3.exp&libraries=places&language=en">
-        </script>
-    @endif
-
-
-</head>
-<body>
+        <!-- MENU -->
         <nav class="navbar navbar-default  animated fadeInDown">
             <div class="container-fluid">
                 <div class="navbar-header">
@@ -89,8 +78,8 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="{{ asset("/") }}"  style="padding-top: 0">
-                        <img src="{{ asset('uploads/images/fpoll_logo.png') }}" >
+                    <a class="navbar-brand" href="{{ asset("/") }}">
+                        <img src="{{ asset('uploads/images/fpoll_logo.png') }}">
                     </a>
                 </div>
                 <div class="collapse navbar-collapse" id="menu">
@@ -138,7 +127,7 @@
                                         {{ trans('label.logout') }}
                                     </span>
                                 </a>
-                                <form id="logout-form" action="{{ url('/logout') }}" method="POST" style="display: none;">
+                                <form id="logout-form" action="{{ url('/logout') }}" method="POST">
                                     {{ csrf_field() }}
                                 </form>
                             </li>
@@ -149,7 +138,6 @@
                                 <select name="lang" id="countries" class="form-control btn-multiple-language" style="min-width: 120px;">
                                     <option value='en' {{ Session::get('locale') == 'en' ? 'selected' : '' }} data-image="{{ asset('bower/ms-Dropdown/images/msdropdown/icons/blank.gif') }} " data-imagecss="flag england" data-title="English">English</option>
                                     <option value='vi' {{ Session::get('locale') == 'vi' ? 'selected' : '' }} data-image="{{ asset('bower/ms-Dropdown/images/msdropdown/icons/blank.gif') }}" data-imagecss="flag vn" data-title="Tiếng Việt">Tiếng Việt</option>
-                                    {{--<option value='ja' {{ Session::get('locale') == 'ja' ? 'selected' : '' }} data-image="{{ asset('bower/ms-Dropdown/images/msdropdown/icons/blank.gif') }}" data-imagecss="flag jp" data-title="日本語">日本語</option>--}}
                                 </select>
                             </div>
                         </li>
@@ -157,100 +145,92 @@
                 </div>
             </div>
         </nav>
+
+        <!-- CONTENT -->
         <div class="container-fluid">
-                @yield('content')
-                <script src="//code.jquery.com/jquery.js"></script>
-                @include('flashy::message')
-                <a href="javascript:void(0);" id="scroll" style="display: none;">Top<span></span></a>
+            @yield('content')
+            <script src="//code.jquery.com/jquery.js"></script>
+            <a href="javascript:void(0);" id="scroll">{{ trans('label.top') }}<span></span></a>
         </div>
 
-        <footer style="background: black; color: white; position: absolute; bottom: 0; width: 100%">
-                <div class="col-lg-3">
-                    <p><b class="char-app">F</b><label>poll</label></p>
-                    <p>
-                        <img src="{{ asset('uploads/images/logo.png') }}" style="width: 30px; height: 30px;">
-                        {{ trans('label.footer.copyright') }}
-                    </p>
+        <!-- FOOTER -->
+        <footer>
+            <div class="col-lg-3 footer-left">
+                <p><b class="char-app">F</b><label>poll</label></p>
+                <p>
+                    <img src="{{ asset('uploads/images/logo.png') }}">
+                    {{ trans('label.footer.copyright') }}
+                </p>
+            </div>
+            <div class="col-lg-5 footer-center">
+                <div class="col-lg-12">
+                    <p><i class="fa fa-map-marker" aria-hidden="true"></i> {{ trans('label.footer.location') }}</p>
                 </div>
-                <div class="col-lg-5" style="padding: 15px">
-                    <div class="col-lg-12">
-                        <p><i class="fa fa-map-marker" aria-hidden="true"></i> {{ trans('label.footer.location') }}</p>
-                    </div>
-                    <div class="col-lg-12">
-                        <p><i class="fa fa-phone" aria-hidden="true"></i> {{ trans('label.footer.phone') }}</p>
-                    </div>
-                    <div class="col-lg-12">
-                        <p><i class="fa fa-envelope" aria-hidden="true"></i> {{ trans('label.footer.email') }}</p>
-                    </div>
+                <div class="col-lg-12">
+                    <p><i class="fa fa-phone" aria-hidden="true"></i> {{ trans('label.footer.phone') }}</p>
                 </div>
-                <div class="col-lg-4" style="padding: 15px">
-                    <p>{{ trans('label.footer.about') }}</p>
-                    <p style="word-wrap: break-word">{{ trans('label.footer.description_website') }}</p>
-                    <button class="btn btn-primary">
-                        <span><i class="fa fa-facebook" aria-hidden="true"></i></span>
-                    </button>
-                    <button class="btn btn-success">
-                        <span><i class="fa fa-twitter" aria-hidden="true"></i></span>
-                    </button>
-                    <button class="btn btn-warning">
-                        <span><i class="fa fa-github" aria-hidden="true"></i></span>
-                    </button>
-                    <button class="btn btn-default">
-                        <span><i class="fa fa-linkedin" aria-hidden="true"></i></span>
-                    </button>
+                <div class="col-lg-12">
+                    <p><i class="fa fa-envelope" aria-hidden="true"></i> {{ trans('label.footer.email') }}</p>
                 </div>
+            </div>
+            <div class="col-lg-4 footer-right">
+                <p>{{ trans('label.footer.about') }}</p>
+                <p>{{ trans('label.footer.description_website') }}</p>
+                <a href="{{ trans('label.footer.facebook') }}" target="_blank" class="btn btn-primary">
+                    <span><i class="fa fa-facebook" aria-hidden="true"></i></span>
+                </a>
+                <a href="{{ trans('label.footer.github') }}" target="_blank" class="btn btn-warning">
+                    <span><i class="fa fa-github" aria-hidden="true"></i></span>
+                </a>
+                <a href="{{ trans('label.footer.linkedin') }}" target="_blank" class="btn btn-success">
+                    <span><i class="fa fa-linkedin" aria-hidden="true"></i></span>
+                </a>
+            </div>
         </footer>
 
-    <!-- jQuery -->
-    {!! Html::script('bower/jquery/dist/jquery.min.js') !!}
-    {!! Html::script('bower/jquery-validation/dist/jquery.validate.min.js') !!}
+        <!-- jQuery -->
+        {!! Html::script('bower/jquery/dist/jquery.min.js') !!}
+        {!! Html::script('bower/jquery-validation/dist/jquery.validate.min.js') !!}
 
-    <!-- Bootstrap -->
-    {!! Html::script('bower/bootstrap/dist/js/bootstrap.min.js') !!}
+        <!-- Bootstrap -->
+        {!! Html::script('bower/bootstrap/dist/js/bootstrap.min.js') !!}
 
-    <!-- winzard -->
-    {!! Html::script('bower/twitter-bootstrap-wizard/jquery.bootstrap.wizard.js') !!}
+        <!-- winzard -->
+        {!! Html::script('bower/twitter-bootstrap-wizard/jquery.bootstrap.wizard.js') !!}
 
-    <!-- Scripts -->
-    {{--{!! Html::script('/js/app.js') !!}--}}
+        <!-- Scripts -->
+        {!! Html::script('js/shareSocial.js') !!}
+        {!! Html::script('js/comment.js') !!}
+        {!! Html::script('js/vote.js') !!}
+        {!! Html::script('js/listPolls.js') !!}
+        {!! Html::script('js/managePoll.js') !!}
+        {!! Html::script('js/editLink.js') !!}
+        {!! Html::script('js/multipleLanguage.js') !!}
+        {!! Html::script('js/layout/master.js') !!}
 
-    {!! Html::script('js/shareSocial.js') !!}
+        <!-- jQuery Datatable JavaScript -->
+        {!! Html::script('/bower/datatables.net/js/jquery.dataTables.min.js') !!}
 
-    {!! Html::script('js/comment.js') !!}
+        <!-- Bootstrap Datatable JavaScript -->
+        {!! Html::script('/bower/datatables.net-bs/js/dataTables.bootstrap.min.js') !!}
 
-    {!! Html::script('js/vote.js') !!}
+        <!-- Tag Input -->
+        {!! Html::script('/bower/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js') !!}
 
-    {!! Html::script('js/listPolls.js') !!}
+        <!-- Datetime picker -->
+        {!! Html::script('/bower/moment/min/moment.min.js') !!}
+        {!! Html::script('/bower/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js') !!}
 
-    {!! Html::script('js/managePoll.js') !!}
+        <!-- Bootstrap switch -->
+        {!! Html::script('bower/bootstrap-switch/dist/js/bootstrap-switch.min.js') !!}
 
-    {!! Html::script('js/editLink.js') !!}
+        <!-- sweet alert -->
+        {!! Html::script('bower/sweetalert/dist/sweetalert.min.js') !!}
 
-    {!! Html::script('js/multipleLanguage.js') !!}
+        <!-- Dropdown multiple language -->
+        {!! Html::script('bower/ms-Dropdown/js/msdropdown/jquery.dd.min.js') !!}
 
-    {!! Html::script('js/layout/master.js') !!}
-
-    <!-- jQuery Datatable JavaScript -->
-    {!! Html::script('/bower/datatables.net/js/jquery.dataTables.min.js') !!}
-
-    <!-- Bootstrap Datatable JavaScript -->
-    {!! Html::script('/bower/datatables.net-bs/js/dataTables.bootstrap.min.js') !!}
-
-    <!-- Tag Input -->
-    {!! Html::script('/bower/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js') !!}
-
-    <!-- Datetime picker -->
-    <script src="{{ asset('bower/moment/min/moment.min.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('bower/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js') }}" type="text/javascript"></script>
-
-    <!-- Bootstrap switch -->
-    {!! Html::script('bower/bootstrap-switch/dist/js/bootstrap-switch.min.js') !!}
-
-    {!! Html::script('bower/sweetalert/dist/sweetalert.min.js') !!}
-
-    <script src="{{ asset('bower/ms-Dropdown/js/msdropdown/jquery.dd.min.js') }}"></script>
-
-    <script src="{{ asset('bower/css3-animate-it/js/css3-animate-it.js') }}"></script>
-
-</body>
+        <!-- scroll animate -->
+        {!! Html::script('bower/css3-animate-it/js/css3-animate-it.js') !!}
+    </body>
 </html>

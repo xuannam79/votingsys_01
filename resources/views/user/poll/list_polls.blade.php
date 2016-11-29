@@ -34,7 +34,7 @@
 
                     <div class="tab-content">
                         <div id="home" class="tab-pane fade in active">
-                            <div class="well" style="max-height: 500px; overflow-y: scroll">
+                            <div class="well list-poll-history">
                                 <button id="list-all-polls-initiated" class="btn btn-primary btn-initiated all-poll-user btn-darkcyan">
                                     {{ trans('polls.list_all_polls') }}
                                 </button>
@@ -51,7 +51,7 @@
                             </div>
                         </div>
                         <div id="menu1" class="tab-pane fade">
-                            <div class="well" style="max-height: 500px; overflow-y: scroll">
+                            <div class="well list-poll-history">
                                 <button id="list-all-polls-participated" class="btn btn-primary btn-participanted-in all-poll-user btn-darkcyan">
                                     {{ trans('polls.list_all_polls') }}
                                 </button>
@@ -69,7 +69,7 @@
 
                         </div>
                         <div id="menu2" class="tab-pane fade">
-                            <div class="well" style="max-height: 500px; overflow-y: scroll">
+                            <div class="well list-poll-history">
                                 <button id="list-all-polls-participated" class="btn btn-primary btn-closed all-poll-user btn-darkcyan">
                                     {{ trans('polls.list_all_polls') }}
                                 </button>

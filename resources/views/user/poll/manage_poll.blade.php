@@ -40,19 +40,20 @@
                         </div>
                     @endif
                     <div class="tab-pane" id="info">
-                        <a href="{{ url('/') . config('settings.email.link_vote') . $tokenLinkUser }}" target="_blank" style="margin-left: 20px">
+                        <a href="{{ url('/') . config('settings.email.link_vote') . $tokenLinkUser }}" target="_blank" class="menu-manager-info">
                             <i class="fa fa-link" aria-hidden="true"></i> {{ trans('polls.link_vote') }}
                         </a>
-                        <a href="#" style="margin-left: 20px" data-toggle="modal" data-target="#showOptionModal">
+                        <a href="#" class="menu-manager-info" data-toggle="modal" data-target="#showOptionModal">
                             <i class="fa fa-list" aria-hidden="true"></i> {{ trans('polls.view_option') }}
                         </a>
-                        <a href="#" style="margin-left: 20px" data-toggle="modal" data-target="#showSettingModal">
+                        <a href="#" class="menu-manager-info" data-toggle="modal" data-target="#showSettingModal">
                             <i class="fa fa-cog" aria-hidden="true"></i> {{ trans('polls.view_setting') }}
                         </a>
-                        <p style="float: right">{!! $poll->status !!}</p>
-                        <hr style="border: 1px solid darkcyan">
+                        <p>{!! $poll->status !!}</p>
+                        <hr class="hr-darkcyan">
                         @include('layouts.poll_info')
                     </div>
+
                     <!-- Modal Option-->
                     <div id="showOptionModal" class="modal fade" role="dialog">
                         <div class="modal-dialog">
@@ -63,11 +64,11 @@
                                     <h4 class="modal-title">{{ trans('polls.label.step_2') }}</h4>
                                 </div>
                                 <div class="modal-body">
-                                    <div class="row" style="max-height: 300px; overflow-y: scroll">
+                                    <div class="row manager-modal-option">
                                         @foreach ($poll->options as $option)
-                                            <div class="col-lg-12" style="margin-top: 10px;">
-                                                <img src="{{ $option->showImage() }}" style="width: 32px; height: 32px; float: left">
-                                                <p style="display: block; margin-left: 50px">{{ $option->name }}</p>
+                                            <div class="col-lg-12 option-detail-modal">
+                                                <img src="{{ $option->showImage() }}">
+                                                <p>{{ $option->name }}</p>
                                             </div>
                                         @endforeach
                                     </div>
@@ -92,7 +93,7 @@
                                                 <h4>{{ $text }}
                                                     @if ($text == trans('polls.label.setting.custom_link'))
                                                         <span class="label label-default">
-                                                            <a href="{{ url('/') . config('settings.email.link_vote') . $value }}" style="color: white" target="_blank">
+                                                            <a href="{{ url('/') . config('settings.email.link_vote') . $value }}" class="href_setting_link" target="_blank">
                                                                 {{ url('/') . config('settings.email.link_vote') . $value }}
                                                             </a>
                                                         </span>
@@ -118,11 +119,11 @@
                                 <div class="panel panel-default">
                                     <div class="panel-body">
                                         <ul class="nav nav-pills nav-stacked">
-                                            <li class="active"><a data-toggle="tab" href="#home">
+                                            <li class="active"><a data-toggle="tab" href="#statistic">
                                                     <i class="fa fa-calculator" aria-hidden="true"></i>
                                                 </a>
                                             </li>
-                                            <li><a data-toggle="tab" href="#menu1">
+                                            <li><a data-toggle="tab" href="#table">
                                                     <i class="fa fa-table" aria-hidden="true"></i>
                                                 </a>
                                             </li>
@@ -144,64 +145,66 @@
                             </div>
                             <div class="col-md-10">
                                 <div class="tab-content">
-                                    <div class="tab-pane fade in active" id="home">
-                                        <div class="panel panel-default animated fadeInRight" style="border-color: darkcyan; border-radius: 0">
-                                            <div class="panel-heading" style="background: darkcyan; color: white; border-radius: 0; border-color: darkcyan">
+                                    <div class="tab-pane fade in active" id="statistic">
+                                        <div class="panel panel-default animated fadeInRight panel-darkcyan">
+                                            <div class="panel-heading panel-heading-darkcyan">
                                                 {{ trans('polls.statistic') }}
                                             </div>
                                             <div class="panel-body">
                                                 <h4>{{ trans('polls.total_vote') }}:
-                                                    <span style="font-family:courier" class="badge">
+                                                    <span class="statistic-font" class="badge">
                                                     {{ $statistic['total'] }}
                                                 </span>
                                                 </h4>
                                                 @if ($statistic['total'] > config('settings.default_value'))
                                                     <h4>{{ trans('polls.vote_first_time') }}:
-                                                        <span style="font-family:courier">{{ $statistic['firstTime'] }}</span>
+                                                        <span class="statistic-font">{{ $statistic['firstTime'] }}</span>
                                                     </h4>
                                                     <h4>{{ trans('polls.vote_last_time') }}:
-                                                        <span style="font-family:courier">{{ $statistic['lastTime'] }}</span>
+                                                        <span class="statistic-font">{{ $statistic['lastTime'] }}</span>
                                                     </h4>
                                                     @if ($statistic['largestVote']['number'] > 0 && $statistic['largestVote']['option'])
                                                         <h4>{{ trans('polls.option_highest_vote') }}:
                                                             @if (! empty($statistic['largestVote']['option']))
                                                                 @foreach ($statistic['largestVote']['option'] as $largestVote)
-                                                                    <span style="font-family:courier;word-wrap: break-word;">[{{ $largestVote->name }}]</span>
+                                                                    <span class="statistic-font wrap-text">[{{ $largestVote->name }}]</span>
                                                                     @if (! $loop->last)
                                                                         ,
                                                                     @endif
                                                                 @endforeach
-                                                                <span style="font-family:courier;word-wrap: break-word;">({{ $statistic['largestVote']['number'] . ' ' . trans('polls.vote')}})</span>
+                                                                <span class="statistic-font wrap-text">({{ $statistic['largestVote']['number'] . ' ' . trans('polls.vote')}})</span>
                                                             @endif
                                                         </h4>
                                                     @endif
                                                     <h4>{{ trans('polls.option_lowest_vote') }}:
                                                         @if (! empty($statistic['leastVote']['option']))
                                                             @foreach ($statistic['leastVote']['option'] as $leastVote )
-                                                                <span style="font-family:courier;word-wrap: break-word;">[{{ $leastVote->name }}]</span>
+                                                                <span class="statistic-font wrap-text">[{{ $leastVote->name }}]</span>
                                                                 @if (! $loop->last)
                                                                     ,
                                                                 @endif
                                                             @endforeach
-                                                            <span style="font-family:courier;word-wrap: break-word;">({{ $statistic['leastVote']['number'] . ' ' . trans('polls.vote')}})</span>
+                                                            <span class="statistic-font wrap-text">({{ $statistic['leastVote']['number'] . ' ' . trans('polls.vote')}})</span>
                                                         @endif
                                                     </h4>
                                                 @endif
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="tab-pane fade" id="menu1">
-                                        <div class="panel panel-default animated fadeInRight" style="border-color: darkcyan; border-radius: 0">
-                                            <div class="panel-heading" style="background: darkcyan; color: white; border-radius: 0; border-color: darkcyan">
+                                    <div class="tab-pane fade" id="table">
+                                        <div class="panel panel-default animated fadeInRight panel-darkcyan">
+                                            <div class="panel-heading panel-heading-darkcyan">
                                                 {{ trans('polls.table_result') }}
-                                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#myModal" style="float: right; font-size: 10px">
-                                                    <i class="fa fa-list" aria-hidden="true"></i>
-                                                </button>
                                             </div>
                                             <div class="panel-body">
                                                 @if ($poll->countParticipants())
                                                     <div class="row">
-                                                        <div class="col-lg-3 col-lg-offset-6">
+                                                        <div class="col-lg-3 col-lg-offset-3">
+                                                            <button type="button" class="btn btn-administration" data-toggle="modal" data-target="#myModal">
+                                                                <i class="fa fa-list" aria-hidden="true"></i> {{ trans('polls.show_vote_details') }}
+                                                            </button>
+                                                        </div>
+                                                        <div class="col-lg-3">
                                                             {{ Form::open(['route' => ['exportPDF', 'poll_id' => $poll->id]]) }}
                                                             {{
                                                                 Form::button('<span class="glyphicon glyphicon-export"></span>' . ' ' . trans('polls.export_pdf'), [
@@ -223,34 +226,26 @@
                                                         </div>
                                                     </div>
                                                 @endif
-                                                <div class="col-lg-12" style="clear: both; max-height: 300px; overflow-x: hidden; overflow-y: scroll">
-                                                    <table class="table table-hover table-responsive" style="margin-top: 20px">
+                                                <div class="col-lg-12 manager-tabel-result-poll">
+                                                    <table class="table table-hover table-responsive">
                                                         <thead>
-                                                        <tr>
-                                                            <th>{{ trans('polls.no') }}</th>
-                                                            <th>{{ trans('polls.label.option') }}</th>
-                                                            <th>{{ trans('polls.number_vote') }}</th>
-                                                            <th>{{ trans('polls.date_last_vote') }}</th>
-                                                        <!-- <th>{{ trans('polls.poll_details') }}</th> -->
-                                                        </tr>
+                                                            <tr>
+                                                                <th>{{ trans('polls.no') }}</th>
+                                                                <th>{{ trans('polls.label.option') }}</th>
+                                                                <th>{{ trans('polls.number_vote') }}</th>
+                                                            </tr>
                                                         </thead>
                                                         <tbody>
-                                                        @foreach ($dataTableResult as $key => $data)
-                                                            <tr>
-                                                                <td>{{ $key + 1 }}</td>
-                                                                <td style="max-width: 450px; word-wrap: break-word;">
-                                                                    <img src="{{ asset($data['image']) }}" width="50px" height="50px">
-                                                                    {{ $data['name'] }}
-                                                                </td>
-                                                                <td><span class="badge">{{ $data['numberOfVote'] }}</span></td>
-                                                                <td>{{ $data['lastVoteDate'] }}</td>
-                                                                <!--  <td>
-                                                                     <button type="button" class="btn btn-primary btn-xs">
-                                                                         <i class="fa fa-asterisk" aria-hidden="true"></i>
-                                                                     </button>
-                                                                 </td> -->
-                                                            </tr>
-                                                        @endforeach
+                                                            @foreach ($dataTableResult as $key => $data)
+                                                                <tr>
+                                                                    <td>{{ $key + 1 }}</td>
+                                                                    <td class="td-detail-option">
+                                                                        <img src="{{ asset($data['image']) }}">
+                                                                        {{ $data['name'] }}
+                                                                    </td>
+                                                                    <td><span class="badge">{{ $data['numberOfVote'] }}</span></td>
+                                                                </tr>
+                                                            @endforeach
                                                         </tbody>
                                                     </table>
                                                 </div>
@@ -262,17 +257,17 @@
                                                     <div class="modal-content">
                                                         <div class="modal-body scroll-result">
                                                             @if ($mergedParticipantVotes->count())
-                                                                <table class="table table-bordered">
+                                                                <table class="table table-bordered table-detail-result">
                                                                     <thead>
-                                                                    <th><center>{{ trans('polls.no') }}</center></th>
-                                                                    <th><center>{{ trans('polls.name')}}</center></th>
-                                                                    <th><center>{{ trans('polls.email')}}</center></th>
+                                                                    <th>{{ trans('polls.no') }}</th>
+                                                                    <th>{{ trans('polls.name')}}</th>
+                                                                    <th>{{ trans('polls.email')}}</th>
                                                                     @foreach ($poll->options as $option)
-                                                                        <th>
+                                                                        <th class="th-detail-vote">
                                                                             <center>
-                                                                                <img class="img-option" src="{{ $option->showImage() }}">
-                                                                                <br>
-                                                                                <label style="max-width: 450px; word-wrap: break-word";>{{ $option->name }}</label>
+                                                                                <p>
+                                                                                    {{ str_limit($option->name, 50) }}
+                                                                                </p>
                                                                             </center>
                                                                         </th>
                                                                     @endforeach
@@ -294,7 +289,7 @@
                                                                                             <td>{{ $item->user->name }}</td>
                                                                                             <td>{{ $item->user->email }}</td>
                                                                                         @else
-                                                                                            <td>{{ $item->participant->name }}</td>
+                                                                                            <td>{{ $item->participant->showName() }}</td>
                                                                                             <td>{{ $item->participant->email }}</td>
                                                                                         @endif
                                                                                         @php
@@ -303,7 +298,11 @@
                                                                                     @endif
                                                                                     @if ($item->option_id == $option->id)
                                                                                         <td>
-                                                                                            <center><label class="label label-default"><span class="glyphicon glyphicon-ok"> </span></label></center>
+                                                                                            <center>
+                                                                                                <label class="label label-default">
+                                                                                                    <span class="glyphicon glyphicon-ok"> </span>
+                                                                                                </label>
+                                                                                            </center>
                                                                                         </td>
                                                                                         @php
                                                                                             $isShowOptionUserVote = true;
@@ -334,8 +333,8 @@
                                     </div>
                                     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
                                     <div class="tab-pane fade" id="menu2">
-                                        <div class="panel panel-default animated fadeInRight" style="border-color: darkcyan; border-radius: 0">
-                                            <div class="panel-heading" style="background: darkcyan; color: white; border-radius: 0; border-color: darkcyan">
+                                        <div class="panel panel-default animated fadeInRight panel-darkcyan">
+                                            <div class="panel-heading panel-heading-darkcyan">
                                                 {{ trans('polls.bar_chart') }}
                                             </div>
                                             <div class="panel-body">
@@ -350,7 +349,7 @@
                                                             data.addColumn('number', '');
                                                             var optionRateBarChart = {!! $optionRateBarChart !!};
                                                             data.addRows(optionRateBarChart);
-                                                            var options = {'width': 700, 'height': 500};
+                                                            var options = {'width': 700, 'height': 400};
                                                             var chart = new google.visualization.BarChart(document.getElementById('chart'));
                                                             chart.draw(data, options);
                                                         }
@@ -362,8 +361,8 @@
                                         </div>
                                     </div>
                                     <div class="tab-pane fade" id="menu3">
-                                        <div class="panel panel-default animated fadeInRight" style="border-color: darkcyan; border-radius: 0">
-                                            <div class="panel-heading" style="background: darkcyan; color: white; border-radius: 0; border-color: darkcyan">
+                                        <div class="panel panel-default animated fadeInRight panel-darkcyan">
+                                            <div class="panel-heading panel-heading-darkcyan">
                                                 {{ trans('polls.pie_chart') }}
                                             </div>
                                             <div class="panel-body">
@@ -379,7 +378,7 @@
                                                             data.addColumn('number', 'Slices');
                                                             var optionRateBarChart = {!! $optionRateBarChart !!};
                                                             data.addRows(optionRateBarChart);
-                                                            var options = {'width': 700, 'height': 500};
+                                                            var options = {'width': 700, 'height': 400};
                                                             var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
                                                             chart.draw(data, options);
                                                         }
@@ -398,16 +397,19 @@
                     <div class="tab-pane" id="activity">
                         <div class="row">
                             <div class="col-lg-6">
-                                <a id="label_link_admin">{{ str_limit(url('/') . config('settings.email.link_vote') . $tokenLinkAdmin, config('settings.limit_link')) }}</a>
+                                <a id="label_link_admin">
+                                    {{ str_limit(url('/') . config('settings.email.link_vote') . $tokenLinkAdmin, config('settings.limit_link')) }}
+                                </a>
                                 <div class="form-group">
                                     <div class="input-group">
-                                    <span class="input-group-addon" id="basic-addon3">
-                                        <i class="fa fa-link" aria-hidden="true"></i>
-                                    </span>
-                                        <input type="text" name="administer_link" class="form-control token-admin" value="{{ $tokenLinkAdmin }}" id="link_admin" onkeyup="changeLinkAdmin()">
+                                        <span class="input-group-addon" id="basic-addon3">
+                                            <i class="fa fa-link" aria-hidden="true"></i>
+                                        </span>
+                                        <input type="text" name="administer_link" class="form-control token-admin"
+                                               value="{{ $tokenLinkAdmin }}" id="link_admin" onkeyup="changeLinkAdmin()">
                                         <span class="input-group-btn" data-token-link-admin="{{ $tokenLinkAdmin }}">
-                                        {{ Form::button('<i class="fa fa-check" aria-hidden="true"></i>', ['class' => 'btn btn-success edit-link-admin']) }}
-                                    </span>
+                                            {{ Form::button('<i class="fa fa-check" aria-hidden="true"></i>', ['class' => 'btn btn-success edit-link-admin']) }}
+                                        </span>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -418,17 +420,20 @@
                                 </div>
                             </div>
                             <div class="col-lg-6">
-                                <a id="label_link_user">{{ str_limit(url('/') . config('settings.email.link_vote') . $tokenLinkUser, config('settings.limit_link')) }}</a>
+                                <a id="label_link_user">
+                                    {{ str_limit(url('/') . config('settings.email.link_vote') . $tokenLinkUser, config('settings.limit_link')) }}
+                                </a>
                                 <div class="input-group">
-                                <span class="input-group-addon" id="basic-addon3">
-                                    <i class="fa fa-link" aria-hidden="true"></i>
-                                </span>
-                                    <input type="text" name="participation_link" class="form-control token-user" value="{{ $tokenLinkUser }}" id="link_user" onkeyup="changeLinkUser()">
+                                    <span class="input-group-addon" id="basic-addon3">
+                                        <i class="fa fa-link" aria-hidden="true"></i>
+                                    </span>
+                                    <input type="text" name="participation_link" class="form-control token-user"
+                                           value="{{ $tokenLinkUser }}" id="link_user" onkeyup="changeLinkUser()">
                                     <span class="input-group-btn" data-token-link-user="{{ $tokenLinkUser }}">
-                                    <button class="btn btn-success edit-link-user" type="button">
-                                        <i class="fa fa-check" aria-hidden="true"></i>
-                                    </button>
-                                </span>
+                                        <button class="btn btn-success edit-link-user" type="button">
+                                            <i class="fa fa-check" aria-hidden="true"></i>
+                                        </button>
+                                    </span>
                                 </div>
                                 <div class="form-group">
                                     <div class="error_link_user"></div>
@@ -439,7 +444,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            <hr style="border: 1px solid darkcyan">
+                            <hr class="hr-darkcyan">
                         </div>
                         <div class="row">
                             <div class="col-lg-3">
@@ -460,7 +465,6 @@
                                         <i class="fa fa-external-link" aria-hidden="true"></i> {{ trans('polls.reopen_poll') }}
                                     </a>
                                 @endif
-
                                 @if (! $poll->isClosed())
                                     {{ Form::open(['route' => ['poll.destroy', $poll->id], 'id' => 'close-poll', 'method' => 'delete']) }}
                                     {{
@@ -488,5 +492,4 @@
             </div>
         </div>
     </div>
-
 @endsection

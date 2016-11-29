@@ -88,6 +88,9 @@ return [
         'phone' => ' 84-4-3795-5417',
         'about' => 'About the website',
         'description_website' => 'Website help you can create a poll fast and easy',
+        'facebook' => 'https://www.facebook.com/FramgiaVietnam',
+        'github' => 'https://github.com/framgia',
+        'linkedin' => 'https://www.linkedin.com/company/framgia-vietnam',
     ],
     /*
      * Home page
