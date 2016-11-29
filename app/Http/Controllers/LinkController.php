@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Session;
 use App\Models\Link;
 use App\Models\ParticipantVote;
 use App\Models\User;
@@ -14,7 +15,6 @@ use App\Repositories\Vote\VoteRepositoryInterface;
 use App\Repositories\ParticipantVote\ParticipantVoteRepositoryInterface;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
-use Session;
 
 class LinkController extends Controller
 {
@@ -100,11 +100,11 @@ class LinkController extends Controller
         $forward = @$_SERVER['HTTP_X_FORWARDED_FOR'];
         $remote  = $_SERVER['REMOTE_ADDR'];
 
-        if(filter_var($client, FILTER_VALIDATE_IP)){
+        if (filter_var($client, FILTER_VALIDATE_IP)) {
             $ip = $client;
-        }elseif(filter_var($forward, FILTER_VALIDATE_IP)){
+        } elseif (filter_var($forward, FILTER_VALIDATE_IP)) {
             $ip = $forward;
-        }else{
+        } else {
             $ip = $remote;
         }
 
@@ -147,12 +147,13 @@ class LinkController extends Controller
         $optionRateBarChart = json_encode($optionRateBarChart);
         $requiredPassword = null;
         $passwordSetting = $poll->settings->whereIn('key', [config('settings.setting.set_password')])->first();
-
-        if ($poll->settings) {
-            foreach ($poll->settings as $setting) {
-                $isRequiredEmail = ($setting->key == config('settings.setting.required_email'));
-            }
-        }
+        $isRequiredEmail = $poll->settings->whereIn('key', [config('settings.setting.required_email')])->count() != config('settings.default_value');
+        $dataTableResult = $this->pollRepository->getDataTableResult($poll, $isRequiredEmail);
+        //sort option and count vote by number of vote
+        $dataTableResult = array_values(array_sort($dataTableResult, function($value)
+        {
+            return $value['numberOfVote'];
+        }));
 
         if (! $link->link_admin) {
             if ($link->poll->isClosed()) {
@@ -200,7 +201,6 @@ class LinkController extends Controller
 
             Session::forget('isInputPassword');
 
-            $isRequiredEmail = $poll->settings->whereIn('key', [config('settings.setting.required_email')])->count() != config('settings.default_value');
             $isHideResult = $poll->settings->whereIn('key', [config('settings.setting.hide_result')])->count() != config('settings.default_value');
             $voteIds = $this->pollRepository->getVoteIds($poll->id);
             $votes = $this->voteRepository->getVoteWithOptionsByVoteId($voteIds);
@@ -245,8 +245,6 @@ class LinkController extends Controller
                 }
             }
 
-            $dataTableResult = $this->pollRepository->getDataTableResult($poll, $isRequiredEmail);
-
             return view('user.poll.details', compact(
                 'poll', 'isRequiredEmail', 'isUserVoted', 'isHideResult', 'numberOfVote', 'linkUser', 'mergedParticipantVotes', 'isParticipantVoted', 'requiredPassword',
                 'optionRatePieChart', 'isSetIp', 'optionRateBarChart', 'isLimit', 'dataTableResult'
@@ -288,8 +286,6 @@ class LinkController extends Controller
                 }
             }
 
-            $isRequiredEmail = $poll->settings->whereIn('key', [config('settings.setting.required_email')])->count() != config('settings.default_value');
-
             //get data contain config or message return view and js
             $data = $this->pollRepository->getDataPollSystem();
             $page = 'manager';
@@ -302,13 +298,6 @@ class LinkController extends Controller
                 'largestVote' => $this->pollRepository->getOptionLargestVote($poll),
                 'leastVote' => $this->pollRepository->getOptionLeastVote($poll),
             ];
-
-            //table result
-            $dataTableResult = $this->pollRepository->getDataTableResult($poll, $isRequiredEmail);
-
-            foreach ($poll->options as $option) {
-                $totalVote += $option->countVotes();
-            }
 
             $settings = $this->pollRepository->showSetting($poll->settings);
 
