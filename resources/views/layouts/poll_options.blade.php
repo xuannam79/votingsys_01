@@ -22,8 +22,9 @@
             <div class="col-lg-10 col-lg-offset-1 well">
                 <div class="panel panel-success ">
                     <div class="panel-heading">
-                        Option {{ $loop->index + 1 }}
-                        <button type="button" class="btn btn-danger btn-delete-option-duplicate" onclick="removeOpion('{{ $option->id }}', 'edit')">
+                        {{ trans('polls.label.step_2') }} {{ $loop->index + 1 }}
+                        <button type="button" class="btn btn-danger btn-delete-option-duplicate"
+                                onclick="removeOpion('{{ $option->id }}', 'edit')">
                             <span class="fa fa-trash"></span> {{ trans('polls.button.remove') }}
                         </button>
                     </div>
@@ -60,7 +61,6 @@
 @endif
 
 <!-- OPTION LISTS -->
-
 <div class="col-lg-12">
     <div class="poll-option"></div>
 </div>

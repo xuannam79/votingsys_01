@@ -92,7 +92,7 @@
                             <td><center>{{ $item->user->name }}</center></td>
                             <td><center>{{ $item->user->email }}</td>
                         @else
-                            <td><center>{{ $item->participant->name }}<center></td>
+                            <td><center>{{ $item->participant->showName() }}<center></td>
                             <td><center>{{ $item->participant->email }}<center></td>
                         @endif
                         @php

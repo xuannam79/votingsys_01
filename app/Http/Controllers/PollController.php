@@ -8,7 +8,6 @@ use App\Http\Requests\PollRequest;
 use App\Repositories\Poll\PollRepositoryInterface;
 use Illuminate\Http\Request;
 use Mail;
-use Flashy;
 
 class PollController extends Controller
 {
