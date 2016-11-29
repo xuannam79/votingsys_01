@@ -20,15 +20,24 @@
                                                 <div class="col-md-10">
                                                     <div class="input-group">
                                                         <span class="input-group-addon" id="basic-addon1"><i class="fa fa-key" aria-hidden="true"></i></span>
-                                                        {{ Form::password('password', ['id' => 'password', 'class' => 'form-control', 'placeholder' => trans('polls.placeholder.password_poll'), 'autofocus' => 'true']) }}
+                                                        {{
+                                                            Form::password('password', [
+                                                                'id' => 'password',
+                                                                'class' => 'form-control',
+                                                                'placeholder' => trans('polls.placeholder.password_poll'),
+                                                                'autofocus' => 'true'
+                                                            ])
+                                                        }}
                                                     </div>
-
                                                     {{ Form::hidden('poll_id', $poll->id) }}
                                                     {{ Form::hidden('token', $token) }}
                                                 </div>
                                                 <div class="col-md-2">
                                                     {{ Form::button('<i class="glyphicon glyphicon-ok"></i>'
-                                                        . ' ' . trans('polls.check'), ['type' => 'submit', 'class' => 'btn btn-primary btn-input-password'])
+                                                        . ' ' . trans('polls.check'), [
+                                                            'type' => 'submit',
+                                                            'class' => 'btn btn-primary btn-input-password'
+                                                        ])
                                                     }}
                                                 </div>
                                                 {{ Form::close() }}

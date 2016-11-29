@@ -1,7 +1,6 @@
 <?php
 
 return [
-
     'number_of_record_user' => 10,
     'length_user' => [
         'name' => 255,
@@ -40,6 +39,9 @@ return [
     /**-------------------------------
      * Poll config
     -------------------------------*/
+    'str_limit' => [
+        'location' => 20,
+    ],
     'length_poll' => [
         'name' => 255,
         'email' => 255,
@@ -104,5 +106,6 @@ return [
     'default_value' => 0,
     'limit_link' => 60,
     'limit_name' => 80,
-    'is_active' => 1,
+    /* vote */
+    'no_name' => 'Ẩn danh',
 ];

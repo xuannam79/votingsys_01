@@ -116,6 +116,9 @@ return [
         'phone' => ' 84-4-3795-5417',
         'about' => 'Giới thiệu website',
         'description_website' => 'Website giúp bạn tạo một bầu chọn nhanh chóng và dễ dàng',
+        'facebook' => 'https://www.facebook.com/FramgiaVietnam',
+        'github' => 'https://github.com/framgia',
+        'linkedin' => 'https://www.linkedin.com/company/framgia-vietnam',
     ],
 
     /*
@@ -130,8 +133,6 @@ return [
         'share' => 'Chia sẻ bình chọn thông qua Facebook',
         'responsive' => 'Truy cập mọi lúc mọi nơi và hỗ trợ trên nhiều loại thiết bị',
     ],
-    'accessible' => 'TRUY CẬP',
-    'security' => 'BẢO MẬT',
-    'introduction' => 'GIỚI THIỆU',
+    'top' => 'Đầu trang',
     'tutorial' => 'Hướng dẫn',
 ];

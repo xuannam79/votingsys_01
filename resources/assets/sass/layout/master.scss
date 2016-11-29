@@ -1,6 +1,8 @@
-/*-----------------------------
-/*        CUSTOM MENU         *
--------------------------------*/
+/*-------------------------------
+       MENU
+------------------------------*/
+
+/* Custom menu */
 .navbar-default .navbar-nav > li > a:hover, .navbar-default .navbar-nav > li > a:focus {
   color: #000;  /*Sets the text hover color on navbar*/
 }
@@ -75,13 +77,27 @@ a:hover, .navbar-default .navbar-nav > .active > a:focus {
 .navbar-brand {
   color: white !important;
 }
-/*-------------------------------
-/*       END CUSTOM MENU         *
+
+/* Menu style */
+.navbar-brand {
+  padding-top: 0 !important;
+}
+#logout-form {
+  display: none;
+}
+
+/*---------------------------------
+            END MENU
 -------------------------------*/
 
 /*-------------------------------
-    BackToTop button css
---------------------------------*/
+        CONTENT
+------------------------------*/
+/* BackToTop button css */
+#scroll {
+  display: none;
+}
+
 #scroll {
   position:fixed;
   right:10px;
@@ -113,17 +129,52 @@ a:hover, .navbar-default .navbar-nav > .active > a:focus {
   opacity:1;filter:"alpha(opacity=100)";
   -ms-filter:"alpha(opacity=100)";
 }
+/*-------------------------------
+       END CONTENT
+------------------------------*/
 
 /*-------------------------------
-/*       START ICON ADD POLL    *
--------------------------------*/
+        FOOTER
+------------------------------*/
+footer {
+  background: black;
+  color: white;
+  position: absolute;
+  bottom: 0;
+  width: 100%
+}
+
+.footer-left img {
+  width: 30px;
+  height: 30px;
+}
+
+.footer-center {
+  padding: 15px;
+}
+
+.footer-right {
+  padding: 15px;
+}
+
+.footer-right p{
+  word-wrap: break-word;
+}
+/*-------------------------------
+        END FOOTER
+-----------------------------*/
+
+
+
+/*----------------------------
+        CREATE POLL
+----------------------------*/
+
+/* START ICON ADD POLL */
 .board .nav-tabs {
   position: relative;
-  /* border-bottom: 0; */
-  /* width: 80%; */
   margin-bottom: 0;
   box-sizing: border-box;
-
 }
 
 .board > div.board-inner > .nav-tabs {
@@ -279,14 +330,8 @@ span.round-tabs.four{
   display: block;
   margin: 0 auto;
 }
+/* END ICON ADD POLL */
 
-/*-------------------------------
-/*       END ICON ADD POLL    *
--------------------------------*/
-
-/*----------------------------
-/*  CREATE POLL               *
-/*----------------------------*/
 #create_poll_wizard .tab-pane {
   padding-top: 0;
 }
@@ -295,6 +340,77 @@ span.round-tabs.four{
   height: 10px;
   border-radius: 0 !important;
 }
+
+/* poll info */
+.btn-back-edit {
+  background: darkcyan;
+  border-color: darkcyan;
+  border-radius: 0;
+  color: white;
+  float: right;
+  box-shadow: 1px 1px 1px black;
+}
+
+/* poll option */
+.btn-darkcyan-not-shadow {
+  background: darkcyan;
+  border-color: darkcyan;
+  color: white;
+}
+
+.btn-remove-option {
+  border-radius: 0;
+}
+
+/* user.poll.create */
+.row-create-poll {
+  margin-bottom: 100px;
+}
+
+.bar {
+  background: darkcyan;
+}
+
+.panel-heading-create-poll {
+  padding: 5px;
+}
+
+.panel-darkcyan {
+  margin: 0;
+  border-radius: 0;
+  border-color: darkcyan;
+}
+
+.panel-heading-darkcyan {
+  background: darkcyan !important;
+  border-color: darkcyan !important;
+  border-radius: 0 !important;
+  color: white !important;
+}
+
+.feature {
+  background: #f3f4f4;
+  min-height: 300px;
+  padding-top: 20px
+}
+
+.feature h2 {
+  text-align: center;
+  margin-bottom: 50px
+}
+
+.feature-text {
+  text-align: center
+}
+
+.feature-img {
+  display: block;
+  margin: 0 auto;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%
+}
+
 /*-------------------------------------------/
 /               LAYOUT.APP                  /
 /-------------------------------------------*/
@@ -372,9 +488,189 @@ body {
   font-size: 20px;
 }
 
-/*-------------------------------------------/
-/               USER.POLL.DETAIL             /
-/-------------------------------------------*/
+/*-------------------------------------------
+               USER.POLL.DETAIL
+-------------------------------------------*/
+.panel-detail-poll {
+  border-radius: 0;
+  margin-bottom: 0;
+}
+
+.panel-body-detail-poll {
+  padding: 0;
+}
+
+.panel-vote-option {
+  border-radius: 0
+}
+
+.panel-body-vote-option {
+  padding: 5px;
+}
+
+/*--------------------------Tab: Vote--------------------------*/
+/* info of poll */
+.poll-count {
+  width: 100%;
+}
+
+.span-date-close {
+  float: right;
+  margin-left: 20px
+}
+
+/* tab vote: horizontal or vertical */
+.vote-style {
+  padding-right: 4px;
+  clear: both;
+}
+
+.vote-style ul{
+  float: right;
+}
+
+.btn-vote-style {
+  padding: 5px 10px !important;
+}
+
+.vote-style-detail {
+  clear: both;
+}
+
+/* Horizontal option detail */
+.horizontal-overflow {
+  max-height: 400px;
+  overflow-y: scroll;
+}
+
+.li-parent-vote {
+  min-height: 70px;
+  border-radius: 0
+}
+
+.image-option-vote {
+  cursor: pointer;
+  float: left;
+  width: 50px;
+  height: 50px;
+}
+
+.content-option-vote {
+  display: block;
+  margin-left: 60px
+}
+
+/* Vertical option detail */
+.vertical-overflow {
+  padding-right: 0;
+  padding-left: 0;
+  max-height: 400px;
+  overflow-y: scroll
+}
+
+.vertical-option {
+  padding-left: 5px;
+  padding-right: 5px
+}
+
+.result-poll-vertical {
+  float: right;
+  display: none;
+}
+
+.panel-body-vertical-option {
+  height:120px;
+  overflow-y: scroll
+}
+
+.panel-body-vertical-option p img {
+  cursor: pointer;
+  width: 32px;
+  height: 32px;
+}
+
+#imageOfOptionPreview {
+  width: 350px;
+  height:350px;
+  display: block;
+  margin: 0 auto
+}
+
+/*--------------------------Tab: Info--------------------------*/
+.poll-info h4{
+  word-wrap: break-word;
+}
+
+.span-info {
+  margin-right: 20px;
+}
+
+.label-poll-info {
+  color: blue;
+}
+
+.span-location-poll {
+  float: right;
+  cursor: pointer
+}
+
+.div-like-share {
+  padding: 0;
+}
+
+.hr-darkcyan {
+  border: 1px solid darkcyan;
+}
+
+.comment-poll {
+  padding: 0
+}
+
+/*--------------------------Tab: Result--------------------------*/
+.div-show-detail-vote {
+  padding: 0;
+  margin-bottom: 20px
+}
+
+.btn-show-detail-vote {
+  float: right;
+  background: darkcyan;
+  border-color: darkcyan;
+  border-radius: 0;
+  box-shadow: 2px 2px 2px black;
+}
+
+.btn-show-detail-vote:hover, .btn-show-detail-vote:focus, .btn-show-detail-vote:active{
+  background: darkcyan !important;
+  border-color: darkcyan !important;
+}
+
+.th-detail-vote {
+  min-width: 100px;
+}
+
+.table-poll-result {
+  clear: both;
+  max-height: 400px;
+  overflow-x: hidden;
+  overflow-y: scroll
+}
+
+.td-poll-result {
+  width: 720px
+}
+
+.td-poll-result img {
+  width: 50px;
+  height: 50px;
+  float: left;
+}
+
+.td-poll-result p {
+  margin-left: 60px;
+  display: block
+}
+
 .title {
   text-align: center;
 }
@@ -410,10 +706,7 @@ body {
   cursor: pointer;
 }
 
-#imageOfOptionPreview {
-  width: 350px;
-  height:350px;
-}
+
 
 /*-------------------------------------------/
 /               USER.POLL.MANAGER             /
@@ -773,4 +1066,72 @@ html {
 
 .btn-center {
   float: none !important;
+}
+
+/* list poll */
+.list-poll-history {
+  max-height: 500px;
+  overflow-y: scroll
+}
+
+/* manager poll */
+.menu-manager-info {
+  margin-left: 20px;
+}
+
+#info p {
+  float: right;
+}
+
+.manager-modal-option {
+  max-height: 300px;
+  overflow-y: scroll
+}
+
+.option-detail-modal {
+  margin-top: 10px;
+}
+
+.option-detail-modal img{
+  width: 32px;
+  height: 32px;
+  float: left
+}
+
+.option-detail-modal p{
+  display: block;
+  margin-left: 50px
+}
+
+.href_setting_link {
+  color: white;
+}
+
+.statistic-font {
+  font-family:courier
+}
+
+.wrap-text {
+  word-wrap: break-word;
+}
+
+.manager-tabel-result-poll {
+  clear: both;
+  max-height: 300px;
+  overflow-x: hidden;
+  overflow-y: scroll
+}
+
+.manager-tabel-result-poll table {
+    margin-top: 20px
+}
+
+.td-detail-option {
+  max-width: 450px;
+  word-wrap: break-word;
+}
+
+.td-detail-option img{
+  width: 50px;
+  height: 50px
 }

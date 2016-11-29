@@ -4,8 +4,8 @@
     <div class="container">
         <div class="row">
             <div class="col-md-10 col-md-offset-1">
-                <div class="panel panel-primary animated fadeInRight">
-                    <div class="panel-heading">{{ trans('history.history') }}</div>
+                <div class="panel panel-primary animated fadeInRight panel-darkcyan">
+                    <div class="panel-heading panel-heading-darkcyan">{{ trans('history.history') }}</div>
                     <div class="panel-body">
                         <span class="poll-history">{{ $poll->created_at->format(config('settings.date_format')) }}</span>
                         <h4> {{ trans('history.poll_created', ['name' => ($poll->user_id) ? $poll->user->name : $poll->name]) }} </h4>

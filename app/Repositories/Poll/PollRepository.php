@@ -62,7 +62,10 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
     {
         $currentUserId = auth()->user()->id;
 
-        return $this->model->where('user_id', $currentUserId)->where('status', false)->with('activities')->orderBy('id', 'DESC')->get();
+        return $this->model->where([
+            'user_id' =>  $currentUserId,
+            'status' => false
+        ])->with('activities')->orderBy('id', 'DESC')->get();
     }
 
     public function findPollById($id)
@@ -255,7 +258,6 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
 
             return $pollId;
         } catch (Exception $ex) {
-            dd($ex);
             return false;
         }
     }
@@ -299,7 +301,6 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
 
             return true;
         } catch (Exception $ex) {
-            dd($ex);
             return false;
         }
 
@@ -365,7 +366,7 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
                 }
             }
         } catch (Exception $ex) {
-            dd($ex);
+            
             throw new Exception(trans('polls.message.upload_image_fail'));
         }
     }
@@ -404,7 +405,6 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
 
             return true;
         } catch (Exception $ex) {
-            dd($ex);
             return false;
         }
 
@@ -479,7 +479,6 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
             ];
             return $linkReturn;
         } catch (Exception $ex) {
-            dd($ex);
             return false;
         }
     }
@@ -509,7 +508,6 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
                 });
             }
         } catch (Exception $ex) {
-            dd($ex);
             throw new Exception(trans('polls.message.send_mail_fail'));
         }
     }
@@ -563,6 +561,7 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
                 $subject = trans('label.mail.subject');
                 $this->sendEmail($members, $view, $data, $subject, 'participant');
             }
+
             /*
              * send mail creator
              */
@@ -582,7 +581,6 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
             return $dataRtn;
         } catch (Exception $ex) {
             DB::rollback();
-            dd($ex);
             return false;
         }
     }
@@ -674,7 +672,6 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
             DB::commit();
         } catch (Exception $ex) {
             DB::rollBack();
-            dd($ex);
             $message = trans('polls.message.update_poll_info_fail');
         }
 
@@ -987,7 +984,6 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
             $message = trans('polls.message.update_setting_success');
         } catch (Exception $ex) {
             DB::rollBack();
-            dd($ex);
             $message = trans('polls.message.update_setting_fail');
         }
 
@@ -1194,6 +1190,7 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
             'option' => $optionLeastVote,
         ];
     }
+
     /*
      * get option return table
      */
@@ -1214,7 +1211,6 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
                 'image' => $option->showImage(),
                 'numberOfVote' => $option->countVotes(),
                 'lastVoteDate' => (strcmp($userVoteLast, $participantVoteLast) < 0) ? $participantVoteLast : $userVoteLast,
-                'vote' => $option->getListOwnerVoted($isRequiredEmail),
             ];
         }
 
@@ -1228,35 +1224,37 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
         $config = config('settings.setting');
 
         foreach ($settings as $setting) {
-            if ($setting->key == $config['required_email']) {
-                $dataRtn[] = [
-                    $trans['required_email'] => null
-                ];
-            }
-            if ($setting->key == $config['hide_result']) {
-                $dataRtn[] = [
-                    $trans['hide_result'] => null
-                ];
-            }
-            if ($setting->key == $config['custom_link']) {
-                $dataRtn[] = [
-                    $trans['custom_link'] => $setting->value
-                ];
-            }
-            if ($setting->key == $config['set_limit']) {
-                $dataRtn[] = [
-                    $trans['set_limit'] => $setting->value
-                ];
-            }
-            if ($setting->key == $config['set_password']) {
-                $dataRtn[] = [
-                    $trans['set_password'] => $setting->value
-                ];
-            }
-            if ($setting->key == $config['is_set_ip']) {
-                $dataRtn[] = [
-                    $trans['is_set_ip'] => null
-                ];
+            switch ($setting->key) {
+                case $config['required_email']:
+                    $dataRtn[] = [
+                        $trans['required_email'] => null
+                    ];
+                    break;
+                case $config['hide_result']:
+                    $dataRtn[] = [
+                        $trans['hide_result'] => null
+                    ];
+                    break;
+                case $config['is_set_ip']:
+                    $dataRtn[] = [
+                        $trans['is_set_ip'] => null
+                    ];
+                    break;
+                case $config['custom_link']:
+                    $dataRtn[] = [
+                        $trans['custom_link'] => $setting->value
+                    ];
+                    break;
+                case $config['set_limit']:
+                    $dataRtn[] = [
+                        $trans['set_limit'] => $setting->value
+                    ];
+                    break;
+                case $config['set_password']:
+                    $dataRtn[] = [
+                        $trans['set_password'] => $setting->value
+                    ];
+                    break;
             }
         }
 

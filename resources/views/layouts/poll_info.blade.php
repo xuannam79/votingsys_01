@@ -124,7 +124,7 @@
 </div>
 @if (isset($page) && $page == "edit")
     <input type="submit" class="btn btn-success btn-edit-info" name="btn_edit" value="{{ trans('polls.button.save_info') }}">
-    <a href="{{ $poll->getAdminLink() }}" class="btn" style="background: darkcyan; border-color: darkcyan; border-radius: 0; color: white; float: right; box-shadow: 1px 1px 1px black">{{ trans('polls.button.edit_back') }}</a>
+    <a href="{{ $poll->getAdminLink() }}" class="btn btn-back-edit">{{ trans('polls.button.edit_back') }}</a>
     {{ Form::close() }}
 @endif
 @if (isset($page) && $page == "manager")
