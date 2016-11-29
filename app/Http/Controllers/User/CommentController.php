@@ -51,6 +51,7 @@ class CommentController extends Controller
                 }
             }
 
+            $activity['name'] = $inputs['name'];
             $this->activityRepository->create($activity);
             $html = view('user.poll.comment_layouts', [
                 'commentId' => $comment->id,

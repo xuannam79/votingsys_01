@@ -61,10 +61,6 @@ class ParticipantController extends Controller
             'type' => config('settings.activity.all_participants_deleted'),
         ];
 
-        if (auth()->check()) {
-            $activity['user_id'] = auth()->user()->id;
-        }
-
         $this->activityRepository->create($activity);
 
         return redirect()->to($poll->getAdminLink())->with('messages', trans('polls.delete_all_participants_successfully'));

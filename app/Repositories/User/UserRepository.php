@@ -67,7 +67,7 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
         //check email exist
         $emails = $data['email'];
         try {
-            Mail::send('layouts.register_mail', [
+            Mail::queue('layouts.register_mail', [
                 'name' => $data['name'],
                 'link' => url('/link/verification') . '/' . $user['token_verification'],
             ], function ($message) use ($emails) {

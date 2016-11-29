@@ -22,7 +22,7 @@
                     @endif
                     @if (Gate::allows('ownerPoll', $poll))
                         <td>
-                            <a class="btn btn-success" href="{{ URL::action('User\PollController@edit', ['id' => $poll->id]) }}">
+                            <a class="btn btn-success btn-block fa fa-external-link" href="{{ URL::action('User\PollController@edit', ['id' => $poll->id]) }}">
                                 {{ trans('polls.reopen_poll') }}
                             </a>
                         </td>

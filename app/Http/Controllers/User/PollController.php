@@ -9,18 +9,22 @@ use App\Http\Requests\PollGeneralRequest;
 use App\Http\Controllers\Controller;
 use App\Repositories\Poll\PollRepositoryInterface;
 use App\Repositories\Vote\VoteRepositoryInterface;
+use App\Repositories\Activity\ActivityRepositoryInterface;
 
 class PollController extends Controller
 {
     protected $pollRepository;
     protected $voteRepository;
+    protected $activityRepository;
 
     public function __construct(
         PollRepositoryInterface $pollRepository,
-        VoteRepositoryInterface $voteRepository
+        VoteRepositoryInterface $voteRepository,
+        ActivityRepositoryInterface $activityRepository
     ) {
         $this->pollRepository = $pollRepository;
         $this->voteRepository = $voteRepository;
+        $this->activityRepository = $activityRepository;
     }
 
     public function index()
@@ -66,6 +70,12 @@ class PollController extends Controller
 
         $poll->status = true;
         $poll->save();
+        //insert activity
+        $activity = [
+            'poll_id' => $poll->id,
+            'type' => config('settings.activity.reopen_poll'),
+        ];
+        $this->activityRepository->create($activity);
 
         return redirect()->to($poll->getAdminLink())->with('messages', trans('polls.reopen_poll_successfully'));
     }
@@ -132,6 +142,13 @@ class PollController extends Controller
 
         $poll->status = false;
         $poll->save();
+
+        //insert activity
+        $activity = [
+            'poll_id' => $poll->id,
+            'type' => config('settings.activity.close_poll'),
+        ];
+        $this->activityRepository->create($activity);
 
         return redirect()->to($poll->getAdminLink())->with('messages', trans('polls.close_poll_successfully'));
     }

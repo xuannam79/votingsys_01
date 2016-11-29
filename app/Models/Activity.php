@@ -61,6 +61,14 @@ class Activity extends Model
                 'level' => 'default',
                 'text' => trans('history.edit_vote'),
             ],
+            config('settings.activity.close_poll') => [
+                'level' => 'close-poll',
+                'text' => trans('history.close_poll'),
+            ],
+             config('settings.activity.reopen_poll') => [
+                'level' => 'reopen-poll',
+                'text' => trans('history.reopen_poll'),
+            ],
         ];
         $textTemplate = "<label class='label label-%s'>%s</label>";
         $type = $types[$this->type];

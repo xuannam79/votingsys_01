@@ -2,20 +2,25 @@
 
 namespace App\Http\Controllers;
 
+use Mail;
 use App\Models\Poll;
+use Illuminate\Http\Request;
 use App\Http\Requests\PollEditRequest;
 use App\Http\Requests\PollRequest;
 use App\Repositories\Poll\PollRepositoryInterface;
-use Illuminate\Http\Request;
-use Mail;
+use App\Repositories\Activity\ActivityRepositoryInterface;
 
 class PollController extends Controller
 {
-    private $pollRepository;
+    protected $pollRepository;
+    protected $activityRepository;
 
-    public function __construct(PollRepositoryInterface $pollRepository)
-    {
+    public function __construct(
+        PollRepositoryInterface $pollRepository,
+        ActivityRepositoryInterface $activityRepository
+    ) {
         $this->pollRepository = $pollRepository;
+        $this->activityRepository = $activityRepository;
     }
     /**
      * Display a listing of the resource.
@@ -163,6 +168,13 @@ class PollController extends Controller
 
         $poll->status = false;
         $poll->save();
+
+        //insert activity
+        $activity = [
+            'poll_id' => $poll->id,
+            'type' => config('settings.activity.close_poll'),
+        ];
+        $this->activityRepository->create($activity);
 
         return redirect()->to($poll->getAdminLink())->with('messages', trans('polls.close_poll_successfully'));
     }

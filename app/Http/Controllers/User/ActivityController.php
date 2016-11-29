@@ -29,7 +29,7 @@ class ActivityController extends Controller
             return view('errors.show_errors')->with('message', trans('polls.activity_not_found'));
         }
 
-        $poll = $this->pollRepository->find($id);
+        $poll = $this->pollRepository->findPollById($id);
 
         return view('user.poll.history', compact('activities', 'poll'));
     }

@@ -15,7 +15,7 @@ class ActivityRepository extends BaseRepository implements ActivityRepositoryInt
 
     public function getActivityByPollId($id)
     {
-        return $this->model->where('poll_id', $id)->with('user', 'poll.options')->orderBy('id', 'DESC')->get();
+        return $this->model->where('poll_id', $id)->with('user', 'poll.options')->orderBy('id', 'DESC')->paginate(config('settings.activity_per_page'));
     }
 
     public function getOwnerOfPoll($id)

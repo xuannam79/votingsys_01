@@ -13,4 +13,6 @@ return [
     'history_empty' => 'History empty',
     'activity_not_found' => 'Activity not found',
     'participant_add_comment' => 'A comment added',
+    'close_poll' => 'This poll closed',
+    'reopen_poll' => 'This poll reopened',
 ];

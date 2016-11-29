@@ -10,6 +10,7 @@ class CheckDateController extends Controller
 {
     public function checkDateClosePoll(Request $request)
     {
+//check
         if ($request->ajax()) {
             $inputs = $request->only('date_close_poll');
             $dateClosePoll = $inputs['date_close_poll'];
