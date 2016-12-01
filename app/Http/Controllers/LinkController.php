@@ -111,7 +111,7 @@ class LinkController extends Controller
         $link = $this->linkRepository->getPollByToken($token);
 
         if (! $link) {
-            return view('errors.show_errors')->with('message', trans('polls.poll_not_found'));
+            return view('errors.404');
         }
 
         $linkUser = url('link') . '/' . $link->token;

@@ -320,7 +320,7 @@ return [
     'comments' => 'Bình luận',
     'add_comment' => 'Thêm bình luận',
     'show_comments' => 'Xem các bình luận',
-    'hide' => 'Ẩn',
+    'hide' => 'Ẩn bình luận',
     'save_comment' => 'Lưu bình luận',
     'view_history' => 'Xem lịch sử',
     'delete_all_participants' => 'Xóa bầu chọn',
@@ -413,4 +413,5 @@ return [
     'show_result' => 'Kết quả',
     'view_option' => 'Xem tùy chọn',
     'view_setting' => 'Xem cài đặt',
+    'poll_voted' => 'Poll này đã có bầu chọn, bạn không thể chỉnh sửa các tùy chọn của nó.',
 ];

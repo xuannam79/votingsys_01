@@ -86,6 +86,34 @@ a:hover, .navbar-default .navbar-nav > .active > a:focus {
   display: none;
 }
 
+/* Multiple language */
+.btn-multiple-language {
+  min-width: 120px;
+}
+
+.borderRadiusTp {
+  border-radius: 0 !important;
+}
+
+.ddcommon {
+  border-radius: 0 !important;
+}
+
+.ddchild_ {
+  border-radius: 0 !important;
+}
+
+@media (max-width: 800px) {
+  .ddcommon {
+    width: 100% !important;
+  }
+  .ddchild_ {
+    height: 70px !important;
+    border-radius: 0 !important;
+    top: -68px !important;
+  }
+}
+
 /*---------------------------------
             END MENU
 -------------------------------*/
@@ -142,6 +170,24 @@ footer {
   position: absolute;
   bottom: 0;
   width: 100%
+}
+
+@media (max-width: 1200px) {
+  body > .container-fluid {
+    margin-bottom: 450px ;
+  }
+  footer {
+    height: 450px;
+  }
+}
+
+@media (min-width: 1200px) {
+  body > .container-fluid {
+    margin-bottom: 160px;
+  }
+  footer {
+    height: 160px;
+  }
 }
 
 .footer-left img {
@@ -341,6 +387,15 @@ span.round-tabs.four{
   border-radius: 0 !important;
 }
 
+#duplicate_poll_wizard .tab-pane {
+  padding-top: 0;
+}
+#duplicate_poll_wizard .progress {
+  margin-bottom: 0 !important;
+  height: 10px;
+  border-radius: 0 !important;
+}
+
 /* poll info */
 .btn-back-edit {
   background: darkcyan;
@@ -364,7 +419,7 @@ span.round-tabs.four{
 
 /* user.poll.create */
 .row-create-poll {
-  margin-bottom: 100px;
+  margin-bottom: 65px;
 }
 
 .bar {
@@ -509,7 +564,30 @@ body {
 }
 
 /*--------------------------Tab: Vote--------------------------*/
-/* info of poll */
+/* message */
+.alert-poll-set-ip {
+  border-radius: 0;
+  margin-bottom: 0;
+  margin-top: 10px;
+  text-align: center;
+  background: white;
+  border-color: white;
+  color: red;
+}
+
+.alert-hide-result {
+  border-radius: 0;
+  text-align: center;
+  background: white;
+  border-color: white;
+  color: red;
+}
+
+.alert-dismissable {
+  text-align: center;
+}
+
+  /* info of poll */
 .poll-count {
   width: 100%;
 }
@@ -517,6 +595,14 @@ body {
 .span-date-close {
   float: right;
   margin-left: 20px
+}
+
+.alert-poll-limit {
+  border-radius: 0;
+  margin-top: 10px;
+  box-shadow: 1px 1px 1px black;
+  text-align: center;
+  margin-bottom: 10px;
 }
 
 /* tab vote: horizontal or vertical */
@@ -568,6 +654,11 @@ body {
   overflow-y: scroll
 }
 
+.panel-heading-vertical {
+  min-height: 40px;
+}
+
+
 .vertical-option {
   padding-left: 5px;
   padding-right: 5px
@@ -575,7 +666,6 @@ body {
 
 .result-poll-vertical {
   float: right;
-  display: none;
 }
 
 .panel-body-vertical-option {
@@ -711,6 +801,13 @@ body {
 /*-------------------------------------------/
 /               USER.POLL.MANAGER             /
 /-------------------------------------------*/
+.alert-messages {
+  border-radius: 0;
+  text-align: center;
+}
+.menu-activity-poll {
+  margin-bottom: 10px;
+}
 .activity-poll {
   margin-top: 10px;
 }
@@ -928,18 +1025,6 @@ span.round-tab:hover {
   margin-top: 0 !important;
 }
 
-.footer {
-  clear: both;
-  margin-top: 10px;
-  background: black;
-  color: #9d9d9d;
-  padding: 10px;
-  z-index: 3;
-  width:100%;
-  bottom: 0;;
-  height: 100px;
-}
-
 .triangle {
   width: 0;
   height: 0;
@@ -996,24 +1081,6 @@ span.round-tab:hover {
 }
 .title-warning {
   color: orange;
-}
-
-@media (max-width: 1200px) {
-  body > .container-fluid {
-    margin-bottom: 400px ;
-  }
-  footer {
-    height: 400px;
-  }
-}
-
-@media (min-width: 1200px) {
-  body > .container-fluid {
-    margin-bottom: 140px;
-  }
-  footer {
-    height: 140px;
-  }
 }
 
 .btn-input-password {
@@ -1079,7 +1146,7 @@ html {
   margin-left: 20px;
 }
 
-#info p {
+.status_poll {
   float: right;
 }
 
@@ -1134,4 +1201,11 @@ html {
 .td-detail-option img{
   width: 50px;
   height: 50px
+}
+
+/*-----------------------------------
+EDIT POLL
+-----------------------------------*/
+.div-option-edit {
+  margin-bottom: 10px;
 }

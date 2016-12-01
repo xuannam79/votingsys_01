@@ -31,16 +31,18 @@
                     @include('layouts.message')
                     <div class="tab-pane" id="vote">
                         @if ($isLimit)
-                            <label class="alert alert-danger col-lg-6 col-lg-offset-3"> <span class="glyphicon glyphicon-warning-sign"></span>
-                                {{ trans('polls.reach_limit') }}
-                            </label>
+                            <div class="col-lg-12">
+                                <label class="alert alert-danger col-lg-4 col-lg-offset-4 alert-poll-limit">
+                                    <span class="glyphicon glyphicon-warning-sign"></span>
+                                    {{ trans('polls.reach_limit') }}
+                                </label>
+                            </div>
                         @endif
                         @if ($isSetIp && (auth()->check() && $isUserVoted || $isSetIp && !auth()->check() && $isParticipantVoted))
-                            <div class="col-lg-12">
-                                <div class="alert alert-warning col-lg-10 col-lg-offset-1">
-                                    <span class='glyphicon glyphicon-warning-sign'></span>
-                                    {{ trans('polls.message_vote_one_time') }}
-                                </div>
+                            <div class="alert alert-warning alert-poll-set-ip">
+                                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                <span class='glyphicon glyphicon-warning-sign'></span>
+                                {{ trans('polls.message_vote_one_time') }}
                             </div>
                         @endif
                         {!! Form::open(['route' => 'vote.store','id' => 'form-vote']) !!}
@@ -103,17 +105,6 @@
                                         <!-- VOTE OPTION HORIZONTAL-->
                                         <div id="horizontal" class="tab-pane fade in active vote-style-detail">
                                             <div class="col-lg-12 horizontal-overflow">
-                                                <!-- if:
-                                                        1. set IP and user login vote
-                                                        2. set IP and user not login vote
-                                                    then: show message "This poll only vote one time"
-                                                -->
-                                                @if ($isSetIp && (auth()->check() && $isUserVoted || $isSetIp && !auth()->check() && $isParticipantVoted))
-                                                    <div class="alert alert-warning">
-                                                        <span class='glyphicon glyphicon-warning-sign'></span>
-                                                        {{ trans('polls.message_vote_one_time') }}
-                                                    </div>
-                                                @endif
                                                 @foreach ($poll->options as $option)
                                                     <li class="list-group-item parent-vote li-parent-vote" onclick="voted('{{ $option->id }}', 'horizontal')">
                                                         @if (!$isHideResult || Gate::allows('administer', $poll))
@@ -162,23 +153,11 @@
 
                                         <!-- VOTE OPTION VERTICAL-->
                                         <div id="vertical" class="tab-pane fade in vote-style-detail">
-
-                                            <!-- if:
-                                                    1. set IP and user login vote
-                                                    2. set IP and user not login vote
-                                                then: show message "This poll only vote one time"
-                                            -->
-                                            @if ($isSetIp && (auth()->check() && $isUserVoted || $isSetIp && !auth()->check() && $isParticipantVoted))
-                                                <div class="alert alert-warning">
-                                                    <span class='glyphicon glyphicon-warning-sign'></span>
-                                                    {{ trans('polls.message_vote_one_time') }}
-                                                </div>
-                                            @endif
                                             <div class="col-lg-12 vertical-overflow">
                                                 @foreach ($poll->options as $option)
                                                     <div class="col-lg-4 vertical-option">
                                                         <div class="panel panel-default" id="{{ $option->id }}">
-                                                            <div class="panel-heading parent-vote"  onclick="voted('{{ $option->id }}', 'horizontal')">
+                                                            <div class="panel-heading parent-vote panel-heading-vertical"  onclick="voted('{{ $option->id }}', 'horizontal')">
                                                                 @if ($isSetIp && auth()->check() && ! $isUserVoted
                                                                     || $isSetIp && !auth()->check() && ! $isParticipantVoted
                                                                     || ! $isLimit && ! $poll->isClosed() && ! $isSetIp)
@@ -609,7 +588,7 @@
                                 </div>
                             </div>
                         @else
-                            <div class="alert alert-warning">
+                            <div class="alert alert-warning alert-hide-result">
                                 <span class='glyphicon glyphicon-warning-sign'></span>
                                 {{ trans('polls.hide_result_message') }}
                             </div>

@@ -39,7 +39,7 @@ return [
         'head' => 'Fpoll',
         'link_vote' => 'Link to vote:',
         'link_admin' => 'Link manager vote:',
-        'subject' => 'Voting',
+        'subject' => 'Fpoll',
         'delete_all_participant' => 'Admin of poll deleted all participant',
         'register_active_mail' => 'You register successfully. Please click on link to active account. Link here: ',
         'edit_poll' => [

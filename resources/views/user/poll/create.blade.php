@@ -120,28 +120,28 @@
     <div class="row feature">
         <h2>{{ trans('label.feature.name') }}</h2>
         <div class="col-lg-2 animatedParent">
-            <img class="animated growIn slowest feature-img" src="{{ asset('uploads/images/Fpoll-vote.jpg') }}">
-            <p class="animated fadeInLeft feature-text">{{ trans('label.feature.vote') }}</p>
+            <img class="animated fadeInUp slowest feature-img" src="{{ asset('uploads/images/Fpoll-vote.jpg') }}">
+            <p class="animated feature-text">{{ trans('label.feature.vote') }}</p>
         </div>
         <div class="col-lg-2 animatedParent">
-            <img class="animated growIn slowest feature-img" src="{{ asset('uploads/images/Fpoll-chart.png') }}">
-            <p class="animated fadeInUp feature-text">{{ trans('label.feature.chart') }}</p>
+            <img class="animated fadeInUp slowest feature-img" src="{{ asset('uploads/images/Fpoll-chart.png') }}">
+            <p class="animated feature-text">{{ trans('label.feature.chart') }}</p>
         </div>
         <div class="col-lg-2 animatedParent">
-            <img class="animated growIn slowest feature-img" src="{{ asset('uploads/images/Fpoll-security.jpg') }}">
-            <p class="animated fadeInUp feature-text">{{ trans('label.feature.security') }}</p>
+            <img class="animated fadeInUp slowest feature-img" src="{{ asset('uploads/images/Fpoll-security.jpg') }}">
+            <p class="animated feature-text">{{ trans('label.feature.security') }}</p>
         </div>
         <div class="col-lg-2 animatedParent">
-            <img class="animated growIn slowest feature-img" src="{{ asset('uploads/images/Fpoll-export.png') }}">
-            <p class="animated fadeInRight feature-text">{{ trans('label.feature.export') }}</p>
+            <img class="animated fadeInUp slowest feature-img" src="{{ asset('uploads/images/Fpoll-export.png') }}">
+            <p class="animated feature-text">{{ trans('label.feature.export') }}</p>
         </div>
         <div class="col-lg-2 animatedParent">
-            <img class="animated growIn slowest feature-img" src="{{ asset('uploads/images/Fpoll-responsive.jpg') }}">
-            <p class="animated fadeInRight feature-text">{{ trans('label.feature.responsive') }}</p>
+            <img class="animated fadeInUp slowest feature-img" src="{{ asset('uploads/images/Fpoll-responsive.jpg') }}">
+            <p class="animated feature-text">{{ trans('label.feature.responsive') }}</p>
         </div>
         <div class="col-lg-2 animatedParent">
-            <img class="animated growIn slowest feature-img" src="{{ asset('uploads/images/Fpoll-like-share.jpg') }}">
-            <p class="animated fadeInRight feature-text">{{ trans('label.feature.share') }}</p>
+            <img class="animated fadeInUp slowest feature-img" src="{{ asset('uploads/images/Fpoll-like-share.jpg') }}">
+            <p class="animated feature-text">{{ trans('label.feature.share') }}</p>
         </div>
     </div>
 @endsection

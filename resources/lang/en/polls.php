@@ -277,7 +277,7 @@ return [
     'comments' => 'Comments',
     'add_comment' => 'Add a comment',
     'show_comments' => 'Show comments',
-    'hide' => 'Hide',
+    'hide' => 'Hide comments',
     'save_comment' => 'Save Comment',
     'view_history' => 'Views History',
     'delete_all_participants' => 'Delete all participants',
@@ -368,4 +368,5 @@ return [
     'close_date' => 'date close poll',
     'view_option' => 'View option',
     'view_setting' => 'View setting',
+    'poll_voted' => 'This poll have been voted. You can\'t edit option of it',
 ];

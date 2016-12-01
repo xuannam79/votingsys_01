@@ -18,7 +18,7 @@ var loadFile = function(event) {
  * get data from server
  */
 var pollData = $('.hide').data("poll");
-var dataAction = $('.hide').data("action");
+var dataAction = $('.hide').data("page");
 var dataSettingEdit = $('.hide').data("settingEdit");
 
 /**--------------------------------------------------------------
@@ -28,7 +28,7 @@ $(document).ready(function () {
 
     $(".finish").click(function () {
         if (validateParticipant() & validateOption() && ! checkOptionSame()) {
-            $('#form_create_poll').submit();
+            $('#form_create_poll, #form_duplicate_poll').submit();
             $('.loader').show();
         }
     });
@@ -180,6 +180,15 @@ function validateOption() {
     var isEmpty = false;
     $('#validateOption').html("");
 
+    if (typeof dataAction !== "undefined") {
+        if (dataAction == "duplicate") {
+            if ($('.old-option').text().trim() !== "") {
+                   return true;
+           }
+        }
+    }
+
+
     if (optionLists.length == 0 && imageLists.length == 0) {
         $('.error_option').closest('.form-group').addClass('has-error');
         $('.error_option').html('<span id="title-error" class="help-block">' + pollData.message.option_empty + '</span>');
@@ -242,7 +251,7 @@ function validateParticipant() {
 }
 
 //Auto close message
-$(".alert-dismissable").delay(3000).fadeOut(1000);
+$(".alert-dismissable").delay(5000).fadeOut(1000);
 
 //Datetime picker
 $(function () {
@@ -505,28 +514,6 @@ $(document).ready(function() {
                         $('.btn-finish').removeClass('btn-center');
                     }
                 }
-
-                if (index == 0) {
-                    $('.info-explain').css('display', 'block');
-                    $('.option-explain').css('display', 'none');
-                    $('.panel-setting-explain').css('display', 'none');
-                    $('.panel-participant-explain').css('display', 'none');
-                } else if (index == 1) {
-                    $('.info-explain').css('display', 'none');
-                    $('.option-explain').css('display', 'block');
-                    $('.panel-setting-explain').css('display', 'none');
-                    $('.panel-participant-explain').css('display', 'none');
-                } else if (index == 2) {
-                    $('.info-explain').css('display', 'none');
-                    $('.option-explain').css('display', 'none');
-                    $('.panel-setting-explain').css('display', 'block');
-                    $('.panel-participant-explain').css('display', 'none');
-                } else if (index == 3) {
-                    $('.info-explain').css('display', 'none');
-                    $('.option-explain').css('display', 'none');
-                    $('.panel-setting-explain').css('display', 'none');
-                    $('.panel-participant-explain').css('display', 'block');
-                }
             }
         });
     }
@@ -541,10 +528,81 @@ $(document).ready(function() {
         // 'tabClass': 'nav nav-pills'
     });
     $('#duplicate_poll_wizard').bootstrapWizard({
-        // 'tabClass': 'nav nav-pills',
-        onTabClick: function(tab, navigation, index) {
+        'tabClass': 'nav nav-tabs',
+        onNext: function(tab, navigation, index) {
 
-            return false;
+            //get index of tab current
+            var wizard = $('#duplicate_poll_wizard').bootstrapWizard('currentIndex');
+
+            //get validation of form
+            var valid = $("#form_duplicate_poll").valid();
+
+            //check if form valid, it will be return TRUE
+            if(! valid) {
+                $validator.focusInvalid();
+
+                return false;
+            }
+
+            //check option of poll
+            if (wizard == 1) {
+                return validateOption() && (! checkOptionSame());
+            } else if (wizard == 2) {
+                var isValid = true;
+
+                $('input[name^="setting"]:checked').each(function () {
+                    if ($(this).val() == pollData.config.setting.custom_link) {
+                        isValid = checkLink();
+                    } else if ($(this).val() == pollData.config.setting.set_limit) {
+                        isValid = checkLimit();
+                    } else if ($(this).val() == pollData.config.setting.set_password) {
+                        isValid = checkPassword();
+                    }
+                });
+
+                return isValid;
+            }
+
+        },
+        onTabClick: function(tab, navigation, index) {
+            //get validation of form
+            var valid = $("#duplicate_poll_wizard").valid();
+
+            //get index of tab current
+            var wizard = $('#create_poll_wizard').bootstrapWizard('currentIndex');
+
+            if(! valid) {
+                $validator.focusInvalid();
+
+                return false;
+            }
+            //check option of poll
+            if (wizard == 1) {
+                return validateOption() && (! checkOptionSame());
+            } else if (wizard == 2) {
+                var isValid = true;
+
+                $('input[name^="setting"]:checked').each(function () {
+                    if ($(this).val() == pollData.config.setting.custom_link) {
+                        isValid = checkLink();
+                    } else if ($(this).val() == pollData.config.setting.set_limit) {
+                        isValid = checkLimit();
+                    } else if ($(this).val() == pollData.config.setting.set_password) {
+                        isValid = checkPassword();
+                    }
+                });
+
+                return isValid;
+            }
+        },
+        onTabShow: function(tab, navigation, index) {
+            var $total = navigation.find('li').length;
+            var $current = index+1;
+            var $percent = ($current/$total) * 100;
+            $('#duplicate_poll_wizard').find('.bar').css({width:$percent+'%'});
+            if($current == 1) {
+                $('#create_poll_wizard').find('.pager .previous').hide();
+            }
         }
     });
 
@@ -582,6 +640,7 @@ function updatePollSetting() {
             isValidPassword = checkPassword();
         }
     });
+
 
     if (isValidLink && isValidLimit && isValidPassword) {
         $('.loader').show();
