@@ -3,7 +3,7 @@
 @section('content')
     <div class="container">
         <div class="row">
-            <div class="col-md-10 col-md-offset-1">
+            <div class="col-md-8 col-md-offset-2">
                 <div class="panel panel-primary animated fadeInRight panel-darkcyan">
                     <div class="panel-heading panel-heading-darkcyan">{{ trans('history.history') }}</div>
                     <div class="panel-body">
@@ -22,8 +22,13 @@
                                         @elseif (isset($activity->user_id) && isset($activity->user))
                                             {!! $activity->getActivity($activity->user->name) !!}
                                             <span>
-                                        {{ $activity->created_at->diffForHumans() }}
-                                    </span>
+                                                {{ $activity->created_at->diffForHumans() }}
+                                            </span>
+                                        @else
+                                            {!! $activity->getActivity('') !!}
+                                            <span>
+                                                {{ $activity->created_at->diffForHumans() }}
+                                            </span>
                                         @endif
                                     </h4>
                                 @endif
@@ -36,6 +41,7 @@
                             <span class="fa fa-backward"></span> {{ trans('history.back') }}
                         </a>
                     </div>
+                    {!! $activities->render() !!}
                 </div>
             </div>
         </div>

@@ -29,6 +29,9 @@ return [
         'reset_link' => '4',
         'delete_comment' => '5',
         'edit_vote' => '6',
+        'edit_poll' => '7',
+        'close_poll' => '8',
+        'reopen_poll' => '9',
     ],
     'image_default_path' => 'uploads/avatar/default.jpg',
     'user' => [
@@ -108,4 +111,6 @@ return [
     'limit_name' => 80,
     /* vote */
     'no_name' => 'Ẩn danh',
+    'activity_per_page' => '10',
+    'is_active' => 1,
 ];

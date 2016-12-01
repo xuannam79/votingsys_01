@@ -366,7 +366,7 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
                 }
             }
         } catch (Exception $ex) {
-            
+
             throw new Exception(trans('polls.message.upload_image_fail'));
         }
     }
@@ -503,7 +503,7 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
                     $message->to($email)->subject($subject);
                 });
             } else {
-                Mail::send($view, $viewData, function ($message) use ($email, $subject) {
+                Mail::queue($view, $viewData, function ($message) use ($email, $subject) {
                     $message->to($email)->subject($subject);
                 });
             }

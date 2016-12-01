@@ -84,11 +84,6 @@ $(document).ready(function(){
             success: function(data){
                 if (data.success) {
                     $('#content' + pollId).val('');
-
-                    if (user == '') {
-                        $('#name' + pollId).val('');
-                    }
-
                     $('.comments').append(data.html);
                     var commentCount = $('.comment-count').html();
                     $('.comment-count').html(parseInt(commentCount) + 1);
