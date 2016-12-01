@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Http\Requests\PollRequest;
@@ -39,29 +38,27 @@ class DuplicateController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  PollRequest $request
+     * @param  Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(PollRequest $request)
+    public function store(Request $request)
     {
         $input = $request->only(
             'title', 'location', 'description', 'name', 'email', 'chatwork_id', 'type', 'closingTime',
-            'optionText', 'optionImage',
+            'optionText', 'optionImage', 'oldImage', 'optionOldImage',
             'setting', 'value',
             'member'
         );
+        $input['page'] = 'duplicate';
         $data = $this->pollRepository->store($input);
 
         if ($data) {
-
             $poll = $data['poll'];
-            $link = $data['link'];
-            return view('user.poll.result_create_poll', compact('poll', 'link'));
-        } else {
-            $message = trans('polls.message.create_fail');
-
-            return redirect()->route('user-poll.create')->with('message', $message);
+            return redirect()->route('result-poll.show', ['id' => $poll->id]);
         }
+
+        $message = trans('polls.message.duplicate_fail');
+        return redirect()->route('duplicate.show', ['id' => $request->id])->with('message', $message);
     }
 
     /**

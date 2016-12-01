@@ -61,6 +61,10 @@ class Activity extends Model
                 'level' => 'default',
                 'text' => trans('history.edit_vote'),
             ],
+            config('settings.activity.edit_poll') => [
+                'level' => 'warning',
+                'text' => trans('history.edit_poll'),
+            ],
             config('settings.activity.close_poll') => [
                 'level' => 'close-poll',
                 'text' => trans('history.close_poll'),

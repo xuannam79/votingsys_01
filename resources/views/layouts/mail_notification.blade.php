@@ -76,7 +76,6 @@
                             <th>{{ trans('label.mail.edit_poll.thead.info') }}</th>
                             <th>{{ trans('label.mail.edit_poll.thead.old_data') }}</th>
                             <th>{{ trans('label.mail.edit_poll.thead.new_data') }}</th>
-                            <th>{{ trans('label.mail.edit_poll.thead.date') }}</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -87,7 +86,6 @@
                                     <td><p>{{ $key }}</p></td>
                                     <td><p>{{ $old[$index][$key] }}</p></td>
                                     <td><p>{{ $value }}</p></td>
-                                    <td><p>{{ $now }}</p></td>
                                 </tr>
                             @endforeach
                         @endfor

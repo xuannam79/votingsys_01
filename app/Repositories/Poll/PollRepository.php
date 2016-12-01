@@ -453,7 +453,9 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
             $administrationLink = str_random(config('settings.length_poll.link'));
             $linkConfig =  url("/") . config('settings.email.link_vote');
 
-            if ($input['value']['link']) {
+            if ($input['setting']
+                && array_key_exists(config('settings.setting.custom_link'), $input['setting'])
+                && $input['value']['link']) {
                 $participantLink = $input['value']['link'];
             }
             /*
@@ -512,18 +514,80 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
         }
     }
 
+    public function addDuplicateOption($input, $pollId)
+    {
+        try {
+            $now = Carbon::now();
+            $oldImage = $input['oldImage'];
+            $optionOldImage = $input['optionOldImage'];
+            $nameOldImage = $this->createFileName($optionOldImage);
+            $optionImage = $input['optionImage'];
+            $nameImage = $this->createFileName($optionImage);
+            $optionText = $input['optionText'];
+            $dataInsert = [];
+
+            foreach ($optionText as $key => $value) {
+                if (! $value) {
+                    continue;
+                }
+                if ($optionOldImage && array_key_exists($key, $optionOldImage)) {
+                    $dataInsert[] = [
+                        'poll_id' => $pollId,
+                        'name' => $value,
+                        'image' => $nameOldImage['optionImage'][$key],
+                        'created_at' => $now,
+                    ];
+                    $path = public_path() . config('settings.option.path_image') . $oldImage[$key];
+                    if (File::exists($path)) {
+                        File::delete($path);
+                    }
+                } elseif ($oldImage && array_key_exists($key, $oldImage)) {
+                    $dataInsert[] = [
+                        'poll_id' => $pollId,
+                        'name' => $value,
+                        'image' => $oldImage[$key],
+                        'created_at' => $now,
+                    ];
+                } else {
+                    $dataInsert[] = [
+                        'poll_id' => $pollId,
+                        'name' => $value,
+                        'image' => ($nameImage && array_key_exists($key, $nameImage['optionImage'])) ? $nameImage['optionImage'][$key] : null,
+                        'created_at' => $now,
+                    ];
+                }
+            }
+
+            if ($dataInsert) {
+                Option::insert($dataInsert);
+                $this->updateImage($optionOldImage, $nameOldImage);
+                $this->updateImage($optionImage, $nameImage);
+            }
+
+            return true;
+        } catch (Exception $ex) {
+            return false;
+        }
+    }
+
     public function store($input)
     {
         try {
             DB::beginTransaction();
             $pollId = $this->addInfo($input);
 
-            if (! $pollId || ! ($this->addOption($input, $pollId) && $this->addSetting($input, $pollId))) {
-                DB::rollback();
+            if ($input['page'] == 'duplicate') {
+                if (! $pollId || ! ($this->addDuplicateOption($input, $pollId) && $this->addSetting($input, $pollId))) {
+                    DB::rollback();
 
-                return false;
+                    return false;
+                }
+            } else {
+                if (! $pollId || ! ($this->addOption($input, $pollId) && $this->addSetting($input, $pollId))) {
+                    DB::rollback();
+                    return false;
+                }
             }
-
 
             $links =  $this->addLink($pollId, $input);
 
@@ -658,7 +722,7 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
 
             //If have change about poll, system will send a email to poll creator
             if ($data) {
-                $creatorMail = ($poll->user_id) ? $poll->user->email : $poll->mail;
+                $creatorMail = ($poll->user_id) ? $poll->user->email : $poll->email;
                 $creatorName = ($poll->user_id) ? $poll->user->name : $poll->name;
 
                 //send mail to creator
@@ -667,6 +731,13 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
                     $message->to($creatorMail)->subject(trans('label.mail.edit_poll.head'));
                 });
             }
+
+            Activity::create([
+                'poll_id' => $id,
+                'user_id' => (auth()->user()) ? auth()->user()->id : null,
+                'type' => config('settings.activity.edit_poll'),
+                'name' => null,
+            ]);
 
             $message = trans('polls.message.update_poll_info_success');
             DB::commit();
@@ -868,14 +939,26 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
             DB::commit();
             $newPoll = Poll::with('options', 'user')->findOrFail($pollId);
             $newOptions = $newPoll->options;
-            $creatorName = $newPoll->user->name;
-            $creatorMail = $newPoll->user->email;
+
+            if ($newPoll->user_id) {
+                $creatorName = $newPoll->user->name;
+                $creatorMail = $newPoll->user->email;
+            } else {
+                $creatorName = $newPoll->name;
+                $creatorMail = $newPoll->email;
+            }
 
             //send mail to creator
             Mail::queue(config('settings.view.mail_edit_option'), compact('oldOptions', 'newOptions', 'now', 'creatorName'),
                 function ($message) use ($creatorMail) {
                     $message->to($creatorMail)->subject(trans('label.mail.edit_poll.head'));
             });
+            Activity::create([
+                'poll_id' => $id,
+                'user_id' => (auth()->user()) ? auth()->user()->id : null,
+                'type' => config('settings.activity.edit_poll'),
+                'name' => null,
+            ]);
             $message = trans('polls.message.update_option_success');
         } catch (Exception $ex) {
             DB::rollBack();
@@ -980,7 +1063,12 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
                 function ($message) use ($creatorMail) {
                     $message->to($creatorMail)->subject(trans('label.mail.edit_poll.head'));
                 });
-
+            Activity::create([
+                'poll_id' => $id,
+                'user_id' => (auth()->user()) ? auth()->user()->id : null,
+                'type' => config('settings.activity.edit_poll'),
+                'name' => null,
+            ]);
             $message = trans('polls.message.update_setting_success');
         } catch (Exception $ex) {
             DB::rollBack();

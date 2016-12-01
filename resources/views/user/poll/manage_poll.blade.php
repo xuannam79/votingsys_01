@@ -12,7 +12,8 @@
         data-reopen-poll="{{ trans('polls.confirm_reopen_poll') }}"
         data-url-reopen-poll="{{ url('user/poll') }}"
         data-token-admin="{{ $tokenLinkAdmin }}"
-        data-token-user="{{ $tokenLinkUser }}">
+        data-token-user="{{ $tokenLinkUser }}"
+        data-url-admin="{{ url('/link') }}">
     </div>
     <div class="container">
         <div class="row">
@@ -29,16 +30,14 @@
                         </div>
                     </div>
                 </div>
+                @if (Session::has('messages'))
+                    <div class="alert alert-success alert-messages alert-dismissable">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <span class="glyphicon glyphicon-info-sign"></span> {!! Session::get('messages') !!}
+                    </div>
+                @endif
                 <div class="tab-content">
                     @include('layouts.message')
-                    @if (Session::has('messages'))
-                        <div class="col-lg-12">
-                            <div class="col-lg-8 col-lg-offset-2 alert alert-success">
-                                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                                {!! Session::get('messages') !!}
-                            </div>
-                        </div>
-                    @endif
                     <div class="tab-pane" id="info">
                         <a href="{{ url('/') . config('settings.email.link_vote') . $tokenLinkUser }}" target="_blank" class="menu-manager-info">
                             <i class="fa fa-link" aria-hidden="true"></i> {{ trans('polls.link_vote') }}
@@ -49,7 +48,7 @@
                         <a href="#" class="menu-manager-info" data-toggle="modal" data-target="#showSettingModal">
                             <i class="fa fa-cog" aria-hidden="true"></i> {{ trans('polls.view_setting') }}
                         </a>
-                        <p>{!! $poll->status !!}</p>
+                        <p class="status_poll">{!! $poll->status !!}</p>
                         <hr class="hr-darkcyan">
                         @include('layouts.poll_info')
                     </div>
@@ -153,7 +152,7 @@
                                             <div class="panel-body">
                                                 <h4>{{ trans('polls.total_vote') }}:
                                                     <span class="statistic-font" class="badge">
-                                                    {{ $statistic['total'] }}
+                                                    {{ $poll->countParticipants() }}
                                                 </span>
                                                 </h4>
                                                 @if ($statistic['total'] > config('settings.default_value'))
@@ -446,7 +445,7 @@
                         <div class="row">
                             <hr class="hr-darkcyan">
                         </div>
-                        <div class="row">
+                        <div class="row menu-activity-poll">
                             <div class="col-lg-3">
 
                                 <a href="{{ URL::action('User\ActivityController@show', $poll->id) }}" class="btn btn-administration btn-block">
@@ -455,7 +454,7 @@
                                 </a>
                             </div>
                             <div class="col-lg-3">
-                                <a href="{{ route('user-poll.edit', $poll->id) }}" class="btn btn-administration btn-block">
+                                <a href="{{ route('user-poll.edit', $poll->id) }}" target="_blank" class="btn btn-administration btn-block">
                                     <span class="fa fa-pencil"></span> {{ trans('polls.tooltip.edit') }}
                                 </a>
                             </div>
@@ -484,9 +483,22 @@
                                         ])
                                     }}
                                     {{ Form::close() }}
+                                @else
+                                    <a href="{{ route('duplicate.show', $poll->id) }}" class="btn btn-administration btn-block">
+                                        <span class="fa fa-files-o"></span> {{ trans('polls.tooltip.duplicate') }}
+                                    </a>
                                 @endif
                             </div>
                         </div>
+                        @if ($poll->countParticipants())
+                            <div class="row menu-activity-poll">
+                                <div class="col-lg-3">
+                                    <a href="{{ route('duplicate.show', $poll->id) }}" target="_blank" class="btn btn-administration btn-block">
+                                        <span class="fa fa-files-o"></span> {{ trans('polls.tooltip.duplicate') }}
+                                    </a>
+                                </div>
+                            </div>
+                        @endif
                     </div>
                 </div>
             </div>

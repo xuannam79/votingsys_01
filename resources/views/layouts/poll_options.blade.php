@@ -16,48 +16,62 @@
 </div>
 
 @if ((isset($page) && ($page == 'edit' || $page == 'duplicate')))
-    <!-- LIST OLD OPTION -->
-    @foreach($poll->options as $option)
-        <div id="{{ $option->id }}" class="row">
-            <div class="col-lg-10 col-lg-offset-1 well">
-                <div class="panel panel-success ">
-                    <div class="panel-heading">
+    <div class="old-option">
+        <!-- LIST OLD OPTION -->
+        @foreach($poll->options as $option)
+            <div id="{{ $option->id }}" class="col-lg-12 div-option-edit">
+                <div class="panel panel-success panel-darkcyan">
+                    <div class="panel-heading panel-heading-darkcyan">
                         {{ trans('polls.label.step_2') }} {{ $loop->index + 1 }}
-                        <button type="button" class="btn btn-danger btn-delete-option-duplicate"
+                        <button type="button" class="btn btn-danger btn-xs btn-delete-option-duplicate"
                                 onclick="removeOpion('{{ $option->id }}', 'edit')">
                             <span class="fa fa-trash"></span> {{ trans('polls.button.remove') }}
                         </button>
                     </div>
                     <div class="panel-body">
                         <div class="form-group">
-                            {{ Form::text('option['. $option->id .']', $option->name, ['class' => 'form-control']) }}
+                            @if ($page == 'duplicate')
+                                {{ Form::text('optionText['. $option->id .']', $option->name, ['class' => 'form-control', 'onkeyup' => 'checkOptionSame(this)']) }}
+                            @else
+                                {{ Form::text('option['. $option->id .']', $option->name, ['class' => 'form-control']) }}
+                            @endif
                         </div>
                         <div class="form-group">
-                            <div class="col-lg-3">
+                            <div class="col-lg-2">
                                 <img src="{{ asset($option->showImage()) }}" class="image-option">
                             </div>
-                            <div class="col-lg-1">
+                            <div class="col-lg-1 icon-change" id="icon-id-{{ $option->id }}">
                                 <h2>
                                     <i class="fa fa-arrow-right" aria-hidden="true"></i>
                                 </h2>
                             </div>
-                            <div class="col-lg-3">
+                            <div class="col-lg-2">
                                 <img id="preview_{{ $option->id }}" src="#" class="preview-image image_edit" />
                             </div>
                         </div>
                         <div class="form-group">
-                            {{
-                                Form::file('image['. $option->id .']', [
-                                    'onchange' => 'readURL(this, "preview_' . $option->id . '")',
-                                    'class' => 'form-control',
-                                ])
-                            }}
+                            @if ($page == 'duplicate')
+                                <input type="hidden" name="oldImage[{{ $option->id }}]'" value="{{ $option->image }}">
+                                {{
+                                    Form::file('optionOldImage[' . $option->id . ']', [
+                                        'onchange' => 'readURL(this, "preview_' . $option->id . '", "icon-id-' . $option->id . '")',
+                                        'class' => 'form-control',
+                                    ])
+                                }}
+                            @else
+                                {{
+                                    Form::file('image[' . $option->id . ']', [
+                                        'onchange' => 'readURL(this, "preview_' . $option->id . '", "icon-id-' . $option->id . '")',
+                                        'class' => 'form-control',
+                                    ])
+                                }}
+                            @endif
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    @endforeach
+        @endforeach
+    </div>
 @endif
 
 <!-- OPTION LISTS -->
@@ -65,8 +79,11 @@
     <div class="poll-option"></div>
 </div>
 
-@if ((isset($page) && ($page == 'edit' || $page == 'duplicate')))
-    <input type="submit" class="btn btn-success" name="btn_edit" value="{{ trans('polls.button.save_option') }}">
+@if (isset($page) && $page == 'edit')
+    <div class="col-lg-12">
+        <input type="submit" class="btn btn-success btn-darkcyan" name="btn_edit" value="{{ trans('polls.button.save_option') }}">
+        <a href="{{ $poll->getAdminLink() }}" class="btn btn-back-edit">{{ trans('polls.button.edit_back') }}</a>
+   </div>
     {{ Form::close() }}
 @endif
 

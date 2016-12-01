@@ -135,7 +135,7 @@
                         <li>
                             <div class="hide_language" data-route="{{ url('language') }}"></div>
                             <div class="multiple-lang">
-                                <select name="lang" id="countries" class="form-control btn-multiple-language" style="min-width: 120px;">
+                                <select name="lang" id="countries" class="form-control btn-multiple-language">
                                     <option value='en' {{ Session::get('locale') == 'en' ? 'selected' : '' }} data-image="{{ asset('bower/ms-Dropdown/images/msdropdown/icons/blank.gif') }} " data-imagecss="flag england" data-title="English">English</option>
                                     <option value='vi' {{ Session::get('locale') == 'vi' ? 'selected' : '' }} data-image="{{ asset('bower/ms-Dropdown/images/msdropdown/icons/blank.gif') }}" data-imagecss="flag vn" data-title="Tiếng Việt">Tiếng Việt</option>
                                 </select>

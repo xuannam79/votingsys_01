@@ -48,7 +48,7 @@ class Link extends Model
 
             //send email when edit token of link
             try {
-                Mail::send('layouts.edit_link_mail', [
+                Mail::queue('layouts.edit_link_mail', [
                     'link' => url('/link') . '/' . $tokenInput,
                 ], function ($message) use ($emails) {
                     $message->to($emails)->subject(trans('label.mail.subject'));

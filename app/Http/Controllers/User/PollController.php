@@ -70,6 +70,7 @@ class PollController extends Controller
 
         $poll->status = true;
         $poll->save();
+
         //insert activity
         $activity = [
             'poll_id' => $poll->id,
