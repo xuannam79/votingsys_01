@@ -67,6 +67,9 @@ return [
             'active_account' => 'Kích hoạt tài khoản',
             'end' => '-- Kết thúc --',
         ],
+        'backup_database' => [
+            'head' => 'Chào Admin, File backup database đã được gửi trong phần đính kèm.',
+        ],
         'participant_vote' => [
             'invite' => 'Bạn đã được mời tham gia bình chọn này, hãy kích vào đường dẫn dưới đây để tham gia bầu chọn',
         ],
@@ -135,4 +138,5 @@ return [
     ],
     'top' => 'Đầu trang',
     'tutorial' => 'Hướng dẫn',
+    'feedback' => 'Gởi phản hồi',
 ];

@@ -67,6 +67,9 @@ return [
             'active_account' => 'Active account',
             'end' => '-- END --',
         ],
+        'backup_database' => [
+            'head' => 'Hello Admin, This email to send backup database file',
+        ],
         'participant_vote' => [
             'invite' => 'You have been invited to participant this poll. Let\'s clink link below to vote',
         ],
@@ -134,5 +137,6 @@ return [
         'responsive' => 'Support multiple deceive: laptop or mobie',
     ],
     'tutorial' => 'Tutorial',
+    'feedback' => 'Feedback',
     'top' => 'Top',
 ];

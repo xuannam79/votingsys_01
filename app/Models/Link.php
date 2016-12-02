@@ -71,6 +71,7 @@ class Link extends Model
             }
 
             $this->save();
+            $result['token_link'] = $this->token;
 
             return response()->json($result);
         }

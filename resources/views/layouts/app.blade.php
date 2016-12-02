@@ -90,6 +90,9 @@
                         <li>
                             <a href="{{ url('/tutorial') }}" target="_blank"><span class="glyphicon glyphicon-file"></span> {{ trans('label.tutorial') }}</a>
                         </li>
+                        <li>
+                            <a href="{{ config('settings.feedback') }}" target="_blank"><span class="fa fa-commenting"></span> {{ trans('label.feedback') }}</a>
+                        </li>
                         @if (auth()->check())
                             <li {!! Request::is('user/poll') ? 'class="active"' : '' !!}>
                                 <a href="{{ URL::action('User\PollController@index') }}">

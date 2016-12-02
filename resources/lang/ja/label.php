@@ -99,5 +99,6 @@ return [
     'accessible' => 'ACCESSIBLE',
     'security' => 'SECURITY',
     'introduction' => 'INTRODUCTION',
-    'tutorial' => 'TUTORIAL',
+    'tutorial' => 'Tutorial',
+    'feedback' => 'Feedback',
 ];

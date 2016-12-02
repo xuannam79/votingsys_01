@@ -29,12 +29,11 @@ class SocialAuthController extends Controller
 
         try {
             $user = $service->createOrGetUser(Socialite::driver($provider));
-
             auth()->login($user);
 
             return redirect()->to(url('/'))->withMessage(trans('user.login_successfully'));
         } catch (\Exception $ex) {
-            return URL::previous();
+            return redirect()->to(url('/login'));
         }
     }
 }

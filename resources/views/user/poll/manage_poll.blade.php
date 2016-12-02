@@ -5,6 +5,7 @@
         data-poll="{{ $data['jsonData'] }}"
         data-poll-id="{{ $poll->id }}" data-route="{{ url('user/poll') }}"
         data-edit-link-success="{{ trans('polls.edit_link_successfully') }}"
+        data-edit-link-admin-success="{{ trans('polls.edit_link_admin_successfully') }}"
         data-link="{{ url('link') }}"
         data-route-link="{{ route('link-poll.store') }}"
         data-delete-participant="{{ trans('polls.confirm_delete_all_participant') }}"
@@ -30,6 +31,7 @@
                         </div>
                     </div>
                 </div>
+                <span class="latest-token-user"></span>
                 @if (Session::has('messages'))
                     <div class="alert alert-success alert-messages alert-dismissable">
                         <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>

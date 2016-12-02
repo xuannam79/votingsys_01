@@ -366,6 +366,7 @@ return [
     'link_exist' => 'Link này đã tồn tại',
     'link_invalid' => 'Link không đúng',
     'edit_link_successfully' => 'Sửa thành công',
+    'edit_link_admin_successfully' => 'Link quản lý poll này đã được cập nhât. Bạn sẽ được chuyển đến link mới.',
     'delete_all_participants_successfully' => 'Xóa tất cả những người bầu chọn thành công',
     'incorrect_password' => 'Mật khẩu chưa chính xác',
     'enter_password' => 'Vui lòng nhập mật khẩu để xem poll này',
