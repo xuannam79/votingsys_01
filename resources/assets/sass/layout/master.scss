@@ -190,17 +190,21 @@ footer {
   }
 }
 
+.footer-left {
+  padding-top: 10px;
+}
+
 .footer-left img {
   width: 30px;
   height: 30px;
 }
 
 .footer-center {
-  padding: 15px;
+  padding: 25px 15px 15px 15px;
 }
 
 .footer-right {
-  padding: 15px;
+  padding: 25px 15px 15px 15px;
 }
 
 .footer-right p{
@@ -451,7 +455,7 @@ span.round-tabs.four{
 
 .feature h2 {
   text-align: center;
-  margin-bottom: 50px
+  margin-bottom: 70px;
 }
 
 .feature-text {
@@ -801,6 +805,11 @@ body {
 /*-------------------------------------------/
 /               USER.POLL.MANAGER             /
 /-------------------------------------------*/
+
+.latest-token-user {
+  display: none;
+}
+
 .alert-messages {
   border-radius: 0;
   text-align: center;
@@ -1133,6 +1142,8 @@ html {
 
 .btn-center {
   float: none !important;
+  position: absolute;
+  right: 120px;
 }
 
 /* list poll */

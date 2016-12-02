@@ -54,10 +54,12 @@ class DuplicateController extends Controller
 
         if ($data) {
             $poll = $data['poll'];
+
             return redirect()->route('result-poll.show', ['id' => $poll->id]);
         }
 
         $message = trans('polls.message.duplicate_fail');
+
         return redirect()->route('duplicate.show', ['id' => $request->id])->with('message', $message);
     }
 

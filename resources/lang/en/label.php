@@ -134,5 +134,6 @@ return [
         'responsive' => 'Support multiple deceive: laptop or mobie',
     ],
     'tutorial' => 'Tutorial',
+    'feedback' => 'Feedback',
     'top' => 'Top',
 ];

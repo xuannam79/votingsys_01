@@ -149,11 +149,12 @@ class LinkController extends Controller
         $passwordSetting = $poll->settings->whereIn('key', [config('settings.setting.set_password')])->first();
         $isRequiredEmail = $poll->settings->whereIn('key', [config('settings.setting.required_email')])->count() != config('settings.default_value');
         $dataTableResult = $this->pollRepository->getDataTableResult($poll, $isRequiredEmail);
+
         //sort option and count vote by number of vote
-        $dataTableResult = array_values(array_sort($dataTableResult, function($value)
+        $dataTableResult = array_values(array_reverse(array_sort($dataTableResult, function($value)
         {
             return $value['numberOfVote'];
-        }));
+        })));
 
         if (! $link->link_admin) {
             if ($link->poll->isClosed()) {

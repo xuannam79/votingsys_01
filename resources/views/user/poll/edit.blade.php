@@ -5,7 +5,7 @@
 @section('content')
     <div class="hide"
          data-poll="{{ $data["jsonData"] }}"
-         data-action="edit"
+         data-page="edit"
          data-setting-edit="{{ json_encode($setting) }}"
          data-route-link="{{ route('link-poll.store') }}"
          data-token="{{ csrf_token() }}"

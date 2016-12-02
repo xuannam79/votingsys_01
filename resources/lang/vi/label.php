@@ -135,4 +135,5 @@ return [
     ],
     'top' => 'Đầu trang',
     'tutorial' => 'Hướng dẫn',
+    'feedback' => 'Gởi phản hồi',
 ];
