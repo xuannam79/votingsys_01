@@ -54,6 +54,8 @@ Route::group(['middleware' => 'XSS'], function() {
     ]]);
 
     Route::get('check-date-close-poll', 'User\CheckDateController@checkDateClosePoll');
+
+    Route::post('check-email', 'CheckEmailController@store');
 });
 
 

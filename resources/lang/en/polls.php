@@ -323,6 +323,7 @@ return [
     'link_exist' => 'Link exist',
     'link_invalid' => 'Link invalid',
     'edit_link_successfully' => 'Edit successfully',
+    'edit_link_admin_successfully' => 'Link manage this poll has been updated. You will be redirected to new link.',
     'delete_all_participants_successfully' => 'Delete all participants successfully',
     'incorrect_password' => 'Password incorrect',
     'enter_password' => 'Enter password to view this poll',
