@@ -605,12 +605,10 @@ $(document).ready(function() {
             }
         }
     });
-
 });
 
 function updatePollInfo()
 {
-    console.log("update");
     //get validation of form
     var valid = $("#form_update_poll_info").valid();
     if(! valid) {
@@ -816,10 +814,12 @@ function changeLinkAdmin() {
             $('#link_admin').closest('.form-group').addClass('has-error');
             $('.error_link_admin').closest('.form-group').addClass('has-error');
             $('.error_link_admin').html('<span id="title-error" class="help-block">' + pollData.message.link_exists + '</span>');
+            hideLabelMessage('.error_link_admin');
         } else {
             $('#link_admin').closest('.form-group').removeClass('has-error');
             $('.error_link_admin').closest('.form-group').removeClass('has-error');
             $('.error_link_admin').html('<span id="title-success" class="help-block">' + pollData.message.link_valid + '</span>');
+            hideLabelMessage('.error_link_admin');
         }
     }
 
@@ -848,11 +848,18 @@ function changeLinkUser() {
         if (validateLink($('#link_user').val()).responseJSON.success) {
             $('#link_user').closest('.form-group').addClass('has-error');
             $('.error_link_user').closest('.form-group').addClass('has-error');
-            $('.error_link_user').html('<span id="title-error" class="help-block">' + pollData.message.link_exists + '</span>');
+            $('.error_link_user').html(
+                '<span id="title-error" class="help-block">'
+                + pollData.message.link_exists
+                + '</span>');
+            hideLabelMessage('.error_link_user');
         } else {
             $('#link_user').closest('.form-group').removeClass('has-error');
             $('.error_link_user').closest('.form-group').removeClass('has-error');
-            $('.error_link_user').html('<span id="title-success" class="help-block">' + pollData.message.link_valid + '</span>');
+            $('.error_link_user').html('<span id="title-success" class="help-block">'
+                + pollData.message.link_valid
+                + '</span>');
+            hideLabelMessage('.error_link_user');
         }
     }
 }
@@ -1028,4 +1035,11 @@ $('a[data-toggle="tooltip"]').tooltip({
 
 $(document).ready(function() {
     $("#countries").msDropdown();
-})
+});
+
+/* hide label message */
+function hideLabelMessage(element) {
+    setTimeout( function () {
+        $(element).html('');
+    }, 2000);
+}

@@ -161,8 +161,10 @@
             <div class="col-lg-3 footer-left">
                 <p><b class="char-app">F</b><label>poll</label></p>
                 <p>
-                    <img src="{{ asset('uploads/images/logo.png') }}">
-                    {{ trans('label.footer.copyright') }}
+                    <img src="{{ asset('uploads/images/logo.png') }}" class="copyright-image">
+                    <a href="{{ config('settings.copyright') }}" target="_blank" class="copyright-text">
+                        {!! trans('label.footer.copyright') !!}
+                    </a>
                 </p>
             </div>
             <div class="col-lg-5 footer-center">
@@ -178,7 +180,6 @@
             </div>
             <div class="col-lg-4 footer-right">
                 <p>{{ trans('label.footer.about') }}</p>
-                <p>{{ trans('label.footer.description_website') }}</p>
                 <a href="{{ trans('label.footer.facebook') }}" target="_blank" class="btn btn-primary">
                     <span><i class="fa fa-facebook" aria-hidden="true"></i></span>
                 </a>

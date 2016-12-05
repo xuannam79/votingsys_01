@@ -37,7 +37,7 @@
                             <h3 class="poll-history">{{ trans('history.history_empty') }}</h3>
                         @endif
                         <br>
-                        <a href="{{ $poll->getAdminLink() }}" class="btn btn-default">
+                        <a href="{{ $poll->getAdminLink() }}" class="btn btn-primary btn-darkcyan">
                             <span class="fa fa-backward"></span> {{ trans('history.back') }}
                         </a>
                     </div>

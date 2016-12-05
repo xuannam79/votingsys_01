@@ -5,8 +5,8 @@
     <div class="row">
         <div class="loader"></div>
         <div class="col-md-4 col-md-offset-4 animated fadeInUp login">
-            <div class="panel panel-default">
-                <div class="panel-heading">{{ trans('label.login') }}</div>
+            <div class="panel panel-default panel-darkcyan">
+                <div class="panel-heading panel-heading-darkcyan">{{ trans('label.login') }}</div>
                 <div class="panel-body">
                     @if (Session::has('messages'))
                         <div class="col-lg-12">
@@ -24,7 +24,12 @@
                                     <span class="input-group-addon">
                                         <i class="fa fa-envelope" aria-hidden="true"></i>
                                     </span>
-                                    {{ Form::email('email', old('email'), ['class' => 'form-control', 'placeholder' => trans('user.login.placeholder.email')]) }}
+                                    {{
+                                        Form::email('email', old('email'), [
+                                            'class' => 'form-control',
+                                            'placeholder' => trans('user.login.placeholder.email')
+                                        ])
+                                    }}
                                 </div>
                             </div>
                         </div>
@@ -34,7 +39,13 @@
                                     <span class="input-group-addon">
                                         <i class="fa fa-key" aria-hidden="true"></i>
                                     </span>
-                                    {{ Form::password('password', ['id' => 'password', 'class' => 'form-control', 'placeholder' => trans('user.login.placeholder.password')]) }}
+                                    {{
+                                        Form::password('password', [
+                                            'id' => 'password',
+                                            'class' => 'form-control',
+                                            'placeholder' => trans('user.login.placeholder.password')
+                                        ])
+                                    }}
                                 </div>
                             </div>
                         </div>
@@ -52,7 +63,12 @@
                         <div class="form-group">
                             <div class="row">
                                 <div class="col-md-10 col-md-offset-1">
-                                    {{ Form::button('<span class="glyphicon glyphicon-log-in"></span> ' . trans('label.login'), ['type' => 'submit', 'class' => 'btn btn-success btn-block btn-login']) }}
+                                    {{
+                                        Form::button('<span class="glyphicon glyphicon-log-in"></span> ' . trans('label.login'), [
+                                            'type' => 'submit',
+                                            'class' => 'btn btn-success btn-block btn-login btn-darkcyan'
+                                        ])
+                                    }}
                                 </div>
                             </div>
                             <br>
@@ -60,7 +76,7 @@
                                 <div class="col-md-10 col-md-offset-1">
                                     <a class="btn btn-login btn-block btn-social btn-facebook" href="{{ url('redirect/facebook') }}">
                                         <span class="fa fa-facebook"></span>
-                                        {{ trans('auth.facebook_login') }}
+                                        <span>{{ trans('auth.facebook_login') }}</span>
                                     </a>
                                 </div>
                             </div>
@@ -102,5 +118,4 @@
             </div>
         </div>
     </div>
-</div>
 @endsection

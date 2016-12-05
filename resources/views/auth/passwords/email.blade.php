@@ -6,8 +6,8 @@
     <div class="row">
     <div class="loader"></div>
         <div class="col-md-8 col-md-offset-2">
-            <div class="panel panel-default">
-                <div class="panel-heading">{{ trans('passwords.reset_password') }}</div>
+            <div class="panel panel-default panel-darkcyan">
+                <div class="panel-heading panel-heading-darkcyan">{{ trans('passwords.reset_password') }}</div>
                 <div class="panel-body">
                     @if (session('status'))
                         <div class="alert alert-success">
@@ -34,7 +34,7 @@
 
                         <div class="form-group">
                             <div class="col-md-6 col-md-offset-4">
-                                <button class="btn-reset-password btn btn-primary">
+                                <button class="btn-reset-password btn btn-primary btn-darkcyan">
                                     {{ trans('passwords.send_password_reset_link') }}
                                 </button>
                             </div>

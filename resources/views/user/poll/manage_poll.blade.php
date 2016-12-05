@@ -14,7 +14,8 @@
         data-url-reopen-poll="{{ url('user/poll') }}"
         data-token-admin="{{ $tokenLinkAdmin }}"
         data-token-user="{{ $tokenLinkUser }}"
-        data-url-admin="{{ url('/link') }}">
+        data-url-admin="{{ url('/link') }}"
+         data-link-check-date="{{ url('/check-date-close-poll') }}">
     </div>
     <div class="container">
         <div class="row">
@@ -242,7 +243,7 @@
                                                                     <td>{{ $key + 1 }}</td>
                                                                     <td class="td-detail-option">
                                                                         <img src="{{ asset($data['image']) }}">
-                                                                        {{ $data['name'] }}
+                                                                        <span class="option-name">{{ $data['name'] }}</span>
                                                                     </td>
                                                                     <td><span class="badge">{{ $data['numberOfVote'] }}</span></td>
                                                                 </tr>
@@ -350,7 +351,19 @@
                                                             data.addColumn('number', '');
                                                             var optionRateBarChart = {!! $optionRateBarChart !!};
                                                             data.addRows(optionRateBarChart);
-                                                            var options = {'width': 700, 'height': 400};
+                                                            var options = {
+                                                                'width': 700,
+                                                                'height': 400,
+                                                                chartArea:{
+                                                                    left:250,
+                                                                },
+                                                                colors: ['darkcyan'],
+                                                                hAxis: {
+                                                                    gridlines: {
+                                                                        count: 4
+                                                                    }
+                                                                }
+                                                            };
                                                             var chart = new google.visualization.BarChart(document.getElementById('chart'));
                                                             chart.draw(data, options);
                                                         }
@@ -379,7 +392,15 @@
                                                             data.addColumn('number', 'Slices');
                                                             var optionRateBarChart = {!! $optionRateBarChart !!};
                                                             data.addRows(optionRateBarChart);
-                                                            var options = {'width': 700, 'height': 400};
+                                                            var options = {
+                                                                'width': 700,
+                                                                'height': 400,
+                                                                is3D: true,
+                                                                forceIFrame: true,
+                                                                pieSliceTextStyle: {
+                                                                    fontSize: '20px'
+                                                                },
+                                                            };
                                                             var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
                                                             chart.draw(data, options);
                                                         }
@@ -398,7 +419,7 @@
                     <div class="tab-pane" id="activity">
                         <div class="row">
                             <div class="col-lg-6">
-                                <a id="label_link_admin">
+                                <a id="label_link_admin" target="_blank">
                                     {{ str_limit(url('/') . config('settings.email.link_vote') . $tokenLinkAdmin, config('settings.limit_link')) }}
                                 </a>
                                 <div class="form-group">
@@ -406,10 +427,19 @@
                                         <span class="input-group-addon" id="basic-addon3">
                                             <i class="fa fa-link" aria-hidden="true"></i>
                                         </span>
-                                        <input type="text" name="administer_link" class="form-control token-admin"
-                                               value="{{ $tokenLinkAdmin }}" id="link_admin" onkeyup="changeLinkAdmin()">
+                                        {{
+                                            Form::text('administer_link', $tokenLinkAdmin, [
+                                                'class' => 'form-control token-admin',
+                                                'id' => 'link_admin',
+                                                'onkeyup' => 'changeLinkAdmin()',
+                                            ])
+                                        }}
                                         <span class="input-group-btn" data-token-link-admin="{{ $tokenLinkAdmin }}">
-                                            {{ Form::button('<i class="fa fa-check" aria-hidden="true"></i>', ['class' => 'btn btn-success edit-link-admin']) }}
+                                            {{
+                                                Form::button('<i class="fa fa-check" aria-hidden="true"></i>', [
+                                                    'class' => 'btn btn-success btn-darkcyan edit-link-admin'
+                                                ])
+                                            }}
                                         </span>
                                     </div>
                                 </div>
@@ -421,19 +451,26 @@
                                 </div>
                             </div>
                             <div class="col-lg-6">
-                                <a id="label_link_user">
+                                <a id="label_link_user" target="_blank">
                                     {{ str_limit(url('/') . config('settings.email.link_vote') . $tokenLinkUser, config('settings.limit_link')) }}
                                 </a>
                                 <div class="input-group">
                                     <span class="input-group-addon" id="basic-addon3">
                                         <i class="fa fa-link" aria-hidden="true"></i>
                                     </span>
-                                    <input type="text" name="participation_link" class="form-control token-user"
-                                           value="{{ $tokenLinkUser }}" id="link_user" onkeyup="changeLinkUser()">
+                                    {{
+                                        Form::text('participation_link', $tokenLinkUser, [
+                                            'class' => 'form-control token-user',
+                                            'id' => 'link_user',
+                                            'onkeyup' => 'changeLinkUser()',
+                                        ])
+                                    }}
                                     <span class="input-group-btn" data-token-link-user="{{ $tokenLinkUser }}">
-                                        <button class="btn btn-success edit-link-user" type="button">
-                                            <i class="fa fa-check" aria-hidden="true"></i>
-                                        </button>
+                                        {{
+                                            Form::button('<i class="fa fa-check" aria-hidden="true"></i>', [
+                                                'class' => 'btn btn-success btn-darkcyan edit-link-user'
+                                            ])
+                                        }}
                                     </span>
                                 </div>
                                 <div class="form-group">

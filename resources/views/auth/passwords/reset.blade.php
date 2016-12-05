@@ -5,8 +5,8 @@
     <div class="row">
     <div class="loader"></div>
         <div class="col-md-8 col-md-offset-2">
-            <div class="panel panel-default">
-                <div class="panel-heading">{{ trans('passwords.reset_password') }}</div>
+            <div class="panel panel-default panel-darkcyan">
+                <div class="panel-heading panel-heading-darkcyan">{{ trans('passwords.reset_password') }}</div>
 
                 <div class="panel-body">
                     <form class="form-horizontal" role="form" method="POST" action="{{ url('/password/reset') }}">
@@ -57,7 +57,7 @@
 
                         <div class="form-group">
                             <div class="col-md-6 col-md-offset-4">
-                                <button type="submit" class="btn btn-primary">
+                                <button type="submit" class="btn btn-primary btn-darkcyan">
                                     {{ trans('passwords.reset_password') }}
                                 </button>
                             </div>

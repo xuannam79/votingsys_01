@@ -190,6 +190,16 @@ footer {
   }
 }
 
+.copyright-text {
+  color: white;
+  display: block;
+  margin-left: 40px;
+}
+
+.copyright-image {
+  float: left;
+}
+
 .footer-left {
   padding-top: 10px;
 }
@@ -516,10 +526,6 @@ body {
   -o-transition: all 1s;
 }
 
-.btn-login:hover {
-  font-size: 20px;
-}
-
 .btn-social-login {
   margin-top: 10px;
 }
@@ -541,10 +547,6 @@ body {
   -moz-transition: all 1s;
   -webkit-transition: all 1s;
   -o-transition: all 1s;
-}
-
-.btn-register:hover {
-  font-size: 20px;
 }
 
 /*-------------------------------------------
@@ -1012,6 +1014,7 @@ span.round-tab:hover {
 
 .btn-change-step {
   color: white !important;
+  border-radius: 0 !important;
 }
 
 .btn-change-step:hover, .btn-change-step:focus {
@@ -1206,12 +1209,18 @@ html {
 
 .td-detail-option {
   max-width: 450px;
+}
+
+.td-detail-option .option-name{
+  margin-left: 60px;
+  display: block;
   word-wrap: break-word;
 }
 
 .td-detail-option img{
   width: 50px;
-  height: 50px
+  height: 50px;
+  float: left;
 }
 
 /*-----------------------------------

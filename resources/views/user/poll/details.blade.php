@@ -551,7 +551,15 @@
                                                             data.addColumn('number', 'Slices');
                                                             var optionRateBarChart = {!! $optionRateBarChart !!};
                                                             data.addRows(optionRateBarChart);
-                                                            var options = {'width': 700, 'height': 400};
+                                                            var options = {
+                                                                'width': 850,
+                                                                'height': 450,
+                                                                is3D: true,
+                                                                forceIFrame: true,
+                                                                pieSliceTextStyle: {
+                                                                    fontSize: '20px'
+                                                                },
+                                                            };
                                                             var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
                                                             chart.draw(data, options);
                                                         }
@@ -575,7 +583,19 @@
                                                             data.addColumn('number', '');
                                                             var optionRateBarChart = {!! $optionRateBarChart !!};
                                                             data.addRows(optionRateBarChart);
-                                                            var options = {'width': 700, 'height': 400, 'is3D': true};
+                                                            var options = {
+                                                                'width': 750,
+                                                                'height': 400,
+                                                                chartArea:{
+                                                                    left:250,
+                                                                },
+                                                                colors: ['darkcyan'],
+                                                                hAxis: {
+                                                                    gridlines: {
+                                                                        count: 4
+                                                                    }
+                                                                }
+                                                            };
                                                             var chart = new google.visualization.BarChart(document.getElementById('chart'));
                                                             chart.draw(data, options);
                                                         }
