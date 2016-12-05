@@ -51,6 +51,7 @@ $(document).ready(function(){
                     $('#label_link_user').attr('href', $('.token-user').val());
                     $('.message-link-user').html(editLinkSuccess);
                     $('.latest-token-user').html(data.token_link);
+                    hideLabelMessage('.message-link-user');
                 }
             }
         });

@@ -107,11 +107,11 @@ return [
     ],
     'footer' => [
         'location' => '13F Keangnam Landmark 72 Tower, Plot E6, Pham Hung Road, Nam Tu Liem, Ha Noi, Viet Nam',
-        'copyright' => 'Copyright 2016 Framgia, Inc. All rights reserved.',
+        'copyright' => 'Copyright 2016 Framgia, Inc. <br>All rights reserved.',
         'email' => 'hr_team@framgia.com',
         'phone' => ' 84-4-3795-5417',
-        'about' => 'About the website',
-        'description_website' => 'Website help you can create a poll fast and easy',
+        'about' => 'Fpoll - a simple, convinient and powerfull Poll System',
+        'description_website' => 'Fpoll help to create a poll quickly and easily',
         'facebook' => 'https://www.facebook.com/FramgiaVietnam',
         'github' => 'https://github.com/framgia',
         'linkedin' => 'https://www.linkedin.com/company/framgia-vietnam',
@@ -128,7 +128,7 @@ return [
      * Home page
      */
     'feature' => [
-        'name' => 'FEATURE',
+        'name' => 'FEATURES',
         'vote' => 'Create a poll fast and easy',
         'chart' => 'Result illustrated by bar chart and pie chart ',
         'security' => 'Guaranteed security by password of poll',

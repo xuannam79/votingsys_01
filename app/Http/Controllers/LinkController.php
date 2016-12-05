@@ -140,12 +140,16 @@ class LinkController extends Controller
                 $countOption = $option->countVotes();
                 $optionRatePieChart[$option->name] = (int) ($countOption * 100 / $totalVote);
                 if ($countOption > 0) {
-                    $optionRateBarChart[] = [str_limit($option->name, 40), $countOption];
+                    $optionRateBarChart[] = [str_limit($option->name, 30), $countOption];
                 }
             }
         } else {
             $optionRatePieChart = null;
             $optionRateBarChart = null;
+        }
+
+        if (! empty($optionRateBarChart)) {
+            $optionRateBarChart = array_sort_recursive($optionRateBarChart);
         }
 
         $optionRateBarChart = json_encode($optionRateBarChart);
@@ -166,7 +170,7 @@ class LinkController extends Controller
             }
 
             //check time close poll
-            if (Carbon::now()->format('y/m/d h:i') > Carbon::parse($poll->date_close)->format('y/m/d h:i')) {
+            if (Carbon::now()->toAtomString() > Carbon::parse($poll->date_close)->toAtomString()) {
                 $poll->status = false;
                 $poll->save();
 

@@ -59,7 +59,10 @@ class ExportController extends Controller
             }
         }
 
-        $isRequiredEmail = Setting::where('poll_id', $pollId)->where('key', config('settings.setting.required_email'))->count() != config('settings.default_value');
+        $isRequiredEmail = Setting::where([
+            'poll_id' => $pollId,
+            'key' => config('settings.setting.required_email'),
+            ])->count() != config('settings.default_value');
 
         $voteIds = $this->pollRepository->getVoteIds($poll->id);
         $votes = $this->voteRepository->getVoteWithOptionsByVoteId($voteIds);
@@ -74,6 +77,7 @@ class ExportController extends Controller
 
             $sortedParticipantVotes = collect($createdAt)->sort();
             $resultParticipantVotes = collect();
+
             foreach ($sortedParticipantVotes as $sortedParticipantVote) {
                 foreach ($mergedParticipantVotes as $mergedParticipantVote) {
                     foreach ($mergedParticipantVote as $participantVote) {
@@ -85,6 +89,7 @@ class ExportController extends Controller
                     }
                 }
             }
+
             $mergedParticipantVotes = $resultParticipantVotes;
         }
         $dataRender = [
@@ -107,7 +112,6 @@ class ExportController extends Controller
             $html = view('user.poll.details_layouts', $view);
             return PDF::load($html)->filename(trans('polls.vote') . '.pdf')->download();
         }
-
     }
 
     public function exportExcel(Request $request)

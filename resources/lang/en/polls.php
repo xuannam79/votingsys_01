@@ -83,7 +83,7 @@ return [
         'email' => 'Enter your email address... ',
         'chatwork' => 'Enter your chatwork id... ',
         'title' => 'Enter poll title... ',
-        'description' => 'Enter description title... ',
+        'description' => 'Enter description ... ',
         'time_close' => 'Set time to close poll',
         'location' => 'Enter a location... ',
         'number_add' => 'Enter a number to add option',

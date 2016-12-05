@@ -10,13 +10,12 @@ class CheckDateController extends Controller
 {
     public function checkDateClosePoll(Request $request)
     {
-//check
         if ($request->ajax()) {
             $inputs = $request->only('date_close_poll');
             $dateClosePoll = $inputs['date_close_poll'];
 
             //check time close poll
-            if (Carbon::now()->format('y/m/d h:i') > Carbon::parse($dateClosePoll)->format('y/m/d h:i')) {
+            if (Carbon::now()->toAtomString() > Carbon::parse($dateClosePoll)->toAtomString()) {
                 return response()->json(['success' => false]);
             }
 
