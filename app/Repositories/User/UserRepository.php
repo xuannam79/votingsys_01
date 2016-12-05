@@ -69,7 +69,7 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
         try {
             Mail::queue('layouts.register_mail', [
                 'name' => $data['name'],
-                'link' => url('/link/verification') . '/' . $user['token_verification'],
+                'link' => url('/link/verification') . '/' . $createUser->id . '/' . $user['token_verification'],
             ], function ($message) use ($emails) {
                 $message->to($emails)->subject(trans('label.mail.subject'));
             });

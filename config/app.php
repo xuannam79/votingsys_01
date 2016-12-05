@@ -167,6 +167,8 @@ return [
         Vsmoraes\Pdf\PdfServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
         App\Providers\SocialiteCustomServiceProvider::class,
+        Torann\DatabaseBackup\DatabaseBackupServiceProvider::class,
+
 
         /*
          * Package Service Providers...

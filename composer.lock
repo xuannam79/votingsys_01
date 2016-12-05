@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "1da5a357847d266a9c7edbae1d5d1a76",
-    "content-hash": "f538acc4303b8debe2cc23f91082b14a",
+    "hash": "220691ad149dfbc07f8776935aadf97c",
+    "content-hash": "627419cfd962f444936cc3447cb3dc1a",
     "packages": [
         {
             "name": "classpreloader/classpreloader",
@@ -2992,6 +2992,54 @@
             "description": "CssToInlineStyles is a class that enables you to convert HTML-pages/files into HTML-pages/files with inline styles. This is very useful when you're sending emails.",
             "homepage": "https://github.com/tijsverkoyen/CssToInlineStyles",
             "time": "2015-12-08 16:14:14"
+        },
+        {
+            "name": "torann/database-backup",
+            "version": "0.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Torann/database-backup.git",
+                "reference": "3a171fe12deee06ce189304040bbae8df66c941c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Torann/database-backup/zipball/3a171fe12deee06ce189304040bbae8df66c941c",
+                "reference": "3a171fe12deee06ce189304040bbae8df66c941c",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/console": "~5.0",
+                "illuminate/support": "~5.0",
+                "php": ">=5.5.9",
+                "symfony/process": "~3.1"
+            },
+            "require-dev": {
+                "mockery/mockery": "^0.9.4",
+                "phpunit/phpunit": "^4.8"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.1-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Torann\\DatabaseBackup\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD 2-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Daniel Stainback",
+                    "email": "torann@gmail.com"
+                }
+            ],
+            "description": "Database backup package for Laravel.",
+            "time": "2016-11-03 16:08:48"
         },
         {
             "name": "vlucas/phpdotenv",

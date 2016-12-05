@@ -115,4 +115,14 @@ class User extends Authenticatable
     {
         return $this->role == User::IS_ADMIN;
     }
+
+    public static function boot()
+    {
+        parent::boot();
+
+        static::updating(function ($user) {
+            $user->is_active = true;
+            $user->token_verification = '';
+        });
+    }
 }

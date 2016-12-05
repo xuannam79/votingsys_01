@@ -40,7 +40,7 @@ class LinkController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($tokenRegister)
+    public function index($userId, $tokenRegister)
     {
         $user = User::where('token_verification', $tokenRegister)->first();
 
@@ -48,15 +48,19 @@ class LinkController extends Controller
             return view('errors.show_errors')->with('message', trans('polls.link_not_found'));
         }
 
-        $user->is_active = true;
-        $user->token_verification = '';
-        $user->save();
+        if ($userId == $user->id) {
+            $user->is_active = true;
+            $user->token_verification = '';
+            $user->save();
 
-        if (! Auth::login($user)) {
-            return redirect()->to(url('/'))->withMessage(trans('user.register_account_successfully'));
-        } else {
-            return redirect()->to(url('/'))->withMessage(trans('user.register_account_fail'));
+            if (! Auth::login($user)) {
+                return redirect()->to(url('/'))->withMessage(trans('user.register_account_successfully'));
+            } else {
+                return redirect()->to(url('/'))->withMessage(trans('user.register_account_fail'));
+            }
         }
+
+        return view('errors.404');
     }
 
     /**

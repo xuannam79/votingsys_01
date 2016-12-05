@@ -65,7 +65,7 @@ Route::post('link/{token?}', [
     'uses' => 'LinkController@index'
 ]);
 
-Route::get('link/verification/{tokenRegister?}', 'LinkController@index');
+Route::get('link/verification/{userId?}/{tokenRegister?}', 'LinkController@index');
 
 Route::post('check-email', 'CheckEmailController@store');
 

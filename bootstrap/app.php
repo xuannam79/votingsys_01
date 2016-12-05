@@ -41,6 +41,8 @@ $app->singleton(
     App\Exceptions\Handler::class
 );
 
+$app->register(Torann\DatabaseBackup\DatabaseBackupServiceProvider::class);
+
 /*
 |--------------------------------------------------------------------------
 | Return The Application
