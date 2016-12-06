@@ -28,7 +28,7 @@ interface PollRepositoryInterface
     public function getTotalVotePoll($poll);
     public function getOptionLargestVote($poll);
     public function getOptionLeastVote($poll);
-    public function getDataTableResult($poll, $isRequiredEmail);
+    public function getDataTableResult($poll);
     public function showSetting($settings);
 
     /*

@@ -76,6 +76,8 @@ return [
         'set_limit' => 4,
         'set_password' => 5,
         'is_set_ip' => 6,
+        'required_name' => 7,
+        'required_name_and_email' => 8,
     ],
     'participant' => [
         'invite_all' => 0,

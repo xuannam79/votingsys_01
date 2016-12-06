@@ -349,6 +349,8 @@ return [
     'email_voted' => 'This email voted, Please chose another email to vote',
     'check' => 'Check',
     'message_required_email' => 'Please enter email to vote this poll',
+    'message_validate_name' => 'Please enter name to vote this poll',
+    'message_validate_name_and_email' => 'Please enter name and email to vote this poll',
     'no_name' => 'No Name',
     'reach_limit' => 'Poll reach limit',
     'action' => 'View Administer page',

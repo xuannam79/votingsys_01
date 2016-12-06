@@ -197,7 +197,7 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
         ]);
 
         //get data to send view file
-        $viewData = [
+        /*$viewData = [
             'types' => array_combine(config('settings.type_poll'), [
                 trans('polls.label.single_choice'),
                 trans('polls.label.multiple_choice')
@@ -210,7 +210,7 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
                 $settingText['set_password'],
                 $settingText['is_set_ip'],
             ]),
-        ];
+        ];*/
 
         return compact('jsonData', 'viewData');
     }
@@ -1282,7 +1282,7 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
     /*
      * get option return table
      */
-    public function getDataTableResult($poll, $isRequiredEmail)
+    public function getDataTableResult($poll)
     {
         $dataTableResult = [];
 
