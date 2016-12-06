@@ -1299,6 +1299,7 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
                 'image' => $option->showImage(),
                 'numberOfVote' => $option->countVotes(),
                 'lastVoteDate' => (strcmp($userVoteLast, $participantVoteLast) < 0) ? $participantVoteLast : $userVoteLast,
+                'option_id' => $option->id,
             ];
         }
 
