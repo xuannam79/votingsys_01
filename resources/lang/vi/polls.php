@@ -392,6 +392,8 @@ return [
     'email_voted' => 'Địa chỉ email này đã bầu chọn poll này rồi',
     'check' => 'Kiểm tra',
     'message_required_email' => 'Vui lòng nhập địa chỉ emai để bầu chọn poll này',
+    'message_validate_name' => 'Vui lòng nhập tên để bầu chọn poll này',
+    'message_validate_name_and_email' => 'Vui lòng nhập tên và email để bầu chọn poll này',
     'no_name' => 'Ẩn danh',
     'reach_limit' => 'Poll đã đủ số lượt bầu chọn',
     'action' => 'Xem trang quản trị',

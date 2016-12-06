@@ -122,6 +122,8 @@ class LinkController extends Controller
         $numberOfVote = config('settings.default_value');
         $voteLimit = null;
         $isRequiredEmail = false;
+        $isRequiredName = false;
+        $isRequiredNameAndEmail = false;
         $isLimit = false;
         $isHideResult = false;
         $poll = $link->poll;
@@ -153,10 +155,7 @@ class LinkController extends Controller
         }
 
         $optionRateBarChart = json_encode($optionRateBarChart);
-        $requiredPassword = null;
-        $passwordSetting = $poll->settings->whereIn('key', [config('settings.setting.set_password')])->first();
-        $isRequiredEmail = $poll->settings->whereIn('key', [config('settings.setting.required_email')])->count() != config('settings.default_value');
-        $dataTableResult = $this->pollRepository->getDataTableResult($poll, $isRequiredEmail);
+        $dataTableResult = $this->pollRepository->getDataTableResult($poll);
 
         //sort option and count vote by number of vote
         $dataTableResult = array_values(array_reverse(array_sort($dataTableResult, function($value)
@@ -176,6 +175,14 @@ class LinkController extends Controller
 
                 return view('errors.show_errors')->with('message', trans('polls.message_poll_closed'));
             }
+
+            $requiredPassword = null;
+            $passwordSetting = $poll->settings->whereIn('key', [config('settings.setting.set_password')])->first();
+
+            //require setting to vote poll
+            $isRequiredEmail = $poll->settings->whereIn('key', [config('settings.setting.required_email')])->count() != config('settings.default_value');
+            $isRequiredName = $poll->settings->whereIn('key', [config('settings.setting.required_name')])->count() != config('settings.default_value');
+            $isRequiredNameAndEmail = $poll->settings->whereIn('key', [config('settings.setting.required_name_and_email')])->count() != config('settings.default_value');
 
             if ($poll->settings) {
                 foreach ($poll->settings as $setting) {
@@ -256,7 +263,7 @@ class LinkController extends Controller
 
             return view('user.poll.details', compact(
                 'poll', 'isRequiredEmail', 'isUserVoted', 'isHideResult', 'numberOfVote', 'linkUser', 'mergedParticipantVotes', 'isParticipantVoted', 'requiredPassword',
-                'optionRatePieChart', 'isSetIp', 'optionRateBarChart', 'isLimit', 'dataTableResult'
+                'optionRatePieChart', 'isSetIp', 'optionRateBarChart', 'isLimit', 'dataTableResult', 'isRequiredName', 'isRequiredNameAndEmail'
             ));
         } else {
             $poll = $link->poll;
@@ -311,10 +318,9 @@ class LinkController extends Controller
             $settings = $this->pollRepository->showSetting($poll->settings);
 
             return view('user.poll.manage_poll', compact(
-                'poll', 'tokenLinkUser', 'tokenLinkAdmin',
-                'isRequiredEmail', 'isUserVoted', 'isHideResult', 'numberOfVote',
-                'linkUser', 'mergedParticipantVotes', 'isParticipantVoted',
-                'settings', 'data', 'page', 'statistic', 'dataTableResult', 'optionRateBarChart', 'optionRatePieChart', 'isSetIp'
+                'poll', 'tokenLinkUser', 'tokenLinkAdmin', 'numberOfVote',
+                'linkUser', 'mergedParticipantVotes',
+                'settings', 'data', 'page', 'statistic', 'dataTableResult', 'optionRateBarChart', 'optionRatePieChart'
             ));
         }
     }

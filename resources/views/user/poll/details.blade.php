@@ -231,11 +231,15 @@
                                             </div>
                                             <div class="col-lg-2">
                                                 <span class="input-group-btn"
-                                                      data-message-email="{{ trans('polls.message_email') }}"
-                                                      data-url="{{ url('/check-email') }}"
-                                                      data-message-required-email="{{ trans('polls.message_required_email') }}"
-                                                      data-message-validate-email="{{ trans('polls.message_validate_email') }}"
-                                                      data-is-required-email="{{ $isRequiredEmail ? 1 : 0 }}">
+                                                    data-message-email="{{ trans('polls.message_email') }}"
+                                                    data-url="{{ url('/check-email') }}"
+                                                    data-message-validate-email="{{ trans('polls.message_validate_email') }}"
+                                                    data-message-required-email="{{ trans('polls.message_required_email') }}"
+                                                    data-message-required-name="{{ trans('polls.message_validate_name') }}"
+                                                    data-message-required-name-and-email="{{ trans('polls.message_validate_name_and_email') }}"
+                                                    data-is-required-email="{{ $isRequiredEmail ? 1 : 0 }}"
+                                                    data-is-required-name="{{ $isRequiredName ? 1 : 0 }}"
+                                                    data-is-required-name-and-email="{{ $isRequiredNameAndEmail ? 1 : 0 }}">
                                                     {{ Form::button(trans('polls.vote'), ['class' => 'btn btn-success btn-vote', ! $isUserVoted ? 'disabled' : '']) }}
                                                 </span>
                                             </div>
