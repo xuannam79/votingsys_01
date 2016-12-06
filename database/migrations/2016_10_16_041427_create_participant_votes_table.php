@@ -28,6 +28,6 @@ class CreateParticipantVotesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('poll_participant');
+        Schema::dropIfExists('participant_votes');
     }
 }

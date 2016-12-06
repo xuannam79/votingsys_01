@@ -126,6 +126,7 @@ class LinkController extends Controller
         $isRequiredNameAndEmail = false;
         $isLimit = false;
         $isHideResult = false;
+        $isTimeOut = false;
         $poll = $link->poll;
         $totalVote = config('settings.default_value');
         $isSetIp = false;
@@ -170,10 +171,9 @@ class LinkController extends Controller
 
             //check time close poll
             if (Carbon::now()->toAtomString() > Carbon::parse($poll->date_close)->toAtomString()) {
-                $poll->status = false;
-                $poll->save();
 
-                return view('errors.show_errors')->with('message', trans('polls.message_poll_closed'));
+                // close vote when poll time out
+                $isTimeOut = true;
             }
 
             $requiredPassword = null;
@@ -262,8 +262,15 @@ class LinkController extends Controller
             }
 
             return view('user.poll.details', compact(
-                'poll', 'isRequiredEmail', 'isUserVoted', 'isHideResult', 'numberOfVote', 'linkUser', 'mergedParticipantVotes', 'isParticipantVoted', 'requiredPassword',
-                'optionRatePieChart', 'isSetIp', 'optionRateBarChart', 'isLimit', 'dataTableResult', 'isRequiredName', 'isRequiredNameAndEmail'
+                'poll', 'numberOfVote', 'linkUser', //poll info
+                'isRequiredEmail', 'isRequiredName', 'isRequiredNameAndEmail', //setting required
+                'isHideResult', //setting hide result
+                'isLimit', //setting number limit of poll
+                'isSetIp', //setting vote one time
+                'requiredPassword', //setting password of poll
+                'isUserVoted', 'isParticipantVoted', // vote type
+                'isTimeOut', //time out of poll
+                'optionRatePieChart', 'optionRateBarChart', 'dataTableResult', 'mergedParticipantVotes' //result
             ));
         } else {
             $poll = $link->poll;

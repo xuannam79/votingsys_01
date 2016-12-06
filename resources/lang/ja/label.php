@@ -40,14 +40,8 @@ return [
         'link_vote' => 'リンク投票:',
         'link_admin' => '投票管理のリンク:',
         'subject' => '投票のシステム',
-        'edit_link' => 'あなたが正常にリンクを編集しました, 新しいリンク: ',
-        'open_poll' => '管理者は再び投票を再開した',
-        'close_poll' => '投票は閉じられました',
         'delete_all_participant' => 'この投票の管理者はすべての投票投票を削除しました',
-        'register' => [
-            'thank' => '私たちのウェブサイトをご利用いただきありがとうございます. <br> あなたは成功したアカウントにサインアップしています. 以下はアカウントを有効にするリンクです',
-            'link_active' => '下のリンクをクリックしてアカウントを有効にしてください',
-        ],
+        'register_active_mail' => 'Bạn đã đăng ký thành công, hãy kích vào đường dẫn sau để kích hoạt tài khoản.',
         'edit_poll' => [
             'head' => '投票',
             'summary' => 'あなたの投票は変更されました.',
@@ -73,8 +67,45 @@ return [
             'active_account' => 'アカウントの有効化',
             'end' => '-- 終了 --',
         ],
+        'backup_database' => [
+            'head' => 'Chào Admin, File backup database đã được gửi trong phần đính kèm.',
+        ],
+        'participant_vote' => [
+            'invite' => 'Bạn đã được mời tham gia bình chọn này, hãy kích vào đường dẫn dưới đây để tham gia bầu chọn',
+        ],
+        'edit_option' => [
+            'old_option' => 'TÙY CHỌN CŨ',
+            'new_option' => 'TÙY CHỌN MỚI',
+            'thank' => 'Cảm ơn bạn đã sử dụng website của chúng tôi',
+            'title' => 'Thay đổi tùy chọn',
+        ],
+        'edit_setting' => [
+            'old_setting' => 'CÀI ĐẶT CŨ',
+            'new_setting' => 'CÀI ĐẶT MỚI',
+            'title' => 'Thay đổi cài đặt',
+        ],
+        'register' => [
+            'thank' => 'Cảm ơn bạn đã sử dụng Website của chúng tôi. <br> Bạn đã đăng ký tài khoản THÀNH CÔNG. Bên dưới là link để kích hoạt tài khoản',
+            'link_active' => 'Click vào link bên dưới để kích hoạt tài khoản',
+        ],
+        'edit_link' => [
+            'thank' => 'Cảm ơn bạn đã sử dụng Website của chúng tôi. <br> Bạn đã chỉnh sửa link THÀNH CÔNG.',
+            'link_edit' => 'Click vào đường dẫn bên dưới để xem chi tiết',
+        ],
+        'close_poll' => [
+            'thank' => 'Cảm ơn bạn đã sử dụng website của chúng tôi. <br> Bạn đã đóng poll THÀNH CÔNG.',
+            'link_admin' => 'Click vào đường dẫn bên dưới để quản lý poll',
+        ],
+        'open_poll' => [
+            'thank' => 'Cảm ơn bạn đã sử dụng website của chúng tôi. <br> Bạn đã mở poll THÀNH CÔNG.',
+            'link_admin' => 'Click vào đường dẫn bên dưới để quản lý poll',
+        ],
+        'delete_participant' => [
+            'thank' => 'Cảm ơn bạn đã sử dụng website của chúng tôi. <br> Bạn đã xóa tất cả bầu chọn THÀNH CÔNG.',
+            'link_admin' => 'Click vào đường dẫn bên dưới để quản lý poll',
+        ],
     ],
-    'paginations' => 'Hiển thị :start đến :finish của :numberOfRecords mục|Đang hiển thị :start đến :finish of :numberOfRecords mục',//
+    'paginations' => 'Hiển thị :start đến :finish của :numberOfRecords mục|Đang hiển thị :start đến :finish of :numberOfRecords mục',
     'gender' => [
         '' => '',
         '0' => '女性',
@@ -82,23 +113,27 @@ return [
         '2' => '他の性別',
     ],
     'footer' => [
-        'location' => '13F Keangnam Landmark 72 Tower, Plot E6, Pham Hung Road, Nam Tu Liem, Ha Noi, Viet Nam',
-        'copyright' => 'Copyright 2016 Framgia, Inc. All rights reserved.',
-        'email' => 'hr_team@framgia.com',
-        'phone' => ' 84-4-3795-5417',
-        'about' => 'About the website',
-        'description_website' => 'Website help you can create a poll fast and easy',
-        'facebook' => 'https://www.facebook.com/FramgiaVietnam',
-        'github' => 'https://github.com/framgia',
-        'linkedin' => 'https://www.linkedin.com/company/framgia-vietnam',
+        'location' => 'Hùng Vương, Đà Nẵng, Việt Nam',
+        'copyright' => 'Copyright &copy; 2016',
+        'email' => 'poll.voting.hv@gmail.com',
+        'phone' => '0988965135',
+        'about' => 'ウェブサイトを推薦',
+        'description_website' => '投票を迅速かつ簡単に作成できるようにするウェブサイト',
     ],
+
     /*
-     * Home page
+     * home page
      */
-    'feature' => 'FEATURE',
-    'accessible' => 'ACCESSIBLE',
-    'security' => 'SECURITY',
-    'introduction' => 'INTRODUCTION',
-    'tutorial' => 'Tutorial',
-    'feedback' => 'Feedback',
+    'feature' => [
+        'name' => 'TÍNH NĂNG',
+        'vote' => 'Tạo bình chọn nhanh chóng và dễ dàng',
+        'chart' => 'Minh họa kết quả qua các biểu đồ',
+        'security' => 'Đảm bảo tính bảo mật thông qua mật khẩu bình chọn',
+        'export' => 'Truy xuất kết quả dưới dạng PDF, EXCEL',
+        'share' => 'Chia sẻ bình chọn thông qua Facebook',
+        'responsive' => 'Truy cập mọi lúc mọi nơi và hỗ trợ trên nhiều loại thiết bị',
+    ],
+    'top' => 'Đầu trang',
+    'tutorial' => 'Hướng dẫn',
+    'feedback' => 'Gởi phản hồi',
 ];

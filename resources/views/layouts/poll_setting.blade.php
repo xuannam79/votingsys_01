@@ -10,17 +10,76 @@
     }}
 @endif
 @foreach ($data['viewData']['settings'] as $settingKey => $settingText)
-    <div class="form-group">
-        <label>
-            <input type="checkbox" name="setting[{{ $settingKey }}]"
-                   {{ (isset($page) && ($page == 'edit' || $page == 'duplicate') && array_key_exists($settingKey, $setting)) ? "checked" : "" }}
-            value="{{ $settingKey }}" onchange="settingAdvance('{{ $settingKey }}')"> {{ $settingText }}
-        </label>
-    </div>
-    @if ($settingKey == config('settings.setting.custom_link'))
+    @if (isset($page)
+        && ($page == 'edit' || $page == 'duplicate')
+        && $settingKey == config('settings.setting.required')
+        && (array_key_exists(config('settings.setting.required_email'), $setting)
+            || array_key_exists(config('settings.setting.required_name'), $setting)
+            || array_key_exists(config('settings.setting.required_name_and_email'), $setting)))
+        <div class="form-group">
+            <label>
+                {{
+                    Form::checkbox('setting[' . $settingKey . ']', $settingKey, true, [
+                        'onchange' => 'settingAdvance(' . $settingKey . ')',
+                    ])
+                }}
+                {{ $settingText }}
+            </label>
+        </div>
+    @else
+        <div class="form-group">
+            <label>
+                {{
+                    Form::checkbox('setting[' . $settingKey . ']', $settingKey,
+                        (isset($page)
+                        && ($page == 'edit' || $page == 'duplicate')
+                        && array_key_exists($settingKey, $setting)) ? true : null, [
+                            'onchange' => 'settingAdvance(' . $settingKey . ')',
+                        ])
+                }}
+                {{ $settingText }}
+            </label>
+        </div>
+    @endif
+    @if ($settingKey == config('settings.setting.required'))
+        <div class="form-group {{ (isset($page)
+                                && ($page == 'edit' || $page == 'duplicate')
+                                && $settingKey == config('settings.setting.required')
+                                && (array_key_exists(config('settings.setting.required_email'), $setting)
+                                    || array_key_exists(config('settings.setting.required_name'), $setting)
+                                    || array_key_exists(config('settings.setting.required_name_and_email'), $setting))) ? "" : "setting-advance" }}"
+             id="setting-required">
+            <label class="radio-inline">
+                {{ Form::radio('setting_child[required]', config('settings.setting.required_name'), true) }}
+                {{ trans('polls.label.setting.required_name') }}
+            </label>
+            <label class="radio-inline">
+                {{
+                    Form::radio('setting_child[required]', config('settings.setting.required_email'),
+                        (isset($page)
+                        && ($page == 'edit' || $page == 'duplicate')
+                        && $settingKey == config('settings.setting.required')
+                        && array_key_exists(config('settings.setting.required_email'), $setting)) ? true : null)
+                }}
+                {{ trans('polls.label.setting.required_email') }}
+            </label>
+            <label class="radio-inline">
+                {{
+                    Form::radio('setting_child[required]',
+                        config('settings.setting.required_name_and_email'),
+                        (isset($page)
+                        && ($page == 'edit' || $page == 'duplicate')
+                        && $settingKey == config('settings.setting.required')
+                        && array_key_exists(config('settings.setting.required_name_and_email'), $setting)) ? true : null)
+                }}
+                {{ trans('polls.label.setting.required_name_and_email') }}
+            </label>
+        </div>
+    @elseif ($settingKey == config('settings.setting.custom_link'))
         <div class="form-group
-            {{ (isset($page) && ($page == 'edit' || $page == 'duplicate') && array_key_exists($settingKey, $setting)) ? "" : "setting-advance" }}"
-             id="setting-link">
+            {{ (isset($page)
+            && ($page == 'edit' || $page == 'duplicate')
+            && array_key_exists($settingKey, $setting)) ? "" : "setting-advance" }}" id="setting-link">
             <div class="row">
                 <div class="col-lg-8">
                     <div class="input-group">
@@ -29,9 +88,9 @@
                         </span>
                         {{
                             Form::text('value[link]',
-                            (isset($page) && ($page == 'edit' || $page == 'duplicate') && array_key_exists($settingKey, $setting))
-                                ? $setting[$settingKey]
-                                : str_random(config('settings.length_poll.link')), [
+                            (isset($page)
+                            && ($page == 'edit' || $page == 'duplicate')
+                            && array_key_exists($settingKey, $setting)) ? $setting[$settingKey] : str_random(config('settings.length_poll.link')), [
                                 'class' => 'form-control',
                                 'id' => 'link',
                                 'placeholder' => trans('polls.placeholder.token_link'),
@@ -47,8 +106,9 @@
         </div>
     @elseif ($settingKey == config('settings.setting.set_limit'))
         <div class="form-group
-            {{ (isset($page) && ($page == 'edit' || $page == 'duplicate') && array_key_exists($settingKey, $setting)) ? "" : "setting-advance" }}"
-             id="setting-limit">
+            {{ (isset($page)
+            && ($page == 'edit' || $page == 'duplicate')
+            && array_key_exists($settingKey, $setting)) ? "" : "setting-advance" }}" id="setting-limit">
             <div class="row">
                 <div class="col-lg-3">
                     <div class="input-group">
@@ -57,8 +117,9 @@
                         </span>
                         {{
                            Form::number('value[limit]',
-                                (isset($page) && ($page == 'edit' || $page == 'duplicate') && array_key_exists($settingKey, $setting))
-                                ? $setting[$settingKey] : null, [
+                                (isset($page)
+                                && ($page == 'edit' || $page == 'duplicate')
+                                && array_key_exists($settingKey, $setting)) ? $setting[$settingKey] : null, [
                                'class' => 'form-control',
                                'id' => 'limit',
                                'min' => (isset($page) && $page == 'edit') ? $totalVote : null,
@@ -77,8 +138,9 @@
         </div>
     @elseif ($settingKey == config('settings.setting.set_password'))
         <div class="form-group
-            {{ (isset($page) && ($page == 'edit' || $page == 'duplicate') && array_key_exists($settingKey, $setting)) ? "" : "setting-advance" }}"
-             id="setting-password">
+            {{ (isset($page)
+            && ($page == 'edit' || $page == 'duplicate')
+            && array_key_exists($settingKey, $setting)) ? "" : "setting-advance" }}" id="setting-password">
             <div class="row">
                 <div class="col-lg-6">
                     <div class="input-group">
@@ -88,8 +150,9 @@
                         @if (isset($page) && $page == "edit")
                             {{
                                 Form::text('value[password]',
-                                (isset($page) && ($page == 'edit' || $page == 'duplicate') && array_key_exists($settingKey, $setting))
-                                ? $setting[$settingKey] : null, [
+                                (isset($page)
+                                && ($page == 'edit' || $page == 'duplicate')
+                                && array_key_exists($settingKey, $setting)) ? $setting[$settingKey] : null, [
                                     'class' => 'form-control',
                                     'id' => 'password',
                                     'placeholder' => trans('polls.placeholder.password_poll'),

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\User;
 
 use DB;
+use LRedis;
 use Session;
 use Carbon\Carbon;
 use App\Models\Option;
@@ -203,6 +204,82 @@ class VoteController extends Controller
                 throw $e;
             }
         }
+
+        //get data of poll
+        $voteIds = $this->pollRepository->getVoteIds($poll->id);
+        $votes = $this->voteRepository->getVoteWithOptionsByVoteId($voteIds);
+        $participantVoteIds = $this->pollRepository->getParticipantVoteIds($poll->id);
+        $participantVotes = $this->participantVoteRepository->getVoteWithOptionsByVoteId($participantVoteIds);
+        $mergedParticipantVotes = $votes->toBase()->merge($participantVotes->toBase());
+
+        if ($mergedParticipantVotes->count()) {
+            foreach ($mergedParticipantVotes as $mergedParticipantVote) {
+                $createdAt[] = $mergedParticipantVote->first()->created_at;
+            }
+
+            $sortedParticipantVotes = collect($createdAt)->sort();
+            $resultParticipantVotes = collect();
+            foreach ($sortedParticipantVotes as $sortedParticipantVote) {
+                foreach ($mergedParticipantVotes as $mergedParticipantVote) {
+                    foreach ($mergedParticipantVote as $participantVote) {
+                        if ($participantVote->created_at == $sortedParticipantVote) {
+                            $resultParticipantVotes->push($mergedParticipantVote);
+                            break;
+                        }
+
+                    }
+                }
+            }
+            $mergedParticipantVotes = $resultParticipantVotes;
+        }
+
+        $numberOfVote = config('settings.default_value');
+        $html = view('user.poll.vote_details_layouts', [
+            'mergedParticipantVotes' => $mergedParticipantVotes,
+            'numberOfVote' => $numberOfVote,
+            'poll' => $poll,
+        ])->render();
+
+         //data for draw chart
+        $optionRatePieChart = [];
+        $optionRateBarChart = [];
+        $totalVote = config('settings.default_value');
+
+        foreach ($poll->options as $option) {
+            $totalVote += $option->countVotes();
+        }
+
+        if ($totalVote) {
+            foreach ($poll->options as $option) {
+                $countOption = $option->countVotes();
+                $optionRatePieChart[$option->name] = (int) ($countOption * 100 / $totalVote);
+                if ($countOption > 0) {
+                    $optionRateBarChart[] = [str_limit($option->name, 40), $countOption];
+                }
+            }
+        } else {
+            $optionRatePieChart = null;
+            $optionRateBarChart = null;
+        }
+
+        $optionRateBarChart = json_encode($optionRateBarChart);
+
+        //use socket.io
+        $redis = LRedis::connection();
+        $redis->publish('votes', json_encode([
+            'result' => $poll->countVotesWithOption(),
+            'poll_id' => $poll->id,
+            'count_participant' => $poll->countParticipants(),
+            'success' => true,
+            'html' => $html,
+            'html_pie_bar_chart' => view('user.poll.pie_bar_chart_layouts')->render(),
+            'htmlPieChart' => view('user.poll.piechart_layouts', [
+                'optionRateBarChart' => $optionRateBarChart,
+            ])->render(),
+            'htmlBarChart' => view('user.poll.barchart_layouts', [
+                'optionRateBarChart' => $optionRateBarChart,
+            ])->render(),
+        ]));
 
         Session::put('isVotedSuccess', true);
 

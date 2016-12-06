@@ -493,7 +493,7 @@
                                 </a>
                             </div>
                             <div class="col-lg-3">
-                                <a href="{{ route('user-poll.edit', $poll->id) }}" target="_blank" class="btn btn-administration btn-block">
+                                <a href="{{ route('user-poll.edit', $poll->id) }}" class="btn btn-administration btn-block">
                                     <span class="fa fa-pencil"></span> {{ trans('polls.tooltip.edit') }}
                                 </a>
                             </div>

@@ -141,6 +141,7 @@
                                 <select name="lang" id="countries" class="form-control btn-multiple-language">
                                     <option value='en' {{ Session::get('locale') == 'en' ? 'selected' : '' }} data-image="{{ asset('bower/ms-Dropdown/images/msdropdown/icons/blank.gif') }} " data-imagecss="flag england" data-title="English">English</option>
                                     <option value='vi' {{ Session::get('locale') == 'vi' ? 'selected' : '' }} data-image="{{ asset('bower/ms-Dropdown/images/msdropdown/icons/blank.gif') }}" data-imagecss="flag vn" data-title="Tiếng Việt">Tiếng Việt</option>
+                                    <option value='ja' {{ Session::get('locale') == 'ja' ? 'selected' : '' }} data-image="{{ asset('bower/ms-Dropdown/images/msdropdown/icons/blank.gif') }}" data-imagecss="flag jp" data-title="日本語">日本語</option>
                                 </select>
                             </div>
                         </li>
@@ -211,6 +212,7 @@
         {!! Html::script('js/editLink.js') !!}
         {!! Html::script('js/multipleLanguage.js') !!}
         {!! Html::script('js/layout/master.js') !!}
+        {!! Html::script('js/voteSocket.js') !!}
 
         <!-- jQuery Datatable JavaScript -->
         {!! Html::script('/bower/datatables.net/js/jquery.dataTables.min.js') !!}

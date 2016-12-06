@@ -29,7 +29,7 @@ class ModifyUsersTable extends Migration
     public function down()
     {
         Schema::table('users', function ($table) {
-            $table->dropColumn(['gender', 'date_of_birth', 'avatar', 'role']);
+            $table->dropColumn(['gender', 'name', 'avatar', 'role']);
         });
     }
 }

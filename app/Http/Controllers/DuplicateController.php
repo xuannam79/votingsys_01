@@ -46,7 +46,7 @@ class DuplicateController extends Controller
         $input = $request->only(
             'title', 'location', 'description', 'name', 'email', 'chatwork_id', 'type', 'closingTime',
             'optionText', 'optionImage', 'oldImage', 'optionOldImage',
-            'setting', 'value',
+            'setting', 'value', 'setting_child',
             'member'
         );
         $input['page'] = 'duplicate';
