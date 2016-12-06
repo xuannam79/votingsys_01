@@ -60,6 +60,20 @@ class Poll extends Model
         return $this->comments->count();
     }
 
+    public function countVotesWithOption()
+    {
+        $result = [];
+
+        foreach ($this->options as $option) {
+            $result[] = [
+                'option_id' => $option->id,
+                'count_vote' => $option->countVotes(),
+            ];
+        }
+
+        return $result;
+    }
+
     public function countParticipants()
     {
         $count = config('settings.default_value');

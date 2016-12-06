@@ -15,7 +15,8 @@
         "fzaninotto/faker": "~1.4",
         "mercuryseries/flashy": "^1.0",
         "guzzlehttp/guzzle": "^4.0",
-        "torann/database-backup": "^0.1.0"
+        "torann/database-backup": "^0.1.0",
+        "predis/predis": "^1.1"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

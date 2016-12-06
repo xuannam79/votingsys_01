@@ -211,6 +211,7 @@
         {!! Html::script('js/editLink.js') !!}
         {!! Html::script('js/multipleLanguage.js') !!}
         {!! Html::script('js/layout/master.js') !!}
+        {!! Html::script('js/voteSocket.js') !!}
 
         <!-- jQuery Datatable JavaScript -->
         {!! Html::script('/bower/datatables.net/js/jquery.dataTables.min.js') !!}
