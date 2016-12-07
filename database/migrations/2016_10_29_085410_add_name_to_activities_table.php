@@ -25,7 +25,7 @@ class AddNameToActivitiesTable extends Migration
      */
     public function down()
     {
-        Schema::table('links', function ($table) {
+        Schema::table('activities', function ($table) {
             $table->dropColumn('name');
         });
     }

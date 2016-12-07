@@ -197,20 +197,20 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
         ]);
 
         //get data to send view file
-        /*$viewData = [
-            'types' => array_combine(config('settings.type_poll'), [
-                trans('polls.label.single_choice'),
-                trans('polls.label.multiple_choice')
-            ]),
-            'settings' => array_combine(config('settings.setting'), [
-                $settingText['required_email'],
-                $settingText['hide_result'],
-                $settingText['custom_link'],
-                $settingText['set_limit'],
-                $settingText['set_password'],
-                $settingText['is_set_ip'],
-            ]),
-        ];*/
+        $viewData = [
+            'types' => [
+                config('settings.type_poll.single_choice') => trans('polls.label.single_choice'),
+                config('settings.type_poll.multiple_choice') => trans('polls.label.multiple_choice'),
+            ],
+            'settings' => [
+                config('settings.setting.required') => trans('polls.label.setting.required'),
+                config('settings.setting.hide_result') => trans('polls.label.setting.hide_result'),
+                config('settings.setting.custom_link') => trans('polls.label.setting.custom_link'),
+                config('settings.setting.set_limit') => trans('polls.label.setting.set_limit'),
+                config('settings.setting.set_password') => trans('polls.label.setting.set_password'),
+                config('settings.setting.is_set_ip') => trans('polls.label.setting.is_set_ip'),
+            ],
+        ];
 
         return compact('jsonData', 'viewData');
     }
@@ -366,7 +366,6 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
                 }
             }
         } catch (Exception $ex) {
-
             throw new Exception(trans('polls.message.upload_image_fail'));
         }
     }
@@ -384,18 +383,28 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
     {
         try {
             $settings = $input['setting'];
+            $settingChilds = $input['setting_child'];
             $value = $input['value'];
             $dataSettingInserted = [];
             $now = Carbon::now();
 
             if ($settings) {
                 foreach ($settings as $setting) {
-                    $dataSettingInserted[] = [
-                        'poll_id' => $pollId,
-                        'key' => $setting,
-                        'value' => $this->getValueOfSetting($setting, $value),
-                        'created_at' => $now,
-                    ];
+                    if ($setting == config('settings.setting.required')) {
+                        $dataSettingInserted[] = [
+                            'poll_id' => $pollId,
+                            'key' => $settingChilds['required'],
+                            'value' => null,
+                            'created_at' => $now,
+                        ];
+                    } else {
+                        $dataSettingInserted[] = [
+                            'poll_id' => $pollId,
+                            'key' => $setting,
+                            'value' => $this->getValueOfSetting($setting, $value),
+                            'created_at' => $now,
+                        ];
+                    }
                 }
             }
 
@@ -405,9 +414,9 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
 
             return true;
         } catch (Exception $ex) {
+            dd($ex);
             return false;
         }
-
     }
 
     /**
@@ -975,81 +984,10 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
         $now = Carbon::now();
         try {
             $oldSettings = $this->showSetting($poll->settings);
-            DB::beginTransaction();
-
-            /* ---------------------------------
-             *              SETTING
-             *-----------------------------------*/
-            // remove setting
-            if (is_null($input['setting'])) {
-                Setting::where('poll_id', $id)->delete();
-            } else {
-                foreach ($poll->settings as $setting) {
-                    if (! in_array($setting->key, $input['setting'])) {
-                        Setting::find($setting->id)->delete();
-                    }
-                }
-
-                // add setting
-                $oldSetting = $poll->settings->pluck('value', 'key')->toArray();
-                $newData = [];
-                $settingConfig = config('settings.setting');
-
-                foreach ($input['setting'] as $setting) {
-                    $value = null;
-
-                    if ($setting == $settingConfig['custom_link']) {
-                        $value = $input['value']['link'];
-                    } elseif ($setting == $settingConfig['set_limit']) {
-                        $value = $input['value']['limit'];
-                    } elseif ($setting == $settingConfig['set_password']) {
-                        $value = $input['value']['password'];
-                    }
-
-                    if (! array_key_exists($setting, $oldSetting)) {
-                        $newData[] = [
-                            'poll_id' => $id,
-                            'key' => $setting,
-                            'value' => $value,
-                            'created_at' => $now,
-                        ];
-                    }
-                }
-
-                if ($newData) {
-                    Setting::insert($newData);
-                } else {
-                    // edit value of setting
-                    $settingId = $poll->settings->pluck('id', 'key')->toArray();
-
-                    foreach ($input['setting'] as $key) {
-                        if ($key == $settingConfig['custom_link']) {
-                            Setting::find($settingId[$key])->update([
-                                'value' => $input['value']['link']
-                            ]);
-                            Link::where(['poll_id' => $id, 'link_admin' => config('settings.link_poll.vote')])->update([
-                                'token' => $input['value']['link']
-                            ]);
-                        } elseif ($key == $settingConfig['set_limit']) {
-                            Setting::find($settingId[$key])->update([
-                                'value' => $input['value']['limit']
-                            ]);
-                        } elseif ($setting == $settingConfig['set_password']) {
-                            Setting::find($settingId[$key])->update([
-                                'value' => $input['value']['password']
-                            ]);
-                        }
-                    }
-                }
-
-
-
-            }
-
-            DB::commit();
+            $poll->settings()->delete();
+            $this->addSetting($input, $id);
             $newPoll = Poll::with('user', 'settings')->findOrFail($pollId);
             $newSettings = $this->showSetting($newPoll->settings);
-
             if ($poll->user_id) {
                 $creatorName = $newPoll->user->name;
                 $creatorMail = $newPoll->user->email;
@@ -1071,6 +1009,7 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
             ]);
             $message = trans('polls.message.update_setting_success');
         } catch (Exception $ex) {
+            dd($ex);
             DB::rollBack();
             $message = trans('polls.message.update_setting_fail');
         }
@@ -1316,7 +1255,17 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
             switch ($setting->key) {
                 case $config['required_email']:
                     $dataRtn[] = [
-                        $trans['required_email'] => null
+                        $trans['required'] . ': ' . $trans['required_email'] => null
+                    ];
+                    break;
+                case $config['required_name']:
+                    $dataRtn[] = [
+                        $trans['required'] . ': ' . $trans['required_name'] => null
+                    ];
+                    break;
+                case $config['required_name_and_email']:
+                    $dataRtn[] = [
+                        $trans['required'] . ': ' . $trans['required_name_and_email'] => null
                     ];
                     break;
                 case $config['hide_result']:

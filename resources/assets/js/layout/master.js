@@ -143,7 +143,9 @@ function settingAdvance(key) {
     $('#password').closest('.form-group').removeClass('has-error');
     $('.error_password').closest('.form-group').removeClass('has-error');
     $('.error_password').html('');
-    if (key == pollData.config.setting.custom_link) {
+    if (key == pollData.config.setting.required) {
+        $("#setting-required").slideToggle();
+    } else if (key == pollData.config.setting.custom_link) {
         $("#setting-link").slideToggle();
     } else if (key == pollData.config.setting.set_limit) {
         $("#setting-limit").slideToggle();

@@ -20,5 +20,4 @@ return [
     'user' => "Không tìm thấy người dùng với địa chỉ email này",
     'send_password_reset_link' => 'Gửi link để reset mật khẩu',
     'reset_password' => 'Reset mật khẩu',
-
 ];

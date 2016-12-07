@@ -70,6 +70,7 @@ return [
         'path_image_default' => '/uploads/images/default-thumb.gif',
     ],
     'setting' => [
+        'required' => 0,
         'required_email' => 1,
         'hide_result' => 2,
         'custom_link' => 3,

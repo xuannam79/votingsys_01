@@ -34,7 +34,10 @@ return [
         'option_image' => 'Ảnh',
         'step_3' => 'Cài đặt',
         'setting' => [
-            'required_email' => 'Yêu cầu email để bầu chọn',
+            'required' => 'Yêu cầu để bầu chọn',
+            'required_email' => 'Nhập email',
+            'required_name' => 'Nhập tên',
+            'required_name_and_email' => 'Nhập tên và email',
             'hide_result' => 'Ẩn kết quả bầu chọn',
             'custom_link' => 'Chỉnh sửa link',
             'set_limit' => 'Đặt số lượng bầu chọn tối đa',
@@ -86,7 +89,7 @@ return [
         'chatwork' => 'Nhập chatwork id của bạn...',
         'title' => 'Nhập tiêu đề của poll...',
         'description' => 'Nhập mô tả cho poll này...',
-        'time_close' => 'Chọn thời gian để đóng poll này...',
+        'time_close' => 'Chọn thời gian để đóng bầu chọn của poll...',
         'location' => 'Nhập vị trí...',
         'number_add' => 'Nhập số lượng cần thêm vào...',
         'number_limit' => 'Số lượng',
@@ -196,48 +199,6 @@ return [
         'show' => 'Xem chi tiết poll này',
         'open' => 'Mở poll này',
         'close' => 'Đóng poll này',
-        'info' => '<p>Bạn cần cung cấp thông tin poll</p>
-                            <p>
-                                Thông tin cần phải nhập
-                                <ul>
-                                    <li><b>Tên và email</b> để xác định người tạo bình chọn</li>
-                                    <li><b>Tiêu đề</b> để xác định tiêu đề bình chọn</li>
-                                    <li><b>Kiểu bình chọn</b> để xác định loại bình chọn: 1 câu trả lời hay nhiều câu trả lời</li>
-                                </ul>
-                            </p>
-                            <p>
-                                Thông tin thêm(có thể nhập hoặc không)
-                                <ul>
-                                    <li><b>Mô tả</b> để cung cấp thêm thông tin cho bình chọn</li>
-                                    <li><b>Thời gian đóng bình chọn</b> để tự động đóng bình chọn theo thời gian cụ thể</li>
-                                    <li><b>Vị trí</b> để cung cấp thêm vị trí cho bình chọn</li>
-                                </ul>
-                            </p>',
-        'option' => '<p>Bạn cần nhập các câu trả lời để bình chọn</p>
-                            <p>*Lưu ý:
-                                <ul>
-                                    <li>Tối thiểu là một câu trả lời</li>
-                                    <li>Câu trả lời phải có nội dung</li>
-                                    <li>Câu trả lời không được trùng nhau</li>
-                                    <li>Câu trả lời có thể có hình ảnh</li>
-                                </ul>
-                            </p>',
-        'setting' => '<p>Cài đặt của bình chọn(Bạn có thể bỏ qua bước này)</p>
-                            <ul>
-                               <li><b>Yêu cầu email để bầu chọn</b></li> Muốn bầu chọn thì người tham gia phải nhập email
-                                <li><b>Ẩn kết quả bầu chọn</b></li> Người tham gia bầu chọn không thấy được kết quả của bình chọn đó.
-                                <li><b>Chỉnh sửa link</b></li> Nhằm giúp link bầu chọn dễ nhớ hơn.
-                                <li><b>Đặt số lượng bầu chọn tối đa</b></li> Bầu chọn sẽ kết thúc khi số lượng bầu chọn đạt đến số lượng được cài đặt
-                                <li><b>Đặt mật khẩu</b></li> Người tham gia bầu chọn phải nhập mật khẩu để bầu chọn
-                                <li><b>Chỉ được bầu chọn một lần</b></li> Nếu bật thì mỗi người bầu chọn một lần, nếu tắt thì một người được bầu chọn nhiều lần
-                            </ul>',
-        'participant' => '<p>Người tham gia bình chọn(Bạn có thể bỏ qua bước này)</p>
-                            <p>Nếu bạn muốn gời mail mời các người tham gia cụ thể, thì hãy nhập email của họ vào ô bên dưới</p>
-                            <p>*Lưu ý
-                                <ul>
-                                    <li>Khi nhập xong một email hãy nhấn ENTER để xác nhận</li>
-                                </ul>
-                            </p>',
     ],
     'nav_tab_edit' => [
         'info' => 'THÔNG TIN',
@@ -417,4 +378,5 @@ return [
     'view_option' => 'Xem tùy chọn',
     'view_setting' => 'Xem cài đặt',
     'poll_voted' => 'Poll này đã có bầu chọn, bạn không thể chỉnh sửa các tùy chọn của nó.',
+    'message_poll_time_out' => 'Xin lỗi, poll này đã hết thời gian bầu chọn, bạn không thể bầu chọn poll này',
 ];

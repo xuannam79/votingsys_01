@@ -48,6 +48,13 @@
                                 {{ trans('polls.message_vote_one_time') }}
                             </div>
                         @endif
+                        @if ($isTimeOut)
+                            <div class="alert alert-warning alert-poll-set-ip">
+                                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                <span class='glyphicon glyphicon-warning-sign'></span>
+                                {{ trans('polls.message_poll_time_out') }}
+                            </div>
+                        @endif
                         {!! Form::open(['route' => 'vote.store','id' => 'form-vote']) !!}
                             <!-- VOTE OPTION -->
                             <div class="panel panel-default panel-vote-option">
@@ -202,12 +209,12 @@
                                 <div class="panel-footer">
                                     @if ($isSetIp && auth()->check() && ! $isUserVoted
                                         || $isSetIp && !auth()->check() && ! $isParticipantVoted
-                                        || ! $isLimit && ! $poll->isClosed() && ! $isSetIp)
+                                        || ! $isLimit && ! $poll->isClosed() && ! $isSetIp && !$isTimeOut)
                                         {!! Form::hidden('pollId', $poll->id) !!}
                                         {!! Form::hidden('isRequiredEmail', $isRequiredEmail) !!}
                                         <div class="row">
                                             <div class="col-lg-5">
-                                                <div class="input-group">
+                                                <div class="input-group  {{ ($isRequiredName || $isRequiredNameAndEmail) ? "required" : "" }}">
                                                     <span class="input-group-addon">
                                                         <i class="fa fa-user" aria-hidden="true"></i>
                                                     </span>
@@ -220,7 +227,7 @@
                                                 </div>
                                             </div>
                                             <div class="col-lg-5">
-                                                <div class="input-group {{ ($isRequiredEmail) ? "required" : "" }}">
+                                                <div class="input-group {{ ($isRequiredEmail || $isRequiredNameAndEmail) ? "required" : "" }}">
                                                     <span class="input-group-addon">
                                                         <i class="glyphicon glyphicon-envelope" aria-hidden="true"></i>
                                                     </span>

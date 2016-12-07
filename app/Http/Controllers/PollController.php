@@ -56,7 +56,7 @@ class PollController extends Controller
         $input = $request->only(
             'title', 'location', 'description', 'name', 'email', 'chatwork_id', 'type', 'closingTime',
             'optionText', 'optionImage',
-            'setting', 'value',
+            'setting', 'value', 'setting_child',
             'member'
         );
         $input['page'] = 'create';
@@ -125,7 +125,7 @@ class PollController extends Controller
             $message = $this->pollRepository->editPollOption($input, $id);
         } else {
             $input = $request->only(
-                'setting', 'value'
+                'setting', 'value', 'setting_child'
             );
             $message = $this->pollRepository->editPollSetting($input, $id);
         }
