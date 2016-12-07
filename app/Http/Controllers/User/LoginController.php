@@ -13,16 +13,24 @@ class LoginController extends Controller
     public function store(LoginRequest $request)
     {
         $input = $request->only('email', 'password', 'remember');
-        $user = User::where('email', $input['email'])->where('is_active', config('settings.is_active'))->first();
+        $user = User::where('email', $input['email'])->first();
 
-        if ($user && Auth::attempt(['email' => $input['email'], 'password' => $input['password']], $input['remember'])) {
-            if ($user->isAdmin()) {
-                return redirect()->route('admin.user.index');
-            }
-
-            return redirect()->to(url('/'))->withMessage(trans('user.login_successfully'));
+        if (! $user) {
+            return redirect()->to(url('/login'))->withMessages(trans('user.login_fail'));
         }
 
-        return redirect()->to(url('/login'))->withMessages(trans('user.account_unactive'));
+        if ($user->is_active == config('settings.is_active')) {
+            if (Auth::attempt(['email' => $input['email'], 'password' => $input['password']], $input['remember'])) {
+                if ($user->isAdmin()) {
+                    return redirect()->route('admin.user.index');
+                }
+
+                return redirect()->to(url('/'))->withMessage(trans('user.login_successfully'));
+            } else {
+                return redirect()->to(url('/login'))->withMessages(trans('user.login_fail'));
+            }
+        } else {
+            return redirect()->to(url('/login'))->withMessages(trans('user.account_unactive'));
+        }
     }
 }

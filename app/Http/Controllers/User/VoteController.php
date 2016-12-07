@@ -63,12 +63,9 @@ class VoteController extends Controller
         $isRequiredEmail = $inputs['isRequiredEmail'];
         $now = Carbon::now();
 
-        //check time close poll
-        if (Carbon::now()->format('d/m/Y h:i') > Carbon::parse($poll->date_close)->format('d/m/Y h:i')) {
-            $poll->status = false;
-            $poll->save();
-
-            return view('errors.show_errors')->with('message', trans('polls.message_poll_closed'));
+        if (Carbon::now()->toAtomString() > Carbon::parse($poll->date_close)->toAtomString()) {
+            // close vote when poll time out
+            $isTimeOut = true;
         }
 
         //user vote poll
@@ -262,6 +259,10 @@ class VoteController extends Controller
             $optionRateBarChart = null;
         }
 
+        if (! empty($optionRateBarChart)) {
+            $optionRateBarChart = array_sort_recursive($optionRateBarChart);
+        }
+
         $optionRateBarChart = json_encode($optionRateBarChart);
 
         //use socket.io
@@ -272,6 +273,7 @@ class VoteController extends Controller
             'count_participant' => $poll->countParticipants(),
             'success' => true,
             'html' => $html,
+            'html_pie_bar_manage_chart' => view('user.poll.pie_bar_manage_chart_layouts')->render(),
             'html_pie_bar_chart' => view('user.poll.pie_bar_chart_layouts')->render(),
             'htmlPieChart' => view('user.poll.piechart_layouts', [
                 'optionRateBarChart' => $optionRateBarChart,

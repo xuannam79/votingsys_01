@@ -423,12 +423,12 @@
                                                 </a>
                                             </li>
                                             <li>
-                                                <a data-toggle="tab" href="#barChart">
+                                                <a class="tab-bar-chart" data-toggle="tab" href="#barChart">
                                                     <i class="fa fa-bar-chart" aria-hidden="true"></i>
                                                 </a>
                                             </li>
                                             <li>
-                                                <a data-toggle="tab" href="#pieChart">
+                                                <a class="tab-pie-chart" data-toggle="tab" href="#pieChart">
                                                     <i class="fa fa-pie-chart" aria-hidden="true"></i>
                                                 </a>
                                             </li>
@@ -438,7 +438,7 @@
                                 <div class="panel-body">
                                     <div class="tab-content">
                                         <!-- TABLE RESULT -->
-                                        <div id="table" class="tab-pane fade in active">
+                                        <div id="table" class="tab-pane fade show-details_default in active">
                                             <div class="col-lg-12 div-show-detail-vote">
                                                 <!-- SHOW DETAIL VOTE -->
                                                 <button type="button" class="btn btn-primary btn-show-detail-vote" data-toggle="modal" data-target="#myModal">

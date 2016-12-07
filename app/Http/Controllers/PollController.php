@@ -2,6 +2,7 @@
 namespace App\Http\Controllers;
 
 use Mail;
+use LRedis;
 use App\Models\Poll;
 use Illuminate\Http\Request;
 use App\Http\Requests\PollEditRequest;
@@ -172,7 +173,15 @@ class PollController extends Controller
             'type' => config('settings.activity.close_poll'),
         ];
         $this->activityRepository->create($activity);
-        
+
+        //use socket.io
+        $redis = LRedis::connection();
+        $redis->publish('closePoll', json_encode([
+            'success' => true,
+            'poll_id' => $poll->id,
+            'link_user' => $poll->getUserLink(),
+        ]));
+
         return redirect()->to($poll->getAdminLink())->with('messages', trans('polls.close_poll_successfully'));
     }
 }

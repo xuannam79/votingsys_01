@@ -95,6 +95,7 @@ return [
     'register_account_fail' => 'Kích hoạt tài khoản thất bại',
     'register_account' => 'Bạn đã đăng ký tài khoản thành công, Vui lòng check mail để kích hoạt tài khoản',
     'account_unactive' => 'Vui lòng mở mail và kích hoạt tài khoản này',
+    'login_fail' => 'Đăng nhập thất bại, Vui lòng thử lại',
     'login_successfully' => 'Đăng nhập thành công',
     'login' => [
         'placeholder' => [
