@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\User;
 
+use LRedis;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests;
@@ -64,9 +65,14 @@ class CommentController extends Controller
             $result = [
                 'success' => true,
                 'html' => $html,
+                'poll_id' => $inputs['poll_id'],
             ];
 
-            return response()->json($result);
+            //use socket.io
+            $redis = LRedis::connection();
+            $redis->publish('comment', json_encode($result));
+
+            //return response()->json($result);
         }
 
         return response()->json(['success' => false]);

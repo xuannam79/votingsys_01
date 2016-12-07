@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\User;
 
 use Mail;
+use LRedis;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Requests\PollGeneralRequest;
@@ -78,6 +79,14 @@ class PollController extends Controller
         ];
         $this->activityRepository->create($activity);
 
+        //use socket.io
+        $redis = LRedis::connection();
+        $redis->publish('reopenPoll', json_encode([
+            'success' => true,
+            'poll_id' => $poll->id,
+            'link_user' => $poll->getUserLink(),
+        ]));
+
         return redirect()->to($poll->getAdminLink())->with('messages', trans('polls.reopen_poll_successfully'));
     }
 
@@ -150,6 +159,14 @@ class PollController extends Controller
             'type' => config('settings.activity.close_poll'),
         ];
         $this->activityRepository->create($activity);
+
+        //use socket.io
+        $redis = LRedis::connection();
+        $redis->publish('closePoll', json_encode([
+            'success' => true,
+            'poll_id' => $poll->id,
+            'link_user' => $poll->getUserLink(),
+        ]));
 
         return redirect()->to($poll->getAdminLink())->with('messages', trans('polls.close_poll_successfully'));
     }

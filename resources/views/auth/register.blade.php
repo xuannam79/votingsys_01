@@ -5,7 +5,7 @@
     <div class="row">
     <div class="loader"></div>
         <div class="col-md-4 col-md-offset-4 animated fadeInDown register">
-            <div class="panel panel-default panel-darkcyan">
+            <div class="panel panel-default panel-darkcyan-profile">
                 <div class="panel-heading panel-heading-darkcyan">{{ trans('label.register') }}</div>
                 <div class="panel-body">
                     @include('errors.errors')

@@ -96,6 +96,7 @@ return [
     'register_account' => 'You registered account, Please check mail to active account',
     'account_unactive' => 'Please check mail and active this account',
     'login_successfully' => 'Login successfully',
+    'login_fail' => 'Login fail, Please try again',
     'login' => [
         'placeholder' => [
             'email' => 'Enter your email...',

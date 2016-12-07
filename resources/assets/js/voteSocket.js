@@ -8,6 +8,7 @@ $(document).ready(function(){
     //socket vote poll
     socket.on('votes', function (data) {
         var pollId = $('.hide-vote').data('pollId');
+
         if ($.parseJSON(data).success && $.parseJSON(data).poll_id == pollId) {
             $('.count-participant').html($.parseJSON(data).count_participant);
             jQuery.each($.parseJSON(data).result, function(key,value ) {
@@ -20,6 +21,7 @@ $(document).ready(function(){
             });
 
             if ($('.count-participant').text() == '1') {
+                $('.bar-pie-chart').empty();
                 $('.bar-pie-chart').append($.parseJSON(data).html_pie_bar_chart);
             }
 
@@ -28,7 +30,9 @@ $(document).ready(function(){
                 $('.manage-poll-count-participant').text('1');
             }
 
-            $('.delete-all-participants').show();
+            $('.delete-all-participants-soket').css('display', 'block');
+            $('.btn-duplicate').hide();
+            $('.menu-add-soket').css('display', 'block');
 
             $('.show-piechart').empty();
             $('.show-piechart').append($.parseJSON(data).htmlPieChart);
@@ -39,7 +43,8 @@ $(document).ready(function(){
 
     //socket comment poll
     socket.on('comment', function (data) {
-        var pollId = $('.hide').data('pollId');
+        var pollId = $('.hide-vote').data('pollId');
+
         if ($.parseJSON(data).success && $.parseJSON(data).poll_id == pollId) {
             $('.comments').append($.parseJSON(data).html);
             var commentCount = $('.comment-count').html();
@@ -51,14 +56,16 @@ $(document).ready(function(){
     //socket close poll
     socket.on('closePoll', function (data) {
         var pollId = $('.hide-vote-details').data('pollId');
+
         if ($.parseJSON(data).success && $.parseJSON(data).poll_id == pollId) {
             window.location.href = $.parseJSON(data).link_user;
         }
     });
 
-    //socket reopen poll
-    socket.on('pollTimeout', function (data) {
-        var pollId = $('.hide-vote-details').data('pollId');
+     //socket reopen poll
+    socket.on('reopenPoll', function (data) {
+        var pollId = $('.hide-poll-closed').data('pollId');
+
         if ($.parseJSON(data).success && $.parseJSON(data).poll_id == pollId) {
             window.location.href = $.parseJSON(data).link_user;
         }
@@ -67,11 +74,14 @@ $(document).ready(function(){
     //socket delete all participant of poll
     socket.on('deleteParticipant', function (data) {
         var pollId = $('.hide-vote').data('pollId');
+
         if ($.parseJSON(data).poll_id == pollId) {
             $('.count-participant').html('0');
             $('.model-show-details').empty();
             $('.show-piechart').empty();
             $('.show-barchart').empty();
+            $('.bar-pie-chart').empty();
+            $('.show-details_default').addClass('in active');
             $('.model-show-details').append($.parseJSON(data).modal_details_empty);
             jQuery.each($.parseJSON(data).result, function(key,value ) {
                 $('#id1' + value.option_id).html('0');

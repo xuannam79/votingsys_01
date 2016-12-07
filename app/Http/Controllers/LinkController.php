@@ -130,6 +130,7 @@ class LinkController extends Controller
         $poll = $link->poll;
         $totalVote = config('settings.default_value');
         $isSetIp = false;
+        $countParticipantsVoted = $poll->countParticipants();
 
         foreach ($poll->options as $option) {
             $totalVote += $option->countVotes();
@@ -166,12 +167,11 @@ class LinkController extends Controller
 
         if (! $link->link_admin) {
             if ($link->poll->isClosed()) {
-                return view('errors.show_errors')->with('message', trans('polls.message_poll_closed'));
+                return view('errors.show_errors')->with('message', trans('polls.message_poll_closed'))->with('pollId', $poll->id);
             }
 
             //check time close poll
             if (Carbon::now()->toAtomString() > Carbon::parse($poll->date_close)->toAtomString()) {
-
                 // close vote when poll time out
                 $isTimeOut = true;
             }
@@ -198,7 +198,7 @@ class LinkController extends Controller
                 }
             }
 
-            if ($voteLimit && $poll->countParticipants() >= $voteLimit) {
+            if ($voteLimit && $countParticipantsVoted >= $voteLimit) {
                 $isLimit = true;
             }
 
@@ -327,7 +327,7 @@ class LinkController extends Controller
             return view('user.poll.manage_poll', compact(
                 'poll', 'tokenLinkUser', 'tokenLinkAdmin', 'numberOfVote',
                 'linkUser', 'mergedParticipantVotes',
-                'settings', 'data', 'page', 'statistic', 'dataTableResult', 'optionRateBarChart', 'optionRatePieChart'
+                'settings', 'data', 'page', 'statistic', 'dataTableResult', 'optionRateBarChart', 'optionRatePieChart', 'countParticipantsVoted'
             ));
         }
     }

@@ -5,7 +5,7 @@
     <div class="row">
         <div class="loader"></div>
         <div class="col-md-4 col-md-offset-4 animated fadeInUp login">
-            <div class="panel panel-default panel-darkcyan">
+            <div class="panel panel-default panel-darkcyan-profile">
                 <div class="panel-heading panel-heading-darkcyan">{{ trans('label.login') }}</div>
                 <div class="panel-body">
                     @if (Session::has('messages'))

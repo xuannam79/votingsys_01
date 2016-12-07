@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\User;
 
 use Mail;
+use LRedis;
 use App\Models\Poll;
 use Illuminate\Http\Request;
 use App\Http\Requests;
@@ -60,8 +61,16 @@ class ParticipantController extends Controller
             'poll_id' => $inputs['poll_id'],
             'type' => config('settings.activity.all_participants_deleted'),
         ];
-
         $this->activityRepository->create($activity);
+
+        //use socket.io
+        $redis = LRedis::connection();
+        $redis->publish('deleteParticipant', json_encode([
+            'success' => true,
+            'poll_id' => $poll->id,
+            'result' => $poll->countVotesWithOption(),
+            'modal_details_empty' => view('user.poll.modal_details_empty_layouts')->render(),
+        ]));
 
         return redirect()->to($poll->getAdminLink())->with('messages', trans('polls.delete_all_participants_successfully'));
     }

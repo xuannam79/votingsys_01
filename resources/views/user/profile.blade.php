@@ -4,8 +4,8 @@
 <div class="container">
     <div class="row">
         <div class="col-md-6 col-md-offset-3">
-            <div class="panel panel-default">
-                <div class="panel-heading">{{ trans('label.profile') }}</div>
+            <div class="panel panel-primary panel-darkcyan-profile">
+                <div class="panel-heading panel-heading-darkcyan">{{ trans('label.profile') }}</div>
                 <div class="panel-body">
                     @include('errors.errors')
 
@@ -60,7 +60,7 @@
 
                         <div class="form-group">
                             <div class="col-md-6 col-md-offset-4">
-                                <button type="submit" class="btn btn-primary">
+                                <button type="submit" class="btn btn-primary btn-darkcyan">
                                     <i class="fa fa-btn fa-user"></i> {{ trans('label.edit') }}
                                 </button>
                             </div>
