@@ -11,11 +11,12 @@ $(document).ready(function(){
 
         if ($.parseJSON(data).success && $.parseJSON(data).poll_id == pollId) {
             $('.count-participant').html($.parseJSON(data).count_participant);
-            jQuery.each($.parseJSON(data).result, function(key,value ) {
+            jQuery.each($.parseJSON(data).result, function(key, value ) {
+                //update count vote latest
                 $('#id1' + value.option_id).html(value.count_vote);
                 $('#id2' + value.option_id).html(value.count_vote);
-                $('#id3' + value.option_id).html(value.count_vote);
-                $('#id4' + value.option_id).html(value.count_vote);
+                $('.result-vote-poll').empty();
+                $('.result-vote-poll').append($.parseJSON(data).html_result_vote)
                 $('.model-show-details').empty();
                 $('.model-show-details').append($.parseJSON(data).html);
             });
@@ -31,7 +32,7 @@ $(document).ready(function(){
             }
 
             $('.delete-all-participants-soket').css('display', 'block');
-            $('.btn-duplicate').hide();
+            $('.btn-duplicate').css('display', 'none');
             $('.menu-add-soket').css('display', 'block');
 
             $('.show-piechart').empty();

@@ -52,7 +52,7 @@ class VoteController extends Controller
 
         if (filter_var($client, FILTER_VALIDATE_IP)) {
             $ip = $client;
-        } elseif (filter_var($forward, FILTER_VALIDATE_IP)) {
+        } else if (filter_var($forward, FILTER_VALIDATE_IP)) {
             $ip = $forward;
         } else {
             $ip = $remote;
@@ -74,7 +74,6 @@ class VoteController extends Controller
             $participantInformation = [
                 'user_id' => $currentUser->id,
             ];
-
             $isChanged = false;
 
             if ($inputs['nameVote'] != $currentUser->name || $inputs['emailVote'] != $currentUser->email) {
@@ -238,7 +237,6 @@ class VoteController extends Controller
         ])->render();
 
          //data for draw chart
-        $optionRatePieChart = [];
         $optionRateBarChart = [];
         $totalVote = config('settings.default_value');
 
@@ -249,21 +247,24 @@ class VoteController extends Controller
         if ($totalVote) {
             foreach ($poll->options as $option) {
                 $countOption = $option->countVotes();
-                $optionRatePieChart[$option->name] = (int) ($countOption * 100 / $totalVote);
                 if ($countOption > 0) {
                     $optionRateBarChart[] = [str_limit($option->name, 40), $countOption];
                 }
             }
         } else {
-            $optionRatePieChart = null;
             $optionRateBarChart = null;
         }
 
-        if (! empty($optionRateBarChart)) {
-            $optionRateBarChart = array_sort_recursive($optionRateBarChart);
-        }
-
         $optionRateBarChart = json_encode($optionRateBarChart);
+
+        //get data result to sort number of vote
+        $dataTableResult = $this->pollRepository->getDataTableResult($poll);
+
+        //sort option and count vote by number of vote
+        $dataTableResult = array_values(array_reverse(array_sort($dataTableResult, function($value)
+        {
+            return $value['numberOfVote'];
+        })));
 
         //use socket.io
         $redis = LRedis::connection();
@@ -273,6 +274,7 @@ class VoteController extends Controller
             'count_participant' => $poll->countParticipants(),
             'success' => true,
             'html' => $html,
+            'html_result_vote' => view('user.poll.result_vote_layouts', ['dataTableResult' => $dataTableResult])->render(),
             'html_pie_bar_manage_chart' => view('user.poll.pie_bar_manage_chart_layouts')->render(),
             'html_pie_bar_chart' => view('user.poll.pie_bar_chart_layouts')->render(),
             'htmlPieChart' => view('user.poll.piechart_layouts', [

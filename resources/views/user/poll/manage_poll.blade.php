@@ -148,52 +148,6 @@
                             </div>
                             <div class="col-md-10">
                                 <div class="tab-content">
-                                    <!-- <div class="tab-pane fade in active" id="statistic">
-                                        <div class="panel panel-default animated fadeInRight panel-darkcyan">
-                                            <div class="panel-heading panel-heading-darkcyan">
-                                                {{ trans('polls.statistic') }}
-                                            </div>
-                                            <div class="panel-body">
-                                                <h4>{{ trans('polls.total_vote') }}:
-                                                    <span class="statistic-font" class="badge">
-                                                    {{ $poll->countParticipants() }}
-                                                </span>
-                                                </h4>
-                                                @if ($statistic['total'] > config('settings.default_value'))
-                                                    <h4>{{ trans('polls.vote_first_time') }}:
-                                                        <span class="statistic-font">{{ $statistic['firstTime'] }}</span>
-                                                    </h4>
-                                                    <h4>{{ trans('polls.vote_last_time') }}:
-                                                        <span class="statistic-font">{{ $statistic['lastTime'] }}</span>
-                                                    </h4>
-                                                    @if ($statistic['largestVote']['number'] > 0 && $statistic['largestVote']['option'])
-                                                        <h4>{{ trans('polls.option_highest_vote') }}:
-                                                            @if (! empty($statistic['largestVote']['option']))
-                                                                @foreach ($statistic['largestVote']['option'] as $largestVote)
-                                                                    <span class="statistic-font wrap-text">[{{ $largestVote->name }}]</span>
-                                                                    @if (! $loop->last)
-                                                                        ,
-                                                                    @endif
-                                                                @endforeach
-                                                                <span class="statistic-font wrap-text">({{ $statistic['largestVote']['number'] . ' ' . trans('polls.vote')}})</span>
-                                                            @endif
-                                                        </h4>
-                                                    @endif
-                                                    <h4>{{ trans('polls.option_lowest_vote') }}:
-                                                        @if (! empty($statistic['leastVote']['option']))
-                                                            @foreach ($statistic['leastVote']['option'] as $leastVote )
-                                                                <span class="statistic-font wrap-text">[{{ $leastVote->name }}]</span>
-                                                                @if (! $loop->last)
-                                                                    ,
-                                                                @endif
-                                                            @endforeach
-                                                            <span class="statistic-font wrap-text">({{ $statistic['leastVote']['number'] . ' ' . trans('polls.vote')}})</span>
-                                                        @endif
-                                                    </h4>
-                                                @endif
-                                            </div>
-                                        </div>
-                                    </div> -->
                                     <div class="tab-pane fade in active" id="table">
                                         <div class="panel panel-default animated fadeInRight panel-darkcyan">
                                             <div class="panel-heading panel-heading-darkcyan">
@@ -229,7 +183,7 @@
                                                         </div>
                                                     </div>
                                                 @endif
-                                                <div class="col-lg-12 manager-tabel-result-poll">
+                                                <div class="col-lg-12 manager-tabel-result-poll result-vote-poll">
                                                     <table class="table table-hover table-responsive">
                                                         <thead>
                                                             <tr>
@@ -246,7 +200,7 @@
                                                                         <img src="{{ asset($data['image']) }}">
                                                                         <span class="option-name">{{ $data['name'] }}</span>
                                                                     </td>
-                                                                    <td><span id="id4{{ $data['option_id'] }}" class="badge">{{ $data['numberOfVote'] }}</span></td>
+                                                                    <td><span class="badge">{{ $data['numberOfVote'] }}</span></td>
                                                                 </tr>
                                                             @endforeach
                                                         </tbody>
@@ -524,7 +478,7 @@
                                         {!! Form::open(['route' => ['delete_all_participant', 'poll_id' => $poll->id], 'id' => 'form-delete-participant']) !!}
                                         {{
                                             Form::button('<span class="fa fa-trash-o"></span>' . ' ' . trans('polls.delete_all_participants'), [
-                                                'class' => 'btn-delete-participant btn btn-block btn-administration',
+                                                'class' => 'btn-delete-participant btn btn-block btn-administration btn-duplicate',
                                             ])
                                         }}
                                     </div>
@@ -550,7 +504,7 @@
                         @if ($countParticipantsVoted)
                             <div class="row menu-activity-poll menu-add">
                                 <div class="col-lg-3">
-                                    <a href="{{ route('duplicate.show', $poll->id) }}" target="_blank" class="btn btn-administration btn-block">
+                                    <a href="{{ route('duplicate.show', $poll->id) }}" target="_blank" class="btn btn-administration btn-block btn-duplicate">
                                         <span class="fa fa-files-o"></span> {{ trans('polls.tooltip.duplicate') }}
                                     </a>
                                 </div>

@@ -24,7 +24,7 @@ class SetPasswordController extends Controller
         $poll = $this->pollRepository->find($inputs['poll_id']);
 
         if (! $poll) {
-            return view('errors.show_errors')->with('message', trans('polls.poll_not_found'));
+            return view('errors.404');
         }
 
         $password = Setting::where('poll_id', $inputs['poll_id'])->where('key', config('settings.setting.set_password'))->first()->value;
