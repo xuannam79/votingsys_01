@@ -94,6 +94,7 @@ return [
     'register_account' => 'アカウントを正常に登録しました, アカウントを有効にするためにメールをチェックしてください',
     'account_unactive' => 'メールを開いてこのアカウントを有効にしてください',
     'login_successfully' => 'ログインの成功',
+    'login_fail' => 'ログインに失敗しました。もう一度お試しください',
     'login' => [
         'placeholder' => [
             'email' => 'メールアドレスを入力してください',

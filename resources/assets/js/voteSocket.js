@@ -22,8 +22,7 @@ $(document).ready(function(){
             });
 
             if ($('.count-participant').text() == '1') {
-                $('.bar-pie-chart').empty();
-                $('.bar-pie-chart').append($.parseJSON(data).html_pie_bar_chart);
+                $('.bar-pie-chart').html($.parseJSON(data).html_pie_bar_chart);
             }
 
             if ($('.manage-poll-count-participant').text() == '0') {

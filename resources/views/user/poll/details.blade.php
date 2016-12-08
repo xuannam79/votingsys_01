@@ -414,8 +414,8 @@
                         @if (!$isHideResult || Gate::allows('administer', $poll))
                             <div class="panel panel-default">
                                 <!-- if have not vote -> hide tab style result -->
-                                @if ($optionRateBarChart != "null")
-                                    <div class="panel-heading bar-pie-chart">
+                                <div class="panel-heading bar-pie-chart">
+                                    @if ($optionRateBarChart != "null")
                                         <ul class="nav nav-pills">
                                             <li class="active">
                                                 <a data-toggle="tab" href="#table">
@@ -433,8 +433,8 @@
                                                 </a>
                                             </li>
                                         </ul>
-                                    </div>
-                                @endif
+                                    @endif
+                                </div>
                                 <div class="panel-body">
                                     <div class="tab-content">
                                         <!-- TABLE RESULT -->
