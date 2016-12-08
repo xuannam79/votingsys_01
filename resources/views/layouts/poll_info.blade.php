@@ -117,9 +117,12 @@
                     'class' => 'form-control',
                     'id' => 'location',
                     'placeholder' => trans('polls.placeholder.location'),
+                    'onclick' => 'getCurrentLocation()',
+                    'onfocus' => 'getCurrentLocation()',
                 ])
             }}
         </div>
+        <div id="map"></div>
     </div>
 </div>
 @if (isset($page) && $page == "edit")

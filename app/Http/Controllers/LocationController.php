@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Poll;
 use Illuminate\Http\Request;
+use Exception;
 
-class ResultCreatePollController extends Controller
+class LocationController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -35,7 +35,35 @@ class ResultCreatePollController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $lat = $request->lat;
+        $lng = $request->lng;
+        $locationJson = file_get_contents('http://maps.googleapis.com/maps/api/geocode/json?' .
+            'latlng=' . $lat .',' . $lng . '&sensor=true');
+        $locationArray = json_decode($locationJson, true);
+
+        // get location success
+        if ($locationArray['status'] == 'OK') {
+            try {
+                $district = $locationArray['results'][0]['address_components'][4]['long_name'];
+                $city = $locationArray['results'][0]['address_components'][5]['long_name'];
+                $country = $locationArray['results'][0]['address_components'][6]['long_name'];
+                $data = [
+                    'success' => true,
+                    'location' => $district . ', ' . $city . ', ' . $country,
+                ];
+            } catch (Exception $ex) {
+                $data = [
+                    'success' => true,
+                    'location' => '',
+                ];
+            }
+        } else {
+            $data = [
+                'success' => false,
+            ];
+        }
+
+        return response()->json($data);
     }
 
     /**
@@ -44,31 +72,9 @@ class ResultCreatePollController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id, $tokenAdmin)
+    public function show($id)
     {
-        $poll = Poll::with('settings', 'links')->findOrFail($id);
-
-        foreach ($poll->links as $link) {
-            if ($link->link_admin != config('settings.default_value') && $link->token == $tokenAdmin) {
-                $password = '';
-                $link = [
-                    'participant' => $poll->getUserLink(),
-                    'administration' => $poll->getAdminLink(),
-                ];
-
-                if ($poll->settings) {
-                    foreach ($poll->settings as $setting) {
-                        if ($setting->key == config('settings.setting.set_password')) {
-                            $password = $setting->value;
-                        }
-                    }
-                }
-
-                return view('user.poll.result_create_poll', compact('poll', 'link', 'password'));
-            }
-        }
-
-        return view('errors.404');
+        //
     }
 
     /**

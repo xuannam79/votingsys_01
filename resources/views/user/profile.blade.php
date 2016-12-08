@@ -71,7 +71,7 @@
             </div>
             @if (auth()->user()->role == config('roles.admin'))
                 <div class="row">
-                    <a href="{{ route('admin.user.index') }}" class="btn btn-warning btn-large btn-block">
+                    <a href="{{ route('admin.user.index') }}" class="btn btn-darkcyan btn-large btn-block">
                         {{ trans('label.admin_page') }}
                     </a>
                 </div>

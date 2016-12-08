@@ -101,6 +101,6 @@ return [
             'rule-name' => 'custom-message',
         ],
     ],
-    'register' => 'Địa chỉ email này đã được đăng ký, Vui lòng kiểm tra mail và đăng nhập để sử dụng',
-    'check_email' => 'Địa chỉ email này không tồn tại, Vui lòng chọn một địa chỉ email khác',
+    'register' => 'このメールアドレスはすでに登録されて、メールをチェックし、利用するにはログインしてください。',
+    'check_email' => 'このメールアドレスは存在しない、別のメールアドレスを選択してください',
 ];

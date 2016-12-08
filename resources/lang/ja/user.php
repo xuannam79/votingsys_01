@@ -45,14 +45,14 @@ return [
         'password' => 'パスワード',
     ],
     'message' => [
-        'confirm_delete' => 'Bạn có chắc chắn sẽ xóa người dùng này hay không',
-        'not_found_users' => 'Không thể tìm thấy người dùng nào trong hệ thống',
-        'create_success' => 'Tạo người dùng THÀNH CÔNG',
-        'create_fail' => 'Tạo người dùng THẤT BẠI',
-        'update_success' => 'Chỉnh sửa thông tin THÀNH CÔNG',
-        'update_fail' => 'Chỉnh sửa thông tin THẤT BẠI',
-        'delete_success' => 'Xóa người dùng THÀNH CÔNG',
-        'delete_fail' => 'Xóa người dùng THẤT BẠI',
+        'confirm_delete' => '本気ですか',
+        'not_found_users' => 'システム・ユーザーには見られません',
+        'create_success' => '成功します',
+        'create_fail' => '失敗',
+        'update_success' => '成功します',
+        'update_fail' => '失敗',
+        'delete_success' => '成功します',
+        'delete_fail' => '失敗',
     ],
     'tooltip' => [
         'edit' => 'このユーザーを編集',
@@ -96,16 +96,16 @@ return [
     'login_successfully' => 'ログインの成功',
     'login' => [
         'placeholder' => [
-            'email' => 'Nhập địa chỉ emai...',
-            'password' => 'Nhập mật khẩu...',
+            'email' => 'メールアドレスを入力してください',
+            'password' => 'パスワードを入力してください',
         ],
     ],
     'register' => [
         'placeholder' => [
-            'name' => 'Nhập tên của bạn...',
-            'email' => 'Nhập địa chỉ email của bạn...',
-            'password' => 'Nhập mật khẩu...',
-            'password_confirm' => 'Xác nhận mật khẩu...',
+            'name' => '名前を入力してください',
+            'email' => 'メールアドレスを入力してください',
+            'password' => 'パスワードを入力してください',
+            'password_confirm' => 'パスワードを確認',
         ],
     ],
 ];

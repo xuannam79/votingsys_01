@@ -66,8 +66,10 @@
                     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCzfBLqeROyZ1xGhOWb_oG7zmdYcCQdaI8&v=3.exp&libraries=places&language=en">
             </script>
         @endif
+
+        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     </head>
-    <body>
+    <body onload="CallbackFunction()">
 
         <!-- MENU -->
         <nav class="navbar navbar-default  animated fadeInDown">
@@ -139,9 +141,21 @@
                             <div class="hide_language" data-route="{{ url('language') }}"></div>
                             <div class="multiple-lang">
                                 <select name="lang" id="countries" class="form-control btn-multiple-language">
-                                    <option value='en' {{ Session::get('locale') == 'en' ? 'selected' : '' }} data-image="{{ asset('bower/ms-Dropdown/images/msdropdown/icons/blank.gif') }} " data-imagecss="flag england" data-title="English">English</option>
-                                    <option value='vi' {{ Session::get('locale') == 'vi' ? 'selected' : '' }} data-image="{{ asset('bower/ms-Dropdown/images/msdropdown/icons/blank.gif') }}" data-imagecss="flag vn" data-title="Tiếng Việt">Tiếng Việt</option>
-                                    <option value='ja' {{ Session::get('locale') == 'ja' ? 'selected' : '' }} data-image="{{ asset('bower/ms-Dropdown/images/msdropdown/icons/blank.gif') }}" data-imagecss="flag jp" data-title="日本語">日本語</option>
+                                    <option value='en' {{ Session::get('locale') == 'en' ? 'selected' : '' }}
+                                            data-image="{{ asset('bower/ms-Dropdown/images/msdropdown/icons/blank.gif') }}"
+                                            data-imagecss="flag england" data-title="{{ config('settings.language.en') }}">
+                                            {{ config('settings.language.en') }}
+                                    </option>
+                                    <option value='vi' {{ Session::get('locale') == 'vi' ? 'selected' : '' }}
+                                            data-image="{{ asset('bower/ms-Dropdown/images/msdropdown/icons/blank.gif') }}"
+                                            data-imagecss="flag vn" data-title="{{ config('settings.language.vi') }}">
+                                            {{ config('settings.language.vi') }}
+                                    </option>
+                                    <option value='ja' {{ Session::get('locale') == 'ja' ? 'selected' : '' }}
+                                            data-image="{{ asset('bower/ms-Dropdown/images/msdropdown/icons/blank.gif') }}"
+                                            data-imagecss="flag jp" data-title="{{ config('settings.language.ja') }}">
+                                            {{ config('settings.language.ja') }}
+                                    </option>
                                 </select>
                             </div>
                         </li>
@@ -153,7 +167,7 @@
         <!-- CONTENT -->
         <div class="container-fluid">
             @yield('content')
-            <script src="//code.jquery.com/jquery.js"></script>
+            {{--<script src="//code.jquery.com/jquery.js"></script>--}}
             <a href="javascript:void(0);" id="scroll">{{ trans('label.top') }}<span></span></a>
         </div>
 
@@ -202,6 +216,7 @@
 
         <!-- winzard -->
         {!! Html::script('bower/twitter-bootstrap-wizard/jquery.bootstrap.wizard.js') !!}
+
 
         <!-- Scripts -->
         {!! Html::script('js/shareSocial.js') !!}

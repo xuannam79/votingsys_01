@@ -49,13 +49,11 @@ Route::group(['middleware' => 'XSS'], function() {
 
     Route::get('/', 'PollController@create');
 
-    Route::resource('result-poll', 'ResultCreatePollController', ['only' => [
-        'show'
-    ]]);
-
     Route::get('check-date-close-poll', 'User\CheckDateController@checkDateClosePoll');
 
     Route::post('check-email', 'CheckEmailController@store');
+
+    Route::resource('location', 'LocationController');
 });
 
 
@@ -64,6 +62,8 @@ Route::post('link/{token?}', [
     'as' => 'link',
     'uses' => 'LinkController@index'
 ]);
+
+Route::get('result/{id?}/{tokenAdmin?}', 'ResultCreatePollController@show');
 
 Route::get('link/verification/{userId?}/{tokenRegister?}', 'LinkController@index');
 
@@ -161,4 +161,5 @@ Route::get('tutorial', function () {
         'Content-Disposition' => 'inline; filename="'.$filename.'"'
     ]);
 });
+
 

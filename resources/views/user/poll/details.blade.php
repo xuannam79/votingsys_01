@@ -414,8 +414,8 @@
                         @if (!$isHideResult || Gate::allows('administer', $poll))
                             <div class="panel panel-default">
                                 <!-- if have not vote -> hide tab style result -->
-                                <div class="panel-heading bar-pie-chart">
-                                    @if ($optionRateBarChart != "null")
+                                @if ($optionRateBarChart != "null")
+                                    <div class="panel-heading bar-pie-chart">
                                         <ul class="nav nav-pills">
                                             <li class="active">
                                                 <a data-toggle="tab" href="#table">
@@ -433,8 +433,8 @@
                                                 </a>
                                             </li>
                                         </ul>
-                                    @endif
-                                </div>
+                                    </div>
+                                @endif
                                 <div class="panel-body">
                                     <div class="tab-content">
                                         <!-- TABLE RESULT -->
@@ -549,7 +549,6 @@
                                             </div>
                                         </div>
                                         <!-- MODEL VOTE CHART-->
-                                        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
                                         @if ($optionRateBarChart)
                                             <div class="show-piechart tab-pane fade" id="pieChart" role="dialog">
                                                 <div class="col-lg-12">
@@ -594,6 +593,7 @@
                                                             var data = new google.visualization.DataTable();
                                                             data.addColumn('string', 'Topping');
                                                             data.addColumn('number', '');
+
                                                             var optionRateBarChart = {!! $optionRateBarChart !!};
                                                             data.addRows(optionRateBarChart);
                                                             var options = {
@@ -607,7 +607,7 @@
                                                                     gridlines: {
                                                                         count: 4
                                                                     }
-                                                                }
+                                                                },
                                                             };
                                                             var chart = new google.visualization.BarChart(document.getElementById('chart'));
                                                             chart.draw(data, options);

@@ -65,7 +65,9 @@ class PollController extends Controller
 
         if ($data) {
             $poll = $data['poll'];
-            return redirect()->route('result-poll.show', ['id' => $poll->id]);
+            $link = $data['link'];
+
+            return redirect()->to(url('/result/' . $poll->id . '/' . $link['administration']));
         }
 
         $message = trans('polls.message.create_fail');
