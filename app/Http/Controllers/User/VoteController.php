@@ -64,8 +64,7 @@ class VoteController extends Controller
         $now = Carbon::now();
 
         if (Carbon::now()->toAtomString() > Carbon::parse($poll->date_close)->toAtomString()) {
-            // close vote when poll time out
-            $isTimeOut = true;
+            return redirect()->to($poll->getUserLink());
         }
 
         //user vote poll
