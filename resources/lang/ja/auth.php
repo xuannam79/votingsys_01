@@ -13,8 +13,8 @@ return [
     |
     */
 
-    'failed' => 'Bản ghi không chính xác.',
-    'throttle' => 'Đăng nhập không chính xác quá nhiều lần. Vui lòng thử lại sau :seconds giây.',
+    'failed' => '間違いました',
+    'throttle' => 'ログインが正しくありません。:seconds 秒後にもう一度試してください。',
     'facebook_login' => 'Facebook',
     'twitter_login' => 'Twitter',
     'google_login' => 'Google',

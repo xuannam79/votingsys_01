@@ -177,10 +177,6 @@ class LinkController extends Controller
             $optionRateBarChart = null;
         }
 
-        if (! empty($optionRateBarChart)) {
-            $optionRateBarChart = array_sort_recursive($optionRateBarChart);
-        }
-
         $optionRateBarChart = json_encode($optionRateBarChart);
         $dataTableResult = $this->pollRepository->getDataTableResult($poll);
 

@@ -18,6 +18,6 @@ return [
     'sent' => 'リセットならメール出しました',
     'token' => 'パスワードをリセットするためのトークンが正しくありません',
     'user' => "ユーザーとメールをみつかりません",
-    'send_password_reset_link' => 'Gửi link để reset mật khẩu',
-    'reset_password' => 'Reset mật khẩu',
+    'send_password_reset_link' => 'あなたのパスワードをリセットするリンクを送信',
+    'reset_password' => 'パスワードを再設定します',
 ];

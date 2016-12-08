@@ -1045,3 +1045,31 @@ function hideLabelMessage(element) {
         $(element).html('');
     }, 2000);
 }
+
+function getCurrentLocation() {
+    if ($('#location').val() == '') {
+        var map = new google.maps.Map(document.getElementById('map'), {
+            center: {lat: -34.397, lng: 150.644},
+            zoom: 6
+        });
+
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+                $.ajax({
+                    url: $('.hide').data("locationRoute"),
+                    type: 'post',
+                    data: {
+                        'lat': position.coords.latitude,
+                        'lng': position.coords.longitude,
+                        '_token': $('.hide').data("token")
+                    },
+                    success: function (data) {
+                        if (data.success && data.location != '') {
+                            $('#location').val(data.location);
+                        }
+                    }
+                });
+            });
+        }
+    }
+}

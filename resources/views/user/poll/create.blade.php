@@ -12,7 +12,8 @@
              data-route-email="{{ url('/check-email') }}"
              data-route-link="{{ route('link-poll.store') }}"
              data-token="{{ csrf_token() }}"
-             data-link-check-date="{{ url('/check-date-close-poll') }}">
+             data-link-check-date="{{ url('/check-date-close-poll') }}"
+             data-location-route="{{ route('location.store') }}">
         </div>
         {{
            Form::open([

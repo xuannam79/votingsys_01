@@ -460,7 +460,6 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
         try {
             $participantLink = str_random(config('settings.length_poll.link'));
             $administrationLink = str_random(config('settings.length_poll.link'));
-            $linkConfig =  url("/") . config('settings.email.link_vote');
 
             if ($input['setting']
                 && array_key_exists(config('settings.setting.custom_link'), $input['setting'])
@@ -485,8 +484,8 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
                 'link_admin' => config('settings.link_poll.admin'),
             ]);
             $linkReturn = [
-                'participant' => $linkConfig . $participantLink,
-                'administration' => $linkConfig . $administrationLink,
+                'participant' => $participantLink,
+                'administration' => $administrationLink,
             ];
             return $linkReturn;
         } catch (Exception $ex) {
@@ -620,7 +619,6 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
             $dataRtn = [
                 'poll' => $poll,
                 'link' => $links,
-                'password' => $password,
             ];
 
             if ($input['member']) {

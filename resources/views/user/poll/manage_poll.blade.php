@@ -288,7 +288,6 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
                                     <div class="tab-pane fade" id="menu2">
                                         <div class="panel panel-default animated fadeInRight panel-darkcyan">
                                             <div class="panel-heading panel-heading-darkcyan">

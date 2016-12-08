@@ -7,7 +7,7 @@
             data-email-password="{{ (isset($password) && $password) ? $password : "" }}"
             data-email-route="{{ url('/check-email') }}"
             data-email-token="{{ csrf_token() }}"
-            data-email-message="{{ json_encode(trans('polls.message_client')) }}">
+            data-email-message="{{ json_encode(trans('polls.message_client')) }}" >
         </div>
         <div class="panel panel-default animated fadeInDown">
             <div class="panel-heading">

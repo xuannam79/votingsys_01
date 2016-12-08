@@ -3,7 +3,7 @@
     {{ trans('polls.title') }}
 @endsection
 @section('content')
-    <div class="col-lg-12">
+    <div class="row row-create-poll">
         <div class="loader"></div>
         <div class="hide"
              data-poll="{{ $data['jsonData'] }}"

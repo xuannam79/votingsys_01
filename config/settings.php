@@ -117,5 +117,5 @@ return [
     'activity_per_page' => '10',
     'is_active' => 1,
     'feedback' => 'https://goo.gl/forms/RQ06LKqNletbr1MU2',
-    'copyright' => 'http://recruit.framgia.vn/',
+    'copyright' => 'http://framgia.com',
 ];
