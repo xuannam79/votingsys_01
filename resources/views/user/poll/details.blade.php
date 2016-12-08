@@ -72,7 +72,7 @@
                                         </h4>
                                         <label class="poll-count">
                                             <span class="label label-primary glyphicon glyphicon-user poll-details">
-                                                <span class="count-participant">{{ $mergedParticipantVotes->count() }}</span>
+                                                <span class="count-participant">{{ $countParticipantsVoted }}</span>
                                             </span>
                                             <span class="label label-info glyphicon glyphicon-comment poll-details">
                                                 <span class="comment-count">{{ $poll->countComments() }}</span>
@@ -451,7 +451,7 @@
                                                 <div class="modal-dialog">
                                                     <div class="modal-content">
                                                         <div class="modal-body scroll-result">
-                                                            @if ($mergedParticipantVotes->count())
+                                                            @if ($countParticipantsVoted)
                                                                 <table class="table table-bordered table-detail-result">
                                                                     <thead>
                                                                         <th>{{ trans('polls.no') }}</th>
@@ -524,7 +524,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-lg-12 table-poll-result">
+                                            <div class="col-lg-12 table-poll-result result-vote-poll">
                                                 <table class="table table-hover table-responsive">
                                                     <thead>
                                                         <tr>

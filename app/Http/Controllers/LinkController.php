@@ -132,23 +132,48 @@ class LinkController extends Controller
         $isSetIp = false;
         $countParticipantsVoted = $poll->countParticipants();
 
+        //get information vote poll
+        $voteIds = $this->pollRepository->getVoteIds($poll->id);
+        $votes = $this->voteRepository->getVoteWithOptionsByVoteId($voteIds);
+        $participantVoteIds = $this->pollRepository->getParticipantVoteIds($poll->id);
+        $participantVotes = $this->participantVoteRepository->getVoteWithOptionsByVoteId($participantVoteIds);
+        $mergedParticipantVotes = $votes->toBase()->merge($participantVotes->toBase());
+
+        if ($mergedParticipantVotes->count()) {
+            foreach ($mergedParticipantVotes as $mergedParticipantVote) {
+                $createdAt[] = $mergedParticipantVote->first()->created_at;
+            }
+
+            $sortedParticipantVotes = collect($createdAt)->sort();
+            $resultParticipantVotes = collect();
+            foreach ($sortedParticipantVotes as $sortedParticipantVote) {
+                foreach ($mergedParticipantVotes as $mergedParticipantVote) {
+                    foreach ($mergedParticipantVote as $participantVote) {
+                        if ($participantVote->created_at == $sortedParticipantVote) {
+                            $resultParticipantVotes->push($mergedParticipantVote);
+                            break;
+                        }
+
+                    }
+                }
+            }
+            $mergedParticipantVotes = $resultParticipantVotes;
+        }
+
         foreach ($poll->options as $option) {
             $totalVote += $option->countVotes();
         }
 
-        $optionRatePieChart = [];
         $optionRateBarChart = [];
 
         if ($totalVote) {
             foreach ($poll->options as $option) {
                 $countOption = $option->countVotes();
-                $optionRatePieChart[$option->name] = (int) ($countOption * 100 / $totalVote);
                 if ($countOption > 0) {
                     $optionRateBarChart[] = [str_limit($option->name, 30), $countOption];
                 }
             }
         } else {
-            $optionRatePieChart = null;
             $optionRateBarChart = null;
         }
 
@@ -218,32 +243,7 @@ class LinkController extends Controller
             Session::forget('isInputPassword');
 
             $isHideResult = $poll->settings->whereIn('key', [config('settings.setting.hide_result')])->count() != config('settings.default_value');
-            $voteIds = $this->pollRepository->getVoteIds($poll->id);
-            $votes = $this->voteRepository->getVoteWithOptionsByVoteId($voteIds);
-            $participantVoteIds = $this->pollRepository->getParticipantVoteIds($poll->id);
-            $participantVotes = $this->participantVoteRepository->getVoteWithOptionsByVoteId($participantVoteIds);
-            $mergedParticipantVotes = $votes->toBase()->merge($participantVotes->toBase());
 
-            if ($mergedParticipantVotes->count()) {
-                foreach ($mergedParticipantVotes as $mergedParticipantVote) {
-                    $createdAt[] = $mergedParticipantVote->first()->created_at;
-                }
-
-                $sortedParticipantVotes = collect($createdAt)->sort();
-                $resultParticipantVotes = collect();
-                foreach ($sortedParticipantVotes as $sortedParticipantVote) {
-                    foreach ($mergedParticipantVotes as $mergedParticipantVote) {
-                        foreach ($mergedParticipantVote as $participantVote) {
-                            if ($participantVote->created_at == $sortedParticipantVote) {
-                                $resultParticipantVotes->push($mergedParticipantVote);
-                                break;
-                            }
-
-                        }
-                    }
-                }
-                $mergedParticipantVotes = $resultParticipantVotes;
-            }
 
             $isUserVoted = false;
             $isParticipantVoted = false;
@@ -270,37 +270,10 @@ class LinkController extends Controller
                 'requiredPassword', //setting password of poll
                 'isUserVoted', 'isParticipantVoted', // vote type
                 'isTimeOut', //time out of poll
-                'optionRatePieChart', 'optionRateBarChart', 'dataTableResult', 'mergedParticipantVotes' //result
+                'optionRateBarChart', 'dataTableResult', 'mergedParticipantVotes', //result
+                'countParticipantsVoted'
             ));
         } else {
-            $poll = $link->poll;
-            $voteIds = $this->pollRepository->getVoteIds($poll->id);
-            $votes = $this->voteRepository->getVoteWithOptionsByVoteId($voteIds);
-            $participantVoteIds = $this->pollRepository->getParticipantVoteIds($poll->id);
-            $participantVotes = $this->participantVoteRepository->getVoteWithOptionsByVoteId($participantVoteIds);
-            $mergedParticipantVotes = $votes->toBase()->merge($participantVotes->toBase());
-
-            if ($mergedParticipantVotes->count()) {
-                foreach ($mergedParticipantVotes as $mergedParticipantVote) {
-                    $createdAt[] = $mergedParticipantVote->first()->created_at;
-                }
-
-                $sortedParticipantVotes = collect($createdAt)->sort();
-                $resultParticipantVotes = collect();
-                foreach ($sortedParticipantVotes as $sortedParticipantVote) {
-                    foreach ($mergedParticipantVotes as $mergedParticipantVote) {
-                        foreach ($mergedParticipantVote as $participantVote) {
-                            if ($participantVote->created_at == $sortedParticipantVote) {
-                                $resultParticipantVotes->push($mergedParticipantVote);
-                                break;
-                            }
-
-                        }
-                    }
-                }
-                $mergedParticipantVotes = $resultParticipantVotes;
-            }
-
             foreach ($poll->links as $link) {
                 if ($link->link_admin) {
                     $tokenLinkAdmin = $link->token;
@@ -313,14 +286,13 @@ class LinkController extends Controller
             $data = $this->pollRepository->getDataPollSystem();
             $page = 'manager';
 
-            //statistic
-            $statistic = [
+           /* $statistic = [
                 'total' => $this->pollRepository->getTotalVotePoll($poll),
                 'firstTime' => $this->pollRepository->getTimeFirstVote($poll),
                 'lastTime' => $this->pollRepository->getTimeLastVote($poll),
                 'largestVote' => $this->pollRepository->getOptionLargestVote($poll),
                 'leastVote' => $this->pollRepository->getOptionLeastVote($poll),
-            ];
+            ];*/
 
             $settings = $this->pollRepository->showSetting($poll->settings);
 

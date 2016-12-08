@@ -94,11 +94,27 @@ $(document).ready(function(){
                 }
             }
         } else {
-            this.disabled = true;
-            $('.message-validation').removeClass('alert alert-warning');
-            $('.message-validation').html('');
-            $('#form-vote').submit();
-            $('.loader').show();
+            var isPassValidate = false;
+            if (emailVote.trim() != '') {
+                if (testEmail.test(emailVote)) {
+                    isPassValidate = true;
+                } else {
+                    divChangeAmount = $(this).parent();
+                    $('.message-validation').addClass('alert alert-warning');
+                    var message = "<span class='glyphicon glyphicon-warning-sign'></span>" + ' ' +  divChangeAmount.data('messageValidateEmail');
+                    $('.message-validation').html(message);
+                }
+            } else {
+                isPassValidate = true;
+            }
+
+            if (isPassValidate) {
+                this.disabled = true;
+                $('.message-validation').removeClass('alert alert-warning');
+                $('.message-validation').html('');
+                $('#form-vote').submit();
+                $('.loader').show();
+            }
         }
     });
 });
