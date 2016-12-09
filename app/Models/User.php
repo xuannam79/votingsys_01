@@ -81,6 +81,12 @@ class User extends Authenticatable
 
     public function getAvatarPath()
     {
+        if (strpos($this->avatar, config('settings.facebook.link_avatar')) !== false
+            || strpos($this->avatar, config('settings.twitter.link_avatar')) !== false
+            || strpos($this->avatar, config('settings.google.link_avatar')) !== false) {
+            return $this->avatar;
+        }
+
         return asset('/' . config('settings.avatar_path') . '/' . $this->avatar);
     }
 
