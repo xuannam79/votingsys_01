@@ -51,7 +51,7 @@ class Link extends Model
                 Mail::queue('layouts.edit_link_mail', [
                     'link' => url('/link') . '/' . $tokenInput,
                 ], function ($message) use ($emails) {
-                    $message->to($emails)->subject(trans('label.mail.subject'));
+                    $message->to($emails)->subject(trans('label.mail.edit_link.subject'));
                 });
 
                 //send email fail

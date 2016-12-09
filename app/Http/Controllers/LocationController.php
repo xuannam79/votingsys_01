@@ -40,18 +40,40 @@ class LocationController extends Controller
         $locationJson = file_get_contents('http://maps.googleapis.com/maps/api/geocode/json?' .
             'latlng=' . $lat .',' . $lng . '&sensor=true');
         $locationArray = json_decode($locationJson, true);
+        $country = '';
+        $city = '';
+        $district = '';
 
         // get location success
         if ($locationArray['status'] == 'OK') {
             try {
-                $district = $locationArray['results'][0]['address_components'][4]['long_name'];
-                $city = $locationArray['results'][0]['address_components'][5]['long_name'];
-                $country = $locationArray['results'][0]['address_components'][6]['long_name'];
-                $data = [
-                    'success' => true,
-                    'location' => $district . ', ' . $city . ', ' . $country,
-                ];
+                foreach ($locationArray['results'][0]['address_components'] as $components) {
+                    if (in_array('country', $components['types'])) {
+                        $country = $components['long_name'];
+                    }
+
+                    if (in_array('administrative_area_level_1', $components['types'])) {
+                        $city = $components['long_name'];
+                    }
+
+                    if (in_array('administrative_area_level_2', $components['types'])) {
+                        $district = $components['long_name'];
+                    }
+                }
+
+                if (! ($country && $city && $district)) {
+                    $data = [
+                        'success' => true,
+                        'location' => '',
+                    ];
+                } else {
+                    $data = [
+                        'success' => true,
+                        'location' => $district . ', ' . $city . ', ' . $country,
+                    ];
+                }
             } catch (Exception $ex) {
+                dd($ex);
                 $data = [
                     'success' => true,
                     'location' => '',

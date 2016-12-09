@@ -59,7 +59,7 @@ class PollController extends Controller
             Mail::queue('layouts.open_poll_mail', [
                 'link' => $poll->getAdminLink(),
             ], function ($message) use ($emails) {
-                $message->to($emails)->subject(trans('label.mail.subject'));
+                $message->to($emails)->subject(trans('label.mail.open_poll.subject'));
             });
 
             if (count(Mail::failures()) == config('settings.default_value')) {
@@ -141,7 +141,7 @@ class PollController extends Controller
             Mail::queue('layouts.close_poll_mail', [
                 'link' => $poll->getAdminLink(),
             ], function ($message) use ($emails) {
-                $message->to($emails)->subject(trans('label.mail.subject'));
+                $message->to($emails)->subject(trans('label.mail.close_poll.subject'));
             });
 
             if (count(Mail::failures()) == config('settings.default_value')) {

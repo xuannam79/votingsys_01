@@ -51,10 +51,6 @@ class ResultCreatePollController extends Controller
         foreach ($poll->links as $link) {
             if ($link->link_admin != config('settings.default_value') && $link->token == $tokenAdmin) {
                 $password = '';
-                $link = [
-                    'participant' => $poll->getUserLink(),
-                    'administration' => $poll->getAdminLink(),
-                ];
 
                 if ($poll->settings) {
                     foreach ($poll->settings as $setting) {

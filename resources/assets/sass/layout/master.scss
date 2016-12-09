@@ -88,7 +88,7 @@ a:hover, .navbar-default .navbar-nav > .active > a:focus {
 
 /* Multiple language */
 .btn-multiple-language {
-  min-width: 150px;
+  width: 150px;
 }
 
 .borderRadiusTp {
@@ -103,7 +103,21 @@ a:hover, .navbar-default .navbar-nav > .active > a:focus {
   border-radius: 0 !important;
 }
 
-@media (max-width: 800px) {
+@media (min-width: 767px) and (max-width: 867px) {
+  .home-menu {
+    display: none !important;
+  }
+
+  .ddcommon {
+    width: 120px !important;
+  }
+
+  .dd .ddTitle .ddTitleText {
+    padding: 5px 8px 5px 5px;
+  }
+}
+
+@media (max-width: 767px) {
   .ddcommon {
     width: 100% !important;
   }
@@ -172,18 +186,31 @@ footer {
   width: 100%
 }
 
-@media (max-width: 1200px) {
+@media (max-width: 767px) {
   body > .container-fluid {
-    margin-bottom: 470px ;
+    margin-bottom: 420px ;
   }
   footer {
-    height: 450px;
+    height: 420px;
+  }
+
+  .footer-right {
+    padding: 10px !important;
   }
 }
 
-@media (min-width: 1200px) {
+@media (min-width: 767px) and (max-width: 835px) {
   body > .container-fluid {
-    margin-bottom: 180px;
+    margin-bottom: 180px ;
+  }
+  footer {
+    height: 180px;
+  }
+}
+
+@media (min-width: 835px) {
+  body > .container-fluid {
+    margin-bottom: 160px;
   }
   footer {
     height: 160px;
@@ -350,16 +377,15 @@ span.round-tabs.four{
   }
   span.round-tabs {
     font-size:16px;
-    width: 50px;
-    height: 50px;
-    line-height: 50px;
+    width: 30px;
+    height: 30px;
   }
+
   .tab-content .head{
     font-size:20px;
   }
   .nav-tabs > li a {
     width: 50px;
-    height: 50px;
     line-height:50px;
   }
 
@@ -371,6 +397,24 @@ span.round-tabs.four{
 
   .btn-outline-rounded {
     padding:12px 20px;
+  }
+
+  .navbar {
+    min-height: 0;
+  }
+
+  .nav-tabs > li {
+    width: 25%;
+  }
+
+  .liner {
+      width: 110%;
+  }
+}
+
+@media( max-width : 500px ){
+  .nav-tabs > li a {
+    width: 35px;
   }
 }
 
@@ -1019,6 +1063,12 @@ span.round-tab:hover {
 
 .btn-change-step:hover, .btn-change-step:focus {
   background-position: 0 !important;
+}
+
+@media (min-width: 400px) and (max-width: 586px) {
+  .btn-finish {
+    margin-right: 20px !important;
+  }
 }
 
 #title-success {

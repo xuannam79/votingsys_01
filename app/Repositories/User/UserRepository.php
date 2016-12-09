@@ -71,7 +71,7 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
                 'name' => $data['name'],
                 'link' => url('/link/verification') . '/' . $createUser->id . '/' . $user['token_verification'],
             ], function ($message) use ($emails) {
-                $message->to($emails)->subject(trans('label.mail.subject'));
+                $message->to($emails)->subject(trans('label.mail.register.subject'));
             });
         } catch(Exception $ex) {
             return view('errors.show_errors')->with('message', trans('polls.register_with_mail_not_exist'));

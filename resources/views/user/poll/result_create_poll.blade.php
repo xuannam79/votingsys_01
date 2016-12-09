@@ -9,8 +9,8 @@
             data-email-token="{{ csrf_token() }}"
             data-email-message="{{ json_encode(trans('polls.message_client')) }}" >
         </div>
-        <div class="panel panel-default animated fadeInDown">
-            <div class="panel-heading">
+        <div class="panel panel-default animated fadeInDown panel-darkcyan-profile">
+            <div class="panel-heading panel-heading-darkcyan">
                 {{ trans('polls.result_create.head') }}
             </div>
             <div class="panel-body">
@@ -25,8 +25,8 @@
                 <p><a href="#" onclick="sendMailAgain()">{{ trans('polls.send_mail_again') }}</a></p>
                 <p><b>{{ trans('polls.result_create.participant_link') }}</b></p>
                 <p><i>{{ trans('polls.result_create.help_participant') }}</i></p>
-                <a href="{{ $link['participant'] }}" target="_blank" id="linkVote">{{ str_limit($link['participant'], 47) }}</a>
-                <button class="btn btn-success btn-sm" onclick="copyToClipboard('#linkVote', '{{ $link['participant'] }}')">
+                <a href="{{ $link['participant'] }}" target="_blank" id="linkVote">{{ str_limit($poll->getUserLink(), 47) }}</a>
+                <button class="btn btn-success btn-sm" onclick="copyToClipboard('#linkVote', '{{ $poll->getUserLink() }}')">
                     <span class="glyphicon glyphicon-copy"></span> {{ trans('polls.copy_link') }}
                 </button>
                 @if (isset($password) && $password)
@@ -35,8 +35,8 @@
                 <hr>
                 <p><b>{{ trans('polls.result_create.link_admin') }}</b></p>
                 <p><i>{{ trans('polls.result_create.help_admin') }}</i></p>
-                <a href="{{ $link['administration'] }}" id="linkAdmin" target="_blank">{{ str_limit($link['administration'], 47) }}</a>
-                <button class="btn btn-success btn-sm" onclick="copyToClipboard('#linkAdmin', '{{ $link['administration'] }}')">
+                <a href="{{ $link['administration'] }}" id="linkAdmin" target="_blank">{{ str_limit($poll->getAdminLink(), 47) }}</a>
+                <button class="btn btn-success btn-sm" onclick="copyToClipboard('#linkAdmin', '{{ $poll->getAdminLink() }}')">
                     <span class="glyphicon glyphicon-copy"></span> {{ trans('polls.copy_link') }}
                 </button>
             </div>

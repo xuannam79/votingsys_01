@@ -54,7 +54,7 @@ $(function () {
     });
 });
 
-$(window).load(function () {
+$(window).on('load', function() {
     var data = $('.hide').data("poll");
 
     //init page

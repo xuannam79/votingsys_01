@@ -159,7 +159,7 @@ class PollController extends Controller
             Mail::queue('layouts.close_poll_mail', [
                 'link' => $poll->getAdminLink(),
             ], function ($message) use ($email) {
-                $message->to($email)->subject(trans('label.mail.subject'));
+                $message->to($email)->subject(trans('label.mail.close_poll.subject'));
             });
             if (count(Mail::failures()) == config('settings.default_value')) {
                 $poll->status = false;

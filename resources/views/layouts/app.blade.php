@@ -69,7 +69,7 @@
 
         <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     </head>
-    <body onload="CallbackFunction()">
+    <body>
 
         <!-- MENU -->
         <nav class="navbar navbar-default  animated fadeInDown">
@@ -86,7 +86,7 @@
                 </div>
                 <div class="collapse navbar-collapse" id="menu">
                     <ul class="nav-menu nav navbar-nav">
-                        <li {!! Request::is('/') ? 'class="active"' : '' !!}>
+                        <li class="{!! Request::is('/') ? "active" : "" !!} home-menu">
                             <a href="{{ asset("/") }}"><span class="glyphicon glyphicon-home"></span> {{ trans('label.home') }}</a>
                         </li>
                         <li>
@@ -173,7 +173,7 @@
 
         <!-- FOOTER -->
         <footer>
-            <div class="col-lg-3 footer-left">
+            <div class="col-lg-3 col-md-3 col-sm-3 footer-left">
                 <p><b class="char-app">F</b><label>poll</label></p>
                 <p>
                     <img src="{{ asset('uploads/images/logo.png') }}" class="copyright-image">
@@ -182,18 +182,18 @@
                     </a>
                 </p>
             </div>
-            <div class="col-lg-5 footer-center">
-                <div class="col-lg-12">
+            <div class="col-lg-5 col-md-5 col-sm-5 footer-center">
+                <div class="col-lg-12 col-md-12 col-sm-12">
                     <p><i class="fa fa-map-marker" aria-hidden="true"></i> {{ trans('label.footer.location') }}</p>
                 </div>
-                <div class="col-lg-12">
+                <div class="col-lg-12 col-md-12 col-sm-12">
                     <p><i class="fa fa-phone" aria-hidden="true"></i> {{ trans('label.footer.phone') }}</p>
                 </div>
-                <div class="col-lg-12">
+                <div class="col-lg-12 col-md-12 col-sm-12">
                     <p><i class="fa fa-envelope" aria-hidden="true"></i> {{ trans('label.footer.email') }}</p>
                 </div>
             </div>
-            <div class="col-lg-4 footer-right">
+            <div class="col-lg-4 col-md-4 col-sm-4 footer-right">
                 <p>{{ trans('label.footer.about') }}</p>
                 <a href="{{ trans('label.footer.facebook') }}" target="_blank" class="btn btn-primary">
                     <span><i class="fa fa-facebook" aria-hidden="true"></i></span>
@@ -216,7 +216,6 @@
 
         <!-- winzard -->
         {!! Html::script('bower/twitter-bootstrap-wizard/jquery.bootstrap.wizard.js') !!}
-
 
         <!-- Scripts -->
         {!! Html::script('js/shareSocial.js') !!}
@@ -251,7 +250,7 @@
         <!-- Dropdown multiple language -->
         {!! Html::script('bower/ms-Dropdown/js/msdropdown/jquery.dd.min.js') !!}
 
-        <!-- scroll animate -->
-        {!! Html::script('bower/css3-animate-it/js/css3-animate-it.js') !!}
+        <!-- socket io -->
+        {!! Html::script('bower/socket.io-client/dist/socket.io.min.js') !!}
     </body>
 </html>

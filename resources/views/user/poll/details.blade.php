@@ -12,10 +12,10 @@
     <div class="container">
         <div class="row">
             <div class="loader"></div>
-            <div id="voting_wizard" class="col-lg-10 col-lg-offset-1 well wrap-poll">
+            <div id="voting_wizard" class="col-lg-10 col-md-10 col-lg-offset-1 col-md-offset-1 well wrap-poll">
                 <div class="navbar panel panel-default panel-detail-poll">
                     <div class="panel-body navbar-inner col-lg-12 panel-body-detail-poll">
-                        <div class="col-lg-6 col-lg-offset-3 panel-heading">
+                        <div class="col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3 panel-heading">
                             <ul>
                                 <li><a href="#vote" data-toggle="tab">{{ trans('polls.nav_tab_edit.voting') }}</a></li>
                                 <li><a href="#info" data-toggle="tab">{{ trans('polls.nav_tab_edit.info') }}</a></li>
@@ -35,7 +35,7 @@
                     <div class="tab-pane" id="vote">
                         @if ($isLimit)
                             <div class="col-lg-12">
-                                <label class="alert alert-danger col-lg-4 col-lg-offset-4 alert-poll-limit">
+                                <label class="alert alert-danger col-lg-4 alert-poll-limit">
                                     <span class="glyphicon glyphicon-warning-sign"></span>
                                     {{ trans('polls.reach_limit') }}
                                 </label>

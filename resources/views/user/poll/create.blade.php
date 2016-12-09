@@ -24,7 +24,11 @@
                'role' => 'form',
            ])
         }}
-            <div id="create_poll_wizard" class="col-lg-8 col-lg-offset-2 well wrap-poll animated fadeInLeft">
+            <div id="create_poll_wizard" class="col-lg-8 col-lg-offset-2
+                                                col-md-8 col-md-offset-2
+                                                col-sm-8 col-sm-offset-2
+                                                col-xs-12
+                                                well wrap-poll animated fadeInLeft">
                 @include('layouts.error')
                 @include('layouts.message')
                 <div class="progress">
@@ -120,28 +124,28 @@
     <!-- Feature -->
     <div class="row feature">
         <h2>{{ trans('label.feature.name') }}</h2>
-        <div class="col-lg-2 animatedParent">
-            <img class="animated fadeInUp slowest feature-img" src="{{ asset('uploads/images/Fpoll-vote.jpg') }}">
+        <div class="col-lg-2 col-md-2 col-sm-2 animatedParent">
+            <img class="animated fadeInUp slowest feature-img img-responsive" src="{{ asset('uploads/images/Fpoll-vote.jpg') }}">
             <p class="animated feature-text">{{ trans('label.feature.vote') }}</p>
         </div>
-        <div class="col-lg-2 animatedParent">
-            <img class="animated fadeInUp slowest feature-img" src="{{ asset('uploads/images/Fpoll-chart.png') }}">
+        <div class="col-lg-2 col-md-2 col-sm-2 animatedParent">
+            <img class="animated fadeInUp slowest feature-img img-responsive" src="{{ asset('uploads/images/Fpoll-chart.png') }}">
             <p class="animated feature-text">{{ trans('label.feature.chart') }}</p>
         </div>
-        <div class="col-lg-2 animatedParent">
-            <img class="animated fadeInUp slowest feature-img" src="{{ asset('uploads/images/Fpoll-security.jpg') }}">
+        <div class="col-lg-2 col-md-2 col-sm-2 animatedParent">
+            <img class="animated fadeInUp slowest feature-img img-responsive" src="{{ asset('uploads/images/Fpoll-security.jpg') }}">
             <p class="animated feature-text">{{ trans('label.feature.security') }}</p>
         </div>
-        <div class="col-lg-2 animatedParent">
-            <img class="animated fadeInUp slowest feature-img" src="{{ asset('uploads/images/Fpoll-export.png') }}">
+        <div class="col-lg-2 col-md-2 col-sm-2 animatedParent">
+            <img class="animated fadeInUp slowest feature-img img-responsive" src="{{ asset('uploads/images/Fpoll-export.png') }}">
             <p class="animated feature-text">{{ trans('label.feature.export') }}</p>
         </div>
-        <div class="col-lg-2 animatedParent">
-            <img class="animated fadeInUp slowest feature-img" src="{{ asset('uploads/images/Fpoll-responsive.jpg') }}">
+        <div class="col-lg-2 col-md-2 col-sm-2 animatedParent">
+            <img class="animated fadeInUp slowest feature-img img-responsive" src="{{ asset('uploads/images/Fpoll-responsive.jpg') }}">
             <p class="animated feature-text">{{ trans('label.feature.responsive') }}</p>
         </div>
-        <div class="col-lg-2 animatedParent">
-            <img class="animated fadeInUp slowest feature-img" src="{{ asset('uploads/images/Fpoll-like-share.jpg') }}">
+        <div class="col-lg-2 col-md-2 col-sm-2 animatedParent">
+            <img class="animated fadeInUp slowest feature-img img-responsive" src="{{ asset('uploads/images/Fpoll-like-share.jpg') }}">
             <p class="animated feature-text">{{ trans('label.feature.share') }}</p>
         </div>
     </div>

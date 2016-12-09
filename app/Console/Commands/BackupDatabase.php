@@ -46,7 +46,7 @@ class BackupDatabase extends Command
         foreach ($files as $file)
         {
             Mail::send('layouts.mail_backup_database_layouts', [], function ($message) use ($emails, $file) {
-                $message->to($emails)->subject(trans('label.mail.subject'));
+                $message->to($emails)->subject(trans('label.mail.backup_database.subject'));
                 $message->attach((string)$file);
             });
         }
