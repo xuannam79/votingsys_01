@@ -118,4 +118,13 @@ return [
     'is_active' => 1,
     'feedback' => 'https://goo.gl/forms/RQ06LKqNletbr1MU2',
     'copyright' => 'http://framgia.com',
+    'facebook' => [
+        'link_avatar' => 'https://graph.facebook.com',
+    ],
+    'twitter' => [
+        'link_avatar' => 'http://pbs.twimg.com',
+    ],
+    'google' => [
+        'link_avatar' => 'https://lh3.googleusercontent.com',
+    ],
 ];

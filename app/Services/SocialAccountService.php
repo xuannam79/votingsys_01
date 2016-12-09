@@ -22,6 +22,7 @@ class SocialAccountService
     public function createOrGetUser(Provider $provider)
     {
         $providerUser = $provider->user();
+
         $providerName = class_basename($provider);
         $account = $this->socialAccountRepository->getAccount($providerName, $providerUser);
 
@@ -40,7 +41,9 @@ class SocialAccountService
             $datas = [
                 'email' => $providerUser->getEmail(),
                 'name' => $providerUser->getName(),
+                'avatar' => $providerUser->getAvatar(),
             ];
+
             $user = $this->userRepository->createUserSocial($datas);
         }
 
