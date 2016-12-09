@@ -55,6 +55,7 @@ return [
         ],
         'create_poll' => [
             'title' => 'Bình chọn',
+            'subject' => 'Fpoll - Tạo một bình chọn',
             'head' => 'Fpoll',
             'dear' => 'Thân gởi ',
             'thank' => 'Cảm ơn bạn đã sử dụng trang web của chúng tôi. <br> Bình chọn của bạn đã được tạo thành công. Dưới đây là 2 liên kết được gởi đến tin nhắn của bạn',
@@ -68,39 +69,48 @@ return [
             'end' => '-- Kết thúc --',
         ],
         'backup_database' => [
+            'subject' => 'Fpoll - Sao lưu dữ liệu',
             'head' => 'Chào Admin, File backup database đã được gửi trong phần đính kèm.',
         ],
         'participant_vote' => [
+            'subject' => 'Fpoll - mời bạn tham gia bình chọn',
             'invite' => 'Bạn đã được mời tham gia bình chọn này, hãy kích vào đường dẫn dưới đây để tham gia bầu chọn',
         ],
         'edit_option' => [
+            'subject' => 'Fpoll - Chỉnh sửa tùy chọn của bình chọn',
             'old_option' => 'TÙY CHỌN CŨ',
             'new_option' => 'TÙY CHỌN MỚI',
             'thank' => 'Cảm ơn bạn đã sử dụng website của chúng tôi',
             'title' => 'Thay đổi tùy chọn',
         ],
         'edit_setting' => [
+            'subject' => 'Fpoll - Chỉnh sửa cài đặt của bình chọn',
             'old_setting' => 'CÀI ĐẶT CŨ',
             'new_setting' => 'CÀI ĐẶT MỚI',
             'title' => 'Thay đổi cài đặt',
         ],
         'register' => [
+            'subject' => 'Fpoll - Đăng ký tài khoản',
             'thank' => 'Cảm ơn bạn đã sử dụng Website của chúng tôi. <br> Bạn đã đăng ký tài khoản THÀNH CÔNG. Bên dưới là link để kích hoạt tài khoản',
             'link_active' => 'Click vào link bên dưới để kích hoạt tài khoản',
         ],
         'edit_link' => [
+            'subject' => 'Fpoll - Chỉnh sửa link của bình chọn',
             'thank' => 'Cảm ơn bạn đã sử dụng Website của chúng tôi. <br> Bạn đã chỉnh sửa link THÀNH CÔNG.',
             'link_edit' => 'Click vào đường dẫn bên dưới để xem chi tiết',
         ],
         'close_poll' => [
+            'subject' => 'Fpoll - Đóng bình chọn',
             'thank' => 'Cảm ơn bạn đã sử dụng website của chúng tôi. <br> Bạn đã đóng poll THÀNH CÔNG.',
             'link_admin' => 'Click vào đường dẫn bên dưới để quản lý poll',
         ],
         'open_poll' => [
+            'subject' => 'Fpoll - Mở bình chọn',
             'thank' => 'Cảm ơn bạn đã sử dụng website của chúng tôi. <br> Bạn đã mở poll THÀNH CÔNG.',
             'link_admin' => 'Click vào đường dẫn bên dưới để quản lý poll',
         ],
         'delete_participant' => [
+            'subject' => 'Fpoll - Xóa tất cả người bầu chọn',
             'thank' => 'Cảm ơn bạn đã sử dụng website của chúng tôi. <br> Bạn đã xóa tất cả bầu chọn THÀNH CÔNG.',
             'link_admin' => 'Click vào đường dẫn bên dưới để quản lý poll',
         ],

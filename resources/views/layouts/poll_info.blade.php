@@ -22,7 +22,7 @@
                         'class' => 'form-control',
                         'id' => 'name',
                         'placeholder' => trans('polls.placeholder.full_name'),
-                        'disabled' => auth()->user() ? true : null,
+                        'disabled' => (auth()->user() && auth()->user()->name) ? true : null,
                     ])
                 }}
             </div>
@@ -117,7 +117,6 @@
                     'class' => 'form-control',
                     'id' => 'location',
                     'placeholder' => trans('polls.placeholder.location'),
-                    'onclick' => 'getCurrentLocation()',
                     'onfocus' => 'getCurrentLocation()',
                 ])
             }}

@@ -54,6 +54,7 @@ return [
             ],
         ],
         'create_poll' => [
+            'subject' => 'Fpoll - Create a poll',
             'title' => '投票',
             'head' => '投票のシステム',
             'dear' => '親愛な ',
@@ -68,39 +69,48 @@ return [
             'end' => '-- 終了 --',
         ],
         'backup_database' => [
+            'subject' => 'Fpoll - Backup database',
             'head' => 'データベースのバックアップファイルは、添付ファイルで送られてきました',
         ],
         'participant_vote' => [
+            'subject' => 'Fpoll - invite you vote a poll',
             'invite' => 'あなたはこの投票に参加するために招待され、投票に参加するには、下のリンクをクリックしてください。',
         ],
         'edit_option' => [
+            'subject' => 'Fpoll - Edit option of poll',
             'old_option' => '古いオプション',
             'new_option' => '新しいオプション',
             'thank' => '当社のウェブサイトをご利用いただきありがとうございます',
             'title' => 'オプションを変更して再',
         ],
         'edit_setting' => [
+            'subject' => 'Fpoll - Edit setting of poll',
             'old_setting' => '古いインストール',
             'new_setting' => '新しいインストール',
             'title' => 'インストールを変更して再',
         ],
         'register' => [
+            'subject' => 'Fpoll - Register account',
             'thank' => '当社のウェブサイトをご利用いただきありがとうございます. <br> あなたは成功したアカウントにサインアップしています。以下のアカウントを有効にするためのリンクです',
             'link_active' => 'アカウントを有効にするには、リンクをクリックしてください',
         ],
         'edit_link' => [
+            'subject' => 'Fpoll - Edit link of poll',
             'thank' => '当社のウェブサイトをご利用いただきありがとうございます <br> あなたが正常にリンクを編集しました',
             'link_edit' => '詳細を表示するには下のリンクをクリックしてください',
         ],
         'close_poll' => [
+            'subject' => 'Fpoll - Close poll',
             'thank' => '当社のウェブサイトをご利用いただきありがとうございます <br> あなたは成功した世論調査を果たしてきました',
             'link_admin' => 'ポーリングを管理するために、下のリンクをクリックしてください',
         ],
         'open_poll' => [
+            'subject' => 'Fpoll - Open poll',
             'thank' => 'C当社のウェブサイトをご利用いただきありがとうございます <br> あなたは成功した世論調査を開いています',
             'link_admin' => 'ポーリングを管理するために、下のリンクをクリックしてください',
         ],
         'delete_participant' => [
+            'subject' => 'Fpoll - Delete all participant of poll',
             'thank' => 'C当社のウェブサイトをご利用いただきありがとうございます <br> 削除されました',
             'link_admin' => 'ポーリングを管理するために、下のリンクをクリックしてください',
         ],

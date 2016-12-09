@@ -53,7 +53,7 @@ class ParticipantController extends Controller
             Mail::queue('layouts.delete_all_participant_mail', [
                 'link' => $poll->getAdminLink(),
             ], function ($message) use ($emails) {
-                $message->to($emails)->subject(trans('label.mail.subject'));
+                $message->to($emails)->subject(trans('label.mail.delete_participant.subject'));
             });
         }
 

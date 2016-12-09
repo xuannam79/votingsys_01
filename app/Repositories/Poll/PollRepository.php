@@ -625,11 +625,11 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
                 $members = explode(",", $input['member']);
                 $view = config('settings.view.participant_mail');
                 $data = [
-                    'linkVote' => $links['participant'],
+                    'linkVote' => $poll->getUserLink(),
                     'poll' => $poll,
                     'password' => $password,
                 ];
-                $subject = trans('label.mail.subject');
+                $subject = trans('label.mail.participant_vote.subject');
                 $this->sendEmail($members, $view, $data, $subject, 'participant');
             }
 
@@ -640,12 +640,12 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
             $email = $input['email'];
             $data = [
                 'userName' => $input['name'],
-                'linkVote' => $links['participant'],
-                'linkAdmin' => $links['administration'],
+                'linkVote' => $poll->getUserLink(),
+                'linkAdmin' => $poll->getAdminLink(),
                 'poll' => $poll,
                 'password' => $password,
             ];
-            $subject = trans('label.mail.subject');
+            $subject = trans('label.mail.create_poll.subject');
             $this->sendEmail($email, $creatorView, $data, $subject, 'creator');
             DB::commit();
 
@@ -735,7 +735,7 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
                 //send mail to creator
                 Mail::queue('layouts.mail_notification', compact('data', 'old', 'now', 'creatorName'),
                     function ($message) use ($creatorMail) {
-                    $message->to($creatorMail)->subject(trans('label.mail.edit_poll.head'));
+                    $message->to($creatorMail)->subject(trans('label.mail.edit_poll.subject'));
                 });
             }
 
@@ -958,7 +958,7 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
             //send mail to creator
             Mail::queue(config('settings.view.mail_edit_option'), compact('oldOptions', 'newOptions', 'now', 'creatorName'),
                 function ($message) use ($creatorMail) {
-                    $message->to($creatorMail)->subject(trans('label.mail.edit_poll.head'));
+                    $message->to($creatorMail)->subject(trans('label.mail.edit_option.subject'));
             });
             Activity::create([
                 'poll_id' => $id,
@@ -997,7 +997,7 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
             //send mail to creator
             Mail::queue(config('settings.view.mail_edit_setting'), compact('newSettings', 'oldSettings', 'now', 'creatorName'),
                 function ($message) use ($creatorMail) {
-                    $message->to($creatorMail)->subject(trans('label.mail.edit_poll.head'));
+                    $message->to($creatorMail)->subject(trans('label.mail.edit_setting.subject'));
                 });
             Activity::create([
                 'poll_id' => $id,
@@ -1313,7 +1313,7 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
             'linkAdmin' => $link['administration'],
             'password' => $password,
         ];
-        $subject = trans('label.mail.subject');
+        $subject = trans('label.mail.create_poll.subject');
         $this->sendEmail($email, $creatorView, $data, $subject, 'creator');
     }
 }
