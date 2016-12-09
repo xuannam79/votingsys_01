@@ -43,6 +43,7 @@ return [
         'delete_all_participant' => 'この投票の管理者はすべての投票投票を削除しました',
         'register_active_mail' => '登録が成功し、アカウントを有効にするには次のリンクをクリックしてください。',
         'edit_poll' => [
+            'subject' => 'Fpoll - Edit information of poll',
             'head' => '投票',
             'summary' => 'あなたの投票は変更されました.',
             'thead' => [

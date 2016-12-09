@@ -86,7 +86,7 @@
                 </div>
                 <div class="collapse navbar-collapse" id="menu">
                     <ul class="nav-menu nav navbar-nav">
-                        <li class="{!! Request::is('/') ? "active" : "" !!} home-menu">
+                        <li class="{!! Request::is('/') ? "active" : "" !!} home-menu {{ (Session::get('locale') == 'ja') ? 'home-menu-ja' : '' }}">
                             <a href="{{ asset("/") }}"><span class="glyphicon glyphicon-home"></span> {{ trans('label.home') }}</a>
                         </li>
                         <li>
@@ -176,10 +176,10 @@
             <div class="col-lg-3 col-md-3 col-sm-3 footer-left">
                 <p><b class="char-app">F</b><label>poll</label></p>
                 <p>
-                    <img src="{{ asset('uploads/images/logo.png') }}" class="copyright-image">
-                    <a href="{{ config('settings.copyright') }}" target="_blank" class="copyright-text">
-                        {!! trans('label.footer.copyright') !!}
+                    <a href="{{ config('settings.copyright') }}" target="_blank">
+                        <img src="{{ asset('uploads/images/logo.png') }}" class="copyright-image">
                     </a>
+                    {!! trans('label.footer.copyright') !!}
                 </p>
             </div>
             <div class="col-lg-5 col-md-5 col-sm-5 footer-center">

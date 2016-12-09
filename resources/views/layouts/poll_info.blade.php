@@ -11,7 +11,7 @@
 @endif
 <div class="row">
 <!-- NAME -->
-    <div class="col-lg-6">
+    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 col-xs-info">
         <div class="form-group">
             <div class="input-group required">
                 <span class="input-group-addon">
@@ -29,7 +29,7 @@
         </div>
     </div>
 <!-- EMAIL -->
-    <div class="col-lg-6">
+    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 col-xs-info">
         <div class="form-group">
             <div class="input-group required">
                 <span class="input-group-addon">
@@ -52,7 +52,7 @@
 </div>
 <div class="row">
 <!-- TITLE -->
-    <div class="col-lg-6">
+    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 col-xs-info">
         <div class="form-group">
             <div class="input-group required">
                 <span class="input-group-addon">
@@ -69,7 +69,7 @@
         </div>
     </div>
 <!-- TYPE -->
-    <div class="col-lg-6">
+    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 col-xs-info">
         <div class="form-group">
             {{ Form::select('type', $data['viewData']['types'],
                 (isset($poll) && $poll) ? ($poll->multiple == trans('polls.label.multiple_choice') ? config('settings.type_poll.multiple_choice') : config('settings.type_poll.single_choice')): null, ['class' => 'form-control']) }}
@@ -90,7 +90,7 @@
 </div>
 <div class="row">
 <!-- TIME CLOSE -->
-    <div class="col-lg-6">
+    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 col-xs-info">
         <div class="form-group">
             <div class="input-group">
             <span class="input-group-addon">
@@ -107,7 +107,7 @@
         </div>
     </div>
 <!-- LOCATION -->
-    <div class="col-lg-6">
+    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 col-xs-info">
         <div class="input-group">
             <span class="input-group-addon">
                 <i class="fa fa-map-marker" aria-hidden="true"></i>
@@ -125,8 +125,8 @@
     </div>
 </div>
 @if (isset($page) && $page == "edit")
-    <input type="submit" class="btn btn-success btn-edit-info" name="btn_edit" value="{{ trans('polls.button.save_info') }}">
-    <a href="{{ $poll->getAdminLink() }}" class="btn btn-back-edit">{{ trans('polls.button.edit_back') }}</a>
+    <input type="submit" class="btn btn-success btn-edit-info btn-xs" name="btn_edit" value="{{ trans('polls.button.save_info') }}">
+    <a href="{{ $poll->getAdminLink() }}" class="btn btn-success btn-back-edit btn-xs">{{ trans('polls.button.edit_back') }}</a>
     {{ Form::close() }}
 @endif
 @if (isset($page) && $page == "manager")

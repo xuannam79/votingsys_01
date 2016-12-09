@@ -93,8 +93,18 @@ li {
     border-top: 1px solid #ddd;
 }
 
+.comments {
+    max-height: 300px;
+    overflow: scroll;
+}
+
 .user-comment {
     color: blue;
+    word-wrap: break-word;
+}
+
+.comment-text {
+    word-wrap: break-word;
 }
 
 .img-option {
@@ -201,7 +211,7 @@ li {
 
 .scroll-result {
     max-height: calc(100vh - 212px);
-    overflow-y: auto;
+    overflow-y: scroll;
 }
 
 .details-poll {

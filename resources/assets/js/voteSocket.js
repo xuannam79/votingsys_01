@@ -26,11 +26,13 @@ $(document).ready(function(){
             }
 
             if ($('.manage-poll-count-participant').text() == '0') {
+                $('.li-result-table').removeClass('hide-result-li');
                 $('.pie_bar_chart_manage').append($.parseJSON(data).html_pie_bar_manage_chart);
                 $('.manage-poll-count-participant').text('1');
             }
 
             $('.delete-all-participants-soket').css('display', 'block');
+            $('.div-delete-participant').removeClass('col-md-activity-jp');
             $('.btn-duplicate').css('display', 'none');
             $('.menu-add-soket').css('display', 'block');
 
