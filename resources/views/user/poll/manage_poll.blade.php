@@ -20,13 +20,20 @@
     <script src="https://cdn.socket.io/socket.io-1.3.4.js"></script>
     <div class="container">
         <div class="row">
-            <span style="display: none;" class="manage-poll-count-participant">{{ $countParticipantsVoted }}</span>
+            <span class="manage-poll-count-participant">{{ $countParticipantsVoted }}</span>
             <div class="hide-vote" data-poll-id="{{ $poll->id }}"></div>
             <div class="loader"></div>
-            <div id="manager_poll_wizard" class="col-md-10 col-md-offset-1 well wrap-poll">
+            <div id="manager_poll_wizard" class="col-lg-10 col-lg-offset-1
+                                                 col-md-10 col-md-offset-1
+                                                 col-sm-10 col-sm-offset-1
+                                                 well wrap-poll">
                 <div class="navbar panel">
                     <div class="navbar-inner">
-                        <div class="col-lg-6 col-lg-offset-3 panel-heading">
+                        <div class="col-lg-6 col-lg-offset-3
+                                    col-md-6 col-md-offset-3
+                                    col-sm-8 col-sm-offset-2
+                                    col-xs-8 col-xs-offset-2
+                                    panel-heading panel-test {{ (Session::get('locale') == 'ja' && ! $countParticipantsVoted) ? 'panel-jp-manage-poll' : '' }}">
                             <ul>
                                 <li><a href="#info" data-toggle="tab">{{ trans('polls.poll_info') }}</a></li>
                                 <li><a href="#vote_detail" data-toggle="tab">{{ trans('polls.show_result') }}</a></li>
@@ -120,7 +127,7 @@
 
                     <div class="tab-pane" id="vote_detail">
                         <div class="row">
-                            <div class="col-md-2">
+                            <div class="col-md-1 col-lg-1 col-sm-1 col-xs-2 col-menu-result">
                                 <div class="panel panel-default">
                                     <div class="panel-body">
                                         <ul class="nav nav-pills nav-stacked pie_bar_chart_manage">
@@ -128,10 +135,10 @@
                                                     <i class="fa fa-calculator" aria-hidden="true"></i>
                                                 </a>
                                             </li> -->
-                                            <li class="active"><a data-toggle="tab" href="#table">
-                                                    <i class="fa fa-table" aria-hidden="true"></i>
-                                                </a>
-                                            </li>
+                                                <li class="active li-result-table {{ ($optionRateBarChart != "null") ? '': 'hide-result-li' }}"><a data-toggle="tab" href="#table">
+                                                        <i class="fa fa-table" aria-hidden="true"></i>
+                                                    </a>
+                                                </li>
                                             @if ($optionRateBarChart != "null")
                                                 <li><a data-toggle="tab" href="#menu2">
                                                         <i class="fa fa-bar-chart" aria-hidden="true"></i>
@@ -146,37 +153,40 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-10">
+                            <div class="col-md-11 col-ls-11 col-sm-11 col-xs-10 col-result-detail">
                                 <div class="tab-content">
                                     <div class="tab-pane fade in active" id="table">
-                                        <div class="panel panel-default animated fadeInRight panel-darkcyan">
+                                        <div class="panel panel-default panel-darkcyan">
                                             <div class="panel-heading panel-heading-darkcyan">
                                                 {{ trans('polls.table_result') }}
                                             </div>
                                             <div class="panel-body">
                                                 @if ($countParticipantsVoted)
                                                     <div class="row">
-                                                        <div class="col-lg-3 col-lg-offset-3">
-                                                            <button type="button" class="btn btn-administration" data-toggle="modal" data-target="#myModal">
+                                                        <div class="col-lg-4 col-lg-offset-2
+                                                                    col-md-4 col-md-offset-2
+                                                                    col-sm-5 col-xs-detail
+                                                                    ">
+                                                            <button type="button" class="btn btn-administration btn-block btn-sm" data-toggle="modal" data-target="#myModal">
                                                                 <i class="fa fa-list" aria-hidden="true"></i> {{ trans('polls.show_vote_details') }}
                                                             </button>
                                                         </div>
-                                                        <div class="col-lg-3">
+                                                        <div class="col-lg-3 col-md-3 col-sm-3 col-sm-export col-xs-detail">
                                                             {{ Form::open(['route' => ['exportPDF', 'poll_id' => $poll->id]]) }}
                                                             {{
                                                                 Form::button('<span class="glyphicon glyphicon-export"></span>' . ' ' . trans('polls.export_pdf'), [
                                                                     'type' => 'submit',
-                                                                    'class' => 'btn btn-administration btn-right'
+                                                                    'class' => 'btn btn-administration btn-block btn-sm'
                                                                 ])
                                                             }}
                                                             {{ Form::close() }}
                                                         </div>
-                                                        <div class="col-lg-3">
+                                                        <div class="col-lg-3 col-md-3 col-sm-4 col-xs-detail">
                                                             {{ Form::open(['route' => ['exportExcel', 'poll_id' => $poll->id]]) }}
                                                             {{
                                                                 Form::button('<span class="glyphicon glyphicon-export"></span>' . ' ' . trans('polls.export_excel'), [
                                                                     'type' => 'submit',
-                                                                    'class' => 'btn btn-administration btn-right'
+                                                                    'class' => 'btn btn-administration btn-block btn-sm'
                                                                 ])
                                                             }}
                                                             {{ Form::close() }}
@@ -184,7 +194,7 @@
                                                     </div>
                                                 @endif
                                                 <div class="col-lg-12 manager-tabel-result-poll result-vote-poll">
-                                                    <table class="table table-hover table-responsive">
+                                                    <table class="table table-hover table-responsive table-option-result-detail">
                                                         <thead>
                                                             <tr>
                                                                 <th>{{ trans('polls.no') }}</th>
@@ -289,7 +299,7 @@
                                         </div>
                                     </div>
                                     <div class="tab-pane fade" id="menu2">
-                                        <div class="panel panel-default animated fadeInRight panel-darkcyan">
+                                        <div class="panel panel-default panel-darkcyan">
                                             <div class="panel-heading panel-heading-darkcyan">
                                                 {{ trans('polls.bar_chart') }}
                                             </div>
@@ -329,7 +339,7 @@
                                         </div>
                                     </div>
                                     <div class="tab-pane fade" id="menu3">
-                                        <div class="panel panel-default animated fadeInRight panel-darkcyan">
+                                        <div class="panel panel-default panel-darkcyan">
                                             <div class="panel-heading panel-heading-darkcyan">
                                                 {{ trans('polls.pie_chart') }}
                                             </div>
@@ -439,21 +449,21 @@
                             <hr class="hr-darkcyan">
                         </div>
                         <div class="row menu-activity-poll">
-                            <div class="col-lg-3">
-                                <a href="{{ URL::action('User\ActivityController@show', $poll->id) }}" class="btn btn-administration btn-block">
+                            <div class="col-lg-3 col-md-3 col-xs-activity">
+                                <a href="{{ URL::action('User\ActivityController@show', $poll->id) }}" class="btn btn-administration btn-sm btn-block">
                                     <span class="fa fa-history"></span>
                                     {{ trans('polls.view_history') }}
                                 </a>
                             </div>
-                            <div class="col-lg-3">
-                                <a href="{{ route('user-poll.edit', $poll->id) }}" class="btn btn-administration btn-block">
+                            <div class="col-lg-3 col-md-3 col-xs-activity">
+                                <a href="{{ route('user-poll.edit', $poll->id) }}" class="btn btn-administration btn-sm btn-block">
                                     <span class="fa fa-pencil"></span> {{ trans('polls.tooltip.edit') }}
                                 </a>
 
                             </div>
-                            <div class="col-lg-3">
+                            <div class="col-lg-3 col-md-3 col-xs-activity">
                                 @if ($poll->isClosed())
-                                    <a class="reopen-poll btn btn-administration btn-block" href="#">
+                                    <a class="reopen-poll btn btn-administration btn-sm btn-block" href="#">
                                         <i class="fa fa-external-link" aria-hidden="true"></i> {{ trans('polls.reopen_poll') }}
                                     </a>
                                 @endif
@@ -461,15 +471,16 @@
                                     {{ Form::open(['route' => ['poll.destroy', $poll->id], 'id' => 'close-poll', 'method' => 'delete']) }}
                                     {{
                                         Form::button('<span class="fa fa-times-circle"></span>' . ' ' . trans('polls.close_poll'), [
-                                            'class' => 'close-poll btn btn-block btn-administration',
+                                            'class' => 'close-poll btn btn-block btn-sm btn-administration',
                                         ])
                                     }}
                                     {{ Form::close() }}
                                 @endif
                             </div>
-                            <div class="col-lg-3">
+                            <div class="col-lg-3 col-md-3 col-xs-activity div-delete-participant
+                                {{ (Session::get('locale') == 'ja' && ! $countParticipantsVoted) ? 'col-md-activity-jp' : '' }}">
                                 @if (! $countParticipantsVoted)
-                                    <a href="{{ route('duplicate.show', $poll->id) }}" class="btn btn-administration btn-block btn-duplicate">
+                                    <a href="{{ route('duplicate.show', $poll->id) }}" class="btn btn-administration btn-block btn-duplicate btn-sm">
                                         <span class="fa fa-files-o"></span> {{ trans('polls.tooltip.duplicate') }}
                                     </a>
                                     @else
@@ -477,33 +488,33 @@
                                         {!! Form::open(['route' => ['delete_all_participant', 'poll_id' => $poll->id], 'id' => 'form-delete-participant']) !!}
                                         {{
                                             Form::button('<span class="fa fa-trash-o"></span>' . ' ' . trans('polls.delete_all_participants'), [
-                                                'class' => 'btn-delete-participant btn btn-block btn-administration btn-duplicate',
+                                                'class' => 'btn-delete-participant btn btn-block btn-sm btn-administration btn-duplicate',
                                             ])
                                         }}
                                     </div>
 
                                 @endif
-                                    <div class="delete-all-participants-soket" style="display: none;">
+                                    <div class="delete-all-participants-soket">
                                         {!! Form::open(['route' => ['delete_all_participant', 'poll_id' => $poll->id], 'id' => 'form-delete-participant']) !!}
                                         {{
                                             Form::button('<span class="fa fa-trash-o"></span>' . ' ' . trans('polls.delete_all_participants'), [
-                                                'class' => 'btn-delete-participant btn btn-block btn-administration',
+                                                'class' => 'btn-delete-participant btn-sm btn btn-block btn-administration',
                                             ])
                                         }}
                                     </div>
                                 </div>
                         </div>
-                        <div class="row menu-activity-poll menu-add-soket" style="display: none;">
-                                <div class="col-lg-3">
-                                    <a href="{{ route('duplicate.show', $poll->id) }}" target="_blank" class="btn btn-administration btn-block">
+                        <div class="row menu-activity-poll menu-add-soket">
+                                <div class="col-lg-3 col-xs-activity">
+                                    <a href="{{ route('duplicate.show', $poll->id) }}" target="_blank" class="btn btn-administration btn-sm btn-block">
                                         <span class="fa fa-files-o"></span> {{ trans('polls.tooltip.duplicate') }}
                                     </a>
                                 </div>
                             </div>
                         @if ($countParticipantsVoted)
                             <div class="row menu-activity-poll menu-add">
-                                <div class="col-lg-3">
-                                    <a href="{{ route('duplicate.show', $poll->id) }}" target="_blank" class="btn btn-administration btn-block btn-duplicate">
+                                <div class="col-lg-3 col-xs-activity">
+                                    <a href="{{ route('duplicate.show', $poll->id) }}" target="_blank" class="btn btn-administration btn-sm btn-block btn-duplicate">
                                         <span class="fa fa-files-o"></span> {{ trans('polls.tooltip.duplicate') }}
                                     </a>
                                 </div>

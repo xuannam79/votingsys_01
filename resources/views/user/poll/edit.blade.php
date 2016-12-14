@@ -16,10 +16,17 @@
     </div>
     <div class="loader"></div>
     <div class="container">
-        <div id="edit_poll_wizard" class="col-lg-10 col-lg-offset-1 well wrap-poll">
+        <div id="edit_poll_wizard" class="col-lg-10 col-lg-offset-1
+                                         col-md-10 col-md-offset-1
+                                         col-sm-10 col-sm-offset-1
+                                         well wrap-poll">
             <div class="navbar panel">
                 <div class="navbar-inner">
-                    <div class="col-md-12 col-lg-4 col-lg-offset-4 panel-heading">
+                    <div class="col-lg-6 col-lg-offset-3
+                                col-md-6 col-md-offset-3
+                                col-sm-8 col-sm-offset-2
+                                col-xs-8 col-xs-offset-2
+                                panel-heading panel-test {{ (Session::get('locale') == 'ja' && ! $countParticipantsVoted) ? 'panel-jp-manage-poll' : '' }}">
                         <ul>
                             <li><a href="#info" data-toggle="tab">{{ trans('polls.label.step_1') }}</a></li>
                             @if (! $totalVote)
@@ -33,7 +40,7 @@
             @include('layouts.error')
             @include('layouts.message')
             @if ($totalVote)
-                <div class="alert alert-info">
+                <div class="alert alert-info alert-dismissable">
                     <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
                     <strong><span class="glyphicon glyphicon-info-sign"></span></strong> {{ trans('polls.poll_voted') }}
                 </div>

@@ -12,10 +12,17 @@
     <div class="container">
         <div class="row">
             <div class="loader"></div>
-            <div id="voting_wizard" class="col-lg-10 col-md-10 col-lg-offset-1 col-md-offset-1 well wrap-poll">
+            <div id="voting_wizard" class="col-lg-10 col-lg-offset-1
+                                            col-md-10 col-md-offset-1
+                                            col-sm-10 col-sm-offset-1
+                                            well wrap-poll">
                 <div class="navbar panel panel-default panel-detail-poll">
                     <div class="panel-body navbar-inner col-lg-12 panel-body-detail-poll">
-                        <div class="col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3 panel-heading">
+                        <div class="col-lg-6 col-lg-offset-3
+                                    col-md-6 col-md-offset-3
+                                    col-sm-8 col-sm-offset-2
+                                    col-xs-8 col-xs-offset-2
+                                    panel-heading panel-test">
                             <ul>
                                 <li><a href="#vote" data-toggle="tab">{{ trans('polls.nav_tab_edit.voting') }}</a></li>
                                 <li><a href="#info" data-toggle="tab">{{ trans('polls.nav_tab_edit.info') }}</a></li>
@@ -87,7 +94,7 @@
                                             @endif
                                         </label>
                                     </div>
-                                    <div class="tab-content">
+                                    <div class="tab-content tab-content-detail">
                                         <div class="col-lg-12">
                                             <div class="col-lg-2 col-lg-offset-10 vote-style">
                                                 <ul class="nav nav-pills">
@@ -213,7 +220,7 @@
                                         {!! Form::hidden('pollId', $poll->id) !!}
                                         {!! Form::hidden('isRequiredEmail', $isRequiredEmail) !!}
                                         <div class="row">
-                                            <div class="col-lg-5">
+                                            <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 col-xs-name-vote">
                                                 <div class="input-group  {{ ($isRequiredName || $isRequiredNameAndEmail) ? "required" : "" }}">
                                                     <span class="input-group-addon">
                                                         <i class="fa fa-user" aria-hidden="true"></i>
@@ -226,7 +233,7 @@
                                                     !!}
                                                 </div>
                                             </div>
-                                            <div class="col-lg-5">
+                                            <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 col-xs-email-vote">
                                                 <div class="input-group {{ ($isRequiredEmail || $isRequiredNameAndEmail) ? "required" : "" }}">
                                                     <span class="input-group-addon">
                                                         <i class="glyphicon glyphicon-envelope" aria-hidden="true"></i>
@@ -239,7 +246,7 @@
                                                     !!}
                                                 </div>
                                             </div>
-                                            <div class="col-lg-2">
+                                            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 col-btn-xs-vote">
                                                 <span class="input-group-btn"
                                                     data-message-email="{{ trans('polls.message_email') }}"
                                                     data-url="{{ url('/check-email') }}"
@@ -290,7 +297,7 @@
                                     </span>
                                 @endif
                             </h4>
-                            <p>
+                            <p class="poll-info-not-xs">
                                 <span class="span-info">
                                     <i class="fa fa-clock-o" aria-hidden="true"></i> {{ $poll->created_at }}
                                 </span>
@@ -317,6 +324,38 @@
                                      data-share="true">
                                 </div>
                             </div>
+
+                            <div class="poll-info-xs">
+                                <p>
+                                    <i class="fa fa-clock-o" aria-hidden="true"></i> {{ $poll->created_at }}
+                                </p>
+                                <p>
+                                    <i class="fa fa-user" aria-hidden="true"></i>
+                                    @if ($poll->user_id)
+                                        <label class="label-poll-info">{{ $poll->user->name }}</label>
+                                    @else
+                                        <label class="label-poll-info">{{ $poll->name }}</label>
+                                    @endif
+                                </p>
+                                @if ($poll->location)
+                                    <p data-placement="top" data-toggle="tooltip" title="{{ $poll->location }}">
+                                        <i class="fa fa-map-marker" aria-hidden="true"></i>
+                                        {{ str_limit($poll->location, config('settings.str_limit.location')) }}
+                                    </p>
+                                @endif
+                                <p class="count-participant">
+                                    <span class="fa fa-users"></span> {{ $countParticipantsVoted }}
+                                </p>
+                                <p class="comment-count">
+                                    <span class="glyphicon glyphicon-comment"></span> {{ $poll->countComments() }}
+                                </p>
+                                @if ($poll->date_close)
+                                    <p>
+                                        <span class="fa fa-times-circle"></span> <i>{{ $poll->date_close }}</i>
+                                    </p>
+                                @endif
+                            </div>
+
                         </div>
                         <!-- COMMENT -->
                         <div class="col-md-12" id="panel-comment">
@@ -325,8 +364,11 @@
                                     <h4>
                                         <span class="comment-count">{{ $poll->countComments() }} </span>
                                         {{ trans('polls.comments') }}
-                                        <span data-label-show-comment = "{{ trans('polls.show_comments') }}" data-label-hide="{{ trans('polls.hide') }}">
-                                        <button class="btn btn-warning show" id="show-hide-list-comment">{{ trans('polls.hide') }}</button>
+                                        <span data-label-show-comment = "<i class='fa fa-eye' aria-hidden='true'></i>"
+                                              data-label-hide="<i class='fa fa-eye-slash' aria-hidden='true'></i>">
+                                        <button class="btn btn-warning show btn-xs" id="show-hide-list-comment">
+                                            <i class="fa fa-eye-slash" aria-hidden="true"></i>
+                                        </button>
                                     </span>
                                     </h4>
                                 </div>
@@ -353,7 +395,7 @@
                                                         @endif
                                                     </label>
                                                     <br>
-                                                    {{ $comment->content }}
+                                                    <span class="comment-text">{{ $comment->content }}</span>
                                                 </div>
                                             </div>
                                         @endforeach
@@ -525,7 +567,7 @@
                                                 </div>
                                             </div>
                                             <div class="col-lg-12 table-poll-result result-vote-poll">
-                                                <table class="table table-hover table-responsive">
+                                                <table class="table table-hover">
                                                     <thead>
                                                         <tr>
                                                             <th>{{ trans('polls.no') }}</th>
@@ -598,9 +640,9 @@
                                                             data.addRows(optionRateBarChart);
                                                             var options = {
                                                                 'width': 750,
-                                                                'height': 400,
+                                                                'height': 450,
                                                                 chartArea:{
-                                                                    left:250,
+                                                                    left: 250,
                                                                 },
                                                                 colors: ['darkcyan'],
                                                                 hAxis: {

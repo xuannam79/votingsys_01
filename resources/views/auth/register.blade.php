@@ -4,7 +4,12 @@
 <div class="container">
     <div class="row">
     <div class="loader"></div>
-        <div class="col-md-4 col-md-offset-4 animated fadeInDown register">
+        <div class="col-lg-4 col-md-offset-4
+                    col-md-4 col-md-offset-4
+                    col-sm-6 col-md-offset-3
+                    col-xs-8 col-xs-offset-2
+                    col-xs-register
+                    animated fadeInDown register">
             <div class="panel panel-default panel-darkcyan-profile">
                 <div class="panel-heading panel-heading-darkcyan">{{ trans('label.register') }}</div>
                 <div class="panel-body">
@@ -19,7 +24,12 @@
                         ])
                     }}
                         <div class="form-group">
-                            <div class="input-group col-md-10 col-md-offset-1">
+                            <div class="input-group
+                                        col-lg-10 col-lg-offset-1
+                                        col-md-10 col-md-offset-1
+                                        col-sm-10 col-sm-offset-1
+                                        col-xs-10 col-xs-offset-1
+                                        col-xs-register">
                                 <span class="input-group-addon" id="basic-addon1">
                                     <i class="fa fa-user" aria-hidden="true"></i>
                                 </span>
@@ -34,7 +44,12 @@
                         </div>
 
                         <div class="form-group">
-                            <div class="input-group col-md-10 col-md-offset-1">
+                            <div class="input-group
+                                        col-lg-10 col-lg-offset-1
+                                        col-md-10 col-md-offset-1
+                                        col-sm-10 col-sm-offset-1
+                                        col-xs-10 col-xs-offset-1
+                                        col-xs-register">
                                 <span class="input-group-addon" id="basic-addon1">
                                     <i class="fa fa-envelope" aria-hidden="true"></i>
                                 </span>
@@ -49,7 +64,12 @@
                         </div>
 
                         <div class="form-group">
-                            <div class="input-group col-md-10 col-md-offset-1">
+                            <div class="input-group
+                                        col-lg-10 col-lg-offset-1
+                                        col-md-10 col-md-offset-1
+                                        col-sm-10 col-sm-offset-1
+                                        col-xs-10 col-xs-offset-1
+                                        col-xs-register">
                                 <span class="input-group-addon" id="basic-addon1">
                                     <i class="fa fa-transgender" aria-hidden="true"></i>
                                 </span>
@@ -63,7 +83,12 @@
                         </div>
 
                         <div class="form-group">
-                            <div class="input-group col-md-10 col-md-offset-1">
+                            <div class="input-group
+                                        col-lg-10 col-lg-offset-1
+                                        col-md-10 col-md-offset-1
+                                        col-sm-10 col-sm-offset-1
+                                        col-xs-10 col-xs-offset-1
+                                        col-xs-register">
                                 <span class="input-group-addon">
                                     <i class="fa fa-key" aria-hidden="true"></i>
                                 </span>
@@ -78,7 +103,12 @@
                         </div>
 
                         <div class="form-group">
-                            <div class="input-group col-md-10 col-md-offset-1">
+                            <div class="input-group
+                                        col-lg-10 col-lg-offset-1
+                                        col-md-10 col-md-offset-1
+                                        col-sm-10 col-sm-offset-1
+                                        col-xs-10 col-xs-offset-1
+                                        col-xs-register">
                                 <span class="input-group-addon">
                                     <i class="fa fa-key" aria-hidden="true"></i>
                                 </span>
@@ -93,7 +123,12 @@
                         </div>
 
                         <div class="form-group">
-                            <div class="input-group col-md-10 col-md-offset-1">
+                            <div class="input-group
+                                        col-lg-10 col-lg-offset-1
+                                        col-md-10 col-md-offset-1
+                                        col-sm-10 col-sm-offset-1
+                                        col-xs-10 col-xs-offset-1
+                                        col-xs-register">
                                 <span class="input-group-addon" id="basic-addon1">
                                     <i class="fa fa-picture-o" aria-hidden="true"></i>
                                 </span>
@@ -110,7 +145,7 @@
                         </div>
 
                         <div class="form-group">
-                            <div class="col-md-12">
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 col-xs-register">
                                 {{
                                     Form::button('<i class="fa fa-btn fa-user"></i> ' . trans('label.register'), [
                                         'id' => 'btn-register',
@@ -120,12 +155,12 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-6 col-lg-6 col-xs-6 col-sm-6 col-xs-register">
                                 <a class="btn btn-link" href="{{ url('/login') }}">
                                     {{ trans('label.login') }}
                                 </a>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-6 col-lg-6 col-xs-6 col-sm-6 col-xs-register">
                                 <a class="btn btn-link register-text" href="{{ url('/password/reset') }}">
                                     {{ trans('label.forgot_password') }}
                                 </a>

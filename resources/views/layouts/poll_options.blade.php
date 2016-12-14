@@ -3,7 +3,7 @@
        Form::open([
            'route' => ['user-poll.update', $poll->id],
            'method' => 'PUT',
-           'id' => 'form_update_poll',
+           'id' => 'form_update_poll_option',
            'role' => 'form',
            'enctype' => 'multipart/form-data',
        ])
@@ -81,8 +81,8 @@
 
 @if (isset($page) && $page == 'edit')
     <div class="col-lg-12">
-        <input type="submit" class="btn btn-success btn-darkcyan" name="btn_edit" value="{{ trans('polls.button.save_option') }}">
-        <a href="{{ $poll->getAdminLink() }}" class="btn btn-back-edit">{{ trans('polls.button.edit_back') }}</a>
+        <input type="submit" class="btn btn-success btn-darkcyan btn-edit-info btn-xs" name="btn_edit" value="{{ trans('polls.button.save_option') }}">
+        <a href="{{ $poll->getAdminLink() }}" class="btn btn-back-edit btn-xs">{{ trans('polls.button.edit_back') }}</a>
    </div>
     {{ Form::close() }}
 @endif

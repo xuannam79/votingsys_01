@@ -21,9 +21,10 @@
                 {{
                     Form::checkbox('setting[' . $settingKey . ']', $settingKey, true, [
                         'onchange' => 'settingAdvance(' . $settingKey . ')',
+                        'class' => 'switch-checkbox-setting'
                     ])
                 }}
-                {{ $settingText }}
+                <span class='span-text-setting'>{{ $settingText }} </span>
             </label>
         </div>
     @else
@@ -35,9 +36,10 @@
                         && ($page == 'edit' || $page == 'duplicate')
                         && array_key_exists($settingKey, $setting)) ? true : null, [
                             'onchange' => 'settingAdvance(' . $settingKey . ')',
+                            'class' => 'switch-checkbox-setting'
                         ])
                 }}
-                {{ $settingText }}
+                <span class='span-text-setting'>{{ $settingText }} </span>
             </label>
         </div>
     @endif
@@ -49,11 +51,11 @@
                                     || array_key_exists(config('settings.setting.required_name'), $setting)
                                     || array_key_exists(config('settings.setting.required_name_and_email'), $setting))) ? "" : "setting-advance" }}"
              id="setting-required">
-            <label class="radio-inline">
+            <label class="radio-inline radio-setting-required">
                 {{ Form::radio('setting_child[required]', config('settings.setting.required_name'), true) }}
                 {{ trans('polls.label.setting.required_name') }}
             </label>
-            <label class="radio-inline">
+            <label class="radio-inline radio-setting-required">
                 {{
                     Form::radio('setting_child[required]', config('settings.setting.required_email'),
                         (isset($page)
@@ -63,7 +65,7 @@
                 }}
                 {{ trans('polls.label.setting.required_email') }}
             </label>
-            <label class="radio-inline">
+            <label class="radio-inline radio-setting-required">
                 {{
                     Form::radio('setting_child[required]',
                         config('settings.setting.required_name_and_email'),
@@ -82,8 +84,9 @@
             && array_key_exists($settingKey, $setting)) ? "" : "setting-advance" }}" id="setting-link">
             <div class="row">
                 <div class="col-lg-8">
-                    <div class="input-group">
-                        <span class="input-group-addon">
+                    <label class="col-xs-link">{{ str_limit(url('/') . config('settings.email.link_vote'), 30) }}</label>
+                    <div class="input-group input-group-link">
+                        <span class="input-group-addon input-group-addon-link">
                             {{ str_limit(url('/') . config('settings.email.link_vote'), 30) }}
                         </span>
                         {{
@@ -191,7 +194,7 @@
     @endif
 @endforeach
 @if (isset($page) && $page == "edit")
-    <input type="submit" class="btn btn-success btn-edit-info" name="btn_edit" value="{{ trans('polls.button.save_setting') }}">
-    <a href="{{ $poll->getAdminLink() }}" class="btn btn-back-edit">{{ trans('polls.button.edit_back') }}</a>
+    <input type="submit" class="btn btn-success btn-edit-info btn-xs" name="btn_edit" value="{{ trans('polls.button.save_setting') }}">
+    <a href="{{ $poll->getAdminLink() }}" class="btn btn-back-edit btn-xs">{{ trans('polls.button.edit_back') }}</a>
     {{ Form::close() }}
 @endif
