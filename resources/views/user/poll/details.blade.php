@@ -48,7 +48,7 @@
                                 </label>
                             </div>
                         @endif
-                        @if ($isSetIp && (auth()->check() && $isUserVoted || $isSetIp && !auth()->check() && $isParticipantVoted))
+                        @if (! ($isSetIp && (auth()->check() && ! $isUserVoted || $isSetIp && !auth()->check() && ! $isParticipantVoted)))
                             <div class="alert alert-warning alert-poll-set-ip">
                                 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
                                 <span class='glyphicon glyphicon-warning-sign'></span>
@@ -214,9 +214,7 @@
                                     </div>
                                 </div>
                                 <div class="panel-footer">
-                                    @if ($isSetIp && auth()->check() && ! $isUserVoted
-                                        || $isSetIp && !auth()->check() && ! $isParticipantVoted
-                                        || ! $isLimit && ! $poll->isClosed() && ! $isSetIp && !$isTimeOut)
+                                    @if ($isSetIp && (auth()->check() && ! $isUserVoted || $isSetIp && !auth()->check() && ! $isParticipantVoted) || ! $isLimit && ! $poll->isClosed() && ! $isSetIp && !$isTimeOut)
                                         {!! Form::hidden('pollId', $poll->id) !!}
                                         {!! Form::hidden('isRequiredEmail', $isRequiredEmail) !!}
                                         <div class="row">
