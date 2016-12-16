@@ -60,6 +60,20 @@ class VoteController extends Controller
 
         $inputs = $request->only('option', 'nameVote', 'emailVote', 'pollId', 'isRequiredEmail');
         $poll = $this->pollRepository->findPollById($inputs['pollId']);
+
+        if (! auth()->check()) {
+            $listParticipantVotes = $this->participantVoteRepository->getVoteWithOptionsByVoteId($this->pollRepository->getParticipantVoteIds($poll->id));
+            if ($listParticipantVotes->count()) {
+                foreach ($listParticipantVotes as $participantVote) {
+                    foreach($participantVote as $item) {
+                        if (isset($item->participant) && $item->participant->ip_address == $ip) {
+                            return redirect()->to($poll->getUserLink());
+                        }
+                    }
+                }
+            }
+        }
+
         $isRequiredEmail = $inputs['isRequiredEmail'];
         $now = Carbon::now();
 
