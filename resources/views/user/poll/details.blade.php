@@ -48,7 +48,8 @@
                                 </label>
                             </div>
                         @endif
-                        @if (! ($isSetIp && (auth()->check() && ! $isUserVoted || $isSetIp && !auth()->check() && ! $isParticipantVoted)))
+                            @if ($isSetIp && auth()->check() && $isUserVoted
+                                || $isSetIp && ! auth()->check() && $isParticipantVoted)
                             <div class="alert alert-warning alert-poll-set-ip">
                                 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
                                 <span class='glyphicon glyphicon-warning-sign'></span>
