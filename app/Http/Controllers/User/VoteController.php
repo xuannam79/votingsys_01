@@ -45,6 +45,8 @@ class VoteController extends Controller
 
     public function store(Request $request)
     {
+
+
         //get MAC address of Client
         $client  = @$_SERVER['HTTP_CLIENT_IP'];
         $forward = @$_SERVER['HTTP_X_FORWARDED_FOR'];
@@ -60,8 +62,17 @@ class VoteController extends Controller
 
         $inputs = $request->only('option', 'nameVote', 'emailVote', 'pollId', 'isRequiredEmail');
         $poll = $this->pollRepository->findPollById($inputs['pollId']);
+        $isSetIp = false;
 
-        if (! auth()->check()) {
+        if ($poll->settings) {
+            foreach ($poll->settings as $setting) {
+                if ($setting->key == config('settings.setting.is_set_ip')) {
+                    $isSetIp = true;
+                }
+            }
+        }
+
+        if ($isSetIp && ! auth()->check()) {
             $listParticipantVotes = $this->participantVoteRepository->getVoteWithOptionsByVoteId($this->pollRepository->getParticipantVoteIds($poll->id));
             if ($listParticipantVotes->count()) {
                 foreach ($listParticipantVotes as $participantVote) {
