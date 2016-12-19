@@ -208,7 +208,6 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
                 config('settings.setting.custom_link') => trans('polls.label.setting.custom_link'),
                 config('settings.setting.set_limit') => trans('polls.label.setting.set_limit'),
                 config('settings.setting.set_password') => trans('polls.label.setting.set_password'),
-                config('settings.setting.is_set_ip') => trans('polls.label.setting.is_set_ip'),
             ],
         ];
 
