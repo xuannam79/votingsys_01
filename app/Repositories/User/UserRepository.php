@@ -37,7 +37,7 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
 
     public function getUserWithEmail($providerUser)
     {
-        return $this->model->whereEmail($providerUser->getEmail())->whereName($providerUser->getName())->first();
+        return $this->model->whereEmail($providerUser->getEmail())->first();
     }
 
     public function register(array $data)
