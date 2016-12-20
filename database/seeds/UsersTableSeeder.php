@@ -15,6 +15,7 @@ class UsersTableSeeder extends Seeder
         User::truncate();
         factory(User::class, 5)->create();
 
+        //create Admin account
         factory(User::class)->create([
             'email' => 'admin@gmail.com',
             'name' => 'Admin',
