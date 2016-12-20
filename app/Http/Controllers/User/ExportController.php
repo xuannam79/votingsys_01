@@ -35,7 +35,7 @@ class ExportController extends Controller
 
     public function getDataRender($pollId)
     {
-        $poll = Poll::find($pollId);
+        $poll = $this->pollRepository->findPollById($pollId);
         $totalVote = config('settings.default_value');
 
         try {
@@ -117,16 +117,12 @@ class ExportController extends Controller
     public function exportExcel(Request $request)
     {
         $inputs = $request->only('poll_id');
+
         Excel::create(trans('polls.vote'), function($excel) use ($inputs) {
-            $excel->sheet(trans('polls.vote_page'), function($sheet) use ($inputs){
+            $excel->sheet(trans('polls.vote'), function($sheet) use ($inputs) {
                 $sheet->loadView('user.poll.details_layouts_excel', $this->getDataRender($inputs['poll_id']));
             });
-        })->store('xls', storage_path('exports'));
-        $voteExcelFilePath = storage_path('exports') . '/' . trans('polls.vote') . '.xls';
 
-        return response()->download($voteExcelFilePath, trans('polls.vote') . '.xls', [
-            'Content-Type' => 'application/vnd.ms-excel',
-            'Content-Disposition' => 'attachment; filename=' . trans('polls.vote') . '.xls'
-        ]);
+        })->export('xls');
     }
 }
