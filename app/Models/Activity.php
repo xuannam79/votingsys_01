@@ -74,7 +74,7 @@ class Activity extends Model
                 'text' => trans('history.reopen_poll'),
             ],
         ];
-        $textTemplate = "<label class='label label-%s'>%s</label>";
+        $textTemplate = "<label class='label label-%s wrap-text'>%s</label>";
         $type = $types[$this->type];
 
         return sprintf($textTemplate, $type['level'], $name . ' ' . $type['text']);

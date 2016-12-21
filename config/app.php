@@ -124,6 +124,12 @@ return [
 
     'log_level' => env('APP_LOG_LEVEL', 'debug'),
 
+    'key_program' => [
+        'google_map' => env('GOOGLE_MAP_KEY', ''),
+        'socket_host' => env('SOCKET_HOST', ''),
+        'socket_port' => env('SOCKET_PORT', ''),
+    ],
+
     /*
     |--------------------------------------------------------------------------
     | Autoloaded Service Providers

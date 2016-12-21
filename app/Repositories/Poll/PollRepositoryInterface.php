@@ -7,10 +7,7 @@ interface PollRepositoryInterface
     /*
      * Create a poll
      */
-    public function addInfo($input);
-    public function addOption($input, $pollId);
-    public function addSetting($input, $pollId);
-    public function addLink($pollId, $input);
+    public function sendEmail($email, $view, $viewData, $subject);
 
     /*
      * Edit a poll

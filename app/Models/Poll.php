@@ -140,6 +140,17 @@ class Poll extends Model
         }
     }
 
+    public function getTokenLink($type)
+    {
+        if (!$this->links) {
+            return false;
+        }
+
+        $links = $this->links->pluck('token', 'link_admin')->toArray();
+
+        return $links[$type];
+    }
+
     public function getAdminLink()
     {
         if (!$this->links) {

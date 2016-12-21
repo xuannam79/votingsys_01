@@ -179,7 +179,6 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
 
     public function getDataPollSystem()
     {
-        $settingText = trans('polls.label.setting');
 
         //get data to send javascript file
         $jsonData = json_encode([
@@ -197,26 +196,45 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
         ]);
 
         //get data to send view file
+        $typePollConfig = config('settings.type_poll');
+        $settingPollConfig = config('settings.setting');
+        $pollTrans = trans('polls.label');
         $viewData = [
             'types' => [
-                config('settings.type_poll.single_choice') => trans('polls.label.single_choice'),
-                config('settings.type_poll.multiple_choice') => trans('polls.label.multiple_choice'),
+                $typePollConfig['single_choice'] => $pollTrans['single_choice'],
+                $typePollConfig['multiple_choice'] => $pollTrans['multiple_choice'],
             ],
             'settings' => [
-                config('settings.setting.required') => trans('polls.label.setting.required'),
-                config('settings.setting.hide_result') => trans('polls.label.setting.hide_result'),
-                config('settings.setting.custom_link') => trans('polls.label.setting.custom_link'),
-                config('settings.setting.set_limit') => trans('polls.label.setting.set_limit'),
-                config('settings.setting.set_password') => trans('polls.label.setting.set_password'),
+                $settingPollConfig['required'] => $pollTrans['setting']['required'],
+                $settingPollConfig['hide_result'] => $pollTrans['setting']['hide_result'],
+                $settingPollConfig['custom_link'] => $pollTrans['setting']['custom_link'],
+                $settingPollConfig['set_limit'] => $pollTrans['setting']['set_limit'],
+                $settingPollConfig['set_password'] => $pollTrans['setting']['set_password'],
             ],
         ];
 
         return compact('jsonData', 'viewData');
     }
 
-    /*------------------------------------------------------------
-     *                  [ADMIN] - POLL
-     *------------------------------------------------------------*/
+
+    /**
+     *
+     * Get id of user when create a poll
+     *
+     * @param null $email
+     * @return string
+     */
+    private function getUserId($email = null) {
+        $currentUser = auth()->user();
+
+        if ($currentUser) {
+            return ($currentUser->email) ? $currentUser->id : '';
+        }
+
+        $user = User::where('email', $email)->first();
+
+        return ($user) ? $user->id : '';
+    }
 
     /**
      *
@@ -226,25 +244,14 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
      *
      * @return bool
      */
-    public function addInfo($input)
+    private function addInfo($input)
     {
-        $now = Carbon::now();
-
         try {
-            $userId = null;
-
-            if (auth()->user() && ! auth()->user()->email) {
-                User::where('id', auth()->user()->id)->update(['email' => $input['email'], 'is_active' => true]);
-                $userId = auth()->user()->id;
-            } else {
-                $user = User::where('email', $input['email'])->first();
-                if ($user) {
-                    $userId = $user->id;
-                }
-            }
+            $userId = $this->getUserId($input['email']);
+            $now = Carbon::now();
 
             $pollId = Poll::insertGetId([
-                'user_id' => $userId,
+                'user_id' => ($userId) ? $userId : null,
                 'title' => $input['title'],
                 'description' => ($input['description']) ? $input['description'] : null,
                 'location' => ($input['location']) ? $input['location'] : null,
@@ -263,6 +270,66 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
 
     /**
      *
+     * Create a array contain name of image randed by system
+     *
+     * @param $arrInputImage
+     *
+     * @return array
+     */
+    private function createFileName($arrInputImage)
+    {
+        $imageNames = [];
+
+        if ($arrInputImage) {
+            foreach ($arrInputImage as $key => $image) {
+                do {
+                    $imageNames['optionImage'][$key] = uniqid(rand(), true) . '.' . $image->getClientOriginalExtension();
+                    $path = public_path() . config('settings.option.path_image') . $imageNames['optionImage'][$key];
+                } while (File::exists($path));
+            }
+        }
+
+        return $imageNames;
+    }
+
+    /**
+     *
+     * Delete old image and upload a new image
+     *
+     * @param $images
+     * @param $imageNames
+     * @param array $oldImages
+     * @throws Exception
+     */
+    private function updateImage($images, $imageNames, $oldImages = [])
+    {
+        try {
+            /* delete old image */
+            if (is_array($oldImages) && $oldImages) {
+                foreach ($oldImages as $image) {
+                    $path = public_path() . config('settings.option.path_image') . $image;
+                    if (File::exists($path)) {
+                        File::delete($path);
+                    }
+                }
+            }
+
+            /* upload new image */
+            if ($images) {
+                $pathTo = public_path() . config('settings.option.path_image');
+
+                foreach ($images as $key => $image) {
+                    $pathFrom = $pathTo . $imageNames['optionImage'][$key];
+                    $image->move($pathTo, $pathFrom);
+                }
+            }
+        } catch (Exception $ex) {
+            throw new Exception(trans('polls.message.upload_image_fail'));
+        }
+    }
+
+    /**
+     *
      * Add all option of a poll into database OPTION
      *
      * @param $input
@@ -270,7 +337,7 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
      *
      * @return bool
      */
-    public function addOption($input, $pollId)
+    private function addOption($input, $pollId)
     {
         try {
             $options = $input['optionText'];
@@ -307,70 +374,6 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
 
     /**
      *
-     * Create a array contain name of image randed by system
-     *
-     * @param $arrInputImage
-     *
-     * @return array
-     */
-    public function createFileName($arrInputImage)
-    {
-        $imageNames = [];
-
-        if ($arrInputImage) {
-            foreach ($arrInputImage as $key => $image) {
-                do {
-                    $imageNames['optionImage'][$key] = uniqid(rand(), true) . '.' . $image->getClientOriginalExtension();
-                    $path = public_path() . config('settings.option.path_image') . $imageNames['optionImage'][$key];
-                } while (File::exists($path));
-            }
-          }
-
-        return $imageNames;
-    }
-
-    /**
-     *
-     * Delete old image and upload a new image
-     *
-     * @param $images
-     * @param $imageNames
-     * @param array $oldImages
-     * @throws Exception
-     */
-    public function updateImage($images, $imageNames, $oldImages = [])
-    {
-        try {
-            /*
-             * delete old image
-             */
-            if (is_array($oldImages) && $oldImages) {
-                foreach ($oldImages as $image) {
-                    $path = public_path() . config('settings.option.path_image') . $image;
-                    if (File::exists($path)) {
-                        File::delete($path);
-                    }
-                }
-            }
-
-            /*
-             * upload new image
-             */
-            if ($images) {
-                $pathTo = public_path() . config('settings.option.path_image');
-
-                 foreach ($images as $key => $image) {
-                    $pathFrom = $pathTo . $imageNames['optionImage'][$key];
-                    $image->move($pathTo, $pathFrom);
-                }
-            }
-        } catch (Exception $ex) {
-            throw new Exception(trans('polls.message.upload_image_fail'));
-        }
-    }
-
-    /**
-     *
      * Add all setting of a poll into database SETTING
      *
      * @param $input
@@ -378,7 +381,7 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
      *
      * @return bool
      */
-    public function addSetting($input, $pollId)
+    private function addSetting($input, $pollId)
     {
         try {
             $settings = $input['setting'];
@@ -413,7 +416,6 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
 
             return true;
         } catch (Exception $ex) {
-            dd($ex);
             return false;
         }
     }
@@ -427,7 +429,7 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
      *
      * @return null|string
      */
-    public function getValueOfSetting($setting, $values)
+    private function getValueOfSetting($setting, $values)
     {
         $config = config('settings.setting');
 
@@ -454,7 +456,7 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
      * @param $input
      * @return array|bool
      */
-    public function addLink($pollId, $input)
+    private function addLink($pollId, $input)
     {
         try {
             $participantLink = str_random(config('settings.length_poll.link'));
@@ -465,27 +467,26 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
                 && $input['value']['link']) {
                 $participantLink = $input['value']['link'];
             }
-            /*
-             * insert link of participant
-             */
+
+            /* insert link of participant */
             Link::create([
                 'poll_id' => $pollId,
                 'token' => $participantLink,
                 'link_admin' => config('settings.link_poll.vote'),
             ]);
 
-            /*
-             * insert link of administration
-             */
+            /* insert link of administration */
             Link::create([
                 'poll_id' => $pollId,
                 'token' => $administrationLink,
                 'link_admin' => config('settings.link_poll.admin'),
             ]);
+
             $linkReturn = [
                 'participant' => $participantLink,
                 'administration' => $administrationLink,
             ];
+
             return $linkReturn;
         } catch (Exception $ex) {
             return false;
@@ -504,18 +505,12 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
      *
      * @throws Exception
      */
-    public function sendEmail($email, $view, $viewData, $subject, $receive)
+    public function sendEmail($email, $view, $viewData, $subject)
     {
         try {
-            if ($receive == 'participant') {
-                Mail::queue($view, $viewData, function ($message) use ($email, $subject) {
-                    $message->to($email)->subject($subject);
-                });
-            } else {
-                Mail::queue($view, $viewData, function ($message) use ($email, $subject) {
-                    $message->to($email)->subject($subject);
-                });
-            }
+            Mail::queue($view, $viewData, function ($message) use ($email, $subject) {
+                $message->to($email)->subject($subject);
+            });
         } catch (Exception $ex) {
             throw new Exception(trans('polls.message.send_mail_fail'));
         }
@@ -544,10 +539,6 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
                         'image' => $nameOldImage['optionImage'][$key],
                         'created_at' => $now,
                     ];
-                    $path = public_path() . config('settings.option.path_image') . $oldImage[$key];
-                    if (File::exists($path)) {
-                        File::delete($path);
-                    }
                 } elseif ($oldImage && array_key_exists($key, $oldImage)) {
                     $dataInsert[] = [
                         'poll_id' => $pollId,
@@ -559,7 +550,8 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
                     $dataInsert[] = [
                         'poll_id' => $pollId,
                         'name' => $value,
-                        'image' => ($nameImage && array_key_exists($key, $nameImage['optionImage'])) ? $nameImage['optionImage'][$key] : null,
+                        'image' => ($nameImage && array_key_exists($key, $nameImage['optionImage'])) ?
+                                    $nameImage['optionImage'][$key] : null,
                         'created_at' => $now,
                     ];
                 }
@@ -592,6 +584,7 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
             } else {
                 if (! $pollId || ! ($this->addOption($input, $pollId) && $this->addSetting($input, $pollId))) {
                     DB::rollback();
+
                     return false;
                 }
             }
@@ -612,7 +605,8 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
             $password = false;
 
             if (count($input['setting'])) {
-                $password = (in_array(config('settings.setting.set_password'), $input['setting'])) ? $input['value']['password'] : false;
+                $password = in_array(config('settings.setting.set_password'), $input['setting'])
+                            ? $input['value']['password'] : false;
             }
 
             $dataRtn = [
@@ -629,7 +623,7 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
                     'password' => $password,
                 ];
                 $subject = trans('label.mail.participant_vote.subject');
-                $this->sendEmail($members, $view, $data, $subject, 'participant');
+                $this->sendEmail($members, $view, $data, $subject);
             }
 
             /*
@@ -645,12 +639,13 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
                 'password' => $password,
             ];
             $subject = trans('label.mail.create_poll.subject');
-            $this->sendEmail($email, $creatorView, $data, $subject, 'creator');
+            $this->sendEmail($email, $creatorView, $data, $subject);
             DB::commit();
 
             return $dataRtn;
         } catch (Exception $ex) {
             DB::rollback();
+
             return false;
         }
     }
@@ -976,13 +971,21 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
 
     public function editPollSetting($input, $id)
     {
-        $poll = Poll::with('settings')->find($id);
+        $poll = $this->model->with('settings')->find($id);
         $pollId = $id;
         $now = Carbon::now();
         try {
             $oldSettings = $this->showSetting($poll->settings);
             $poll->settings()->delete();
             $this->addSetting($input, $id);
+
+            if (array_key_exists(config('settings.setting.custom_link'), $input['setting'])) {
+                Link::where([
+                    'poll_id' => $id,
+                    'link_admin' => config('settings.link_poll.vote'),
+                ])->update(['token' => $input['value']['link']]);
+            }
+
             $newPoll = Poll::with('user', 'settings')->findOrFail($pollId);
             $newSettings = $this->showSetting($newPoll->settings);
             if ($poll->user_id) {
@@ -1006,8 +1009,8 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
             ]);
             $message = trans('polls.message.update_setting_success');
         } catch (Exception $ex) {
-            dd($ex);
             DB::rollBack();
+
             $message = trans('polls.message.update_setting_fail');
         }
 
@@ -1270,11 +1273,6 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
                         $trans['hide_result'] => null
                     ];
                     break;
-                case $config['is_set_ip']:
-                    $dataRtn[] = [
-                        $trans['is_set_ip'] => null
-                    ];
-                    break;
                 case $config['custom_link']:
                     $dataRtn[] = [
                         $trans['custom_link'] => $setting->value
@@ -1300,6 +1298,18 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
     {
         $creatorView = config('settings.view.poll_mail');
         $email = ($poll['user_id']) ? $poll['user']['email'] : $poll['email'];
+        $link = url('/') . config('settings.link_poll.link_vote');
+        $linkAdmin = $link . str_random(config('settings.length_poll.link'));
+        $linkVote = $link . str_random(config('settings.length_poll.link'));
+
+        foreach ($poll['links'] as $links) {
+            if ($links['link_admin'] == config('settings.link_poll.admin')) {
+                $linkAdmin = $link . $links['token'];
+            } else {
+                $linkVote = $link . $links['token'];
+            }
+        }
+
         $data = [
             'userName' => ($poll['user_id']) ? $poll['user']['name'] : $poll['name'],
             'title' => $poll['title'],
@@ -1308,8 +1318,8 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
             'description' => $poll['description'],
             'closeDate' => $poll['date_close'],
             'createdAt' => $poll['created_at'],
-            'linkVote' => $link['participant'],
-            'linkAdmin' => $link['administration'],
+            'linkVote' => $linkVote,
+            'linkAdmin' => $linkAdmin,
             'password' => $password,
         ];
         $subject = trans('label.mail.create_poll.subject');

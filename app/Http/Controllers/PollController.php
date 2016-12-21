@@ -64,10 +64,9 @@ class PollController extends Controller
         $data = $this->pollRepository->store($input);
 
         if ($data) {
-            $poll = $data['poll'];
-            $link = $data['link'];
-
-            return redirect()->to(url('/result/' . $poll->id . '/' . $link['administration']));
+            return redirect()->to(
+                url(config('settings.link_poll.result_create') . $data['poll']->id . '/' . $data['link']['administration'])
+            );
         }
 
         $message = trans('polls.message.create_fail');
@@ -156,6 +155,7 @@ class PollController extends Controller
             $email = $poll->user->email;
         }
         if ($email) {
+
             Mail::queue('layouts.close_poll_mail', [
                 'link' => $poll->getAdminLink(),
             ], function ($message) use ($email) {
