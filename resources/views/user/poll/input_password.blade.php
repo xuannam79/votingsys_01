@@ -1,6 +1,23 @@
 @extends('layouts.app')
+@push('detail-style')
 
+<!-- ---------------------------------
+            Style of detail poll
+    ---------------------------------------->
+
+<!-- DATETIME PICKER: time close of poll -->
+{!! Html::style('bower/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css') !!}
+
+<!-- GOOGLE CHART-->
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+<script src="https://cdn.socket.io/socket.io-1.3.4.js"></script>
+@endpush
 @section('content')
+    <div class="hide_vote_socket"
+         data-host="{{ config('app.key_program.socket_host') }}"
+         data-port="{{ config('app.key_program.socket_port') }}">
+    </div>
     <div class="row">
         <div class="col-lg-4 col-lg-offset-4
                     col-md-6 col-md-offset-3
@@ -40,3 +57,33 @@
         </div>
     </div>
 @endsection
+@push('detail-scripts')
+
+    <!-- ---------------------------------
+        Javascript of detail poll
+    ---------------------------------------->
+    <!-- FORM WINZARD: form step -->
+    {!! Html::script('bower/twitter-bootstrap-wizard/jquery.bootstrap.wizard.js') !!}
+
+    <!-- DATETIME PICKER: time close of poll -->
+    {!! Html::script('/bower/moment/min/moment.min.js') !!}
+    {!! Html::script('/bower/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js') !!}
+
+    <!-- SOCKET IO -->
+    {!! Html::script('bower/socket.io-client/dist/socket.io.min.js') !!}
+
+    <!-- COMMENT -->
+    {!! Html::script('js/comment.js') !!}
+
+    <!-- VOTE -->
+    {!! Html::script('js/vote.js') !!}
+
+    <!-- VOTE SOCKET-->
+    {!! Html::script('js/voteSocket.js') !!}
+
+    <!-- SOCIAL: like, share -->
+    {!! Html::script('js/shareSocial.js') !!}
+
+    <!-- POLL -->
+    {!! Html::script('js/poll.js') !!}
+@endpush

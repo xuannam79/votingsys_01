@@ -22,7 +22,7 @@
                 <h3>{{ trans('polls.result_create.thank') }} {{ ($poll->user_id) ? $poll->user->name : $poll->name }}</h3>
                 <h4>{{ trans('polls.result_create.create_success') }}</h4>
                 <p>{{ trans('polls.result_create.send_mail', ['email' => ($poll->user_id) ? $poll->user->email : $poll->email]) }}</p>
-                <p><a href="#" onclick="sendMailAgain()">{{ trans('polls.send_mail_again') }}</a></p>
+                <p><a href="javascript:void(0);" onclick="sendMailAgain()">{{ trans('polls.send_mail_again') }}</a></p>
                 <p><b>{{ trans('polls.result_create.participant_link') }}</b></p>
                 <p><i>{{ trans('polls.result_create.help_participant') }}</i></p>
                 <a href="{{ $poll->getUserLink() }}" target="_blank" id="linkVote">{{ str_limit($poll->getUserLink(), 47) }}</a>
@@ -43,3 +43,7 @@
         </div>
     </div>
 @endsection
+@push('common-script')
+    <!-- Common -->
+    {!! Html::script('js/common.js') !!}
+@endpush
