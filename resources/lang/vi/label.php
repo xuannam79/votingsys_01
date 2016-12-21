@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'project_name' => 'Fpoll',
     'login' => 'Đăng nhập',
     'logout' => 'Đăng xuất',
     'register' => 'Đăng ký',

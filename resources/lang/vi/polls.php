@@ -356,7 +356,7 @@ return [
     'message_validate_name' => 'Vui lòng nhập tên để bầu chọn poll này',
     'message_validate_name_and_email' => 'Vui lòng nhập tên và email để bầu chọn poll này',
     'no_name' => 'Ẩn danh',
-    'reach_limit' => 'Poll đã đủ số lượt bầu chọn',
+    'reach_limit' => 'Poll đã đủ số người bầu chọn',
     'action' => 'Xem trang quản trị',
     'required' => 'bắt buộc',
     'image_preview' => 'Xem ảnh chi tiết',

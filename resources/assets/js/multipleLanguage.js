@@ -5,6 +5,7 @@ $(document).ready(function(){
         divChangeAmount = $(this).parent();
         var route = $('.hide_language').data('route');
         var lang = $('.btn-multiple-language').val();
+        var token = $('.hide_language').data('token');
 
         $.ajax({
             type: 'POST',
@@ -12,6 +13,7 @@ $(document).ready(function(){
             dataType: 'JSON',
             data: {
                 'lang': lang,
+                '_token': token,
             },
             success: function(data){
                 if (data.success) {

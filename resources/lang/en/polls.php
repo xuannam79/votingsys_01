@@ -356,7 +356,7 @@ return [
     'message_validate_name' => 'Please enter name to vote this poll',
     'message_validate_name_and_email' => 'Please enter name and email to vote this poll',
     'no_name' => 'No Name',
-    'reach_limit' => 'Poll reach limit',
+    'reach_limit' => 'Poll has enough people vote',
     'action' => 'View Administer page',
     'image_preview' => 'Image preview',
     'table_result' => 'TABLE RESULT',

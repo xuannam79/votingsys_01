@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'project_name' => 'Fpoll',
     'login' => 'ログイン',
     'logout' => 'サインアウト',
     'register' => '登録された',
