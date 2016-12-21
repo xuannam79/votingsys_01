@@ -173,3 +173,9 @@
     </div>
 </div>
 @endsection
+@push('manage-scripts')
+
+<!-- MANAGE POLL -->
+{!! Html::script('js/managePoll.js') !!}
+@endpush
+

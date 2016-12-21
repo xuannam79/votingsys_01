@@ -1,14 +1,31 @@
 @extends('layouts.app')
+@push('detail-style')
+<!-- ---------------------------------
+        Style of detail poll
+---------------------------------------->
+    <!-- DATETIME PICKER: time close of poll -->
+    {!! Html::style('bower/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css') !!}
+
+    <!-- GOOGLE CHART-->
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+    <!-- SOCKET IO -->
+    {!! Html::script('bower/socket.io-client/dist/socket.io.min.js') !!}
+@endpush
 @section('meta')
     <meta property="fb:app_id" content="708640145978561"/>
     <meta property="og:type" content="article" />
     <meta property="og:url" content="{{ $poll->getUserLink() }}" />
     <meta property="og:title" content="{{ $poll->name }}" />
     <meta property="og:description" content="{{ $poll->description }}" />
+    <meta property="og:description" content="{{ $poll->description }}" />
     <meta property="og:image" content="{{ asset('/uploads/images/vote.png') }}" />
 @endsection
-    <script src="https://cdn.socket.io/socket.io-1.3.4.js"></script>
 @section('content')
+    <div class="hide_vote_socket"
+         data-host="{{ config('app.key_program.socket_host') }}"
+         data-port="{{ config('app.key_program.socket_port') }}">
+    </div>
     <div class="container">
         <div class="row">
             <div class="loader"></div>
@@ -37,28 +54,39 @@
                 </div>
                 <div class="hide-vote-details" data-poll-id="{{ $poll->id }}"></div>
                 <div class="hide-vote" data-poll-id="{{ $poll->id }}"></div>
+                @if (session('message'))
+                    <div class="alert alert-info message-infor-detail alert-dismissable">
+                        <a href="javascript:void(0);" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <i class="icon fa fa-info"></i> {!! session('message') !!}
+                    </div>
+                @endif
+                @if (isset($message))
+                    <div class="alert alert-info message-infor-detail alert-dismissable">
+                        <a href="javascript:void(0);" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <i class="icon fa fa-info"></i> {!! session('message') !!}
+                    </div>
+                @endif
                 <div class="tab-content">
-                    @include('layouts.message')
                     <div class="tab-pane" id="vote">
+                        <div class="message-validation"></div>
                         @if ($isLimit)
-                            <div class="col-lg-12">
-                                <label class="alert alert-danger col-lg-4 alert-poll-limit">
-                                    <span class="glyphicon glyphicon-warning-sign"></span>
-                                    {{ trans('polls.reach_limit') }}
-                                </label>
+                            <div class="alert alert-warning alert-poll-set-ip">
+                                <a href="javascript:void(0);" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                <span class='glyphicon glyphicon-warning-sign'></span>
+                                {{ trans('polls.reach_limit') }}
                             </div>
                         @endif
                             @if ($isSetIp && auth()->check() && $isUserVoted
                                 || $isSetIp && ! auth()->check() && $isParticipantVoted)
                             <div class="alert alert-warning alert-poll-set-ip">
-                                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                <a href="javascript:void(0);" class="close" data-dismiss="alert" aria-label="close">&times;</a>
                                 <span class='glyphicon glyphicon-warning-sign'></span>
                                 {{ trans('polls.message_vote_one_time') }}
                             </div>
                         @endif
                         @if ($isTimeOut)
                             <div class="alert alert-warning alert-poll-set-ip">
-                                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                <a href="javascript:void(0);" class="close" data-dismiss="alert" aria-label="close">&times;</a>
                                 <span class='glyphicon glyphicon-warning-sign'></span>
                                 {{ trans('polls.message_poll_time_out') }}
                             </div>
@@ -67,7 +95,6 @@
                             <!-- VOTE OPTION -->
                             <div class="panel panel-default panel-vote-option">
                                 <div class="panel-body panel-body-vote-option">
-                                    <label class="message-validation"></label>
                                     <div class="col-lg-12">
                                         <h4>{{ $poll->title }}
                                             @if ($poll->description)
@@ -674,3 +701,30 @@
     </div>
 </div>
 @endsection
+@push('detail-scripts')
+
+    <!-- ---------------------------------
+        Javascript of detail poll
+    ---------------------------------------->
+    <!-- FORM WINZARD: form step -->
+    {!! Html::script('bower/twitter-bootstrap-wizard/jquery.bootstrap.wizard.js') !!}
+
+    <!-- DATETIME PICKER: time close of poll -->
+    {!! Html::script('/bower/moment/min/moment.min.js') !!}
+    {!! Html::script('/bower/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js') !!}
+
+    <!-- COMMENT -->
+    {!! Html::script('js/comment.js') !!}
+
+    <!-- VOTE -->
+    {!! Html::script('js/vote.js') !!}
+
+    <!-- VOTE SOCKET-->
+    {!! Html::script('js/voteSocket.js') !!}
+
+    <!-- SOCIAL: like, share -->
+    {!! Html::script('js/shareSocial.js') !!}
+
+    <!-- POLL -->
+    {!! Html::script('js/poll.js') !!}
+@endpush

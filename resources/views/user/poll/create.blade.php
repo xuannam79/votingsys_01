@@ -1,3 +1,13 @@
+@push('create-style')
+    <!-- TAG INPUT: participant -->
+    {!! Html::style('bower/bootstrap-tagsinput/dist/bootstrap-tagsinput.css') !!}
+
+    <!-- BOOTSTRAP SWITCH: setting of poll -->
+    {!! Html::style('bower/bootstrap-switch/dist/css/bootstrap2/bootstrap-switch.min.css') !!}
+
+    <!-- DATETIME PICKER: time close of poll -->
+    {!! Html::style('bower/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css') !!}
+@endpush
 @extends('layouts.app')
 @section('title')
     {{ trans('polls.title') }}
@@ -112,9 +122,9 @@
                         </div>
                     </div>
                     <ul class="pager wizard">
-                        <li class="finish"><a href="#" class="btn btn-change-step btn-darkcyan btn-finish">{{ trans('polls.button.finish') }}</a></li>
-                        <li class="previous"><a href="#" class="btn-change-step btn btn-darkcyan">{{ trans('polls.button.previous') }}</a></li>
-                        <li class="next"><a href="#" class="btn-change-step btn btn-darkcyan">{{ trans('polls.button.continue') }}</a></li>
+                        <li class="finish"><a href="javascript:void(0);" class="btn btn-change-step btn-darkcyan btn-finish">{{ trans('polls.button.finish') }}</a></li>
+                        <li class="previous"><a href="javascript:void(0);" class="btn-change-step btn btn-darkcyan">{{ trans('polls.button.previous') }}</a></li>
+                        <li class="next"><a href="javascript:void(0);" class="btn-change-step btn btn-darkcyan">{{ trans('polls.button.continue') }}</a></li>
                     </ul>
                 </div>
             </div>
@@ -122,64 +132,30 @@
     </div>
 
     <!-- Feature -->
-    <div class="row feature feature-not-xs">
-        <h2>{{ trans('label.feature.name') }}</h2>
-        <div class="col-lg-2 col-md-2 col-sm-2 animatedParent">
-            <img class="animated fadeInUp slowest feature-img img-responsive" src="{{ asset('uploads/images/Fpoll-vote.jpg') }}">
-            <p class="animated feature-text">{{ trans('label.feature.vote') }}</p>
-        </div>
-        <div class="col-lg-2 col-md-2 col-sm-2 animatedParent">
-            <img class="animated fadeInUp slowest feature-img img-responsive" src="{{ asset('uploads/images/Fpoll-chart.png') }}">
-            <p class="animated feature-text">{{ trans('label.feature.chart') }}</p>
-        </div>
-        <div class="col-lg-2 col-md-2 col-sm-2 animatedParent">
-            <img class="animated fadeInUp slowest feature-img img-responsive" src="{{ asset('uploads/images/Fpoll-security.jpg') }}">
-            <p class="animated feature-text">{{ trans('label.feature.security') }}</p>
-        </div>
-        <div class="col-lg-2 col-md-2 col-sm-2 animatedParent">
-            <img class="animated fadeInUp slowest feature-img img-responsive" src="{{ asset('uploads/images/Fpoll-export.png') }}">
-            <p class="animated feature-text">{{ trans('label.feature.export') }}</p>
-        </div>
-        <div class="col-lg-2 col-md-2 col-sm-2 animatedParent">
-            <img class="animated fadeInUp slowest feature-img img-responsive" src="{{ asset('uploads/images/Fpoll-responsive.jpg') }}">
-            <p class="animated feature-text">{{ trans('label.feature.responsive') }}</p>
-        </div>
-        <div class="col-lg-2 col-md-2 col-sm-2 animatedParent">
-            <img class="animated fadeInUp slowest feature-img img-responsive" src="{{ asset('uploads/images/Fpoll-like-share.jpg') }}">
-            <p class="animated feature-text">{{ trans('label.feature.share') }}</p>
-        </div>
-    </div>
-
-    <div class="row feature feature-xs">
-        <div class="col-xs-12">
-            <div class="col-xs-6 animatedParent">
-                <img class="animated fadeInUp slowest feature-img img-responsive" src="{{ asset('uploads/images/Fpoll-vote.jpg') }}">
-                <p class="animated feature-text">{{ trans('label.feature.vote') }}</p>
-            </div>
-            <div class="col-xs-6 animatedParent">
-                <img class="animated fadeInUp slowest feature-img img-responsive" src="{{ asset('uploads/images/Fpoll-chart.png') }}">
-                <p class="animated feature-text">{{ trans('label.feature.chart') }}</p>
-            </div>
-        </div>
-        <div class="col-xs-12">
-            <div class="col-xs-6 animatedParent">
-                <img class="animated fadeInUp slowest feature-img img-responsive" src="{{ asset('uploads/images/Fpoll-security.jpg') }}">
-                <p class="animated feature-text">{{ trans('label.feature.security') }}</p>
-            </div>
-            <div class="col-xs-6 animatedParent">
-                <img class="animated fadeInUp slowest feature-img img-responsive" src="{{ asset('uploads/images/Fpoll-export.png') }}">
-                <p class="animated feature-text">{{ trans('label.feature.export') }}</p>
-            </div>
-        </div>
-        <div class="col-xs-12">
-            <div class="col-xs-6 animatedParent">
-                <img class="animated fadeInUp slowest feature-img img-responsive" src="{{ asset('uploads/images/Fpoll-responsive.jpg') }}">
-                <p class="animated feature-text">{{ trans('label.feature.responsive') }}</p>
-            </div>
-            <div class="col-xs-6 animatedParent">
-                <img class="animated fadeInUp slowest feature-img img-responsive" src="{{ asset('uploads/images/Fpoll-like-share.jpg') }}">
-                <p class="animated feature-text">{{ trans('label.feature.share') }}</p>
-            </div>
-        </div>
-    </div>
+    @include('user.poll.feature')
 @endsection
+@push('create-scripts')
+
+    <!-- ---------------------------------
+        Javascript of create poll
+    ---------------------------------------->
+
+    <!-- FORM WINZARD: form step -->
+    {!! Html::script('bower/twitter-bootstrap-wizard/jquery.bootstrap.wizard.js') !!}
+
+    <!-- TAG INPUT: participant -->
+    {!! Html::script('/bower/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js') !!}
+
+    <!-- DATETIME PICKER: time close of poll -->
+    {!! Html::script('/bower/moment/min/moment.min.js') !!}
+    {!! Html::script('/bower/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js') !!}
+
+    <!-- BOOTSTRAP SWITCH: setting of poll -->
+    {!! Html::script('bower/bootstrap-switch/dist/js/bootstrap-switch.min.js') !!}
+
+    <!-- JQUERY VALIDATE: validate info of poll -->
+    {!! Html::script('bower/jquery-validation/dist/jquery.validate.min.js') !!}
+
+    <!-- POLL -->
+    {!! Html::script('js/poll.js') !!}
+@endpush

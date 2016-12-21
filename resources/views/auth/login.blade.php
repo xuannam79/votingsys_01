@@ -1,5 +1,9 @@
 @extends('layouts.app')
+@push('login-style')
 
+    <!-- SOCIAL BUTTON: login by social -->
+    {!! Html::style('bower/bootstrap-social/bootstrap-social.css') !!}
+@endpush
 @section('content')
 <div class="container">
     <div class="row">

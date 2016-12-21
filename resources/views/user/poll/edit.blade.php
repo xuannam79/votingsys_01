@@ -1,4 +1,11 @@
 @extends('layouts.app')
+@push('create-style')
+    <!-- BOOTSTRAP SWITCH: setting of poll -->
+    {!! Html::style('bower/bootstrap-switch/dist/css/bootstrap2/bootstrap-switch.min.css') !!}
+
+    <!-- DATETIME PICKER: time close of poll -->
+    {!! Html::style('bower/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css') !!}
+@endpush
 @section('title')
     {{ trans('polls.title') }}
 @endsection
@@ -61,3 +68,31 @@
         </div>
     </div>
 @endsection
+@push('create-scripts')
+
+<!-- ---------------------------------
+        Javascript of create poll
+    ---------------------------------------->
+
+    <!-- FORM WINZARD: form step -->
+    {!! Html::script('bower/twitter-bootstrap-wizard/jquery.bootstrap.wizard.js') !!}
+
+    <!-- TAG INPUT: participant -->
+    {!! Html::script('/bower/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js') !!}
+
+    <!-- DATETIME PICKER: time close of poll -->
+    {!! Html::script('/bower/moment/min/moment.min.js') !!}
+    {!! Html::script('/bower/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js') !!}
+
+    <!-- BOOTSTRAP SWITCH: setting of poll -->
+    {!! Html::script('bower/bootstrap-switch/dist/js/bootstrap-switch.min.js') !!}
+
+    <!-- JQUERY VALIDATE: validate info of poll -->
+    {!! Html::script('bower/jquery-validation/dist/jquery.validate.min.js') !!}
+
+    <!-- VOTE -->
+    {!! Html::script('js/vote.js') !!}
+
+    <!-- POLL -->
+    {!! Html::script('js/poll.js') !!}
+@endpush

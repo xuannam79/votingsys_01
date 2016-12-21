@@ -92,3 +92,10 @@
     </div>
 </div>
 @endsection
+@push('list-poll-scripts')
+
+    <!-- ---------------------------------
+        Javascript of list poll
+    ---------------------------------------->
+    {!! Html::script('js/listPolls.js') !!}
+@endpush

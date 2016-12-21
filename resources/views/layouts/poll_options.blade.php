@@ -24,7 +24,7 @@
                     <div class="panel-heading panel-heading-darkcyan">
                         {{ trans('polls.label.step_2') }} {{ $loop->index + 1 }}
                         <button type="button" class="btn btn-danger btn-xs btn-delete-option-duplicate"
-                                onclick="removeOpion('{{ $option->id }}', 'edit')">
+                                onclick="removeOpion('{{ $option->id }}', '{{ $page }}')">
                             <span class="fa fa-trash"></span> {{ trans('polls.button.remove') }}
                         </button>
                     </div>

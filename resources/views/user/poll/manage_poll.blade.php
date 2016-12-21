@@ -1,6 +1,30 @@
 @extends('layouts.app')
+@push('manage-style')
 
+    <!-- ---------------------------------
+                Style of manage poll
+    ---------------------------------------->
+
+    <!-- SWEET ALERT: alert message js -->
+    {!! Html::style('bower/sweetalert/dist/sweetalert.css') !!}
+
+    <!-- BOOTSTRAP SWITCH: setting of poll -->
+    {!! Html::style('bower/bootstrap-switch/dist/css/bootstrap2/bootstrap-switch.min.css') !!}
+
+    <!-- DATETIME PICKER: time close of poll -->
+    {!! Html::style('bower/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css') !!}
+
+    <!-- GOOGLE CHART-->
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+<!-- SOCKET IO -->
+{!! Html::script('bower/socket.io-client/dist/socket.io.min.js') !!}
+@endpush
 @section('content')
+    <div class="hide_vote_socket"
+         data-host="{{ config('app.key_program.socket_host') }}"
+         data-port="{{ config('app.key_program.socket_port') }}">
+    </div>
     <div class="hide"
         data-poll="{{ $data['jsonData'] }}"
         data-poll-id="{{ $poll->id }}" data-route="{{ url('user/poll') }}"
@@ -17,7 +41,6 @@
         data-url-admin="{{ url('/link') }}"
         data-link-check-date="{{ url('/check-date-close-poll') }}">
     </div>
-    <script src="https://cdn.socket.io/socket.io-1.3.4.js"></script>
     <div class="container">
         <div class="row">
             <span class="manage-poll-count-participant">{{ $countParticipantsVoted }}</span>
@@ -526,3 +549,37 @@
         </div>
     </div>
 @endsection
+@push('manage-scripts')
+
+    <!-- ---------------------------------
+        Javascript of manage poll
+    ---------------------------------------->
+
+    <!-- FORM WINZARD: form step -->
+    {!! Html::script('bower/twitter-bootstrap-wizard/jquery.bootstrap.wizard.js') !!}
+
+    <!-- DATETIME PICKER: time close of poll -->
+    {!! Html::script('/bower/moment/min/moment.min.js') !!}
+    {!! Html::script('/bower/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js') !!}
+
+    <!-- BOOTSTRAP SWITCH: setting of poll -->
+    {!! Html::script('bower/bootstrap-switch/dist/js/bootstrap-switch.min.js') !!}
+
+    <!-- JQUERY VALIDATE: validate info of poll -->
+    {!! Html::script('bower/jquery-validation/dist/jquery.validate.min.js') !!}
+
+    <!-- SWEET ALERT: alert message js -->
+    {!! Html::script('bower/sweetalert/dist/sweetalert.min.js') !!}
+
+
+    <!-- MANAGE POLL -->
+    {!! Html::script('js/managePoll.js') !!}
+
+    {!! Html::script('js/poll.js') !!}
+
+    <!-- VOTE SOCKET-->
+    {!! Html::script('js/voteSocket.js') !!}
+
+    <!-- EDIT LINK POLL-->
+    {!! Html::script('js/editLink.js') !!}
+@endpush

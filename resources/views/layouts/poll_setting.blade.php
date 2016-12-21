@@ -93,7 +93,10 @@
                             Form::text('value[link]',
                             (isset($page)
                             && ($page == 'edit' || $page == 'duplicate')
-                            && array_key_exists($settingKey, $setting)) ? $setting[$settingKey] : str_random(config('settings.length_poll.link')), [
+                            && array_key_exists($settingKey, $setting)) ? $setting[$settingKey] :
+                                (isset($poll) && $poll && $poll->getTokenLink(config('settings.link_poll.vote'))
+                                    ? $poll->getTokenLink(config('settings.link_poll.vote'))
+                                    : str_random(config('settings.length_poll.link'))), [
                                 'class' => 'form-control',
                                 'id' => 'link',
                                 'placeholder' => trans('polls.placeholder.token_link'),
@@ -125,10 +128,9 @@
                                 && array_key_exists($settingKey, $setting)) ? $setting[$settingKey] : null, [
                                'class' => 'form-control',
                                'id' => 'limit',
-                               'min' => (isset($page) && $page == 'edit') ? $totalVote : null,
+                               'min' => (isset($page) && $page == 'edit') ? $totalVote : 1,
                                'max' => 1000,
                                'placeholder' => trans('polls.placeholder.number_limit'),
-                               'oninput' => "validity.valid||(value='1');",
                                'onkeyup' => 'checkLimit()',
                            ])
                         }}
