@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'project_name' => 'Fpoll',
     'login' => 'Login',
     'logout' => 'Logout',
     'register' => 'Register',

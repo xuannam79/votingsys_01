@@ -1,5 +1,8 @@
 $(document).ready(function(){
-    var socket = io.connect('http://localhost:8890');
+    var host = $('.hide_vote_socket').data('host');
+    var port = $('.hide_vote_socket').data('port');
+    var link = (port == '') ? host : host + ":" + port;
+    var socket = io.connect(link);
 
     if ($('.manage-poll-count-participant').text() == '0') {
         $('.delete-all-participants').hide();
@@ -67,8 +70,8 @@ $(document).ready(function(){
      //socket reopen poll
     socket.on('reopenPoll', function (data) {
         var pollId = $('.hide-poll-closed').data('pollId');
-
         if ($.parseJSON(data).success && $.parseJSON(data).poll_id == pollId) {
+
             window.location.href = $.parseJSON(data).link_user;
         }
     });
