@@ -53,9 +53,9 @@ class DuplicateController extends Controller
         $data = $this->pollRepository->store($input);
 
         if ($data) {
-            $poll = $data['poll'];
-
-            return redirect()->route('result-poll.show', ['id' => $poll->id]);
+            return redirect()->to(
+                url(config('settings.link_poll.result_create') . $data['poll']->id . '/' . $data['link']['administration'])
+            );
         }
 
         $message = trans('polls.message.duplicate_fail');

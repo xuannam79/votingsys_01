@@ -1,6 +1,14 @@
 <?php
 
 return [
+    /*
+     * Project setting
+     */
+    'logo_path' => 'uploads/images/fpoll_logo.png',
+
+    /*
+     * User setting
+     */
     'number_of_record_user' => 10,
     'length_user' => [
         'name' => 255,
@@ -39,9 +47,9 @@ return [
         'create_poll' => 0,
     ],
 
-    /**-------------------------------
-     * Poll config
-    -------------------------------*/
+    /*
+     * Poll setting
+     */
     'str_limit' => [
         'location' => 20,
     ],
@@ -52,6 +60,7 @@ return [
         'description' => 255,
         'link' => 16,
         'option' => 3,
+        'option_inc' => 1,
         'number_record' => 10,
         'number_option' => 1,
         'number_limit' => 2,
@@ -79,16 +88,14 @@ return [
         'required_name' => 7,
         'required_name_and_email' => 8,
     ],
-    'participant' => [
-        'invite_all' => 0,
-        'invite_people' => 1,
-    ],
     'email' => [
         'link_vote' => '/link/',
     ],
     'link_poll' => [
         'vote' => 0,
         'admin' => 1,
+        'result_create' => '/result/',
+        'link_vote' => '/link/',
     ],
     'search_all' => 3,
     'view' => [
@@ -111,7 +118,10 @@ return [
     'default_value' => 0,
     'limit_link' => 60,
     'limit_name' => 80,
-    /* vote */
+
+    /*
+     * vote
+     */
     'no_name' => 'Ẩn danh',
     'activity_per_page' => '10',
     'is_active' => 1,
