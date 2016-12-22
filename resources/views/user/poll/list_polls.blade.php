@@ -5,8 +5,8 @@
     <div class="row">
     <div class="loader"></div>
         <div class="col-md-10 col-md-offset-1">
-            <div class="panel panel-default">
-                <div class="panel-heading">{{ trans('polls.list_polls') }}</div>
+            <div class="panel panel-default panel-darkcyan-profile">
+                <div class="panel-heading panel-heading-darkcyan">{{ trans('polls.list_polls') }}</div>
                 <div class="panel-body">
                     <div class="hide" data-route-initiated="{{ url('load-initiated-poll') }}"
                         data-route-participanted="{{ url('load-participanted-in-poll') }}"

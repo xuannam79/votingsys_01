@@ -6,4 +6,6 @@ $(document).ready(function () {
 
     //Auto close message
     $(".alert-dismissable").delay(5000).fadeOut(1000);
+
+    $('[data-toggle="tooltip"]').tooltip();
 });

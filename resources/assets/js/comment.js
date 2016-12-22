@@ -29,10 +29,12 @@ $(document).ready(function(){
             $('.comments').show();
             var labelHide = divChangeAmount.data('labelHide');
             $('#show-hide-list-comment').html(labelHide);
+            $('.hr-comment').css('display', 'block');
         } else {
             $('.comments').hide();
             var labelShowComment = divChangeAmount.data('labelShowComment');
             $('#show-hide-list-comment').html(labelShowComment);
+            $('.hr-comment').css('display', 'none');
         }
     });
 
@@ -44,31 +46,8 @@ $(document).ready(function(){
         var user = divChangeAmount.data('user');
         var content = $('#content' + pollId).val();
         var name = $('#name' + pollId).val();
-        var commentName = divChangeAmount.data('commentName');
-        var commentContent = divChangeAmount.data('commentContent');
-        var isInputCorrect = true;
 
-        if (name.trim() == '') {
-            $('.comment-name-validate').addClass('alert alert-warning');
-            var message = "<span class='glyphicon glyphicon-warning-sign'></span>" + ' ' + commentName;
-            $('.comment-name-validate').html(message);
-            isInputCorrect = false;
-        } else {
-            $('.comment-name-validate').removeClass('alert alert-warning');
-            $('.comment-name-validate').html('');
-        }
-
-        if (content.trim() == '') {
-            $('.comment-content-validate').addClass('alert alert-warning');
-            var message = "<span class='glyphicon glyphicon-warning-sign'></span>" + ' ' + commentContent;
-            $('.comment-content-validate').html(message);
-            isInputCorrect = false;
-        } else {
-            $('.comment-content-validate').removeClass('alert alert-warning');
-            $('.comment-content-validate').html('');
-        }
-
-        if (!isInputCorrect) {
+        if (! validateCommentPoll()) {
             return;
         }
 
@@ -122,3 +101,33 @@ $(document).ready(function(){
         }
     });
 });
+
+function validateCommentPoll() {
+    var commentName = divChangeAmount.data('commentName');
+    var commentContent = divChangeAmount.data('commentContent');
+    var pollId = divChangeAmount.data('pollId');
+    var content = $('#content' + pollId).val();
+    var name = $('#name' + pollId).val();
+
+    /* remove class error */
+    $('.comment-info-name, .comment-info-content').removeClass('error');
+    $('.comment-name-validate, .comment-content-validate').removeClass('alert alert-poll-set-ip').html('');
+
+    if (name.trim() == '') {
+        $('.comment-info-name').addClass('error');
+        $('.comment-name-validate').addClass('alert alert-poll-set-ip')
+            .html('<span class="glyphicon glyphicon-warning-sign"></span>' + ' ' + commentName);
+
+        return false;
+    }
+
+    if (content.trim() == '') {
+        $('.comment-info-content').addClass('error');
+        $('.comment-name-validate').addClass('alert alert-poll-set-ip')
+            .html('<span class="glyphicon glyphicon-warning-sign"></span>' + ' ' + commentContent);
+
+        return false;
+    }
+
+    return true;
+}

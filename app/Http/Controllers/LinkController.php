@@ -170,7 +170,7 @@ class LinkController extends Controller
             foreach ($poll->options as $option) {
                 $countOption = $option->countVotes();
                 if ($countOption > 0) {
-                    $optionRateBarChart[] = [str_limit($option->name, 30), $countOption];
+                    $optionRateBarChart[] = [$option->name, $countOption];
                 }
             }
         } else {

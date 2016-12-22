@@ -46,7 +46,7 @@ class ResultCreatePollController extends Controller
      */
     public function show($id, $tokenAdmin)
     {
-        $poll = Poll::with('settings', 'links')->findOrFail($id);
+        $poll = Poll::with('settings', 'links', 'user')->findOrFail($id);
 
         foreach ($poll->links as $link) {
             if ($link->link_admin != config('settings.default_value') && $link->token == $tokenAdmin) {

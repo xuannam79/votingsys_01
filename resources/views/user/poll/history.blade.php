@@ -4,7 +4,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
-                <div class="panel panel-primary animated fadeInRight panel-darkcyan-profile">
+                <div class="panel panel-primary panel-darkcyan-profile">
                     <div class="panel-heading panel-heading-darkcyan">{{ trans('history.history') }}</div>
                     <div class="panel-body">
                         <span class="poll-history">{{ $poll->created_at->format(config('settings.date_format')) }}</span>
@@ -41,7 +41,9 @@
                             <span class="fa fa-backward"></span> {{ trans('history.back') }}
                         </a>
                     </div>
-                    {!! $activities->render() !!}
+                    <div class="panel-footer">
+                        {!! $activities->render() !!}
+                    </div>
                 </div>
             </div>
         </div>

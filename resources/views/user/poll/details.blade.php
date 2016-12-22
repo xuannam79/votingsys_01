@@ -324,6 +324,7 @@
                         {!! Form::close() !!}
                     </div>
                     <div class="tab-pane" id="info">
+                        <div class="message-validation"></div>
                         <div class="panel panel-default panel-vote-option">
                             <div class="panel-body panel-body-vote-option">
                             <!-- POLL INFO -->
@@ -442,7 +443,7 @@
                                                 @endforeach
                                             </div>
                                             @if (count($poll->comments))
-                                                <div class="col-lg-12">
+                                                <div class="col-lg-12 hr-comment">
                                                     <hr class="hr-darkcyan">
                                                 </div>
                                             @endif
@@ -454,12 +455,13 @@
                                                         <label class="message-validate comment-name-validate"> </label>
                                                         <label class="message-validate comment-content-validate"></label>
                                                     </div>
-                                                    <div class="col-md-6  comment">
+                                                    <div class="col-md-6 comment">
                                                         {!!
                                                             Form::text('name', auth()->check() ? auth()->user()->name : null, [
-                                                                'class' => 'form-control',
+                                                                'class' => 'form-control comment-info-name',
                                                                 'id' => 'name' . $poll->id,
-                                                                'placeholder' => trans('polls.placeholder.full_name')
+                                                                'placeholder' => trans('polls.placeholder.full_name'),
+                                                                'onkeyup' => 'validateCommentPoll()'
                                                             ])
                                                         !!}
                                                     </div>
@@ -470,10 +472,11 @@
                                                          data-comment-content="{{ trans('polls.comment_content') }}">
                                                         {!!
                                                             Form::textarea('content', null, [
-                                                                'class' => 'form-control',
+                                                                'class' => 'form-control comment-info-content',
                                                                 'rows' => config('settings.poll.comment_row'),
                                                                 'placeholder' => trans('polls.placeholder.comment'),
-                                                                'id' => 'content' . $poll->id
+                                                                'id' => 'content' . $poll->id,
+                                                                'onkeyup' => 'validateCommentPoll()'
                                                             ])
                                                         !!}
                                                         {{ Form::button(trans('polls.save_comment'), ['type' => 'submit', 'class' => 'btn addComment']) }}
@@ -549,7 +552,7 @@
                                                                             @foreach ($poll->options as $option)
                                                                                 <th class="th-detail-vote">
                                                                                     <center>
-                                                                                        <p>
+                                                                                        <p data-toggle="tooltip" title="{{ $option->name }}" data-placement="bottom">
                                                                                             {{ str_limit($option->name, 50) }}
                                                                                         </p>
                                                                                     </center>

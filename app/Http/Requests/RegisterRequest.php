@@ -27,7 +27,7 @@ class RegisterRequest extends FormRequest
             'name' => 'required|max:255',
             'email' => 'required|email|max:255|unique:users',
             'password' => 'required|min:6|confirmed',
-            'avatar' => 'checkUpload|mimes:jpg,jpeg,png,gif,svg',
+            'avatar' => 'mimes:jpg,jpeg,png,gif,svg',
         ];
     }
 
@@ -50,7 +50,6 @@ class RegisterRequest extends FormRequest
             'password.required' => $trans['password']['required'],
             'password.min' => $trans['password']['min'],
             'password.confirmed' => $trans['password']['confirmed'],
-            'avatar.checkUpload' => trans('validation.mimes'),
         ];
     }
 }
