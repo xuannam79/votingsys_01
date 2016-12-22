@@ -15,4 +15,5 @@ elixir(function (mix) {
     mix.scripts('vote.js');
     mix.scripts('comment.js');
     mix.scripts('common.js');
+    mix.scripts('requiredPassword.js');
 });

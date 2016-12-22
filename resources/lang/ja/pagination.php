@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'previous' => '&laquo; 前の字',
-    'next'     => '後ろの字 &raquo;',
+    'previous' => '&laquo; 戻る',
+    'next'     => '次へ &raquo;',
 
 ];

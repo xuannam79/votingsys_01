@@ -13,8 +13,8 @@ return [
     |
     */
 
-    'failed' => '間違いました',
-    'throttle' => 'ログインが正しくありません。:seconds 秒後にもう一度試してください。',
+    'failed' => 'ログイン情報が間違いました',
+    'throttle' => 'ログイン情報が正しくありませんでした。:seconds 秒後にもう一度試してください。',
     'facebook_login' => 'Facebook',
     'twitter_login' => 'Twitter',
     'google_login' => 'Google',
