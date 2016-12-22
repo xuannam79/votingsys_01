@@ -4,9 +4,9 @@
 <div class="container">
     <div class="row">
     <div class="loader"></div>
-        <div class="col-lg-4 col-md-offset-4
+        <div class="col-lg-4 col-lg-offset-4
                     col-md-4 col-md-offset-4
-                    col-sm-6 col-md-offset-3
+                    col-sm-6 col-sm-offset-3
                     col-xs-8 col-xs-offset-2
                     col-xs-register
                     animated fadeInDown register">
