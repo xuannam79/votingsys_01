@@ -205,6 +205,8 @@ return [
         'setting' => 'インストール',
         'voting' => '投票',
         'result' => '結果',
+        'activity' => '投票の活動',
+        'administration' => '管理する',
     ],
     'message_client' => [
         'required' => '入力してください ',

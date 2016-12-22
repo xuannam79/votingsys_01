@@ -18,11 +18,15 @@
                     <i class="fa fa-user" aria-hidden="true"></i>
                 </span>
                 {{
-                    Form::text('name', (isset($poll) && $poll && $poll->user_id) ? $poll->user->name :  ((isset($poll) && $poll->name) ? $poll->name : (auth()->user() ? auth()->user()->name : null)), [
+                    Form::text('name', (isset($poll) && $poll && $poll->user_id)
+                                        ? $poll->user->name
+                                        : ((isset($poll) && $poll->name)
+                                            ? $poll->name
+                                            : (auth()->user() ? auth()->user()->name : null)), [
                         'class' => 'form-control',
                         'id' => 'name',
                         'placeholder' => trans('polls.placeholder.full_name'),
-                        'disabled' => (auth()->user() && auth()->user()->name) ? true : null,
+                        'readonly' => (auth()->user() && auth()->user()->name) ? true : null,
                     ])
                 }}
             </div>
@@ -40,7 +44,7 @@
                         'class' => 'form-control',
                         'id' => 'email',
                         'placeholder' => trans('polls.placeholder.email'),
-                        'disabled' => (auth()->user() && auth()->user()->email) ? true : null,
+                        'readonly' => (auth()->user() && auth()->user()->email) ? true : null,
                     ])
                 }}
             </div>

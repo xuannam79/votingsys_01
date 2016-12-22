@@ -11,7 +11,8 @@
 <!-- GOOGLE CHART-->
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
-<script src="https://cdn.socket.io/socket.io-1.3.4.js"></script>
+<!-- SOCKET IO -->
+{!! Html::script('bower/socket.io-client/dist/socket.io.min.js') !!}
 @endpush
 @section('content')
     <div class="hide_vote_socket"
