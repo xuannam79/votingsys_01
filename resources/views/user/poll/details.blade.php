@@ -728,3 +728,4 @@
     <!-- POLL -->
     {!! Html::script('js/poll.js') !!}
 @endpush
+
