@@ -186,6 +186,16 @@ class LinkController extends Controller
             return $value['numberOfVote'];
         })));
 
+        // check option have image?
+        $isHaveImages = false;
+
+        foreach ($poll->options as $option) {
+            if ($option->image) {
+                $isHaveImages = true;
+                break;
+            }
+        }
+
         if (! $link->link_admin) {
             if ($link->poll->isClosed()) {
                 return view('errors.show_errors')->with('message', trans('polls.message_poll_closed'))->with('pollId', $poll->id);
@@ -267,7 +277,7 @@ class LinkController extends Controller
                 'isUserVoted', 'isParticipantVoted', // vote type
                 'isTimeOut', //time out of poll
                 'optionRateBarChart', 'dataTableResult', 'mergedParticipantVotes', //result
-                'countParticipantsVoted'
+                'countParticipantsVoted', 'isHaveImages'
             ));
         } else {
             foreach ($poll->links as $link) {
@@ -294,7 +304,7 @@ class LinkController extends Controller
 
             return view('user.poll.manage_poll', compact(
                 'poll', 'tokenLinkUser', 'tokenLinkAdmin', 'numberOfVote',
-                'linkUser', 'mergedParticipantVotes',
+                'linkUser', 'mergedParticipantVotes', 'isHaveImages',
                 'settings', 'data', 'page', 'statistic', 'dataTableResult', 'optionRateBarChart', 'optionRatePieChart', 'countParticipantsVoted'
             ));
         }

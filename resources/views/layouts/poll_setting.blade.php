@@ -197,6 +197,6 @@
 @endforeach
 @if (isset($page) && $page == "edit")
     <input type="submit" class="btn btn-success btn-edit-info btn-xs" name="btn_edit" value="{{ trans('polls.button.save_setting') }}">
-    <a href="{{ $poll->getAdminLink() }}" class="btn btn-back-edit btn-xs">{{ trans('polls.button.edit_back') }}</a>
+    <a href="{{ $poll->getAdminLink() }}" class="btn btn-success btn-back-edit btn-xs">{{ trans('polls.button.edit_back') }}</a>
     {{ Form::close() }}
 @endif

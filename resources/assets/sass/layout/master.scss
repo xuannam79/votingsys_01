@@ -772,7 +772,8 @@ body {
 }
 
 .panel-vote-option {
-  border-radius: 0
+  border-radius: 0;
+  min-height: 300px;
 }
 
 .panel-body-vote-option {
@@ -784,7 +785,7 @@ body {
 .alert-poll-set-ip {
   border-radius: 0;
   margin-bottom: 0;
-  margin-top: 10px;
+  margin-top: 1px;
   text-align: center;
   background: white;
   border-color: white;
@@ -861,6 +862,11 @@ body {
   display: block;
   margin-left: 60px;
   margin-right: 20px;
+  word-wrap: break-word;
+}
+
+.content-option-not-image {
+  word-wrap: break-word;
 }
 
 @media (max-width: 400px) {
@@ -1694,3 +1700,10 @@ EDIT POLL
   }
 }
 
+.col-auth-detail {
+  padding-right: 2px;
+}
+
+.btn-auth-detail {
+  float: right;
+}

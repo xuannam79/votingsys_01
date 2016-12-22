@@ -205,7 +205,9 @@ return [
         'option' => 'TÙY CHỌN',
         'setting' => 'CÀI ĐẶT',
         'voting' => 'BÌNH CHỌN',
+        'activity' => 'HOẠT ĐỘNG',
         'result' => 'KẾT QUẢ',
+        'administration' => 'QUẢN LÝ',
     ],
     'message_client' => [
         'required' => 'Vui lòng nhập vào ô này',

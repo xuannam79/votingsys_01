@@ -17,14 +17,15 @@
     <!-- GOOGLE CHART-->
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
-<!-- SOCKET IO -->
-{!! Html::script('bower/socket.io-client/dist/socket.io.min.js') !!}
+    <!-- SOCKET IO -->
+    {!! Html::script('bower/socket.io-client/dist/socket.io.min.js') !!}
 @endpush
 @section('content')
     <div class="hide_vote_socket"
          data-host="{{ config('app.key_program.socket_host') }}"
          data-port="{{ config('app.key_program.socket_port') }}">
     </div>
+    <div class="hide_chart" data-chart="{{ $optionRateBarChart }}"></div>
     <div class="hide"
         data-poll="{{ $data['jsonData'] }}"
         data-poll-id="{{ $poll->id }}" data-route="{{ url('user/poll') }}"
@@ -56,11 +57,12 @@
                                     col-md-6 col-md-offset-3
                                     col-sm-8 col-sm-offset-2
                                     col-xs-8 col-xs-offset-2
-                                    panel-heading panel-test {{ (Session::get('locale') == 'ja' && ! $countParticipantsVoted) ? 'panel-jp-manage-poll' : '' }}">
+                                    panel-heading panel-test {{ (Session::get('locale') == 'ja' && ! $countParticipantsVoted)
+                                    ? 'panel-jp-manage-poll' : '' }}">
                             <ul>
-                                <li><a href="#info" data-toggle="tab">{{ trans('polls.poll_info') }}</a></li>
-                                <li><a href="#vote_detail" data-toggle="tab">{{ trans('polls.show_result') }}</a></li>
-                                <li><a href="#activity" data-toggle="tab">{{ trans('polls.activity_poll') }}</a></li>
+                                <li><a href="#info" data-toggle="tab">{{ trans('polls.nav_tab_edit.info') }}</a></li>
+                                <li><a href="#vote_detail" data-toggle="tab">{{ trans('polls.nav_tab_edit.result') }}</a></li>
+                                <li><a href="#activity" data-toggle="tab">{{ trans('polls.nav_tab_edit.activity') }}</a></li>
                             </ul>
                         </div>
                     </div>
@@ -101,8 +103,10 @@
                                 <div class="modal-body">
                                     <div class="row manager-modal-option">
                                         @foreach ($poll->options as $option)
-                                            <div class="col-lg-12 option-detail-modal">
-                                                <img src="{{ $option->showImage() }}">
+                                            <div class="col-lg-12 {{ ($isHaveImages) ? 'option-detail-modal' : '' }}">
+                                                @if ($isHaveImages)
+                                                    <img src="{{ $option->showImage() }}">
+                                                @endif
                                                 <p>{{ $option->name }}</p>
                                             </div>
                                         @endforeach
@@ -128,7 +132,8 @@
                                                 <h4>{{ $text }}
                                                     @if ($text == trans('polls.label.setting.custom_link'))
                                                         <span class="label label-default">
-                                                            <a href="{{ url('/') . config('settings.email.link_vote') . $value }}" class="href_setting_link" target="_blank">
+                                                            <a href="{{ url('/') . config('settings.email.link_vote') . $value }}"
+                                                               class="href_setting_link" target="_blank">
                                                                 {{ url('/') . config('settings.email.link_vote') . $value }}
                                                             </a>
                                                         </span>
@@ -158,7 +163,9 @@
                                                     <i class="fa fa-calculator" aria-hidden="true"></i>
                                                 </a>
                                             </li> -->
-                                                <li class="active li-result-table {{ ($optionRateBarChart != "null") ? '': 'hide-result-li' }}"><a data-toggle="tab" href="#table">
+                                                <li class="active li-result-table
+                                                    {{ ($optionRateBarChart != "null") ? '': 'hide-result-li' }}">
+                                                    <a data-toggle="tab" href="#table">
                                                         <i class="fa fa-table" aria-hidden="true"></i>
                                                     </a>
                                                 </li>
@@ -190,14 +197,16 @@
                                                                     col-md-4 col-md-offset-2
                                                                     col-sm-5 col-xs-detail
                                                                     ">
-                                                            <button type="button" class="btn btn-administration btn-block btn-sm" data-toggle="modal" data-target="#myModal">
+                                                            <button type="button" class="btn btn-administration btn-block btn-sm"
+                                                                    data-toggle="modal" data-target="#myModal">
                                                                 <i class="fa fa-list" aria-hidden="true"></i> {{ trans('polls.show_vote_details') }}
                                                             </button>
                                                         </div>
                                                         <div class="col-lg-3 col-md-3 col-sm-3 col-sm-export col-xs-detail">
                                                             {{ Form::open(['route' => ['exportPDF', 'poll_id' => $poll->id]]) }}
                                                             {{
-                                                                Form::button('<span class="glyphicon glyphicon-export"></span>' . ' ' . trans('polls.export_pdf'), [
+                                                                Form::button('<span class="glyphicon glyphicon-export"></span>' . ' '
+                                                                . trans('polls.export_pdf'), [
                                                                     'type' => 'submit',
                                                                     'class' => 'btn btn-administration btn-block btn-sm'
                                                                 ])
@@ -229,9 +238,11 @@
                                                             @foreach ($dataTableResult as $key => $data)
                                                                 <tr>
                                                                     <td>{{ $key + 1 }}</td>
-                                                                    <td class="td-detail-option">
-                                                                        <img src="{{ asset($data['image']) }}">
-                                                                        <span class="option-name">{{ $data['name'] }}</span>
+                                                                    <td class="{{ ($isHaveImages) ? 'td-poll-result' : '' }}">
+                                                                        @if ($isHaveImages)
+                                                                            <img src="{{ asset($data['image']) }}">
+                                                                        @endif
+                                                                        <p>{{ $data['name'] }}</p>
                                                                     </td>
                                                                     <td><span class="badge">{{ $data['numberOfVote'] }}</span></td>
                                                                 </tr>
@@ -314,7 +325,9 @@
                                                             @endif
                                                         </div>
                                                         <div class="modal-footer">
-                                                            <button type="button" class="btn btn-default" data-dismiss="modal">{{ trans('polls.close') }}</button>
+                                                            <button type="button" class="btn btn-default" data-dismiss="modal">
+                                                                {{ trans('polls.close') }}
+                                                            </button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -328,34 +341,7 @@
                                             </div>
                                             <div class="show-barchart panel-body">
                                                 @if ($optionRateBarChart)
-                                                    <script type="text/javascript">
-                                                        google.charts.load('current', {'packages':['corechart']});
-                                                        google.charts.setOnLoadCallback(drawChart);
-                                                        function drawChart() {
-                                                            // Create the data table.
-                                                            var data = new google.visualization.DataTable();
-                                                            data.addColumn('string', 'Topping');
-                                                            data.addColumn('number', '');
-                                                            var optionRateBarChart = {!! $optionRateBarChart !!};
-                                                            data.addRows(optionRateBarChart);
-                                                            var options = {
-                                                                'width': 700,
-                                                                'height': 400,
-                                                                chartArea:{
-                                                                    left:250,
-                                                                },
-                                                                colors: ['darkcyan'],
-                                                                hAxis: {
-                                                                    gridlines: {
-                                                                        count: 4
-                                                                    }
-                                                                }
-                                                            };
-                                                            var chart = new google.visualization.BarChart(document.getElementById('chart'));
-                                                            chart.draw(data, options);
-                                                        }
-                                                    </script>
-
+                                                    <!-- bar chart -->
                                                     <div id="chart"></div>
                                                 @endif
                                             </div>
@@ -369,29 +355,6 @@
                                             <div class="show-piechart panel-body">
                                                 <!-- pie chart -->
                                                 @if ($optionRateBarChart)
-                                                    <script type="text/javascript">
-                                                        google.charts.load('current', {'packages':['corechart']});
-                                                        google.charts.setOnLoadCallback(drawChart);
-                                                        function drawChart() {
-                                                            // Create the data table.
-                                                            var data = new google.visualization.DataTable();
-                                                            data.addColumn('string', 'Topping');
-                                                            data.addColumn('number', 'Slices');
-                                                            var optionRateBarChart = {!! $optionRateBarChart !!};
-                                                            data.addRows(optionRateBarChart);
-                                                            var options = {
-                                                                'width': 700,
-                                                                'height': 400,
-                                                                is3D: true,
-                                                                forceIFrame: true,
-                                                                pieSliceTextStyle: {
-                                                                    fontSize: '20px'
-                                                                },
-                                                            };
-                                                            var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
-                                                            chart.draw(data, options);
-                                                        }
-                                                    </script>
                                                     <div id="chart_div"></div>
                                                 @endif
                                             </div>
@@ -407,7 +370,8 @@
                         <div class="row">
                             <div class="col-lg-6">
                                 <a id="label_link_admin" target="_blank">
-                                    {{ str_limit(url('/') . config('settings.email.link_vote') . $tokenLinkAdmin, config('settings.limit_link')) }}
+                                    {{ str_limit(url('/') . config('settings.email.link_vote') . $tokenLinkAdmin,
+                                    config('settings.limit_link')) }}
                                 </a>
                                 <div class="form-group">
                                     <div class="input-group">
@@ -439,7 +403,8 @@
                             </div>
                             <div class="col-lg-6">
                                 <a id="label_link_user" target="_blank">
-                                    {{ str_limit(url('/') . config('settings.email.link_vote') . $tokenLinkUser, config('settings.limit_link')) }}
+                                    {{ str_limit(url('/') . config('settings.email.link_vote') . $tokenLinkUser,
+                                    config('settings.limit_link')) }}
                                 </a>
                                 <div class="input-group">
                                     <span class="input-group-addon" id="basic-addon3">
@@ -473,13 +438,15 @@
                         </div>
                         <div class="row menu-activity-poll">
                             <div class="col-lg-3 col-md-3 col-xs-activity">
-                                <a href="{{ URL::action('User\ActivityController@show', $poll->id) }}" class="btn btn-administration btn-sm btn-block">
+                                <a href="{{ URL::action('User\ActivityController@show', $poll->id) }}"
+                                   class="btn btn-administration btn-sm btn-block">
                                     <span class="fa fa-history"></span>
                                     {{ trans('polls.view_history') }}
                                 </a>
                             </div>
                             <div class="col-lg-3 col-md-3 col-xs-activity">
-                                <a href="{{ route('user-poll.edit', $poll->id) }}" class="btn btn-administration btn-sm btn-block">
+                                <a href="{{ route('user-poll.edit', $poll->id) }}"
+                                   class="btn btn-administration btn-sm btn-block">
                                     <span class="fa fa-pencil"></span> {{ trans('polls.tooltip.edit') }}
                                 </a>
 
@@ -487,13 +454,21 @@
                             <div class="col-lg-3 col-md-3 col-xs-activity">
                                 @if ($poll->isClosed())
                                     <a class="reopen-poll btn btn-administration btn-sm btn-block" href="#">
-                                        <i class="fa fa-external-link" aria-hidden="true"></i> {{ trans('polls.reopen_poll') }}
+                                        <i class="fa fa-external-link" aria-hidden="true"></i>
+                                        {{ trans('polls.reopen_poll') }}
                                     </a>
                                 @endif
                                 @if (! $poll->isClosed())
-                                    {{ Form::open(['route' => ['poll.destroy', $poll->id], 'id' => 'close-poll', 'method' => 'delete']) }}
                                     {{
-                                        Form::button('<span class="fa fa-times-circle"></span>' . ' ' . trans('polls.close_poll'), [
+                                        Form::open([
+                                            'route' => ['poll.destroy', $poll->id],
+                                            'id' => 'close-poll',
+                                            'method' => 'delete'
+                                        ])
+                                    }}
+                                    {{
+                                        Form::button('<span class="fa fa-times-circle"></span>' . ' '
+                                                    . trans('polls.close_poll'), [
                                             'class' => 'close-poll btn btn-block btn-sm btn-administration',
                                         ])
                                     }}
@@ -501,27 +476,44 @@
                                 @endif
                             </div>
                             <div class="col-lg-3 col-md-3 col-xs-activity div-delete-participant
-                                {{ (Session::get('locale') == 'ja' && ! $countParticipantsVoted) ? 'col-md-activity-jp' : '' }}">
+                                {{ (Session::get('locale') == 'ja' && ! $countParticipantsVoted)
+                                ? 'col-md-activity-jp' : '' }}">
                                 @if (! $countParticipantsVoted)
-                                    <a href="{{ route('duplicate.show', $poll->id) }}" class="btn btn-administration btn-block btn-duplicate btn-sm">
+                                    <a href="{{ route('duplicate.show', $poll->id) }}"
+                                       class="btn btn-administration btn-block btn-duplicate btn-sm">
                                         <span class="fa fa-files-o"></span> {{ trans('polls.tooltip.duplicate') }}
                                     </a>
                                     @else
                                      <div class="delete-all-participants">
-                                        {!! Form::open(['route' => ['delete_all_participant', 'poll_id' => $poll->id], 'id' => 'form-delete-participant']) !!}
+                                        {!!
+                                            Form::open([
+                                                'route' => ['delete_all_participant',
+                                                'poll_id' => $poll->id],
+                                                'id' => 'form-delete-participant'
+                                            ])
+                                        !!}
                                         {{
-                                            Form::button('<span class="fa fa-trash-o"></span>' . ' ' . trans('polls.delete_all_participants'), [
-                                                'class' => 'btn-delete-participant btn btn-block btn-sm btn-administration btn-duplicate',
+                                            Form::button('<span class="fa fa-trash-o"></span>' . ' '
+                                            . trans('polls.delete_all_participants'), [
+                                                'class' => 'btn-delete-participant btn btn-block
+                                                btn-sm btn-administration btn-duplicate',
                                             ])
                                         }}
                                     </div>
 
                                 @endif
                                     <div class="delete-all-participants-soket">
-                                        {!! Form::open(['route' => ['delete_all_participant', 'poll_id' => $poll->id], 'id' => 'form-delete-participant']) !!}
+                                        {!!
+                                            Form::open([
+                                                'route' => ['delete_all_participant', 'poll_id' => $poll->id],
+                                                'id' => 'form-delete-participant'
+                                            ])
+                                        !!}
                                         {{
-                                            Form::button('<span class="fa fa-trash-o"></span>' . ' ' . trans('polls.delete_all_participants'), [
-                                                'class' => 'btn-delete-participant btn-sm btn btn-block btn-administration',
+                                            Form::button('<span class="fa fa-trash-o"></span>' . ' '
+                                            . trans('polls.delete_all_participants'), [
+                                                'class' => 'btn-delete-participant
+                                                btn-sm btn btn-block btn-administration',
                                             ])
                                         }}
                                     </div>
@@ -529,7 +521,8 @@
                         </div>
                         <div class="row menu-activity-poll menu-add-soket">
                                 <div class="col-lg-3 col-xs-activity">
-                                    <a href="{{ route('duplicate.show', $poll->id) }}" target="_blank" class="btn btn-administration btn-sm btn-block">
+                                    <a href="{{ route('duplicate.show', $poll->id) }}" target="_blank"
+                                       class="btn btn-administration btn-sm btn-block">
                                         <span class="fa fa-files-o"></span> {{ trans('polls.tooltip.duplicate') }}
                                     </a>
                                 </div>
@@ -537,7 +530,8 @@
                         @if ($countParticipantsVoted)
                             <div class="row menu-activity-poll menu-add">
                                 <div class="col-lg-3 col-xs-activity">
-                                    <a href="{{ route('duplicate.show', $poll->id) }}" target="_blank" class="btn btn-administration btn-sm btn-block btn-duplicate">
+                                    <a href="{{ route('duplicate.show', $poll->id) }}" target="_blank"
+                                       class="btn btn-administration btn-sm btn-block btn-duplicate">
                                         <span class="fa fa-files-o"></span> {{ trans('polls.tooltip.duplicate') }}
                                     </a>
                                 </div>
@@ -582,4 +576,7 @@
 
     <!-- EDIT LINK POLL-->
     {!! Html::script('js/editLink.js') !!}
+
+    <!-- CHART -->
+    {!! Html::script('js/chart.js') !!}
 @endpush

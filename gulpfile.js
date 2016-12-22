@@ -16,4 +16,5 @@ elixir(function (mix) {
     mix.scripts('comment.js');
     mix.scripts('common.js');
     mix.scripts('requiredPassword.js');
+    mix.scripts('chart.js');
 });

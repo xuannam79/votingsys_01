@@ -200,10 +200,12 @@ return [
     ],
     'nav_tab_edit' => [
         'info' => 'INFORMATION',
+        'activity' => 'ACTIVITY',
         'option' => 'OPTION',
         'setting' => 'SETTING',
         'voting' => 'VOTING',
         'result' => 'RESULT',
+        'administration' => 'ADMINISTRATION',
     ],
     'message_client' => [
         'required' => 'This field is required',
