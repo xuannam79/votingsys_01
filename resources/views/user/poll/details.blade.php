@@ -16,8 +16,7 @@
     <meta property="fb:app_id" content="708640145978561"/>
     <meta property="og:type" content="article" />
     <meta property="og:url" content="{{ $poll->getUserLink() }}" />
-    <meta property="og:title" content="{{ $poll->name }}" />
-    <meta property="og:description" content="{{ $poll->description }}" />
+    <meta property="og:title" content="{{ $poll->title }}" />
     <meta property="og:description" content="{{ $poll->description }}" />
     <meta property="og:image" content="{{ asset('/uploads/images/vote.png') }}" />
 @endsection
@@ -242,7 +241,7 @@
                                     </div>
                                 </div>
                                 <div class="panel-footer">
-                                    @if ($isSetIp && (auth()->check() && ! $isUserVoted || $isSetIp && !auth()->check() && ! $isParticipantVoted) || ! $isLimit && ! $poll->isClosed() && ! $isSetIp && !$isTimeOut)
+                                    @if (!($poll->multiple == trans('polls.label.multiple_choice') && $isUserVoted && auth()->check()))
                                         {!! Form::hidden('pollId', $poll->id) !!}
                                         {!! Form::hidden('isRequiredEmail', $isRequiredEmail) !!}
                                         <div class="row">
