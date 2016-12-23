@@ -25,72 +25,70 @@ $(document).ready(function(){
         var isRequiredNameAndEmail = divChangeAmount.data('isRequiredNameAndEmail');
         var nameVote = $('.nameVote').val();
         var emailVote = $('.emailVote').val();
+        var message = '';
 
-        if (isRequiredEmail== 1) {
+        if (isRequiredEmail == 1) {
             if (emailVote.trim() != '') {
                 if (testEmail.test(emailVote)) {
                     this.disabled = true;
-                    $('.message-validation').removeClass('alert alert-warning alert-poll-set-ip');
-                    $('.message-validation').html('');
+                    $('.message-validation').removeClass('alert alert-warning alert-poll-set-ip').html('');
                     $('#form-vote').submit();
                     $('.loader').show();
                 } else {
                     divChangeAmount = $(this).parent();
-                    $('.message-validation').addClass('alert alert-warning alert-poll-set-ip');
-                    var message = "<span class='glyphicon glyphicon-warning-sign'></span>" + ' ' +  divChangeAmount.data('messageValidateEmail');
-                    $('.message-validation').html(message);
+                    message = "<span class='glyphicon glyphicon-warning-sign'></span>"
+                        + ' ' +  divChangeAmount.data('messageValidateEmail');
+                    $('.message-validation').addClass('alert alert-warning alert-poll-set-ip').html(message);
                 }
             } else {
                 divChangeAmount = $(this).parent();
-                $('.message-validation').addClass('alert alert-warning alert-poll-set-ip');
-                var message = "<span class='glyphicon glyphicon-warning-sign'></span>" + ' ' + divChangeAmount.data('messageRequiredEmail');
-                $('.message-validation').html(message);
+                message = "<span class='glyphicon glyphicon-warning-sign'></span>"
+                    + ' ' + divChangeAmount.data('messageRequiredEmail');
+                $('.message-validation').addClass('alert alert-warning alert-poll-set-ip').html(message);
             }
         } else if (isRequiredName == 1) {
             if (nameVote.trim() != '') {
                 this.disabled = true;
-                $('.message-validation').removeClass('alert alert-warning alert-poll-set-ip');
-                $('.message-validation').html('');
+                $('.message-validation').removeClass('alert alert-warning alert-poll-set-ip').html('');
                 $('#form-vote').submit();
                 $('.loader').show();
             } else {
                 divChangeAmount = $(this).parent();
-                $('.message-validation').addClass('alert alert-warning alert-poll-set-ip');
-                var message = "<span class='glyphicon glyphicon-warning-sign'></span>" + ' ' + divChangeAmount.data('messageRequiredName');
-                $('.message-validation').html(message);
+                message = "<span class='glyphicon glyphicon-warning-sign'></span>"
+                    + ' ' + divChangeAmount.data('messageRequiredName');
+                $('.message-validation').addClass('alert alert-warning alert-poll-set-ip').html(message);
             }
         } else if (isRequiredNameAndEmail == 1) {
             if (nameVote.trim() != '') {
                 if (emailVote.trim() == '') {
                     divChangeAmount = $(this).parent();
-                    $('.message-validation').addClass('alert alert-warning alert-poll-set-ip');
-                    var message = "<span class='glyphicon glyphicon-warning-sign'></span>" + ' ' + divChangeAmount.data('messageRequiredEmail');
-                    $('.message-validation').html(message);
+                    message = "<span class='glyphicon glyphicon-warning-sign'></span>"
+                        + ' ' + divChangeAmount.data('messageRequiredEmail');
+                    $('.message-validation').addClass('alert alert-warning alert-poll-set-ip').html(message);
                 } else {
                     if (testEmail.test(emailVote)) {
                         this.disabled = true;
-                        $('.message-validation').removeClass('alert alert-warning alert-poll-set-ip');
-                        $('.message-validation').html('');
+                        $('.message-validation').removeClass('alert alert-warning alert-poll-set-ip').html('');
                         $('#form-vote').submit();
                         $('.loader').show();
                     } else {
                         divChangeAmount = $(this).parent();
-                        $('.message-validation').addClass('alert alert-warning alert-poll-set-ip');
-                        var message = "<span class='glyphicon glyphicon-warning-sign'></span>" + ' ' +  divChangeAmount.data('messageValidateEmail');
-                        $('.message-validation').html(message);
+                        message = "<span class='glyphicon glyphicon-warning-sign'></span>"
+                            + ' ' +  divChangeAmount.data('messageValidateEmail');
+                        $('.message-validation').addClass('alert alert-warning alert-poll-set-ip').html(message);
                     }
                 }
             } else {
                 if (emailVote.trim() == '') {
                     divChangeAmount = $(this).parent();
-                    $('.message-validation').addClass('alert alert-warning alert-poll-set-ip');
-                    var message = "<span class='glyphicon glyphicon-warning-sign'></span>" + ' ' + divChangeAmount.data('messageRequiredNameAndEmail');
-                    $('.message-validation').html(message);
+                    message = "<span class='glyphicon glyphicon-warning-sign'></span>"
+                        + ' ' + divChangeAmount.data('messageRequiredNameAndEmail');
+                    $('.message-validation').addClass('alert alert-warning alert-poll-set-ip').html(message);
                 } else {
                     divChangeAmount = $(this).parent();
-                    $('.message-validation').addClass('alert alert-warning alert-poll-set-ip');
-                    var message = "<span class='glyphicon glyphicon-warning-sign'></span>" + ' ' + divChangeAmount.data('messageRequiredName');
-                    $('.message-validation').html(message);
+                    message = "<span class='glyphicon glyphicon-warning-sign'></span>"
+                        + ' ' + divChangeAmount.data('messageRequiredName');
+                    $('.message-validation').addClass('alert alert-warning alert-poll-set-ip').html(message);
                 }
             }
         } else {
@@ -100,9 +98,9 @@ $(document).ready(function(){
                     isPassValidate = true;
                 } else {
                     divChangeAmount = $(this).parent();
-                    $('.message-validation').addClass('alert alert-warning alert-poll-set-ip');
-                    var message = "<span class='glyphicon glyphicon-warning-sign'></span>" + ' ' +  divChangeAmount.data('messageValidateEmail');
-                    $('.message-validation').html(message);
+                    message = "<span class='glyphicon glyphicon-warning-sign'></span>"
+                        + ' ' +  divChangeAmount.data('messageValidateEmail');
+                    $('.message-validation').addClass('alert alert-warning alert-poll-set-ip').html(message);
                 }
             } else {
                 isPassValidate = true;
@@ -110,8 +108,7 @@ $(document).ready(function(){
 
             if (isPassValidate) {
                 this.disabled = true;
-                $('.message-validation').removeClass('alert alert-warning alert-poll-set-ip');
-                $('.message-validation').html('');
+                $('.message-validation').removeClass('alert alert-warning alert-poll-set-ip').html('');
                 $('#form-vote').submit();
                 $('.loader').show();
             }

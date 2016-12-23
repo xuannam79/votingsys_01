@@ -40,7 +40,8 @@
         data-token-admin="{{ $tokenLinkAdmin }}"
         data-token-user="{{ $tokenLinkUser }}"
         data-url-admin="{{ url('/link') }}"
-        data-link-check-date="{{ url('/check-date-close-poll') }}">
+        data-link-check-date="{{ url('/check-date-close-poll') }}"
+        data-location-route="{{ route('location.store') }}">
     </div>
     <div class="container">
         <div class="row">
@@ -258,20 +259,21 @@
                                                     <div class="modal-content">
                                                         <div class="modal-body scroll-result">
                                                             @if ($mergedParticipantVotes->count())
+
                                                                 <table class="table table-bordered table-detail-result">
                                                                     <thead>
-                                                                    <th>{{ trans('polls.no') }}</th>
-                                                                    <th>{{ trans('polls.name')}}</th>
-                                                                    <th>{{ trans('polls.email')}}</th>
-                                                                    @foreach ($poll->options as $option)
-                                                                        <th class="th-detail-vote">
-                                                                            <center>
-                                                                                <p>
-                                                                                    {{ str_limit($option->name, 50) }}
-                                                                                </p>
-                                                                            </center>
-                                                                        </th>
-                                                                    @endforeach
+                                                                        <th>{{ trans('polls.no') }}</th>
+                                                                        <th>{{ trans('polls.name')}}</th>
+                                                                        <th>{{ trans('polls.email')}}</th>
+                                                                        @foreach ($poll->options as $option)
+                                                                            <th class="th-detail-vote">
+                                                                                <center>
+                                                                                    <p>
+                                                                                        {{ str_limit($option->name, 50) }}
+                                                                                    </p>
+                                                                                </center>
+                                                                            </th>
+                                                                        @endforeach
                                                                     </thead>
                                                                     <tbody>
                                                                     @foreach ($mergedParticipantVotes as $vote)

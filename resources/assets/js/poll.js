@@ -929,7 +929,6 @@ $(document).ready(function () {
             });
         });
 
-        $('[data-toggle="tooltip"]').tooltip();
         var $validator = $("#form_create_poll, #form_update_poll_info, #form_duplicate_poll").validate({
             rules: {
                 email: {

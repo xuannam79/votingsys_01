@@ -11,15 +11,16 @@
 @endsection
 @section('content')
     <div class="hide"
-         data-poll="{{ $data["jsonData"] }}"
-         data-page="edit"
-         data-setting-edit="{{ json_encode($setting) }}"
-         data-route-link="{{ route('link-poll.store') }}"
-         data-token="{{ csrf_token() }}"
+        data-poll="{{ $data["jsonData"] }}"
+        data-page="edit"
+        data-setting-edit="{{ json_encode($setting) }}"
+        data-route-link="{{ route('link-poll.store') }}"
+        data-token="{{ csrf_token() }}"
         data-route-limit="{{ route('limit.store') }}"
         data-poll-return="{{ json_encode($poll) }}"
         data-total-vote="{{ $totalVote }}"
-        data-link-poll="{{ $poll->getUserLink() }}">
+        data-link-poll="{{ $poll->getUserLink() }}"
+        data-location-route="{{ route('location.store') }}">
     </div>
     <div class="loader"></div>
     <div class="container">

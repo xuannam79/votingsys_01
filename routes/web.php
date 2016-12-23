@@ -10,8 +10,10 @@
 | to using a Closure or controller method. Build something great!
 |
 */
+Route::resource('user-poll', 'PollController');
 
 Route::group(['middleware' => 'XSS'], function() {
+
     Route::post('user-register', [
         'as' => 'user-register',
         'uses' => 'User\UsersController@store'
@@ -22,7 +24,7 @@ Route::group(['middleware' => 'XSS'], function() {
         'uses' => 'User\LoginController@store'
     ]);
 
-    Route::resource('user-poll', 'PollController');
+
     Route::resource('duplicate', 'DuplicateController');
 
     /*

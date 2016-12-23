@@ -13,7 +13,7 @@ return [
     'history_empty' => 'History empty',
     'activity_not_found' => 'Activity not found',
     'participant_add_comment' => 'A comment added',
-    'edit_poll' => 'This poll edited',
+    'edit_poll' => 'edited this poll',
     'close_poll' => 'This poll closed',
     'reopen_poll' => 'This poll reopened',
 ];
