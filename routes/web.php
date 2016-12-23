@@ -86,7 +86,7 @@ Route::group(['prefix' => 'user', 'middleware' => 'auth'], function() {
     ]);
 });
 
-Route::group(['prefix' => 'user', 'middleware' => 'XSS'], function() {
+Route::group(['prefix' => 'user'], function() {
     Route::resource('poll', 'User\PollController', [
         'except' => ['show']
     ]);

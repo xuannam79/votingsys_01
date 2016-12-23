@@ -52,7 +52,7 @@ return [
         'string'  => 'The :attribute may not be greater than :max characters.',
         'array'   => 'The :attribute may not have more than :max items.',
     ],
-    'mimes'                => 'Trường :attribute phải là một file theo định dạng: :values.',
+    'mimes' => '論理 :attribute ファイル属性ファイルの属性: :values.',
     'mimetypes'            => 'The :attribute must be a file of type: :values.',
     'min'                  => [
         'numeric' => 'The :attribute must be at least :min.',
@@ -103,4 +103,5 @@ return [
     ],
     'register' => 'このメールアドレスはすでに登録されて、メールをチェックし、利用するにはログインしてください。',
     'check_email' => 'このメールアドレスは存在しない、別のメールアドレスを選択してください',
+    'check_upload' => 'アバターは、画像ファイルでなければなりません。',
 ];
