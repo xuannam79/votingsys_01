@@ -110,4 +110,16 @@ class PollValidator extends Validator
         return User::where('email', $value)->count() == config('settings.default_value');
     }
 
+    public function checkUpload($attribute, $value, $parameters, $validator)
+    {
+        if (! $value) {
+            return true;
+        }
+
+        if ($value->getMimeType() == 'application/pdf' || $value->getMimeType() == 'application/vnd.ms-office') {
+            return false;
+        }
+
+        return true;
+    }
 }

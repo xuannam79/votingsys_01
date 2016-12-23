@@ -20,6 +20,7 @@ class ValidationServiceProvider extends ServiceProvider
         Validator::extendImplicit('participant', 'App\Services\PollValidator@participant');
         Validator::extendImplicit('info', 'App\Services\PollValidator@information');
         Validator::extendImplicit('updateEmail', 'App\Services\PollValidator@updateEmail');
+        Validator::extendImplicit('checkUpload', 'App\Services\PollValidator@checkUpload');
     }
 
     /**

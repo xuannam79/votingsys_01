@@ -98,6 +98,7 @@ return [
     'register' => 'This email has been registed, Please check email and login',
     'check_email' => 'Email not exist, Please chose another email',
     'update_email' => 'Email exist, Please chose another email',
+    'check_upload' => 'The avatar must be a image file.',
     'custom' => [
         'attribute-name' => [
             'rule-name' => 'custom-message',

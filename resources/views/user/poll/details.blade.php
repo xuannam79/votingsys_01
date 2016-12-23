@@ -172,9 +172,9 @@
                                                                     a. user have been login but have not vote
                                                                     b. user have not login and have not vote
                                                         -->
-                                                        @if ($isSetIp && auth()->check() && ! $isUserVoted
-                                                            || ($isSetIp && ! auth()->check() && ! $isParticipantVoted)
-                                                            || ! $isLimit && ! $poll->isClosed() && ! $isSetIp)
+                                                        @if (!($poll->multiple == trans('polls.label.multiple_choice') && $isUserVoted
+                                                        && auth()->check())
+                                                        && ! $isLimit && ! $poll->isClosed() && ! $isSetIp && !$isTimeOut)
                                                             @if ($poll->multiple == trans('polls.label.multiple_choice'))
                                                                 {!!
                                                                     Form::checkbox('option[]', $option->id, false, [
@@ -213,9 +213,9 @@
                                                     <div class="col-lg-4 vertical-option">
                                                         <div class="panel panel-default" id="{{ $option->id }}">
                                                             <div class="panel-heading parent-vote panel-heading-vertical"  onclick="voted('{{ $option->id }}', 'horizontal')">
-                                                                @if ($isSetIp && auth()->check() && ! $isUserVoted
-                                                                    || $isSetIp && !auth()->check() && ! $isParticipantVoted
-                                                                    || ! $isLimit && ! $poll->isClosed() && ! $isSetIp)
+                                                                @if (!($poll->multiple == trans('polls.label.multiple_choice') && $isUserVoted
+                                                                && auth()->check())
+                                                                    && ! $isLimit && ! $poll->isClosed() && ! $isSetIp && !$isTimeOut)
                                                                     @if ($poll->multiple == trans('polls.label.multiple_choice'))
                                                                         {!!
                                                                             Form::checkbox('option_vertical[]', $option->id, false, [
@@ -254,7 +254,8 @@
                                     </div>
                                 </div>
                                 <div class="panel-footer">
-                                    @if (!($poll->multiple == trans('polls.label.multiple_choice') && $isUserVoted && auth()->check()))
+                                    @if (!($poll->multiple == trans('polls.label.multiple_choice') && $isUserVoted
+                                        && auth()->check()) && ! $isLimit && ! $poll->isClosed() && ! $isSetIp && !$isTimeOut)
                                         {!! Form::hidden('pollId', $poll->id) !!}
                                         {!! Form::hidden('isRequiredEmail', $isRequiredEmail) !!}
                                         <div class="row">
