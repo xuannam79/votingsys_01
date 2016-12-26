@@ -128,6 +128,7 @@ $(document).ready(function(){
             }
         } else {
             var isPassValidate = false;
+
             if (emailVote.trim() != '') {
                 if (testEmail.test(emailVote)) {
                     isPassValidate = true;
@@ -139,6 +140,14 @@ $(document).ready(function(){
                 }
             } else {
                 isPassValidate = true;
+            }
+
+            if (nameVote.trim().length >= 100) {
+                divChangeAmount = $(this).parent();
+                message = "<span class='glyphicon glyphicon-warning-sign'></span>"
+                    + ' ' + divChangeAmount.data('voteLimitName');
+                $('.message-validation').addClass('alert alert-warning alert-poll-set-ip').html(message);
+                isPassValidate = false;
             }
 
             if (isPassValidate) {

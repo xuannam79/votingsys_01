@@ -92,7 +92,7 @@ class VoteController extends Controller
         $now = Carbon::now();
 
         if ($isLimit || $poll->isClosed() || !$inputs['option']
-            || Carbon::now()->toAtomString() > Carbon::parse($poll->date_close)->toAtomString()) {
+            || Carbon::now()->toAtomString() > Carbon::parse($poll->date_close)->toAtomString() || strlen($inputs['nameVote']) >= config('settings.length_poll.name')) {
             return redirect()->to($poll->getUserLink());
         }
 
