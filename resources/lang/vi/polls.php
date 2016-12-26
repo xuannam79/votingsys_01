@@ -381,4 +381,5 @@ return [
     'view_setting' => 'Xem cài đặt',
     'poll_voted' => 'Poll này đã có bầu chọn, bạn không thể chỉnh sửa các tùy chọn của nó.',
     'message_poll_time_out' => 'Xin lỗi, poll này đã hết thời gian bầu chọn, bạn không thể bầu chọn poll này',
+    'link' => 'Link',
 ];

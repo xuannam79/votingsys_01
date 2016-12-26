@@ -6,7 +6,11 @@
         <th></th>
     </thead>
     <tbody>
-        @foreach ($polls as $poll)
+        <!--  Sort activities of poll by created_at -->
+        @foreach ($polls->sortBy(function($poll)
+            {
+              return $poll->activities->sortBy('id')->last()->created_at;
+            })->reverse() as $poll)
             @if ($poll->getUserLink())
                 <tr>
                     <td>

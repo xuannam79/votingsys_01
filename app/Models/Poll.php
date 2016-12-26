@@ -92,8 +92,7 @@ class Poll extends Model
             }
         }
 
-        $votes = Vote::whereIn('id', $voteIds)->with('user', 'option')->get()->groupBy('user_id');
-        $options = $this->options;
+        $votes = Vote::whereIn('id', $voteIds)->with('user', 'option')->get()->groupBy('id');
         $participantVoteIds = [];
 
         if ($options) {
@@ -109,6 +108,7 @@ class Poll extends Model
         }
 
         $participantVotes = ParticipantVote::whereIn('id', $participantVoteIds)->with('participant', 'option')->get()->groupBy('participant_id');
+
         $mergedParticipantVotes = $votes->toBase()->merge($participantVotes->toBase());
 
         if ($mergedParticipantVotes->count()) {
@@ -116,7 +116,21 @@ class Poll extends Model
                 $createdAt[] = $mergedParticipantVote->first()->created_at;
             }
 
-            $count = collect($createdAt)->count();
+            $sortedParticipantVotes = collect($createdAt)->sort();
+            $resultParticipantVotes = collect();
+            foreach ($sortedParticipantVotes as $sortedParticipantVote) {
+                foreach ($mergedParticipantVotes as $mergedParticipantVote) {
+                    foreach ($mergedParticipantVote as $participantVote) {
+                        if ($participantVote->created_at == $sortedParticipantVote) {
+                            $resultParticipantVotes->push($mergedParticipantVote);
+                            break;
+                        }
+
+                    }
+                }
+            }
+
+            $count = $resultParticipantVotes->count();
         }
 
         return $count;

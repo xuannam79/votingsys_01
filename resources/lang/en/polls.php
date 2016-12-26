@@ -378,4 +378,5 @@ return [
     'view_option' => 'View option',
     'view_setting' => 'View setting',
     'poll_voted' => 'This poll have been voted. You can\'t edit option of it',
+    'link' => 'Link',
 ];
