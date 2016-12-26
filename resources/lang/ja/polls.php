@@ -153,6 +153,9 @@ return [
             'max' => '最大の電子メールアドレス' . config('settings.length_poll.email') . ' 文字の最大値を有します',
             'email' => 'Email invalid!'
         ],
+        'content' => [
+            'max' => 'コンテンツは最大です' . config('settings.length_poll.content') . '文字の最大値を有します',
+        ],
         'title' => [
             'required' => '投票のタイトルを入力してください',
             'max' => '見出し' . config('settings.length_poll.title') . ' 文字の最大値を有します',

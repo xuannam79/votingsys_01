@@ -30,10 +30,17 @@ $(document).ready(function(){
         if (isRequiredEmail == 1) {
             if (emailVote.trim() != '') {
                 if (testEmail.test(emailVote)) {
-                    this.disabled = true;
-                    $('.message-validation').removeClass('alert alert-warning alert-poll-set-ip').html('');
-                    $('#form-vote').submit();
-                    $('.loader').show();
+                    if (nameVote.trim().length >= 100) {
+                        divChangeAmount = $(this).parent();
+                        message = "<span class='glyphicon glyphicon-warning-sign'></span>"
+                            + ' ' + divChangeAmount.data('voteLimitName');
+                        $('.message-validation').addClass('alert alert-warning alert-poll-set-ip').html(message);
+                    } else {
+                        this.disabled = true;
+                        $('.message-validation').removeClass('alert alert-warning alert-poll-set-ip').html('');
+                        $('#form-vote').submit();
+                        $('.loader').show();
+                    }
                 } else {
                     divChangeAmount = $(this).parent();
                     message = "<span class='glyphicon glyphicon-warning-sign'></span>"
@@ -48,10 +55,31 @@ $(document).ready(function(){
             }
         } else if (isRequiredName == 1) {
             if (nameVote.trim() != '') {
-                this.disabled = true;
-                $('.message-validation').removeClass('alert alert-warning alert-poll-set-ip').html('');
-                $('#form-vote').submit();
-                $('.loader').show();
+                if (nameVote.trim().length < 100) {
+                    if (emailVote.trim() != '') {
+                        if (testEmail.test(emailVote)) {
+                            this.disabled = true;
+                            $('.message-validation').removeClass('alert alert-warning alert-poll-set-ip').html('');
+                            $('#form-vote').submit();
+                            $('.loader').show();
+                        } else {
+                            divChangeAmount = $(this).parent();
+                            message = "<span class='glyphicon glyphicon-warning-sign'></span>"
+                                + ' ' +  divChangeAmount.data('messageValidateEmail');
+                            $('.message-validation').addClass('alert alert-warning alert-poll-set-ip').html(message);
+                        }
+                    } else {
+                        this.disabled = true;
+                        $('.message-validation').removeClass('alert alert-warning alert-poll-set-ip').html('');
+                        $('#form-vote').submit();
+                        $('.loader').show();
+                    }
+                } else {
+                    divChangeAmount = $(this).parent();
+                    message = "<span class='glyphicon glyphicon-warning-sign'></span>"
+                        + ' ' + divChangeAmount.data('voteLimitName');
+                    $('.message-validation').addClass('alert alert-warning alert-poll-set-ip').html(message);
+                }
             } else {
                 divChangeAmount = $(this).parent();
                 message = "<span class='glyphicon glyphicon-warning-sign'></span>"
@@ -59,7 +87,7 @@ $(document).ready(function(){
                 $('.message-validation').addClass('alert alert-warning alert-poll-set-ip').html(message);
             }
         } else if (isRequiredNameAndEmail == 1) {
-            if (nameVote.trim() != '') {
+            if (nameVote.trim() != '' && nameVote.trim().length < 100) {
                 if (emailVote.trim() == '') {
                     divChangeAmount = $(this).parent();
                     message = "<span class='glyphicon glyphicon-warning-sign'></span>"
@@ -79,15 +107,22 @@ $(document).ready(function(){
                     }
                 }
             } else {
-                if (emailVote.trim() == '') {
+                if (nameVote.trim() == '') {
+                    if (emailVote.trim() == '') {
+                        divChangeAmount = $(this).parent();
+                        message = "<span class='glyphicon glyphicon-warning-sign'></span>"
+                            + ' ' + divChangeAmount.data('messageRequiredNameAndEmail');
+                        $('.message-validation').addClass('alert alert-warning alert-poll-set-ip').html(message);
+                    } else {
+                        divChangeAmount = $(this).parent();
+                        message = "<span class='glyphicon glyphicon-warning-sign'></span>"
+                            + ' ' + divChangeAmount.data('messageRequiredName');
+                        $('.message-validation').addClass('alert alert-warning alert-poll-set-ip').html(message);
+                    }
+                } else if (nameVote.trim().length >= 100) {
                     divChangeAmount = $(this).parent();
                     message = "<span class='glyphicon glyphicon-warning-sign'></span>"
-                        + ' ' + divChangeAmount.data('messageRequiredNameAndEmail');
-                    $('.message-validation').addClass('alert alert-warning alert-poll-set-ip').html(message);
-                } else {
-                    divChangeAmount = $(this).parent();
-                    message = "<span class='glyphicon glyphicon-warning-sign'></span>"
-                        + ' ' + divChangeAmount.data('messageRequiredName');
+                        + ' ' + divChangeAmount.data('voteLimitName');
                     $('.message-validation').addClass('alert alert-warning alert-poll-set-ip').html(message);
                 }
             }

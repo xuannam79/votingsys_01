@@ -147,19 +147,22 @@ return [
     'validation' => [
         'name' => [
             'required' => 'Vui lòng nhập tên của bạn!',
-            'max' => 'Tên có tối đa' . config('settings.length_poll.name') . ' ký tự',
+            'max' => 'Tên tối đa ' . config('settings.length_poll.name') . ' ký tự',
         ],
         'email' => [
             'required' => 'Vui lòng nhập địa chỉ email của bạn!',
-            'max' => 'Địa chỉ email tối đa' . config('settings.length_poll.email') . ' ký tự',
-            'email' => 'Email invalid!'
+            'max' => 'Địa chỉ email tối đa ' . config('settings.length_poll.email') . ' ký tự',
+            'email' => 'Địa chỉ email chưa chính xác!'
+        ],
+        'content' => [
+            'max' => 'Nội dung tối đa ' . config('settings.length_poll.content') . ' ký tự',
         ],
         'title' => [
             'required' => 'Vui lòng nhập tiêu đề poll!',
-            'max' => 'Tiêu đề có tối đa' . config('settings.length_poll.title') . ' ký tự',
+            'max' => 'Tiêu đề tối đa ' . config('settings.length_poll.title') . ' ký tự',
         ],
         'description' => [
-            'max' => 'Mô tả có tối đa' . config('settings.length_poll.description') . ' ký tự',
+            'max' => 'Mô tả tối đa ' . config('settings.length_poll.description') . ' ký tự',
         ],
         'type' => [
             'required' => 'Vui lòng chọn kiểu của poll',
@@ -171,7 +174,7 @@ return [
             'setting' => 'Cài đặt không chính xác, vui lòng thử lại!',
         ],
         'participant' => [
-            'email' => 'VUi lòng nhập địa chỉ email của người tham gia',
+            'email' => 'Vui lòng nhập địa chỉ email của người tham gia',
         ],
     ],
     'table' => [

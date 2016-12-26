@@ -54,7 +54,8 @@ return [
         'location' => 20,
     ],
     'length_poll' => [
-        'name' => 255,
+        'name' => 100,
+        'content' => 255,
         'email' => 255,
         'title' => 255,
         'description' => 255,

@@ -281,7 +281,8 @@
                                                     data-message-required-name-and-email="{{ trans('polls.message_validate_name_and_email') }}"
                                                     data-is-required-email="{{ $isRequiredEmail ? 1 : 0 }}"
                                                     data-is-required-name="{{ $isRequiredName ? 1 : 0 }}"
-                                                    data-is-required-name-and-email="{{ $isRequiredNameAndEmail ? 1 : 0 }}">
+                                                    data-is-required-name-and-email="{{ $isRequiredNameAndEmail ? 1 : 0 }}"
+                                                    data-vote-limit-name="{{ trans('polls.validation.name.max') }}">
                                                     {{ Form::button(trans('polls.vote'), ['class' => 'btn btn-success btn-vote', ! $isUserVoted ? 'disabled' : '']) }}
                                                 </span>
                                             </div>
@@ -452,10 +453,12 @@
                                                         !!}
                                                     </div>
                                                     <div class="col-md-10 comment"
-                                                         data-poll-id="{{ $poll->id }}"
-                                                         data-user="{{ auth()->check() ? auth()->user()->name : '' }}"
-                                                         data-comment-name="{{ trans('polls.comment_name') }}"
-                                                         data-comment-content="{{ trans('polls.comment_content') }}">
+                                                        data-poll-id="{{ $poll->id }}"
+                                                        data-user="{{ auth()->check() ? auth()->user()->name : '' }}"
+                                                        data-comment-name="{{ trans('polls.comment_name') }}"
+                                                        data-comment-content="{{ trans('polls.comment_content') }}"
+                                                        data-comment-limit-name="{{ trans('polls.validation.name.max') }}"
+                                                        data-comment-limit-content="{{ trans('polls.validation.content.max') }}">
                                                         {!!
                                                             Form::textarea('content', null, [
                                                                 'class' => 'form-control comment-info-content',
