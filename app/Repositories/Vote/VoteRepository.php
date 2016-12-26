@@ -2,7 +2,6 @@
 
 namespace App\Repositories\Vote;
 
-use DB;
 use App\Models\Vote;
 use App\Models\Activity;
 use App\Repositories\BaseRepository;
@@ -32,12 +31,6 @@ class VoteRepository extends BaseRepository implements VoteRepositoryInterface
 
     public function getVoteWithOptionsByVoteId($voteIds)
     {
-        $votes = $this->model->whereIn('id', $voteIds);
-
-        if ($votes->first() && $votes->first()->option->poll->multiple == trans('polls.label.multiple_choice')) {
-            return $this->model->whereIn('id', $voteIds)->with('user', 'option')->get()->groupBy('user_id');
-        }
-
         return $this->model->whereIn('id', $voteIds)->with('user', 'option')->get()->groupBy('id');
     }
 

@@ -27,7 +27,7 @@ class UpdateUserRequest extends FormRequest
             'name' => 'required|max:255',
             'email' => 'required|email|max:255|updateEmail',
             'password' => 'confirmed',
-            'avatar' => 'mimes:jpg,jpeg,png,gif,svg',
+            'avatar' => 'image|mimes:jpg,jpeg,png,gif,svg|max:1000',
         ];
     }
 }

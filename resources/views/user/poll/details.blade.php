@@ -84,14 +84,6 @@
                                 {{ trans('polls.reach_limit') }}
                             </div>
                         @endif
-                            @if ($isSetIp && auth()->check() && $isUserVoted
-                                || $isSetIp && ! auth()->check() && $isParticipantVoted)
-                            <div class="alert alert-warning alert-poll-set-ip">
-                                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                                <span class='glyphicon glyphicon-warning-sign'></span>
-                                {{ trans('polls.message_vote_one_time') }}
-                            </div>
-                        @endif
                         @if ($isTimeOut)
                             <div class="alert alert-warning alert-poll-set-ip">
                                 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
@@ -172,9 +164,7 @@
                                                                     a. user have been login but have not vote
                                                                     b. user have not login and have not vote
                                                         -->
-                                                        @if (!($poll->multiple == trans('polls.label.multiple_choice') && $isUserVoted
-                                                        && auth()->check())
-                                                        && ! $isLimit && ! $poll->isClosed() && ! $isSetIp && !$isTimeOut)
+                                                        @if (!$isLimit && !$poll->isClosed() && !$isTimeOut)
                                                             @if ($poll->multiple == trans('polls.label.multiple_choice'))
                                                                 {!!
                                                                     Form::checkbox('option[]', $option->id, false, [
@@ -213,9 +203,7 @@
                                                     <div class="col-lg-4 vertical-option">
                                                         <div class="panel panel-default" id="{{ $option->id }}">
                                                             <div class="panel-heading parent-vote panel-heading-vertical"  onclick="voted('{{ $option->id }}', 'horizontal')">
-                                                                @if (!($poll->multiple == trans('polls.label.multiple_choice') && $isUserVoted
-                                                                && auth()->check())
-                                                                    && ! $isLimit && ! $poll->isClosed() && ! $isSetIp && !$isTimeOut)
+                                                                @if (!$isLimit && !$poll->isClosed() && !$isTimeOut)
                                                                     @if ($poll->multiple == trans('polls.label.multiple_choice'))
                                                                         {!!
                                                                             Form::checkbox('option_vertical[]', $option->id, false, [
@@ -254,10 +242,8 @@
                                     </div>
                                 </div>
                                 <div class="panel-footer">
-                                    @if (!($poll->multiple == trans('polls.label.multiple_choice') && $isUserVoted
-                                        && auth()->check()) && ! $isLimit && ! $poll->isClosed() && ! $isSetIp && !$isTimeOut)
+                                    @if (!$isLimit && !$poll->isClosed() && !$isTimeOut)
                                         {!! Form::hidden('pollId', $poll->id) !!}
-                                        {!! Form::hidden('isRequiredEmail', $isRequiredEmail) !!}
                                         <div class="row">
                                             <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 col-xs-name-vote">
                                                 <div class="input-group  {{ ($isRequiredName || $isRequiredNameAndEmail) ? "required" : "" }}">

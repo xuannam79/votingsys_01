@@ -160,16 +160,12 @@
                                 <div class="panel panel-default">
                                     <div class="panel-body">
                                         <ul class="nav nav-pills nav-stacked pie_bar_chart_manage">
-                                           <!--  <li class="active"><a data-toggle="tab" href="#statistic">
-                                                    <i class="fa fa-calculator" aria-hidden="true"></i>
+                                            <li class="active li-result-table
+                                                {{ ($optionRateBarChart != "null") ? '': 'hide-result-li' }}">
+                                                <a data-toggle="tab" href="#table">
+                                                    <i class="fa fa-table" aria-hidden="true"></i>
                                                 </a>
-                                            </li> -->
-                                                <li class="active li-result-table
-                                                    {{ ($optionRateBarChart != "null") ? '': 'hide-result-li' }}">
-                                                    <a data-toggle="tab" href="#table">
-                                                        <i class="fa fa-table" aria-hidden="true"></i>
-                                                    </a>
-                                                </li>
+                                            </li>
                                             @if ($optionRateBarChart != "null")
                                                 <li><a data-toggle="tab" href="#menu2">
                                                         <i class="fa fa-bar-chart" aria-hidden="true"></i>

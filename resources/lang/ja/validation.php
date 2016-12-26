@@ -40,7 +40,7 @@ return [
     'exists'               => 'The selected :attribute is invalid.',
     'file'                 => 'The :attribute must be a file.',
     'filled'               => 'The :attribute field is required.',
-    'image'                => 'The :attribute must be an image.',
+    'image'                => 'アバターはイメージでなければなりません。.',
     'in'                   => 'The selected :attribute is invalid.',
     'in_array'             => 'The :attribute field does not exist in :other.',
     'integer'              => 'The :attribute must be an integer.',
@@ -48,11 +48,11 @@ return [
     'json'                 => 'The :attribute must be a valid JSON string.',
     'max'                  => [
         'numeric' => 'The :attribute may not be greater than :max.',
-        'file'    => 'The :attribute may not be greater than :max kilobytes.',
+        'file'    => 'アバターは、 :max kilobytes.',
         'string'  => 'The :attribute may not be greater than :max characters.',
         'array'   => 'The :attribute may not have more than :max items.',
     ],
-    'mimes' => '論理 :attribute ファイル属性ファイルの属性: :values.',
+    'mimes' => '論理 アバター ファイル属性ファイルの属性: :values.',
     'mimetypes'            => 'The :attribute must be a file of type: :values.',
     'min'                  => [
         'numeric' => 'The :attribute must be at least :min.',

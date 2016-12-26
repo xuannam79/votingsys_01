@@ -58,39 +58,41 @@ class VoteController extends Controller
             $ip = $remote;
         }
 
-        $inputs = $request->only('option', 'nameVote', 'emailVote', 'pollId', 'isRequiredEmail');
+        $inputs = $request->only('option', 'nameVote', 'emailVote', 'pollId');
         $poll = $this->pollRepository->findPollById($inputs['pollId']);
         $isSetIp = false;
+        $voteLimit = null;
+        $isRequiredEmail = false;
+        $isLimit = false;
 
-        if (! $inputs['option']) {
-            return redirect()->to($poll->getUserLink());
-        }
-
+        //get all settings of poll
+        $listSettings = [];
         if ($poll->settings) {
             foreach ($poll->settings as $setting) {
-                if ($setting->key == config('settings.setting.is_set_ip')) {
-                    $isSetIp = true;
+                $listSettings[] = $setting->key;
+
+                if ($setting->key == config('settings.setting.set_limit')) {
+                    $voteLimit = $setting->value;
                 }
+            }
+
+            if (collect($listSettings)->contains(config('settings.setting.is_set_ip'))) {
+                $isSetIp = true;
+            }
+
+            if (collect($listSettings)->contains(config('settings.setting.required_email'))) {
+                $isRequiredEmail = true;
             }
         }
 
-        if ($isSetIp && ! auth()->check()) {
-            $listParticipantVotes = $this->participantVoteRepository->getVoteWithOptionsByVoteId($this->pollRepository->getParticipantVoteIds($poll->id));
-            if ($listParticipantVotes->count()) {
-                foreach ($listParticipantVotes as $participantVote) {
-                    foreach($participantVote as $item) {
-                        if (isset($item->participant) && $item->participant->ip_address == $ip) {
-                            return redirect()->to($poll->getUserLink());
-                        }
-                    }
-                }
-            }
+        if ($voteLimit && $poll->countParticipants() >= $voteLimit) {
+            $isLimit = true;
         }
 
-        $isRequiredEmail = $inputs['isRequiredEmail'];
         $now = Carbon::now();
 
-        if (Carbon::now()->toAtomString() > Carbon::parse($poll->date_close)->toAtomString()) {
+        if ($isLimit || $poll->isClosed() || !$inputs['option']
+            || Carbon::now()->toAtomString() > Carbon::parse($poll->date_close)->toAtomString()) {
             return redirect()->to($poll->getUserLink());
         }
 
@@ -102,7 +104,9 @@ class VoteController extends Controller
             ];
             $isChanged = false;
 
-            if ($inputs['nameVote'] != $currentUser->name || $inputs['emailVote'] != $currentUser->email) {
+            if ($poll->multiple == trans('polls.label.multiple_choice')
+                || $inputs['nameVote'] != $currentUser->name
+                || $inputs['emailVote'] != $currentUser->email) {
                 $participantInformation['name'] = $inputs['nameVote'];
                 $participantInformation['email'] = $inputs['emailVote'];
                 $isChanged = true;
@@ -297,7 +301,7 @@ class VoteController extends Controller
         $redis->publish('votes', json_encode([
             'result' => $poll->countVotesWithOption(),
             'poll_id' => $poll->id,
-            'count_participant' => $poll->countParticipants(),
+            'count_participant' => $mergedParticipantVotes->count(),
             'success' => true,
             'html' => $html,
             'html_result_vote' => view('user.poll.result_vote_layouts', ['dataTableResult' => $dataTableResult])->render(),

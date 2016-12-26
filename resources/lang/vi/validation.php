@@ -40,7 +40,7 @@ return [
     'exists'               => 'The selected :attribute is invalid.',
     'file'                 => 'The :attribute must be a file.',
     'filled'               => 'The :attribute field is required.',
-    'image'                => 'The :attribute must be an image.',
+    'image'                => 'Trường :attribute phải là ảnh.',
     'in'                   => 'The selected :attribute is invalid.',
     'in_array'             => 'The :attribute field does not exist in :other.',
     'integer'              => 'The :attribute must be an integer.',
@@ -48,7 +48,7 @@ return [
     'json'                 => 'The :attribute must be a valid JSON string.',
     'max'                  => [
         'numeric' => 'The :attribute may not be greater than :max.',
-        'file'    => 'The :attribute may not be greater than :max kilobytes.',
+        'file'    => 'Trường :attribute không lớn hơn :max kilobytes.',
         'string'  => 'The :attribute may not be greater than :max characters.',
         'array'   => 'The :attribute may not have more than :max items.',
     ],

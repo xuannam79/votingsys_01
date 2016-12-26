@@ -64,16 +64,6 @@ class LinkController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -99,19 +89,6 @@ class LinkController extends Controller
      */
     public function show($token, Request $request)
     {
-        //get MAC address
-        $client  = @$_SERVER['HTTP_CLIENT_IP'];
-        $forward = @$_SERVER['HTTP_X_FORWARDED_FOR'];
-        $remote  = $_SERVER['REMOTE_ADDR'];
-
-        if (filter_var($client, FILTER_VALIDATE_IP)) {
-            $ip = $client;
-        } elseif (filter_var($forward, FILTER_VALIDATE_IP)) {
-            $ip = $forward;
-        } else {
-            $ip = $remote;
-        }
-
         $link = $this->linkRepository->getPollByToken($token);
 
         if (! $link) {
@@ -129,8 +106,6 @@ class LinkController extends Controller
         $isTimeOut = false;
         $poll = $link->poll;
         $totalVote = config('settings.default_value');
-        $isSetIp = false;
-        $countParticipantsVoted = $poll->countParticipants();
 
         //get information vote poll
         $voteIds = $this->pollRepository->getVoteIds($poll->id);
@@ -160,15 +135,27 @@ class LinkController extends Controller
             $mergedParticipantVotes = $resultParticipantVotes;
         }
 
+        //count number of vote
+        $countParticipantsVoted = $mergedParticipantVotes->count();
+
+        // check option have image?
+        $isHaveImages = false;
+
+        $totalVote = [];
         foreach ($poll->options as $option) {
-            $totalVote += $option->countVotes();
+            $totalVote[$option->id] = $option->countVotes();
+
+            if ($option->image) {
+                $isHaveImages = true;
+            }
         }
 
         $optionRateBarChart = [];
 
-        if ($totalVote) {
+        if (array_sum($totalVote)) {
             foreach ($poll->options as $option) {
-                $countOption = $option->countVotes();
+                $countOption = $totalVote[$option->id];
+
                 if ($countOption > 0) {
                     $optionRateBarChart[] = [$option->name, $countOption];
                 }
@@ -186,61 +173,60 @@ class LinkController extends Controller
             return $value['numberOfVote'];
         })));
 
-        // check option have image?
-        $isHaveImages = false;
-
-        foreach ($poll->options as $option) {
-            if ($option->image) {
-                $isHaveImages = true;
-                break;
-            }
-        }
-
         if (! $link->link_admin) {
             if ($link->poll->isClosed()) {
                 return view('errors.show_errors')->with('message', trans('polls.message_poll_closed'))->with('pollId', $poll->id);
             }
 
-            //check time close poll
+            //check time close vote when time out
             if (Carbon::now()->toAtomString() > Carbon::parse($poll->date_close)->toAtomString()) {
-                // close vote when poll time out
                 $isTimeOut = true;
             }
 
             $requiredPassword = null;
-            $passwordSetting = $poll->settings->whereIn('key', [config('settings.setting.set_password')])->first();
 
-            //require setting to vote poll
-            $isRequiredEmail = $poll->settings->whereIn('key', [config('settings.setting.required_email')])->count() != config('settings.default_value');
-            $isRequiredName = $poll->settings->whereIn('key', [config('settings.setting.required_name')])->count() != config('settings.default_value');
-            $isRequiredNameAndEmail = $poll->settings->whereIn('key', [config('settings.setting.required_name_and_email')])->count() != config('settings.default_value');
-
+            //get all settings of poll
+            $listSettings = [];
             if ($poll->settings) {
                 foreach ($poll->settings as $setting) {
+                    $listSettings[] = $setting->key;
+
                     if ($setting->key == config('settings.setting.set_limit')) {
                         $voteLimit = $setting->value;
                     }
 
-                    if ($setting->key == config('settings.setting.is_set_ip')) {
-                        $isSetIp = true;
+                    if ($setting->key == config('settings.setting.set_password')) {
+                        $requiredPassword = $setting->value;
                     }
+                }
 
-                    $isHideResult = ($setting->key == config('settings.setting.hide_result'));
+                if (collect($listSettings)->contains(config('settings.setting.required_name'))) {
+                    $isRequiredName = true;
+                }
+
+                if (collect($listSettings)->contains(config('settings.setting.required_name_and_email'))) {
+                    $isRequiredNameAndEmail = true;
+                }
+
+                if (collect($listSettings)->contains(config('settings.setting.required_email'))) {
+                    $isRequiredEmail = true;
+                }
+
+                if (collect($listSettings)->contains(config('settings.setting.hide_result'))) {
+                    $isHideResult = true;
+                }
+
+                if ($voteLimit && $countParticipantsVoted >= $voteLimit) {
+                    $isLimit = true;
                 }
             }
 
-            if ($voteLimit && $countParticipantsVoted >= $voteLimit) {
-                $isLimit = true;
-            }
-
             if(! Session::has('isInputPassword')) {
-                if ($passwordSetting) {
-                    $requiredPassword = $passwordSetting->value;
+                if ($requiredPassword) {
 
                     return view('user.poll.input_password', compact('poll', 'requiredPassword', 'token'));
                 }
             } elseif (! Session::get('isInputPassword')) {
-                $requiredPassword = $passwordSetting->value;
                 Session::forget('isInputPassword');
 
                 return view('user.poll.input_password', compact('poll', 'requiredPassword', 'token'))->withErrors(trans('polls.incorrect_password'));
@@ -248,35 +234,18 @@ class LinkController extends Controller
 
             Session::forget('isInputPassword');
 
-            $isHideResult = $poll->settings->whereIn('key', [config('settings.setting.hide_result')])->count() != config('settings.default_value');
-
-
             $isUserVoted = false;
-            $isParticipantVoted = false;
 
             if (auth()->check()) {
                 $isUserVoted = $this->pollRepository->checkUserVoted($poll->id, $this->voteRepository);
-            } else {
-                foreach ($participantVotes as $participantVote) {
-                    foreach($participantVote as $item) {
-                        if (isset($item->participant) && $item->participant->ip_address == $ip) {
-                            $isParticipantVoted = true;
-                            break;
-                        }
-                    }
-                }
             }
 
             return view('user.poll.details', compact(
-                'poll', 'numberOfVote', 'linkUser', //poll info
-                'isRequiredEmail', 'isRequiredName', 'isRequiredNameAndEmail', //setting required
-                'isHideResult', //setting hide result
-                'isLimit', //setting number limit of poll
-                'isSetIp', //setting vote one time
-                'requiredPassword', //setting password of poll
-                'isUserVoted', 'isParticipantVoted', // vote type
-                'isTimeOut', //time out of poll
-                'optionRateBarChart', 'dataTableResult', 'mergedParticipantVotes', //result
+                'poll', 'numberOfVote', 'linkUser',
+                'isRequiredEmail', 'isRequiredName', 'isRequiredNameAndEmail',
+                'isHideResult', 'isLimit', 'requiredPassword',
+                'isUserVoted', 'isTimeOut', 'optionRateBarChart',
+                'dataTableResult', 'mergedParticipantVotes',
                 'countParticipantsVoted', 'isHaveImages'
             ));
         } else {
@@ -291,56 +260,14 @@ class LinkController extends Controller
             //get data contain config or message return view and js
             $data = $this->pollRepository->getDataPollSystem();
             $page = 'manager';
-
-           /* $statistic = [
-                'total' => $this->pollRepository->getTotalVotePoll($poll),
-                'firstTime' => $this->pollRepository->getTimeFirstVote($poll),
-                'lastTime' => $this->pollRepository->getTimeLastVote($poll),
-                'largestVote' => $this->pollRepository->getOptionLargestVote($poll),
-                'leastVote' => $this->pollRepository->getOptionLeastVote($poll),
-            ];*/
-
             $settings = $this->pollRepository->showSetting($poll->settings);
 
             return view('user.poll.manage_poll', compact(
                 'poll', 'tokenLinkUser', 'tokenLinkAdmin', 'numberOfVote',
                 'linkUser', 'mergedParticipantVotes', 'isHaveImages',
-                'settings', 'data', 'page', 'statistic', 'dataTableResult', 'optionRateBarChart', 'optionRatePieChart', 'countParticipantsVoted'
+                'settings', 'data', 'page', 'statistic', 'dataTableResult',
+                'optionRateBarChart', 'optionRatePieChart', 'countParticipantsVoted'
             ));
         }
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
     }
 }
