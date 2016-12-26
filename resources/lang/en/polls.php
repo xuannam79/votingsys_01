@@ -145,19 +145,22 @@ return [
     'validation' => [
         'name' => [
             'required' => 'Please enter your name!',
-            'max' => 'Name is maximum' . config('settings.length_poll.name') . 'characters',
+            'max' => 'Name is maximum ' . config('settings.length_poll.name') . ' characters',
+        ],
+        'content' => [
+            'max' => 'Content is maximum ' . config('settings.length_poll.content') . ' characters',
         ],
         'email' => [
             'required' => 'Please enter your email!',
-            'max' => 'Email is maximum' . config('settings.length_poll.email') . 'characters',
+            'max' => 'Email is maximum ' . config('settings.length_poll.email') . ' characters',
             'email' => 'Email invalid!'
         ],
         'title' => [
             'required' => 'Please enter poll title!',
-            'max' => 'Title is maximum' . config('settings.length_poll.title') . 'characters',
+            'max' => 'Title is maximum ' . config('settings.length_poll.title') . ' characters',
         ],
         'description' => [
-            'max' => 'Ddescription is maximum' . config('settings.length_poll.description') . 'characters',
+            'max' => 'Ddescription is maximum ' . config('settings.length_poll.description') . 'characters',
         ],
         'type' => [
             'required' => 'Please choose type of poll',
