@@ -135,7 +135,7 @@
                                 {{
                                     Form::file('avatar', [
                                         'class'=>'form-control',
-                                        'onchange' => 'readURL(this, "preview-avatar")'
+                                        'onchange' => 'readURLRegister(this, "preview-avatar")'
                                     ])
                                 }}
                             </div>

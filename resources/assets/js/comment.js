@@ -47,8 +47,50 @@ $(document).ready(function(){
         var content = $('#content' + pollId).val();
         var name = $('#name' + pollId).val();
 
-        if (! validateCommentPoll()) {
-            return;
+        var commentName = divChangeAmount.data('commentName');
+        var commentContent = divChangeAmount.data('commentContent');
+        var commentLimitName = divChangeAmount.data('commentLimitName');
+        var commentLimitContent = divChangeAmount.data('commentLimitContent');
+        var passValidate = true;
+
+        var pollId = divChangeAmount.data('pollId');
+        var content = $('#content' + pollId).val();
+        var name = $('#name' + pollId).val();
+
+        /* remove class error */
+        $('.comment-info-name, .comment-info-content').removeClass('error');
+        $('.comment-name-validate, .comment-content-validate').removeClass('alert alert-poll-set-ip').html('');
+
+        if (name.trim() == '') {
+            $('.comment-info-name').addClass('error');
+            $('.comment-name-validate').addClass('alert alert-poll-set-ip')
+                .html('<span class="glyphicon glyphicon-warning-sign"></span>' + ' ' + commentName);
+
+            return false;
+        }
+
+        if (name.trim().length >= 100) {
+            $('.comment-info-name').addClass('error');
+            $('.comment-name-validate').addClass('alert alert-poll-set-ip')
+                .html('<span class="glyphicon glyphicon-warning-sign"></span>' + ' ' + commentLimitName);
+
+            return false;
+        }
+
+        if (content.trim() == '') {
+            $('.comment-info-content').addClass('error');
+            $('.comment-name-validate').addClass('alert alert-poll-set-ip')
+                .html('<span class="glyphicon glyphicon-warning-sign"></span>' + ' ' + commentContent);
+
+            return false;
+        }
+
+        if (content.trim().length >= 255) {
+            $('.comment-info-content').addClass('error');
+            $('.comment-name-validate').addClass('alert alert-poll-set-ip')
+                .html('<span class="glyphicon glyphicon-warning-sign"></span>' + ' ' + commentLimitContent);
+
+            return false;
         }
 
         $.ajax({
@@ -101,52 +143,3 @@ $(document).ready(function(){
         }
     });
 });
-
-function validateCommentPoll() {
-    var commentName = divChangeAmount.data('commentName');
-    var commentContent = divChangeAmount.data('commentContent');
-    var commentLimitName = divChangeAmount.data('commentLimitName');
-    var commentLimitContent = divChangeAmount.data('commentLimitContent');
-
-    var pollId = divChangeAmount.data('pollId');
-    var content = $('#content' + pollId).val();
-    var name = $('#name' + pollId).val();
-
-    /* remove class error */
-    $('.comment-info-name, .comment-info-content').removeClass('error');
-    $('.comment-name-validate, .comment-content-validate').removeClass('alert alert-poll-set-ip').html('');
-
-    if (name.trim() == '') {
-        $('.comment-info-name').addClass('error');
-        $('.comment-name-validate').addClass('alert alert-poll-set-ip')
-            .html('<span class="glyphicon glyphicon-warning-sign"></span>' + ' ' + commentName);
-
-        return false;
-    }
-
-    if (name.trim().length >= 100) {
-        $('.comment-info-name').addClass('error');
-        $('.comment-name-validate').addClass('alert alert-poll-set-ip')
-            .html('<span class="glyphicon glyphicon-warning-sign"></span>' + ' ' + commentLimitName);
-
-        return false;
-    }
-
-    if (content.trim() == '') {
-        $('.comment-info-content').addClass('error');
-        $('.comment-name-validate').addClass('alert alert-poll-set-ip')
-            .html('<span class="glyphicon glyphicon-warning-sign"></span>' + ' ' + commentContent);
-
-        return false;
-    }
-
-    if (content.trim().length >= 255) {
-        $('.comment-info-content').addClass('error');
-        $('.comment-name-validate').addClass('alert alert-poll-set-ip')
-            .html('<span class="glyphicon glyphicon-warning-sign"></span>' + ' ' + commentLimitContent);
-
-        return false;
-    }
-
-    return true;
-}

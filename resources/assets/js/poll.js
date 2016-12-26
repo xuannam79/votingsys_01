@@ -1068,9 +1068,3 @@ if (document.getElementById('location') != null) {
         });
     });
 }
-
-
-var loadFile = function(event) {
-    var output = document.getElementById('output');
-    output.src = URL.createObjectURL(event.target.files[0]);
-};

@@ -27,7 +27,15 @@ class SocialAccountService
         $account = $this->socialAccountRepository->getAccount($providerName, $providerUser);
 
         if ($account) {
-            return $account->user;
+            $user = $account->user;
+
+            if (preg_match('#^(http)|(https).*$#', $user->avatar)
+                && $user->avatar != $providerUser->avatar) {
+                $user->avatar = $providerUser->avatar;
+                $user->save();
+            }
+
+            return $user;
         }
 
         $account = new SocialAccount([
