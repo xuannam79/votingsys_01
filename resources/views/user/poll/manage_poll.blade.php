@@ -443,7 +443,7 @@
                                 </a>
                             </div>
                             <div class="col-lg-3 col-md-3 col-xs-activity">
-                                <a href="{{ route('user-poll.edit', $poll->id) }}"
+                                <a href="{{ route('edit-poll', $poll->getTokenAdminLink()) }}"
                                    class="btn btn-administration btn-sm btn-block">
                                     <span class="fa fa-pencil"></span> {{ trans('polls.tooltip.edit') }}
                                 </a>

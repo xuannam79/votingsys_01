@@ -9,19 +9,23 @@ use App\Http\Requests\PollEditRequest;
 use App\Http\Requests\PollRequest;
 use App\Repositories\Poll\PollRepositoryInterface;
 use App\Repositories\Activity\ActivityRepositoryInterface;
+use App\Repositories\Link\LinkRepositoryInterface;
 
 class PollController extends Controller
 {
     protected $pollRepository;
     protected $activityRepository;
+    protected $linkRepository;
 
     public function __construct(
         PollRepositoryInterface $pollRepository,
-        ActivityRepositoryInterface $activityRepository
+        ActivityRepositoryInterface $activityRepository,
+        LinkRepositoryInterface $linkRepository
     )
     {
         $this->pollRepository = $pollRepository;
         $this->activityRepository = $activityRepository;
+        $this->linkRepository = $linkRepository;
     }
 
     /**
@@ -91,15 +95,21 @@ class PollController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($token)
     {
-        $data = $this->pollRepository->getDataPollSystem();
-        $poll = Poll::with('user', 'options', 'settings')->findOrFail($id);
-        $setting = $poll->settings->pluck('value', 'key')->toArray();
-        $page = 'edit';
-        $totalVote = $poll->countParticipants();
+        $link = $this->linkRepository->getPollByToken($token);
 
-        return view('user.poll.edit', compact('poll', 'data', 'setting', 'page', 'totalVote'));
+        if ($link) {
+            $poll = $link->poll;
+            $data = $this->pollRepository->getDataPollSystem();
+            $setting = $poll->settings->pluck('value', 'key')->toArray();
+            $page = 'edit';
+            $totalVote = $poll->countParticipants();
+
+            return view('user.poll.edit', compact('poll', 'data', 'setting', 'page', 'totalVote'));
+        } else {
+            return view('errors.404');
+        }
     }
 
     /**

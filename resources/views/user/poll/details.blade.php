@@ -76,7 +76,6 @@
                 @endif
                 <div class="tab-content">
                     <div class="tab-pane" id="vote">
-                        <div class="message-validation"></div>
                         @if ($isLimit)
                             <div class="alert alert-warning alert-poll-set-ip">
                                 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
@@ -241,6 +240,7 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="message-validation"></div>
                                 <div class="panel-footer">
                                     @if (!$isLimit && !$poll->isClosed() && !$isTimeOut)
                                         {!! Form::hidden('pollId', $poll->id) !!}

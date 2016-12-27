@@ -10,7 +10,14 @@
 | to using a Closure or controller method. Build something great!
 |
 */
-Route::resource('user-poll', 'PollController');
+Route::resource('user-poll', 'PollController', [
+    'except' => 'edit',
+]);
+
+Route::get('user-poll/{token?}/edit', [
+    'as' => 'edit-poll',
+    'uses' => 'PollController@edit'
+]);
 
 Route::group(['middleware' => 'XSS'], function() {
 
