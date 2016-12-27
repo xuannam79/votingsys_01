@@ -19,7 +19,7 @@ return [
         'title' => 'Title',
         'description' => 'Description',
         'location' => 'Location',
-        'time_close' => 'Time for close poll',
+        'time_close' => 'Time for close voting',
         'created_at' => 'Created at',
         'type' => 'Type',
         'status' => 'Status',

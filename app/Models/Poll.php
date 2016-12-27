@@ -178,6 +178,19 @@ class Poll extends Model
         }
     }
 
+    public function getTokenAdminLink()
+    {
+        if (!$this->links) {
+            return false;
+        }
+
+        foreach ($this->links as $link) {
+            if ($link->link_admin != config('settings.default_value')) {
+                return $link->token;
+            }
+        }
+    }
+
     public function getMultipleAttribute($value)
     {
         return ($value == config('settings.type_poll.multiple_choice')

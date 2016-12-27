@@ -19,7 +19,7 @@ return [
         'title' => 'Tiêu đề',
         'description' => 'Mô tả',
         'location' => 'Vị trí',
-        'time_close' => 'Thời gian đóng poll',
+        'time_close' => 'Thời gian đóng bầu chọn',
         'type' => 'Kiểu poll',
         'created_at' => 'Thời gian tạo poll',
         'status' => 'Trạng thái',
