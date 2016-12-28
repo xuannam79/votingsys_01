@@ -87,4 +87,11 @@
 
     <!-- POLL -->
     {!! Html::script('js/poll.js') !!}
+
+    <!-- HIGHCHART-->
+    {!! Html::script('bower/highcharts/highcharts.js') !!}
+    {!! Html::script('bower/highcharts/highcharts-3d.js') !!}
+
+    <!-- CHART -->
+    {!! Html::script('js/chart.js') !!}
 @endpush

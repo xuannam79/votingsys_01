@@ -10,9 +10,11 @@
                     @foreach ($poll->options as $option)
                         <th style="min-width: 100px">
                             <center>
-                                    {{--<img class="img-option" src="{{ $option->showImage() }}">--}}
+                                @if ($isHaveImages)
+                                    <img src="{{ $option->showImage() }}" width="16px" height="16px">
+                                @endif
                                 <p>
-                                    {{ str_limit($option->name, 50) }}
+                                    {{ str_limit($option->name, 10) }}
                                 </p>
                             </center>
                         </th>

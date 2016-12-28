@@ -1325,5 +1325,130 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
         $subject = trans('label.mail.create_poll.subject');
         $this->sendEmail($email, $creatorView, $data, $subject, 'creator');
     }
+
+    private function countTotalVote($poll)
+    {
+        $totalVote = 0;
+
+        foreach ($poll->options as $option) {
+            $totalVote += $option->countVotes();
+        }
+
+        return $totalVote;
+    }
+
+    public function getNameOptionToDrawChart($poll, $isHasImage)
+    {
+        $nameOfOptions = [];
+        $lengthDefault = config('settings.length_poll.name_option');
+        $countVotedOption = $poll->countVotedOption();
+        $numberofVoteConfig = config('settings.chart.number');
+        $sizeImage = config('settings.chart.size');
+        $marginImage = config('settings.chart.margin_left');
+
+        foreach ($poll->options as $option) {
+            $nameOption = (strlen($option->name) > $lengthDefault) ? str_limit($option->name, $lengthDefault)  : $option->name;
+                $nameOfOptions[] = [
+                    view('layouts.chart_option_data', [
+                        'isHasImage' => $isHasImage,
+                        'imagePath' => $option->showImage(),
+                        'optionName' => $nameOption,
+                        'size' => ($countVotedOption >= $numberofVoteConfig['lager']
+                                        ? $sizeImage ['small']
+                                        : ($countVotedOption >= $numberofVoteConfig['middle']
+                                            ? $sizeImage['middle']
+                                            : $sizeImage['lager'])),
+                        'marginLeft' => ($countVotedOption >= $numberofVoteConfig['lager']
+                                        ? $marginImage ['small']
+                                        : ($countVotedOption >= $numberofVoteConfig['middle']
+                                            ? $marginImage['middle']
+                                            : $marginImage['lager']))
+                    ])->render()
+                ];
+        }
+
+        return $nameOfOptions;
+    }
+
+    public function getDataToDrawPieChart($poll, $isHasImage)
+    {
+        $totalVote = $this->countTotalVote($poll);
+        $optionRateBarChart = [];
+
+        if ($totalVote) {
+            foreach ($poll->options as $option) {
+                $countOption = $option->countVotes();
+                if ($countOption > 0) {
+                    $nameOption = $this->insertTagBreakInOptionName($option->name);
+
+                    if ($nameOption) {
+                        if ($isHasImage) {
+                            $optionRateBarChart[] = [
+                                '<img src="' . $option->showImage() . '" class="image-option-poll"><span class="name-option-poll">' . $nameOption .'</span>', $countOption
+                            ];
+                        } else {
+                            $optionRateBarChart[] = [
+                                '<p>' . $nameOption .'</p>', $countOption
+                            ];
+                        }
+
+                    } else {
+                        if ($isHasImage) {
+                            $optionRateBarChart[] = [
+                                '<img src="' . $option->showImage() . '" class="image-option-poll"><span class="name-option-poll">' . $option->name .'</span>', $countOption
+                            ];
+                        } else {
+                            $optionRateBarChart[] = [
+                                '<p>' . $nameOption .'</p>', $countOption
+                            ];
+                        }
+
+                    }
+                }
+            }
+        } else {
+            $optionRateBarChart = null;
+        }
+
+        return $optionRateBarChart;
+    }
+
+    private function insertTagBreakInOptionName($optionName)
+    {
+        if (strlen($optionName) < config('settings.length_poll.name_option')) {
+            return false;
+        }
+
+        $result = '';
+        $position = 0;
+
+       /* for ($index = 0; $index < strlen($optionName); $index++) {
+            if ($index != 0 && $index % config('settings.length_poll.name_option') == 0) {
+                $result .= '<br>';
+            } else {
+                $result .= $optionName[$index];
+            }
+        }*/
+
+        for ($index = 0; $index < strlen($optionName); $index++) {
+            if ($index != 0 && $index % (config('settings.length_poll.name_option')) == 0) {
+                $result .= substr($optionName, $position, config('settings.length_poll.name_option')) . '<br>';
+
+                $position = $index;
+            }
+
+            if ($index == (strlen($optionName) - 1)) {
+                $result .= substr($optionName, $position, strlen($optionName) - $position);
+
+                break;
+            }
+        }
+
+        if (strlen($optionName) % config('settings.length_poll.name_option') == 0) {
+            $result .=  '<br>';
+        }
+
+      return $result;
+    }
 }
 

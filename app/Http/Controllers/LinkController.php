@@ -135,13 +135,21 @@ class LinkController extends Controller
             $mergedParticipantVotes = $resultParticipantVotes;
         }
 
+
         //count number of vote
         $countParticipantsVoted = $mergedParticipantVotes->count();
 
+        $totalVote = [];
         // check option have image?
         $isHaveImages = false;
 
-        $totalVote = [];
+        foreach ($poll->options as $option) {
+            if ($option->image) {
+                $isHaveImages = true;
+                break;
+            }
+        }
+
         foreach ($poll->options as $option) {
             $totalVote[$option->id] = $option->countVotes();
 
@@ -157,12 +165,20 @@ class LinkController extends Controller
                 $countOption = $totalVote[$option->id];
 
                 if ($countOption > 0) {
-                    $optionRateBarChart[] = [$option->name, $countOption];
+                    if ($isHaveImages) {
+                        $optionRateBarChart[] = ['<img src="' . $option->showImage() .'" class="image-option-poll">' . '<span class="name-option-poll">' . $option->name . '</span>', $countOption];
+                    } else {
+                        $optionRateBarChart[] = ['<p>' . $option->name . '</p>', $countOption];
+                    }
+
                 }
             }
         } else {
             $optionRateBarChart = null;
         }
+
+        $nameOptions = json_encode($this->pollRepository->getNameOptionToDrawChart($poll, $isHaveImages));
+        $dataToDrawPieChart = json_encode($this->pollRepository->getDataToDrawPieChart($poll, $isHaveImages));
 
         $optionRateBarChart = json_encode($optionRateBarChart);
         $dataTableResult = $this->pollRepository->getDataTableResult($poll);
@@ -241,12 +257,16 @@ class LinkController extends Controller
             }
 
             return view('user.poll.details', compact(
-                'poll', 'numberOfVote', 'linkUser',
-                'isRequiredEmail', 'isRequiredName', 'isRequiredNameAndEmail',
-                'isHideResult', 'isLimit', 'requiredPassword',
-                'isUserVoted', 'isTimeOut', 'optionRateBarChart',
-                'dataTableResult', 'mergedParticipantVotes',
-                'countParticipantsVoted', 'isHaveImages'
+                'poll', 'numberOfVote', 'linkUser', //poll info
+                'isRequiredEmail', 'isRequiredName', 'isRequiredNameAndEmail', //setting required
+                'isHideResult', //setting hide result
+                'isLimit', //setting number limit of poll
+                'isSetIp', //setting vote one time
+                'requiredPassword', //setting password of poll
+                'isUserVoted', 'isParticipantVoted', // vote type
+                'isTimeOut', //time out of poll
+                'optionRateBarChart', 'dataTableResult', 'mergedParticipantVotes', //result
+                'countParticipantsVoted', 'isHaveImages', 'nameOptions', 'dataToDrawPieChart'
             ));
         } else {
             foreach ($poll->links as $link) {
@@ -266,7 +286,8 @@ class LinkController extends Controller
                 'poll', 'tokenLinkUser', 'tokenLinkAdmin', 'numberOfVote',
                 'linkUser', 'mergedParticipantVotes', 'isHaveImages',
                 'settings', 'data', 'page', 'statistic', 'dataTableResult',
-                'optionRateBarChart', 'optionRatePieChart', 'countParticipantsVoted'
+                'optionRateBarChart', 'optionRatePieChart', 'countParticipantsVoted',
+                'isHaveImages', 'nameOptions', 'dataToDrawPieChart'
             ));
         }
     }

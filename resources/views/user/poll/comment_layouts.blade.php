@@ -12,6 +12,7 @@
             @endif
         </label>
         <br>
-        {{{ $content }}}
+        <p class="comment-text">{{{ $content }}}</p>
+
     </div>
 </div>

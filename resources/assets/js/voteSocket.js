@@ -24,7 +24,7 @@ $(document).ready(function(){
                 $('.model-show-details').append($.parseJSON(data).html);
             });
 
-            if ($('.count-participant').text() != '0') {
+            if ($('.bar-pie-chart').html() == "") {
                 $('.bar-pie-chart').html($.parseJSON(data).html_pie_bar_chart);
             }
 

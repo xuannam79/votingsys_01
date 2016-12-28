@@ -66,6 +66,7 @@ return [
         'number_option' => 1,
         'number_limit' => 2,
         'password_poll' => 16,
+        'name_option' => 30,
     ],
     'type_poll' => [
         'single_choice' => 0,
@@ -114,6 +115,23 @@ return [
         'en' => 'English',
         'vi' => 'Tiếng Việt',
         'ja' => '日本語',
+    ],
+    'chart' => [
+        'size' => [
+            'small' => '16',
+            'middle' => '32',
+            'lager' => '48',
+        ],
+        'number' => [
+            'small' => '4',
+            'middle' => '8',
+            'lager' => '12',
+        ],
+        'margin_left' => [
+            'small' => '20',
+            'middle' => '40',
+            'lager' => '60',
+        ],
     ],
     'locale' => ['vi', 'en', 'ja'],
     'default_value' => 0,
