@@ -293,3 +293,23 @@ li {
 .pagination {
     margin: 0;
 }
+
+.highcharts-axis-labels span {
+    left: 0 !important;
+}
+.highcharts-tooltip span {
+    height:auto !important;
+    width:200px !important;
+    overflow:auto !important;
+    white-space:normal !important;
+    text-align: center !important;
+}
+
+.option-image-bar-chart {
+    float: left;
+}
+
+.option-name-bar-chart {
+    display: block;
+}
+

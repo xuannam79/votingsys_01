@@ -1,31 +1,56 @@
  <div class="col-lg-12">
     <!-- bar chart -->
     <script type="text/javascript">
-        google.charts.load('current', {'packages':['corechart']});
-        google.charts.setOnLoadCallback(drawChart);
-        function drawChart() {
-            // Create the data table.
-            var data = new google.visualization.DataTable();
-            data.addColumn('string', 'Topping');
-            data.addColumn('number', '');
-            var optionRateBarChart = {!! $optionRateBarChart !!};
-            data.addRows(optionRateBarChart);
-            var options = {
-                'width': 750,
-                'height': 400,
-                chartArea:{
-                    left:250,
+        $(function () {
+            /**
+             * BAR CHART
+             */
+            var myChart = Highcharts.chart('chart', {
+                chart: {
+                    type: 'bar',
+                    width: 850,
+                    marginLeft: 250,
+                    marginTop: 100
                 },
-                colors: ['darkcyan'],
-                hAxis: {
-                    gridlines: {
-                        count: 4
+
+                credits: {
+                    enabled: false
+                },
+
+                legend: {
+                    enabled: false
+                },
+
+                title: {
+                    text: '',
+                },
+
+                tooltip: {
+                    useHTML: true,
+                    positioner: function () {
+                        return { x: 300, y: 10 };
+                    },
+                    pointFormat: '<b style="color: red; font-size: 20px">{point.y}</b><br/>',
+                },
+                xAxis: {
+                    categories: {!! $chartNameData !!},
+                    labels: {
+                        useHTML:true,
                     }
-                }
-            };
-            var chart = new google.visualization.BarChart(document.getElementById('chart'));
-            chart.draw(data, options);
-        }
+                },
+                yAxis: {
+                    tickInterval: 1,
+                    title: {
+                        text: ""
+                    }
+                },
+                series: [{
+                    name:'',
+                    data: {!! $optionRateBarChart !!},
+                    color: 'darkcyan'
+                }],
+            });
+        });
     </script>
     <div id="chart"></div>
 </div>

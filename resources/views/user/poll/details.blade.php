@@ -6,9 +6,6 @@
     <!-- DATETIME PICKER: time close of poll -->
     {!! Html::style('bower/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css') !!}
 
-    <!-- GOOGLE CHART-->
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-
     <!-- SOCKET IO -->
     {!! Html::script('bower/socket.io-client/dist/socket.io.min.js') !!}
 
@@ -26,7 +23,10 @@
          data-host="{{ config('app.key_program.socket_host') }}"
          data-port="{{ config('app.key_program.socket_port') }}">
     </div>
-    <div class="hide_chart" data-chart="{{ $optionRateBarChart }}"></div>
+    <div class="hide_chart" data-chart="{{ $optionRateBarChart }}"
+                            data-name-chart="{{ $nameOptions }}"
+                            data-pie-chart="{{ $dataToDrawPieChart }}"
+                            data-title-chart="{{ $poll->title }}"></div>
     <div class="container">
         <div class="row">
             <div class="loader"></div>
@@ -540,9 +540,12 @@
                                                                             <th>{{ trans('polls.email')}}</th>
                                                                             @foreach ($poll->options as $option)
                                                                                 <th class="th-detail-vote">
+                                                                                    @if ($isHaveImages)
+                                                                                        <img src="{{ $option->showImage() }}" width="16px" height="16px">
+                                                                                    @endif
                                                                                     <center>
                                                                                         <p data-toggle="tooltip" title="{{ $option->name }}" data-placement="bottom">
-                                                                                            {{ str_limit($option->name, 50) }}
+                                                                                            {{ str_limit($option->name, 10) }}
                                                                                         </p>
                                                                                     </center>
                                                                                 </th>
@@ -691,6 +694,10 @@
 
     <!-- POLL -->
     {!! Html::script('js/poll.js') !!}
+
+    <!-- HIGHCHART-->
+    {!! Html::script('bower/highcharts/highcharts.js') !!}
+    {!! Html::script('bower/highcharts/highcharts-3d.js') !!}
 
     <!-- CHART -->
     {!! Html::script('js/chart.js') !!}

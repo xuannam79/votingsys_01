@@ -1,53 +1,107 @@
-google.charts.load('current', {'packages':['corechart']});
-google.charts.setOnLoadCallback(drawPieChart);
-google.charts.setOnLoadCallback(drawBarChart);
 var chartData = $('.hide_chart').data('chart');
+var chartNameData = $('.hide_chart').data('nameChart');
+var chartPieData = $('.hide_chart').data('pieChart');
+var titleOfChart = $('.hide_chart').data('titleChart');
 
-function drawPieChart() {
-    if (typeof chartData !== "undefined" && chartData != null && chartData.length != 0) {
-        // Create the data table.
-        var data = new google.visualization.DataTable();
-        data.addColumn('string', 'Topping');
-        data.addColumn('number', 'Slices');
-        data.addRows(chartData);
-        var options = {
-            'width': 850,
-            'height': 450,
-            is3D: true,
-            forceIFrame: true,
-            pieSliceTextStyle: {
-                fontSize: '20px'
-            }
-        };
-        var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
-        chart.draw(data, options);
-    }
-}
+$(function () {
 
-function drawBarChart() {
-    if (typeof chartData !== "undefined" && chartData != null && chartData.length != 0) {
+    /**
+     * BAR CHART
+     */
+    var myChart = Highcharts.chart('chart', {
+        chart: {
+            type: 'bar',
+            width: 750,
+            marginLeft: 250,
+            marginTop: 100
+        },
 
-        // Create the data table.
-        var data = new google.visualization.DataTable();
-        data.addColumn('string', 'Topping');
-        data.addColumn('number', '');
-        data.addRows(chartData);
-        var options = {
-            'width': 750,
-            'height': 450,
-            chartArea: {
-                left: 250
+        credits: {
+            enabled: false
+        },
+
+        legend: {
+            enabled: false
+        },
+
+        title: {
+            text: '',
+        },
+
+        tooltip: {
+            useHTML: true,
+            positioner: function () {
+                return { x: 300, y: 10 };
             },
-            colors: ['darkcyan'],
-            hAxis: {
-                gridlines: {
-                    count: 4
-                }
+            pointFormat: '<b style="color: red; font-size: 20px">{point.y}</b><br/>',
+        },
+        xAxis: {
+            categories: chartNameData,
+            labels: {
+                useHTML:true,
             }
-        };
-        var chart = new google.visualization.BarChart(document.getElementById('chart'));
-        chart.draw(data, options);
-    }
-}
+        },
+        yAxis: {
+            tickInterval: 1,
+            title: {
+                text: ""
+            }
+        },
+        series: [{
+            name:'',
+            data: chartData,
+            color: 'darkcyan'
+        }],
+    });
 
+    /**
+     * PIE CHART
+     */
+    var myPieChart = Highcharts.chart('chart_div', {
+        chart: {
+            type: 'pie',
+            width: 800,
+            marginLeft: 100,
+            options3d: {
+                enabled: true,
+                alpha: 45,
+                beta: 0
+            }
+        },
 
+        title: {
+            text: '',
+        },
+
+        credits: {
+            enabled: false
+        },
+
+        plotOptions: {
+            pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                depth: 50,
+                dataLabels: {
+                    enabled: true,
+                    formatter: function() {
+                        return this.percentage.toFixed(2) + ' %';
+                    }
+                },
+                showInLegend: true
+            }
+        },
+
+        legend: {
+            useHTML: true,
+            maxHeight: 100,
+        },
+        tooltip: {
+            useHTML: true,
+            pointFormat: '<b style="color: red; font-size: 20px">{point.y}</b><br/>',
+        },
+        series: [{
+            data: chartPieData
+        }]
+    });
+});

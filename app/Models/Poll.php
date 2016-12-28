@@ -60,6 +60,19 @@ class Poll extends Model
         return $this->comments->count();
     }
 
+    public function countVotedOption()
+    {
+        $countVotes = 0;
+
+        foreach ($this->options as $option) {
+            if($option->votes->count() || $option->participantVotes->count()) {
+                $countVotes ++;
+            }
+        }
+
+        return $countVotes;
+    }
+
     public function countVotesWithOption()
     {
         $result = [];

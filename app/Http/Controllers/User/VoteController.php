@@ -259,11 +259,21 @@ class VoteController extends Controller
             $mergedParticipantVotes = $resultParticipantVotes;
         }
 
+        $isHaveImages = false;
+
+        foreach ($poll->options as $option) {
+            if ($option->image) {
+                $isHaveImages = true;
+                break;
+            }
+        }
+
         $numberOfVote = config('settings.default_value');
         $html = view('user.poll.vote_details_layouts', [
             'mergedParticipantVotes' => $mergedParticipantVotes,
             'numberOfVote' => $numberOfVote,
             'poll' => $poll,
+            'isHaveImages' => $isHaveImages
         ])->render();
 
          //data for draw chart
@@ -278,7 +288,11 @@ class VoteController extends Controller
             foreach ($poll->options as $option) {
                 $countOption = $option->countVotes();
                 if ($countOption > 0) {
-                    $optionRateBarChart[] = [str_limit($option->name, 40), $countOption];
+                    if ($isHaveImages) {
+                        $optionRateBarChart[] = ['<img src="' . $option->showImage() .'" class="image-option-poll">' . '<span class="name-option-poll">' . $option->name . '</span>', $countOption];
+                    } else {
+                        $optionRateBarChart[] = ['<p>' . $option->name . '</p>', $countOption];
+                    }
                 }
             }
         } else {
@@ -286,6 +300,10 @@ class VoteController extends Controller
         }
 
         $optionRateBarChart = json_encode($optionRateBarChart);
+
+        $optionRatePieChart = json_encode($this->pollRepository->getDataToDrawPieChart($poll, $isHaveImages));
+
+        $chartNameData = json_encode($this->pollRepository->getNameOptionToDrawChart($poll, $isHaveImages));
 
         //get data result to sort number of vote
         $dataTableResult = $this->pollRepository->getDataTableResult($poll);
@@ -308,10 +326,11 @@ class VoteController extends Controller
             'html_pie_bar_manage_chart' => view('user.poll.pie_bar_manage_chart_layouts')->render(),
             'html_pie_bar_chart' => view('user.poll.pie_bar_chart_layouts')->render(),
             'htmlPieChart' => view('user.poll.piechart_layouts', [
-                'optionRateBarChart' => $optionRateBarChart,
+                'optionRatePieChart' => $optionRatePieChart,
             ])->render(),
             'htmlBarChart' => view('user.poll.barchart_layouts', [
                 'optionRateBarChart' => $optionRateBarChart,
+                'chartNameData' => $chartNameData,
             ])->render(),
         ]));
 

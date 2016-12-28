@@ -32,4 +32,8 @@ interface PollRepositoryInterface
      * send mail again
      */
     public function sendMailAgain($poll, $link, $password);
+
+    public function getNameOptionToDrawChart($poll, $isHasImage);
+
+    public function getDataToDrawPieChart($poll, $isHasImage);
 }
