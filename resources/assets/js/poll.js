@@ -219,8 +219,9 @@ function readURL(input, idShow) {
 
             reader.readAsDataURL(input.files[0]);
         }
+    } else {
+        $('#' + idShow).hide();
     }
-
 }
 
 /**

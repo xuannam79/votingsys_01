@@ -5,7 +5,7 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class CreateNewPollTest extends TestCase
-{
+{/*
     public function testIgnoreAllFieldsStep1()
     {
         $this->visit('/')
@@ -34,5 +34,5 @@ class CreateNewPollTest extends TestCase
             ->click(trans('polls.button.continue'))
             ->click(trans('polls.button.continue'))
             ->seePageIs('/');
-    }
+    }*/
 }
