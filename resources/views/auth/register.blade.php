@@ -4,6 +4,7 @@
 <div class="container">
     <div class="row">
     <div class="loader"></div>
+        <div class="hide-validate" data-error-avatar="{{ trans('validation.image') }}"></div>
         <div class="col-lg-4 col-lg-offset-4
                     col-md-4 col-md-offset-4
                     col-sm-6 col-sm-offset-3
@@ -139,6 +140,7 @@
                                     ])
                                 }}
                             </div>
+                            <div class="col-md-8 col-md-offset-2 error-avatar"></div>
                         </div>
                         <div class="form-group">
                             <img id="preview-avatar" src="#" class="col-md-4 col-md-offset-3 preview-image"  />

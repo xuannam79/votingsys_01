@@ -34,8 +34,9 @@ function readURLRegister(input, idShow) {
 
             reader.readAsDataURL(input.files[0]);
         }
+    } else {
+        $('#' + idShow).hide();
     }
-
 }
 
 /**
@@ -63,12 +64,16 @@ function ValidateSingleInputRegister(oInput) {
         }
 
         if (!blnValid) {
-            $('.error_option').addClass('has-error')
-                .html('<span id="title-error" class="help-block">' + pollData.message.image + '</span>');
+            $('.error-avatar').addClass('has-error')
+                .html('<span id="title-error" class="help-block">' + $('.hide-validate').data('errorAvatar') + '</span>');
+            $('#btn-register').attr('disabled', true)
 
             return false;
         }
     }
+
+    $('.error-avatar').removeClass('has-error').html('');
+    $('#btn-register').removeAttr('disabled');
 
     return true;
 }

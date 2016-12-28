@@ -40,7 +40,7 @@ return [
     'exists'               => 'The selected :attribute is invalid.',
     'file'                 => 'The :attribute must be a file.',
     'filled'               => 'The :attribute field is required.',
-    'image'                => 'Trường :attribute phải là ảnh.',
+    'image'                => 'Trường avatar phải là ảnh.',
     'in'                   => 'The selected :attribute is invalid.',
     'in_array'             => 'The :attribute field does not exist in :other.',
     'integer'              => 'The :attribute must be an integer.',
@@ -80,7 +80,7 @@ return [
     ],
     'string'               => 'The :attribute must be a string.',
     'timezone'             => 'The :attribute must be a valid zone.',
-    'unique'               => 'The :attribute has already been taken.',
+    'unique'               => 'Trường :attribute đã tồn tại rồi.',
     'uploaded'             => 'Hình ảnh không đúng định dạng',
     'url'                  => 'The :attribute format is invalid.',
 

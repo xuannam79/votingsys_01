@@ -3,6 +3,7 @@
 @section('content')
 <div class="container">
     <div class="row">
+        <div class="hide-validate" data-error-avatar="{{ trans('validation.image') }}"></div>
         <div class="col-md-6 col-md-offset-3">
             <div class="panel panel-primary panel-darkcyan-profile">
                 <div class="panel-heading panel-heading-darkcyan">{{ trans('label.profile') }}</div>
@@ -11,15 +12,16 @@
 
                     {{ Form::model($currentUser, ['method' => 'PATCH', 'route' => ['profile.update', $currentUser->id], 'class' => 'form-horizontal', 'role' => 'form', 'files' => true]) }}
                         <div class="form-group">
-                        <div class="col-md-12 col-md-offset-4">
-                            <img class="img-profile" id="output" src="{{ asset($currentUser->getAvatarPath()) }}"/>
+                            <div class="col-md-12 col-md-offset-4">
+                                <img class="img-profile" id="output" src="{{ asset($currentUser->getAvatarPath()) }}"/>
+                            </div>
                         </div>
-                        </div>
+                        <div class="col-md-8 col-md-offset-2 error-avatar"></div>
 
                         <div class="form-group">
                             {{ Form::label('avatar', trans('label.avatar'), ['class' => 'col-md-4 control-label']) }}
                             <div class="col-md-6">
-                                {{ Form::file('avatar', ['onchange' => 'loadFile(event)']) }}
+                                {{ Form::file('avatar', ['onchange' => 'readURLRegister(this, "output")']) }}
                             </div>
                         </div>
 
@@ -60,7 +62,7 @@
 
                         <div class="form-group">
                             <div class="col-md-6 col-md-offset-4">
-                                <button type="submit" class="btn btn-primary btn-darkcyan">
+                                <button id="btn-register" type="submit" class="btn btn-primary btn-darkcyan">
                                     <i class="fa fa-btn fa-user"></i> {{ trans('label.edit') }}
                                 </button>
                             </div>
