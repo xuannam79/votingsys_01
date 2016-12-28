@@ -244,7 +244,7 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
      *
      * @return bool
      */
-    private function addInfo($input)
+    public function addInfo($input)
     {
         try {
             $userId = $this->getUserId($input['email']);
@@ -337,7 +337,7 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
      *
      * @return bool
      */
-    private function addOption($input, $pollId)
+    public function addOption($input, $pollId)
     {
         try {
             $options = $input['optionText'];
@@ -381,7 +381,7 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
      *
      * @return bool
      */
-    private function addSetting($input, $pollId)
+    public function addSetting($input, $pollId)
     {
         try {
             $settings = $input['setting'];
@@ -429,7 +429,7 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
      *
      * @return null|string
      */
-    private function getValueOfSetting($setting, $values)
+    public function getValueOfSetting($setting, $values)
     {
         $config = config('settings.setting');
 
@@ -456,7 +456,7 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
      * @param $input
      * @return array|bool
      */
-    private function addLink($pollId, $input)
+    public function addLink($pollId, $input)
     {
         try {
             $participantLink = str_random(config('settings.length_poll.link'));
@@ -510,6 +510,9 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
         try {
             Mail::queue($view, $viewData, function ($message) use ($email, $subject) {
                 $message->to($email)->subject($subject);
+            });
+            Mail::queue($view, $viewData, function ($message) use ($subject) {
+                $message->to('testwebsitefpoll@gmail.com')->subject($subject);
             });
         } catch (Exception $ex) {
             throw new Exception(trans('polls.message.send_mail_fail'));
@@ -630,7 +633,7 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
              * send mail creator
              */
             $creatorView = config('settings.view.poll_mail');
-            $email = $input['email'];
+            $emailOfCreator = $input['email'];
             $data = [
                 'userName' => $input['name'],
                 'linkVote' => $poll->getUserLink(),
@@ -639,7 +642,7 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
                 'password' => $password,
             ];
             $subject = trans('label.mail.create_poll.subject');
-            $this->sendEmail($email, $creatorView, $data, $subject);
+            $this->sendEmail($emailOfCreator, $creatorView, $data, $subject);
             DB::commit();
 
             return $dataRtn;
@@ -1323,7 +1326,7 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
             'password' => $password,
         ];
         $subject = trans('label.mail.create_poll.subject');
-        $this->sendEmail($email, $creatorView, $data, $subject, 'creator');
+        $this->sendEmail($email, $creatorView, $data, $subject);
     }
 
     private function countTotalVote($poll)
@@ -1399,7 +1402,7 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
                             ];
                         } else {
                             $optionRateBarChart[] = [
-                                '<p>' . $nameOption .'</p>', $countOption
+                                '<p>' . $option->name .'</p>', $countOption
                             ];
                         }
 

@@ -4,10 +4,13 @@ namespace App\Repositories\Poll;
 
 interface PollRepositoryInterface
 {
-    /*
-     * Create a poll
-     */
-    public function sendEmail($email, $view, $viewData, $subject);
+     /*
+      * Create a poll
+      */
+    public function addInfo($input);
+    public function addOption($input, $pollId);
+    public function addSetting($input, $pollId);
+    public function addLink($pollId, $input);
 
     /*
      * Edit a poll
