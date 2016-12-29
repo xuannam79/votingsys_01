@@ -19,53 +19,48 @@ Route::get('user-poll/{token?}/edit', [
     'uses' => 'PollController@edit'
 ]);
 
-Route::group(['middleware' => 'XSS'], function() {
+Route::post('user-register', [
+    'as' => 'user-register',
+    'uses' => 'User\UsersController@store'
+]);
 
-    Route::post('user-register', [
-        'as' => 'user-register',
-        'uses' => 'User\UsersController@store'
-    ]);
-
-    Route::post('user-login', [
-        'as' => 'user-login',
-        'uses' => 'User\LoginController@store'
-    ]);
+Route::post('user-login', [
+    'as' => 'user-login',
+    'uses' => 'User\LoginController@store'
+]);
 
 
-    Route::resource('duplicate', 'DuplicateController');
+Route::resource('duplicate', 'DuplicateController');
 
-    /*
-     * Route check token of link
-     */
-    Route::resource('link-poll', 'LinkController', ['only' => [
-        'store'
-    ]]);
-
-
-    /*
-     * Route change status of poll
-     */
-    Route::resource('status', 'StatusController', ['only' => [
-        'store'
-    ]]);
-
-    /*
-     * Route check limit of poll
-     */
-    Route::resource('limit', 'LimitController', ['only' => [
-        'store'
-    ]]);
-
-    Route::get('/', 'PollController@create');
-
-    Route::get('check-date-close-poll', 'User\CheckDateController@checkDateClosePoll');
-
-    Route::post('check-email', 'CheckEmailController@store');
-
-    Route::resource('location', 'LocationController');
-});
+/*
+ * Route check token of link
+ */
+Route::resource('link-poll', 'LinkController', ['only' => [
+    'store'
+]]);
 
 
+/*
+ * Route change status of poll
+ */
+Route::resource('status', 'StatusController', ['only' => [
+    'store'
+]]);
+
+/*
+ * Route check limit of poll
+ */
+Route::resource('limit', 'LimitController', ['only' => [
+    'store'
+]]);
+
+Route::get('/', 'PollController@create');
+
+Route::get('check-date-close-poll', 'User\CheckDateController@checkDateClosePoll');
+
+Route::post('check-email', 'CheckEmailController@store');
+
+Route::resource('location', 'LocationController');
 
 Route::post('link/{token?}', [
     'as' => 'link',
@@ -82,6 +77,7 @@ Route::get('/logout', function()
 {
     Auth::logout();
     Session::flush();
+
     return Redirect::to('/');
 });
 
@@ -104,16 +100,18 @@ Route::group(['prefix' => 'user'], function() {
         'only' => ['store', 'destroy']
     ]);
 
-    Route::resource('vote', 'User\VoteController', [
-        'only' => ['store', 'destroy']
-    ]);
-
     Route::resource('activity', 'User\ActivityController', [
         'only' => ['show']
     ]);
 
     Route::resource('set-password', 'User\SetPasswordController', [
         'only' => ['store']
+    ]);
+});
+
+Route::group(['prefix' => 'user', 'middleware' => 'XSS'], function() {
+    Route::resource('vote', 'User\VoteController', [
+        'only' => ['store', 'destroy']
     ]);
 });
 
