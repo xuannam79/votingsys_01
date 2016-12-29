@@ -30,12 +30,16 @@ class PollController extends Controller
 
     public function index()
     {
-        if (auth()->check()) {
-            $initiatedPolls = $this->pollRepository->getInitiatedPolls();
-            $participatedPolls = $this->pollRepository->getParticipatedPolls($this->voteRepository);
-            $closedPolls = $this->pollRepository->getClosedPolls();
+        try {
+            if (auth()->check()) {
+                $initiatedPolls = $this->pollRepository->getInitiatedPolls();
+                $participatedPolls = $this->pollRepository->getParticipatedPolls($this->voteRepository);
+                $closedPolls = $this->pollRepository->getClosedPolls();
 
-            return view('user.poll.list_polls', compact('initiatedPolls', 'participatedPolls', 'closedPolls'));
+                return view('user.poll.list_polls', compact('initiatedPolls', 'participatedPolls', 'closedPolls'));
+            }
+        } catch (\Exception $ex) {
+            return redirect()->to(url('/'));
         }
 
         return redirect()->to(url('/'));
