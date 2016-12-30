@@ -449,7 +449,6 @@
                                                                 'class' => 'form-control comment-info-name',
                                                                 'id' => 'name' . $poll->id,
                                                                 'placeholder' => trans('polls.placeholder.full_name'),
-                                                                'onkeyup' => 'validateCommentPoll()'
                                                             ])
                                                         !!}
                                                     </div>
@@ -466,7 +465,6 @@
                                                                 'rows' => config('settings.poll.comment_row'),
                                                                 'placeholder' => trans('polls.placeholder.comment'),
                                                                 'id' => 'content' . $poll->id,
-                                                                'onkeyup' => 'validateCommentPoll()'
                                                             ])
                                                         !!}
                                                         {{ Form::button(trans('polls.save_comment'), ['type' => 'submit', 'class' => 'btn addComment']) }}
