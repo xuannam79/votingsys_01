@@ -142,6 +142,14 @@ class PollController extends Controller
             $message = $this->pollRepository->editPollSetting($input, $id);
         }
 
+        $poll = Poll::findOrFail($id);
+        $redis = LRedis::connection();
+        $redis->publish('editPoll', json_encode([
+            'success' => true,
+            'poll_id' => $poll->id,
+            'link_user' => $poll->getUserLink(),
+        ]));
+
         return redirect()->to($poll->getAdminLink())->with('message', $message);
     }
 

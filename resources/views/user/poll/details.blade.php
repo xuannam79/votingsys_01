@@ -26,7 +26,8 @@
     <div class="hide_chart" data-chart="{{ $optionRateBarChart }}"
                             data-name-chart="{{ $nameOptions }}"
                             data-pie-chart="{{ $dataToDrawPieChart }}"
-                            data-title-chart="{{ $poll->title }}"></div>
+                            data-title-chart="{{ $poll->title }}"
+                            data-font-size="{{ $fontSize }}"></div>
     <div class="container">
         <div class="row">
             <div class="loader"></div>
@@ -662,6 +663,23 @@
                                 </div>
                             </div>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal detail chart-->
+    <div id="myModalChart" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title chart-detail-name"></h4>
+                </div>
+                <div class="modal-body">
+                    <img src="#" class="chart-detail-image">
                 </div>
             </div>
         </div>

@@ -39,4 +39,5 @@ interface PollRepositoryInterface
     public function getNameOptionToDrawChart($poll, $isHasImage);
 
     public function getDataToDrawPieChart($poll, $isHasImage);
+    public function getSizeChart($poll);
 }

@@ -307,9 +307,25 @@ li {
 
 .option-image-bar-chart {
     float: left;
+    border-radius: 50%;
 }
 
 .option-name-bar-chart {
     display: block;
 }
 
+.chart-detail-image {
+    width: 150px;
+    height: 150px;
+    display: block;
+    margin: auto;
+}
+
+.chart-detail-name {
+    text-align: center;
+}
+
+.highcharts-legend-item {
+    word-break: break-all !important;
+    word-wrap: break-word !important;
+}

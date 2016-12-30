@@ -86,8 +86,6 @@ return [
         'password' => [
             'required' => 'パスワードを入力してください',
             'max' => 'パスワードは最大' . config('common.length_user.password') . ' 文字です',
-            'min' => 'Please enter a value larger than or equal to 6 characters',
-            'confirmed' => 'Password confirm incorrect, please check again!',
         ],
     ],
     'update_profile_successfully' => 'プロフィールは更新されました',

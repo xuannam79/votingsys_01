@@ -1,10 +1,9 @@
 var chartData = $('.hide_chart').data('chart');
 var chartNameData = $('.hide_chart').data('nameChart');
 var chartPieData = $('.hide_chart').data('pieChart');
-var titleOfChart = $('.hide_chart').data('titleChart');
+var fontSizeChart = $('.hide_chart').data('fontSize');
 
 $(function () {
-
     /**
      * BAR CHART
      */
@@ -38,7 +37,10 @@ $(function () {
         xAxis: {
             categories: chartNameData,
             labels: {
-                useHTML:true,
+                useHTML: true,
+                style: {
+                    fontSize: fontSizeChart + 'px'
+                }
             }
         },
         yAxis: {
@@ -94,6 +96,7 @@ $(function () {
 
         legend: {
             useHTML: true,
+            align: 'left',
             maxHeight: 100,
         },
         tooltip: {
