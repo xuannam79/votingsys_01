@@ -1,4 +1,4 @@
- <div class="col-lg-12">
+<div class="col-lg-12">
     <!-- bar chart -->
     <script type="text/javascript">
         $(function () {
@@ -8,7 +8,7 @@
             var myChart = Highcharts.chart('chart', {
                 chart: {
                     type: 'bar',
-                    width: 850,
+                    width: 750,
                     marginLeft: 250,
                     marginTop: 100
                 },
@@ -35,7 +35,10 @@
                 xAxis: {
                     categories: {!! $chartNameData !!},
                     labels: {
-                        useHTML:true,
+                        useHTML: true,
+                        style: {
+                            fontSize: fontSizeChart + 'px'
+                        }
                     }
                 },
                 yAxis: {
@@ -52,5 +55,5 @@
             });
         });
     </script>
-    <div id="chart"></div>
+<div id="chart"></div>
 </div>

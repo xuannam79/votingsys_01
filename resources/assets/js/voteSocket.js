@@ -95,4 +95,13 @@ $(document).ready(function(){
             });
         }
     });
+
+    //socket close poll
+    socket.on('editPoll', function (data) {
+        var pollId = $('.hide-vote-details').data('pollId');
+
+        if ($.parseJSON(data).success && $.parseJSON(data).poll_id == pollId) {
+            window.location.href = $.parseJSON(data).link_user;
+        }
+    });
 });

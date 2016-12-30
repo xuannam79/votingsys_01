@@ -25,7 +25,8 @@
     <div class="hide_chart" data-chart="{{ $optionRateBarChart }}"
          data-name-chart="{{ $nameOptions }}"
          data-pie-chart="{{ $dataToDrawPieChart }}"
-         data-title-chart="{{ $poll->title }}"></div>
+         data-title-chart="{{ $poll->title }}"
+         data-font-size="{{ $fontSize }}"></div>
     <div class="hide"
         data-poll="{{ $data['jsonData'] }}"
         data-poll-id="{{ $poll->id }}" data-route="{{ url('user/poll') }}"

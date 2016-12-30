@@ -18,6 +18,7 @@ use Exception;
 use DB;
 use App\Repositories\BaseRepository;
 use Mail;
+use Session;
 
 class PollRepository extends BaseRepository implements PollRepositoryInterface
 {
@@ -510,9 +511,6 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
         try {
             Mail::queue($view, $viewData, function ($message) use ($email, $subject) {
                 $message->to($email)->subject($subject);
-            });
-            Mail::queue($view, $viewData, function ($message) use ($subject) {
-                $message->to('testwebsitefpoll@gmail.com')->subject($subject);
             });
         } catch (Exception $ex) {
             throw new Exception(trans('polls.message.send_mail_fail'));
@@ -1344,30 +1342,28 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
     {
         $nameOfOptions = [];
         $lengthDefault = config('settings.length_poll.name_option');
-        $countVotedOption = $poll->countVotedOption();
-        $numberofVoteConfig = config('settings.chart.number');
-        $sizeImage = config('settings.chart.size');
-        $marginImage = config('settings.chart.margin_left');
+        $lengthDefaultNotImage = config('settings.length_poll.name_option_not_image');
 
         foreach ($poll->options as $option) {
-            $nameOption = (strlen($option->name) > $lengthDefault) ? str_limit($option->name, $lengthDefault)  : $option->name;
+            if ($isHasImage) {
+                $nameOption = (strlen($option->name) > $lengthDefault) ? str_limit($option->name, $lengthDefault)  : $option->name;
+            } else {
+                $nameOption = (strlen($option->name) > $lengthDefaultNotImage) ? str_limit($option->name, $lengthDefaultNotImage)  : $option->name;
+            }
+
+            $countOption = $option->countVotes();
+            if ($countOption > 0) {
                 $nameOfOptions[] = [
                     view('layouts.chart_option_data', [
                         'isHasImage' => $isHasImage,
                         'imagePath' => $option->showImage(),
                         'optionName' => $nameOption,
-                        'size' => ($countVotedOption >= $numberofVoteConfig['lager']
-                                        ? $sizeImage ['small']
-                                        : ($countVotedOption >= $numberofVoteConfig['middle']
-                                            ? $sizeImage['middle']
-                                            : $sizeImage['lager'])),
-                        'marginLeft' => ($countVotedOption >= $numberofVoteConfig['lager']
-                                        ? $marginImage ['small']
-                                        : ($countVotedOption >= $numberofVoteConfig['middle']
-                                            ? $marginImage['middle']
-                                            : $marginImage['lager']))
+                        'size' => $this->getSizeChart($poll)['sizeImage'],
+                        'marginLeft' => $this->getSizeChart($poll)['marginImage'],
+                        'optionFullName' => $option->name,
                     ])->render()
                 ];
+            }
         }
 
         return $nameOfOptions;
@@ -1377,12 +1373,15 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
     {
         $totalVote = $this->countTotalVote($poll);
         $optionRateBarChart = [];
+        $nameOption = false;
 
         if ($totalVote) {
             foreach ($poll->options as $option) {
                 $countOption = $option->countVotes();
                 if ($countOption > 0) {
-                    $nameOption = $this->insertTagBreakInOptionName($option->name);
+                    if (Session::get('locale') != "ja") {
+                        $nameOption = $this->insertTagBreakInOptionName($option->name);
+                    }
 
                     if ($nameOption) {
                         if ($isHasImage) {
@@ -1425,14 +1424,6 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
         $result = '';
         $position = 0;
 
-       /* for ($index = 0; $index < strlen($optionName); $index++) {
-            if ($index != 0 && $index % config('settings.length_poll.name_option') == 0) {
-                $result .= '<br>';
-            } else {
-                $result .= $optionName[$index];
-            }
-        }*/
-
         for ($index = 0; $index < strlen($optionName); $index++) {
             if ($index != 0 && $index % (config('settings.length_poll.name_option')) == 0) {
                 $result .= substr($optionName, $position, config('settings.length_poll.name_option')) . '<br>';
@@ -1452,6 +1443,38 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
         }
 
       return $result;
+    }
+
+    public function getSizeChart($poll)
+    {
+        $dataSizeRtn = [];
+        $countVotedOption = $poll->countVotedOption();
+        $numberofVoteConfig = config('settings.chart.number');
+        $sizeImage = config('settings.chart.size');
+        $marginImage = config('settings.chart.margin_left');
+        $fontSize = config('settings.chart.font_size');
+
+        if ($countVotedOption >= $numberofVoteConfig['lager']) {
+            $dataSizeRtn = [
+                'sizeImage' => $sizeImage ['small'],
+                'marginImage' => $marginImage ['small'],
+                'fontSize' => $fontSize ['small'],
+            ];
+        } elseif ($countVotedOption >= $numberofVoteConfig['middle']) {
+            $dataSizeRtn = [
+                'sizeImage' => $sizeImage ['middle'],
+                'marginImage' => $marginImage ['middle'],
+                'fontSize' => $fontSize ['middle'],
+            ];
+        } else {
+            $dataSizeRtn = [
+                'sizeImage' => $sizeImage ['lager'],
+                'marginImage' => $marginImage ['lager'],
+                'fontSize' => $fontSize ['lager'],
+            ];
+        }
+
+       return $dataSizeRtn;
     }
 }
 

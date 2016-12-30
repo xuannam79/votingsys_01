@@ -67,6 +67,7 @@ return [
         'number_limit' => 2,
         'password_poll' => 16,
         'name_option' => 30,
+        'name_option_not_image' => 40,
     ],
     'type_poll' => [
         'single_choice' => 0,
@@ -130,7 +131,12 @@ return [
         'margin_left' => [
             'small' => '20',
             'middle' => '40',
-            'lager' => '60',
+            'lager' => '55',
+        ],
+        'font_size' => [
+            'small' => '11',
+            'middle' => '13',
+            'lager' => '15',
         ],
     ],
     'locale' => ['vi', 'en', 'ja'],

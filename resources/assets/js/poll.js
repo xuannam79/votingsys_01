@@ -117,21 +117,6 @@ function hideLabelMessage(element) {
 
 /**
  *
- * auto copy link
- *
- * @param element
- * @param link
- */
-function copyToClipboard(element, link) {
-    var $temp = $("<input>");
-    $("body").append($temp);
-    $temp.val(link).select();
-    document.execCommand("copy");
-    $temp.remove();
-}
-
-/**
- *
  * change tab vote save status of option
  *
  * @param id

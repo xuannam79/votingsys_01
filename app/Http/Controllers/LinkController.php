@@ -179,6 +179,7 @@ class LinkController extends Controller
 
         $nameOptions = json_encode($this->pollRepository->getNameOptionToDrawChart($poll, $isHaveImages));
         $dataToDrawPieChart = json_encode($this->pollRepository->getDataToDrawPieChart($poll, $isHaveImages));
+        $fontSize = $this->pollRepository->getSizeChart($poll)['fontSize'];
 
         $optionRateBarChart = json_encode($optionRateBarChart);
         $dataTableResult = $this->pollRepository->getDataTableResult($poll);
@@ -266,7 +267,7 @@ class LinkController extends Controller
                 'isUserVoted', 'isParticipantVoted', // vote type
                 'isTimeOut', //time out of poll
                 'optionRateBarChart', 'dataTableResult', 'mergedParticipantVotes', //result
-                'countParticipantsVoted', 'isHaveImages', 'nameOptions', 'dataToDrawPieChart'
+                'countParticipantsVoted', 'isHaveImages', 'nameOptions', 'dataToDrawPieChart', 'fontSize'
             ));
         } else {
             foreach ($poll->links as $link) {
@@ -287,7 +288,7 @@ class LinkController extends Controller
                 'linkUser', 'mergedParticipantVotes', 'isHaveImages',
                 'settings', 'data', 'page', 'statistic', 'dataTableResult',
                 'optionRateBarChart', 'optionRatePieChart', 'countParticipantsVoted',
-                'isHaveImages', 'nameOptions', 'dataToDrawPieChart'
+                'isHaveImages', 'nameOptions', 'dataToDrawPieChart', 'fontSize'
             ));
         }
     }

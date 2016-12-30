@@ -34,7 +34,7 @@
                                 col-md-6 col-md-offset-3
                                 col-sm-8 col-sm-offset-2
                                 col-xs-8 col-xs-offset-2
-                                panel-heading panel-test {{ (Session::get('locale') == 'ja' && ! $countParticipantsVoted) ? 'panel-jp-manage-poll' : '' }}">
+                                panel-heading panel-test {{ (Session::get('locale') == 'ja') ? 'panel-jp-manage-poll' : '' }}">
                         <ul>
                             <li><a href="#info" data-toggle="tab">{{ trans('polls.label.step_1') }}</a></li>
                             @if (! $totalVote)

@@ -304,6 +304,7 @@ class VoteController extends Controller
         $optionRatePieChart = json_encode($this->pollRepository->getDataToDrawPieChart($poll, $isHaveImages));
 
         $chartNameData = json_encode($this->pollRepository->getNameOptionToDrawChart($poll, $isHaveImages));
+        $fontSize = $this->pollRepository->getSizeChart($poll)['fontSize'];
 
         //get data result to sort number of vote
         $dataTableResult = $this->pollRepository->getDataTableResult($poll);
@@ -331,6 +332,7 @@ class VoteController extends Controller
             'htmlBarChart' => view('user.poll.barchart_layouts', [
                 'optionRateBarChart' => $optionRateBarChart,
                 'chartNameData' => $chartNameData,
+                'fontSize' => $fontSize,
             ])->render(),
         ]));
 

@@ -77,3 +77,29 @@ function ValidateSingleInputRegister(oInput) {
 
     return true;
 }
+
+function showToolTipOptionContent(path, name) {
+    if (path == '') {
+        $(".chart-detail-image").remove();
+    } else {
+        $(".chart-detail-image").attr("src", path);
+    }
+
+    $(".chart-detail-name").html(name);
+    $('#myModalChart').modal('toggle');
+}
+
+/**
+ *
+ * auto copy link
+ *
+ * @param element
+ * @param link
+ */
+function copyToClipboard(element, link) {
+    var $temp = $("<input>");
+    $("body").append($temp);
+    $temp.val(link).select();
+    document.execCommand("copy");
+    $temp.remove();
+}
