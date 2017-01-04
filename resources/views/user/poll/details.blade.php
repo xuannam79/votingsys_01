@@ -62,7 +62,7 @@
                     </div>
                 </div>
                 <div class="hide-vote-details" data-poll-id="{{ $poll->id }}"></div>
-                <div class="hide-vote" data-poll-id="{{ $poll->id }}"></div>
+                <div class="hide-vote" data-poll-id="{{ $poll->id }}" data-is-owner-poll="{{ $isOwnerPoll }}"></div>
                 @if (session('message'))
                     <div class="alert alert-info message-infor-detail alert-dismissable">
                         <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>

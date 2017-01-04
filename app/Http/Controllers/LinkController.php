@@ -257,6 +257,8 @@ class LinkController extends Controller
                 $isUserVoted = $this->pollRepository->checkUserVoted($poll->id, $this->voteRepository);
             }
 
+            $isOwnerPoll = \Gate::allows('ownerPoll', $poll);
+
             return view('user.poll.details', compact(
                 'poll', 'numberOfVote', 'linkUser', //poll info
                 'isRequiredEmail', 'isRequiredName', 'isRequiredNameAndEmail', //setting required
@@ -267,7 +269,8 @@ class LinkController extends Controller
                 'isUserVoted', 'isParticipantVoted', // vote type
                 'isTimeOut', //time out of poll
                 'optionRateBarChart', 'dataTableResult', 'mergedParticipantVotes', //result
-                'countParticipantsVoted', 'isHaveImages', 'nameOptions', 'dataToDrawPieChart', 'fontSize'
+                'countParticipantsVoted', 'isHaveImages', 'nameOptions', 'dataToDrawPieChart',
+                'isOwnerPoll', 'fontSize',
             ));
         } else {
             foreach ($poll->links as $link) {
