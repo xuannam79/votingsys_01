@@ -49,9 +49,14 @@ $(document).ready(function(){
     //socket comment poll
     socket.on('comment', function (data) {
         var pollId = $('.hide-vote').data('pollId');
+        var isOwnerPoll = $('.hide-vote').data('isOwnerPoll');
 
         if ($.parseJSON(data).success && $.parseJSON(data).poll_id == pollId) {
-            $('.comments').append($.parseJSON(data).html);
+            if (isOwnerPoll == "1") {
+                $('.comments').append($.parseJSON(data).htmlOwner);
+            } else {
+                $('.comments').append($.parseJSON(data).htmlNotOwner);
+            }
             var commentCount = $('.comment-count').html();
             $('.comment-count').html(parseInt(commentCount) + 1);
             $('#content' + pollId).val('');

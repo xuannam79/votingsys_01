@@ -54,7 +54,7 @@ class CommentController extends Controller
 
             $activity['name'] = $inputs['name'];
             $this->activityRepository->create($activity);
-            $html = view('user.poll.comment_layouts', [
+            $htmlOwner = view('user.poll.comment_layouts', [
                 'commentId' => $comment->id,
                 'content' => $inputs['content'],
                 'name' => $inputs['name'],
@@ -62,9 +62,18 @@ class CommentController extends Controller
                 'createdAt' => $comment->created_at->diffForHumans(),
                 'imageComment' => $imageComment,
             ])->render();
+            $htmlNotOwner = view('user.poll.comment_owner_layouts', [
+                'commentId' => $comment->id,
+                'content' => $inputs['content'],
+                'name' => $inputs['name'],
+                'createdAt' => $comment->created_at->diffForHumans(),
+                'imageComment' => $imageComment,
+                'pollId' => $poll->id,
+            ])->render();
             $result = [
                 'success' => true,
-                'html' => $html,
+                'htmlOwner' => $htmlOwner,
+                'htmlNotOwner' => $htmlNotOwner,
                 'poll_id' => $inputs['poll_id'],
             ];
 
