@@ -270,7 +270,7 @@ class LinkController extends Controller
                 'isTimeOut', //time out of poll
                 'optionRateBarChart', 'dataTableResult', 'mergedParticipantVotes', //result
                 'countParticipantsVoted', 'isHaveImages', 'nameOptions', 'dataToDrawPieChart',
-                'isOwnerPoll', 'fontSize',
+                'isOwnerPoll', 'fontSize'
             ));
         } else {
             foreach ($poll->links as $link) {
