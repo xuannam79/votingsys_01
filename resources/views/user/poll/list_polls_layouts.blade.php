@@ -9,7 +9,7 @@
        <!--  Sort activities of poll by created_at -->
         @foreach ($polls->sortBy(function($poll)
             {
-              return $poll->activities->sortBy('id')->last()->created_at;
+               return $poll->activities->count() ? $poll->activities->sortBy('id')->last()->created_at : $poll->created_at;
             })->reverse() as $poll)
             @if ($poll->getUserLink())
                 <tr>

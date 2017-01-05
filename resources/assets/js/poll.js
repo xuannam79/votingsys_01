@@ -140,7 +140,7 @@ function voted(id, type) {
  * @param oldInput
  */
 function createOption(viewOption, number, oldInput) {
-    number = (typeof number === 'undefined') ? pollData.length.option : number;
+    number = (typeof number === 'undefined') ? pollData.config.length.option_inc : number;
 
     if (oldInput != null) {
         var oldOption = oldInput.optionText;
