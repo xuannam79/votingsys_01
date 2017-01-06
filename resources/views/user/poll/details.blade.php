@@ -27,7 +27,8 @@
                             data-name-chart="{{ $nameOptions }}"
                             data-pie-chart="{{ $dataToDrawPieChart }}"
                             data-title-chart="{{ $poll->title }}"
-                            data-font-size="{{ $fontSize }}"></div>
+                            data-font-size="{{ $fontSize }}"
+                            data-has-image="{{ $isHaveImages }}"></div>
     <div class="container">
         <div class="row">
             <div class="loader"></div>

@@ -1,6 +1,8 @@
 <div class="col-lg-12">
+    <div class="hide_chart" data-has-image="{{ $isHaveImages }}"></div>
     <!-- pie chart -->
     <script type="text/javascript">
+        var isHasImage = $('.hide_chart').data('hasImage');
         $(function () {
             /**
              * PIE CHART
@@ -43,6 +45,14 @@
                 legend: {
                     useHTML: true,
                     maxHeight: 100,
+                    align: 'left',
+                    labelFormatter: function () {
+                        if (isHasImage) {
+                            return (this.name.length > 154) ? this.name.substring(0, 200) + "..." : this.name;
+                        }
+
+                        return  (this.name.length > 100) ? this.name.substring(0, 100) + "..." : this.name;
+                    }
                 },
                 tooltip: {
                     useHTML: true,

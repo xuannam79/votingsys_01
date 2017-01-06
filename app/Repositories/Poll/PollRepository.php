@@ -1373,38 +1373,19 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
     {
         $totalVote = $this->countTotalVote($poll);
         $optionRateBarChart = [];
-        $nameOption = false;
 
         if ($totalVote) {
             foreach ($poll->options as $option) {
                 $countOption = $option->countVotes();
                 if ($countOption > 0) {
-                    if (Session::get('locale') != "ja") {
-                        $nameOption = $this->insertTagBreakInOptionName($option->name);
-                    }
-
-                    if ($nameOption) {
-                        if ($isHasImage) {
-                            $optionRateBarChart[] = [
-                                '<img src="' . $option->showImage() . '" class="image-option-poll"><span class="name-option-poll">' . $nameOption .'</span>', $countOption
-                            ];
-                        } else {
-                            $optionRateBarChart[] = [
-                                '<p>' . $nameOption .'</p>', $countOption
-                            ];
-                        }
-
+                    if ($isHasImage) {
+                        $optionRateBarChart[] = [
+                            '<img src="' . $option->showImage() . '" class="image-option-poll"><span class="name-option-poll">' . $option->name .'</span>', $countOption
+                        ];
                     } else {
-                        if ($isHasImage) {
-                            $optionRateBarChart[] = [
-                                '<img src="' . $option->showImage() . '" class="image-option-poll"><span class="name-option-poll">' . $option->name .'</span>', $countOption
-                            ];
-                        } else {
-                            $optionRateBarChart[] = [
-                                '<p>' . $option->name .'</p>', $countOption
-                            ];
-                        }
-
+                        $optionRateBarChart[] = [
+                            '<p>' . $option->name .'</p>', $countOption
+                        ];
                     }
                 }
             }
@@ -1413,36 +1394,6 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
         }
 
         return $optionRateBarChart;
-    }
-
-    private function insertTagBreakInOptionName($optionName)
-    {
-        if (strlen($optionName) < config('settings.length_poll.name_option')) {
-            return false;
-        }
-
-        $result = '';
-        $position = 0;
-
-        for ($index = 0; $index < strlen($optionName); $index++) {
-            if ($index != 0 && $index % (config('settings.length_poll.name_option')) == 0) {
-                $result .= substr($optionName, $position, config('settings.length_poll.name_option')) . '<br>';
-
-                $position = $index;
-            }
-
-            if ($index == (strlen($optionName) - 1)) {
-                $result .= substr($optionName, $position, strlen($optionName) - $position);
-
-                break;
-            }
-        }
-
-        if (strlen($optionName) % config('settings.length_poll.name_option') == 0) {
-            $result .=  '<br>';
-        }
-
-      return $result;
     }
 
     public function getSizeChart($poll)
