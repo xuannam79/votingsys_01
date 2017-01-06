@@ -2,6 +2,7 @@ var chartData = $('.hide_chart').data('chart');
 var chartNameData = $('.hide_chart').data('nameChart');
 var chartPieData = $('.hide_chart').data('pieChart');
 var fontSizeChart = $('.hide_chart').data('fontSize');
+var isHasImage = $('.hide_chart').data('hasImage');
 
 $(function () {
     /**
@@ -98,6 +99,13 @@ $(function () {
             useHTML: true,
             align: 'left',
             maxHeight: 100,
+            labelFormatter: function () {
+                if (isHasImage) {
+                    return (this.name.length > 154) ? this.name.substring(0, 200) + "..." : this.name;
+                }
+
+                return  (this.name.length > 100) ? this.name.substring(0, 100) + "..." : this.name;
+            }
         },
         tooltip: {
             useHTML: true,

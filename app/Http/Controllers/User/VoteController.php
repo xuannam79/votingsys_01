@@ -328,6 +328,7 @@ class VoteController extends Controller
             'html_pie_bar_chart' => view('user.poll.pie_bar_chart_layouts')->render(),
             'htmlPieChart' => view('user.poll.piechart_layouts', [
                 'optionRatePieChart' => $optionRatePieChart,
+                'isHaveImages' => $isHaveImages,
             ])->render(),
             'htmlBarChart' => view('user.poll.barchart_layouts', [
                 'optionRateBarChart' => $optionRateBarChart,
