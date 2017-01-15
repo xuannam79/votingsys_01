@@ -15,7 +15,8 @@ return [
         'email' => 255,
         'chatwork' => 255,
         'password' => 16,
-        'avatar'=> 10000,
+        'avatar' => 10000,
+        'feedback' => 500,
     ],
     'avatar_path' => 'uploads/avatar',
     'avatar_default' => 'default.jpg',
@@ -152,4 +153,13 @@ return [
     'is_active' => 1,
     'feedback' => 'https://goo.gl/forms/RQ06LKqNletbr1MU2',
     'copyright' => 'http://framgia.com',
+
+    /*
+     * noty
+     */
+    'notification' => [
+        'success' => 'success',
+        'danger' => 'danger',
+        'warning' => 'warning',
+    ],
 ];

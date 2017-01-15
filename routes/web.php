@@ -169,4 +169,8 @@ Route::get('tutorial', function () {
     ]);
 });
 
-
+/**
+ * Route Feedback
+ */
+Route::get('feedback', 'FeedbackController@showFeedback');
+Route::post('feedback', 'FeedbackController@sendFeedback');

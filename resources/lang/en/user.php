@@ -53,6 +53,8 @@ return [
         'update_fail' => ' Update user FAIL',
         'delete_success' => ' Delete user SUCCESS',
         'delete_fail' => ' Delete user FAIL',
+        'feedback_success' => 'Thanks you for your feedback. Always',
+        'feedback_fail' => 'Process to send mail fail. Please try again.',
     ],
     'tooltip' => [
         'edit' => 'Edit this user',
@@ -68,26 +70,30 @@ return [
     'validate' => [
         'name' => [
             'required' => 'Please enter name!',
-            'max' => 'Please enter a value less than or equal to ' . config('common.length_user.name'),
+            'max' => 'Please enter a value less than or equal to ' . config('settings.length_user.name'),
         ],
         'email' => [
             'required' => 'Please enter email!',
-            'max' => 'Please enter a value less than or equal to ' . config('common.length_user.email'),
+            'max' => 'Please enter a value less than or equal to ' . config('settings.length_user.email'),
             'email' => 'Email invalid',
             'unique' => 'Email is exists in database. Please enter a new email',
         ],
         'chatwork' => [
-            'max' => 'Please enter a value less than or equal to ' . config('common.length_user.chatwork'),
+            'max' => 'Please enter a value less than or equal to ' . config('settings.length_user.chatwork'),
         ],
         'avatar' => [
             'image' => 'Please upload image!',
-            'max' => 'Please enter a image have size less than or equal to ' . config('common.length_user.name') . 'MB',
+            'max' => 'Please enter a image have size less than or equal to ' . config('settings.length_user.name') . 'MB',
         ],
         'password' => [
             'required' => 'Please enter password!',
-            'max' => 'Please enter a value less than or equal to ' . config('common.length_user.password'),
+            'max' => 'Please enter a value less than or equal to ' . config('settings.length_user.password'),
             'min' => 'Please enter a value larger than or equal to 6 characters',
             'confirmed' => 'Password confirm incorrect, please check again!',
+        ],
+        'feedback' => [
+            'required' => 'Please enter feedback!',
+            'max' => 'Please enter a feedback less than or equal to ' . config('settings.length_user.feedback'),
         ],
     ],
     'update_profile_successfully' => 'You updated profile successfully',
@@ -109,6 +115,7 @@ return [
             'email' => 'Enter your email...',
             'password' => 'Enter your password...',
             'password_confirm' => 'Enter confirm password...',
+            'feedback' => 'Enter your feedback',
         ],
     ],
 ];

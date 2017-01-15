@@ -53,6 +53,8 @@ return [
         'update_fail' => '更新できませんでした',
         'delete_success' => '削除できました',
         'delete_fail' => '削除できませんでした',
+        'feedback_success' => 'Cảm ơn bạn đã gửi feedback cho chúng tôi.',
+        'feedback_fail' => 'Quá trình gửi feedback của bạn thất bại! Xin vui lòng thử lại',
     ],
     'tooltip' => [
         'edit' => 'このユーザーを編集する',
@@ -68,24 +70,28 @@ return [
     'validate' => [
         'name' => [
             'required' => '名前は入力必須です！',
-            'max' => ' ' . config('common.length_user.name') . ' 文字以上入力してください',
+            'max' => ' ' . config('settings.length_user.name') . ' 文字以上入力してください',
         ],
         'email' => [
             'required' => 'メールアドレスを入力してください!',
-            'max' => '' . config('common.length_user.email') . ' 文字以上入力してください',
+            'max' => '' . config('settings.length_user.email') . ' 文字以上入力してください',
             'email' => 'メールは正しくありません',
             'unique' => '入力したメールは既に存在しています。別のメールアドレスを入力してください!',
         ],
         'chatwork' => [
-            'max' => ' ' . config('common.length_user.chatwork') . ' 文字以上入力してください',
+            'max' => ' ' . config('settings.length_user.chatwork') . ' 文字以上入力してください',
         ],
         'avatar' => [
             'image' => '画像をアップロードしてください',
-            'max' => '最大画像サイズは ' . config('common.length_user.name') . ' MB',
+            'max' => '最大画像サイズは ' . config('settings.length_user.name') . ' MB',
         ],
         'password' => [
             'required' => 'パスワードを入力してください',
-            'max' => 'パスワードは最大' . config('common.length_user.password') . ' 文字です',
+            'max' => 'パスワードは最大' . config('settings.length_user.password') . ' 文字です',
+        ],
+        'feedback' => [
+            'required' => 'Hãy nhập phản hồi của bạn',
+            'max' => 'Feedback phải nhỏ hơn hoặc bằng ' . config('settings.length_user.name') . ' ký tự',
         ],
     ],
     'update_profile_successfully' => 'プロフィールは更新されました',
@@ -107,6 +113,7 @@ return [
             'email' => 'メールアドレスを入力してください',
             'password' => 'パスワードを入力してください',
             'password_confirm' => 'パスワードを再度入力してください',
+            'feedback' => 'Nhập phản hồi của bạn...',
         ],
     ],
 ];
