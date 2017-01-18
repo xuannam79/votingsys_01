@@ -21,6 +21,7 @@ return [
     'home' => 'Home',
     'admin_page' => 'ADMIN PAGE',
     'errors' => 'Message',
+    'send_feedback' => 'Send Feedback',
 
     /**
      * MASTER ADMIN
@@ -115,6 +116,10 @@ return [
             'subject' => 'Fpoll - Delete all participant of poll',
             'thank' => 'Thank you because you have used our website. <br> You delete all vote of poll SUCCESS.',
             'link_admin' => 'Click to blow link to manage poll',
+        ],
+        'feedback' => [
+            'header_content' => 'Here is feedback form customer about which Fpoll website:',
+            'subject' => '[Fpoll] Feedback from customer',
         ],
     ],
     'footer' => [

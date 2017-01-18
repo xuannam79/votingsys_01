@@ -21,7 +21,7 @@ return [
     'home' => 'Trang chủ',
     'admin_page' => 'TRANG CHỦ ADMIN',
     'errors' => 'Thông tin',
-
+    'send_feedback' => 'Gửi phản hồi',
     /**
      * MASTER ADMIN
      */
@@ -115,6 +115,10 @@ return [
             'subject' => 'Fpoll - Xóa tất cả người bầu chọn',
             'thank' => 'Cảm ơn bạn đã sử dụng website của chúng tôi. <br> Bạn đã xóa tất cả bầu chọn THÀNH CÔNG.',
             'link_admin' => 'Click vào đường dẫn bên dưới để quản lý poll',
+        ],
+        'feedback' => [
+            'header_content' => 'Đây là phản hồi của người dùng về Fpoll webiste:',
+            'subject' => '[Fpoll] Phản hồi từ khách hàng',
         ],
     ],
     'paginations' => 'Hiển thị :start đến :finish của :numberOfRecords mục|Đang hiển thị :start đến :finish of :numberOfRecords mục',

@@ -53,6 +53,8 @@ return [
         'update_fail' => 'Chỉnh sửa thông tin THẤT BẠI',
         'delete_success' => 'Xóa người dùng THÀNH CÔNG',
         'delete_fail' => 'Xóa người dùng THẤT BẠI',
+        'feedback_success' => 'Cảm ơn bạn đã gửi feedback cho chúng tôi.',
+        'feedback_fail' => 'Quá trình gửi feedback của bạn thất bại! Xin vui lòng thử lại',
     ],
     'tooltip' => [
         'edit' => 'Chỉnh sửa người dùng ngày',
@@ -68,26 +70,30 @@ return [
     'validate' => [
         'name' => [
             'required' => 'Hãy nhập tên của bạn',
-            'max' => 'Giá trị phải nhỏ hơn hoặc bằng ' . config('common.length_user.name') . ' ký tự',
+            'max' => 'Giá trị phải nhỏ hơn hoặc bằng ' . config('settings.length_user.name') . ' ký tự',
         ],
         'email' => [
             'required' => 'Hãy nhập email của bạn',
-            'max' => 'Giá trị phải nhỏ hơn hoặc bằng ' . config('common.length_user.email') . ' ký tự',
+            'max' => 'Giá trị phải nhỏ hơn hoặc bằng ' . config('settings.length_user.email') . ' ký tự',
             'email' => 'Email không hợp lệ',
             'unique' => 'Email đã tồn tại trong hệ thống. Hãy nhập một email khác!',
         ],
         'chatwork' => [
-            'max' => 'Giá trị phải nhỏ hơn hoặc bằng ' . config('common.length_user.chatwork') . ' ký tự',
+            'max' => 'Giá trị phải nhỏ hơn hoặc bằng ' . config('settings.length_user.chatwork') . ' ký tự',
         ],
         'avatar' => [
             'image' => 'Hãy tải lên một hình ảnh',
-            'max' => 'Kích thước hình ảnh phải nhỏ hơn hoặc bằng ' . config('common.length_user.name') . ' MB',
+            'max' => 'Kích thước hình ảnh phải nhỏ hơn hoặc bằng ' . config('settings.length_user.name') . ' MB',
         ],
         'password' => [
             'required' => 'Hãy nhập mật khẩu của bạn',
-            'max' => 'Giá trị phải nhỏ hơn hoặc bằng ' . config('common.length_user.password') . ' ký tự',
+            'max' => 'Giá trị phải nhỏ hơn hoặc bằng ' . config('settings.length_user.password') . ' ký tự',
             'min' => 'Nhập mật khẩu lớn hơn hoặc bằng 6 ký tự',
             'confirmed' => 'Mật khẩu xác nhận chưa chính xác, hãy kiểm tra lại!',
+        ],
+        'feedback' => [
+            'required' => 'Hãy nhập phản hồi của bạn',
+            'max' => 'Feedback phải nhỏ hơn hoặc bằng ' . config('settings.length_user.feedback') . ' ký tự',
         ],
     ],
     'update_profile_successfully' => 'Bạn đã cập nhật thông tin cá nhân thành công',
@@ -109,6 +115,7 @@ return [
             'email' => 'Nhập địa chỉ email của bạn...',
             'password' => 'Nhập mật khẩu...',
             'password_confirm' => 'Xác nhận mật khẩu...',
+            'feedback' => 'Nhập phản hồi của bạn...',
         ],
     ],
 ];

@@ -20,6 +20,7 @@ return [
     'home' => 'ホームページ',
     'admin_page' => 'ホームページ管理者',
     'errors' => 'エラー',
+    'send_feedback' => 'Gửi phản hồi',
 
     /**
      * MASTER ADMIN
@@ -113,6 +114,10 @@ return [
             'subject' => 'Fpoll - Delete all participant of poll',
             'thank' => 'ご利用いただきありがとうございます <br> 回答がすべて削除されました',
             'link_admin' => '投票管理する為に下記のリンクをクリックしてください',
+        ],
+        'feedback' => [
+            'header_content' => 'Đây là phản hồi của người dùng về Fpoll webiste:',
+            'subject' => '[Fpoll] Phản hồi từ khách hàng',
         ],
     ],
     'paginations' => 'Hiển thị :start đến :finish của :numberOfRecords mục|Đang hiển thị :start đến :finish of :numberOfRecords mục',
