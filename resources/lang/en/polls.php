@@ -51,6 +51,7 @@ return [
         'search' => 'Search poll information...',
         'search_all' => 'All',
         'no_data' => 'No data',
+        'input_date' => 'Only type date',
     ],
     'label_for' => [
         'full_name' => 'name',

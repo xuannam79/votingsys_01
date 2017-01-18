@@ -9,7 +9,7 @@ var typeElement = ['id', 'class'];
 var rand = function() {
     return Math.random().toString(36).substr(2); // remove `0.`
 };
-
+var gliphyCalendarGroup = '<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>';
 /*-----------------------------------------
                  FUNCTION
  -------------------------------------------*/
@@ -157,6 +157,14 @@ function createOption(viewOption, number, oldInput) {
             option = viewOption.replace(/idOption/g, id);
             $('.poll-option').append(option);
         }
+    }
+
+    //Set event chose date if usr chose date
+    var isChooseDate = $('.not-choose-date').data('isChooseDate');
+    if (typeof isChooseDate != 'undefined') {
+        var $lastOptionPoll = $('.poll-option .form-group').last().find('.date');
+        $lastOptionPoll.addClass('option-poll').prepend(gliphyCalendarGroup);
+        setDatePicker($lastOptionPoll);
     }
 }
 
@@ -831,6 +839,18 @@ function getCurrentLocation() {
     }
 }
 
+/**
+ * Update Datepicker
+ */
+
+function setDatePicker($domCurrent)
+{
+    $domCurrent.datetimepicker({
+        showClose: true,
+        icons: {close: 'glyphicon glyphicon-ok'}
+    });
+}
+
 /*-----------------------------------------
                 EVENT
  -------------------------------------------*/
@@ -895,7 +915,6 @@ $(".btn-show-advance-add-option").click(function(){
         this.id = "show";
     }
 });
-
 
 $(document).ready(function () {
 
@@ -1029,6 +1048,43 @@ $(document).ready(function () {
                 $('#create_poll_wizard').find('.pager .previous').hide();
             }
         }
+    });
+
+    /**
+     * Update add datetime for poll option
+     */
+    $('#option').on('click', '.chooseDate', function () {
+        var $this = $(this);
+        var $optionPoll = $this.closest('.panel-darkcyan').find('.date');
+        $('input[name^="optionText"]').val('');
+        $this.addClass('not-choose-date').removeClass('chooseDate');
+
+        //append glipicon calendar
+        $optionPoll.addClass('option-poll').prepend(gliphyCalendarGroup);
+
+        //flag if choose option date
+        $this.data({ isChooseDate : true });
+
+        setDatePicker($optionPoll);
+    });
+
+    $('#option').on('click', '.not-choose-date', function () {
+        var $this = $(this);
+        $this.addClass('chooseDate').removeClass('not-choose-date');
+
+        //Remove buttun gliphicon of canlendar
+        $optionPoll =  $('.poll-option');
+        $optionPoll.find('.input-group-addon').remove();
+
+        $optionPollGroup = $optionPoll.find('.date');
+        $optionPollGroup.removeClass('option-poll');
+
+        //destroy event of datepicker
+        $optionPollGroup.each(function (index) {
+            $(this).data("DateTimePicker").hide().destroy();
+        });
+
+        $('input[name^="optionText"]').val('');
     });
 });
 

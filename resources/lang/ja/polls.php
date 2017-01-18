@@ -53,6 +53,7 @@ return [
         'search' => '投票を検索します',
         'search_all' => 'すべて',
         'no_data' => '該当するデータはありません',
+        'input_date' => 'Only type date',
     ],
     'label_for' => [
         'full_name' => '名前',
@@ -230,7 +231,7 @@ return [
         'option_duplicate' => 'オプションが重複されています。他のオプションを入力してください',
         'option_minimum' => 'このオプションは削除できません。少なくとも一つのオプションは必要です。',
         'option_image_duplicate' => '同一のイメージがありますが、使用しますか',
-        'number_edit' => '指定する最大投票数は現在の投票数よりも大きくなければなりません。現在の投票数は…', 
+        'number_edit' => '指定する最大投票数は現在の投票数よりも大きくなければなりません。現在の投票数は…',
         'image' => 'この画像は使用できません。ご確認ください',
     ],
     'mail' => [
@@ -347,7 +348,7 @@ return [
     'email_not_exist' => '入力したメールアドレスは存在しません。',
     'register_with_mail_not_exist' => '登録できません。入力したメールアドレスは存在しません。',
     'link_not_found' => 'リンクは見つかりません',
-    'date_last_vote' => '最終回答時間',  
+    'date_last_vote' => '最終回答時間',
     'number_vote' => '票数',
     'email_voted' => 'このメールアドレスは投票したことがあります',
     'check' => '確認',

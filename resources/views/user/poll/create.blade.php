@@ -95,8 +95,13 @@
                         <div class="panel panel-darkcyan">
                             <div class="panel-heading panel-heading-darkcyan">
                                 {{ trans('polls.label.step_2') }}
+
                             </div>
                             <div class="panel-body">
+                                <a href="javascript:void(0)" class="chooseDate">
+                                    <i class="fa fa-calendar"></i>
+                                    <span>{{ trans('polls.label.input_date') }}</span>
+                                </a>
                                 @include('layouts.poll_options')
                             </div>
                         </div>
