@@ -53,6 +53,7 @@ return [
         'search' => 'Tìm kiếm thông tin poll',
         'search_all' => 'Tất cả',
         'no_data' => 'Không có dữ liệu',
+        'input_date' => 'Chỉ nhập ngày',
     ],
     'label_for' => [
         'full_name' => 'tên',

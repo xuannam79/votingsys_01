@@ -329,3 +329,13 @@ li {
     word-break: break-all !important;
     word-wrap: break-word !important;
 }
+
+.chooseDate, .not-choose-date {
+    color: #2c2c2c !important;
+    display: inline-block;
+    text-decoration: none !important;
+    &:hover {
+        color: #000 !important;
+        text-decoration: none;
+    }
+}

@@ -1,11 +1,18 @@
 <div class="form-group" id="idOption">
-    <div class="input-group" id="option-poll">
-        <input type="file" class="file" name="optionImage[idOption]" onchange="readURL(this, 'preview-idOption')">
-        <input type="text" name="optionText[idOption]" class="form-control" id="optionText-idOption"
-               placeholder="{{ trans('polls.placeholder.option') }}"
-               onfocus="addAutoOption('idOption')"
-               onclick="addAutoOption('idOption')"
-               onkeyup="checkOptionSame(this)">
+    {!! Form::file('optionImage[idOption]', [
+      'class' => 'file',
+      'onchange' => "readURL(this, 'preview-idOption')"
+    ]) !!}
+    <div class="input-group date" id="option-poll">
+        {!! Form::text('optionText[idOption]', null, [
+            'class' => 'form-control',
+            'id' => 'optionText-idOption',
+            'placeholder' => trans('polls.placeholder.option'),
+            'onfocus' => "addAutoOption('idOption')",
+            'onclick' => "addAutoOption('idOption')",
+            'onblur' => "checkOptionSame(this)",
+            'onkeyup' => "checkOptionSame(this)",
+        ]) !!}
         <span class="input-group-btn">
             <button class="btn btn-darkcyan-not-shadow" type="button" onclick="showOptionImage('idOption')">
                 <span class="glyphicon glyphicon-picture"></span>
