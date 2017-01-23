@@ -104,8 +104,10 @@ class LinkController extends Controller
         $isLimit = false;
         $isHideResult = false;
         $isTimeOut = false;
+        $isAllowAddOption = false;
         $poll = $link->poll;
         $totalVote = config('settings.default_value');
+        $messageImage = trans('polls.message_client.image');
 
         //get information vote poll
         $voteIds = $this->pollRepository->getVoteIds($poll->id);
@@ -233,6 +235,10 @@ class LinkController extends Controller
                     $isHideResult = true;
                 }
 
+                if (collect($listSettings)->contains(config('settings.setting.allow_add_option'))) {
+                    $isAllowAddOption = true;
+                }
+
                 if ($voteLimit && $countParticipantsVoted >= $voteLimit) {
                     $isLimit = true;
                 }
@@ -268,9 +274,10 @@ class LinkController extends Controller
                 'requiredPassword', //setting password of poll
                 'isUserVoted', 'isParticipantVoted', // vote type
                 'isTimeOut', //time out of poll
+                'isAllowAddOption',// allow to voter add new option
                 'optionRateBarChart', 'dataTableResult', 'mergedParticipantVotes', //result
                 'countParticipantsVoted', 'isHaveImages', 'nameOptions', 'dataToDrawPieChart',
-                'isOwnerPoll', 'fontSize'
+                'isOwnerPoll', 'fontSize', 'messageImage'
             ));
         } else {
             foreach ($poll->links as $link) {

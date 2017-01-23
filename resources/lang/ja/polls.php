@@ -47,6 +47,7 @@ return [
             'on' => 'ON',
             'off' => 'OFF',
             'is_set_ip' => 'PC、パソコン等1台は1回だけ投票することができます。',
+            'allow_new_option' => 'Allow voters to add new answers',
         ],
         'step_4' => '投票者',
         'invite' => '特定のメール宛に投票参加招待のメールを送信する場合は下記枠に入力してください',

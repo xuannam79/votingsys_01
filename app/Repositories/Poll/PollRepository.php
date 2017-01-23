@@ -211,9 +211,9 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
                 $settingPollConfig['custom_link'] => $pollTrans['setting']['custom_link'],
                 $settingPollConfig['set_limit'] => $pollTrans['setting']['set_limit'],
                 $settingPollConfig['set_password'] => $pollTrans['setting']['set_password'],
+                $settingPollConfig['allow_add_option'] => $pollTrans['setting']['allow_new_option'],
             ],
         ];
-
         return compact('jsonData', 'viewData');
     }
 
@@ -338,8 +338,9 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
      *
      * @return bool
      */
-    public function addOption($input, $pollId)
+    public function addOption($input, $pollId, $getAddNewOption = false)
     {
+        DB::beginTransaction();
         try {
             $options = $input['optionText'];
             $images = $input['optionImage'];
@@ -360,17 +361,23 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
                 }
             }
 
-            if ($dataOptionInserted) {
-                Option::insert($dataOptionInserted);
+            $this->updateImage($images, $imageNames);
+
+            if ($dataOptionInserted && $getAddNewOption) {
+                DB::commit();
+
+                return $this->model->find($pollId)->options()->createMany($dataOptionInserted);
             }
 
-            $this->updateImage($images, $imageNames);
+            Option::insert($dataOptionInserted);
+            DB::commit();
 
             return true;
         } catch (Exception $ex) {
+            DB::rollBack();
+
             return false;
         }
-
     }
 
     /**

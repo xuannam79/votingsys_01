@@ -47,6 +47,7 @@ return [
             'on' => 'ON',
             'off' => 'OFF',
             'is_set_ip' => 'Mỗi máy chỉ được bầu chọn một lần',
+            'allow_new_option' => 'Cho phép người tham gia thêm đáp án mới',
         ],
         'step_4' => 'Người tham gia',
         'invite' => 'Nếu bạn muốn gởi thư mời tham gia bầu chọn đến email cụ thể, hãy nhập vào ô dưới đây',

@@ -91,6 +91,7 @@ return [
         'set_password' => 5,
         'required_name' => 7,
         'required_name_and_email' => 8,
+        'allow_add_option' => 9,
     ],
     'email' => [
         'link_vote' => '/link/',
@@ -106,7 +107,7 @@ return [
         'poll_mail' => 'layouts.poll_mail',
         'participant_mail' => 'layouts.participant_mail',
         'mail_edit_option' => 'layouts.mail_edit_option',
-        'mail_edit_setting' => 'layouts.mail_edit_setting'
+        'mail_edit_setting' => 'layouts.mail_edit_setting',
     ],
     'type' => [
         'user' => 'user',
