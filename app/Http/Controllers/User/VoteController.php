@@ -45,6 +45,7 @@ class VoteController extends Controller
 
     public function store(Request $request)
     {
+        //dd($request->all());
         //get MAC address of Client
         $client  = @$_SERVER['HTTP_CLIENT_IP'];
         $forward = @$_SERVER['HTTP_X_FORWARDED_FOR'];
@@ -58,12 +59,13 @@ class VoteController extends Controller
             $ip = $remote;
         }
 
-        $inputs = $request->only('option', 'nameVote', 'emailVote', 'pollId');
+        $inputs = $request->only('option', 'nameVote', 'emailVote', 'pollId', 'optionImage', 'optionText', 'newOption');
         $poll = $this->pollRepository->findPollById($inputs['pollId']);
         $isSetIp = false;
         $voteLimit = null;
         $isRequiredEmail = false;
         $isLimit = false;
+        $isAllowAddOption = false;
 
         //get all settings of poll
         $listSettings = [];
@@ -83,14 +85,24 @@ class VoteController extends Controller
             if (collect($listSettings)->contains(config('settings.setting.required_email'))) {
                 $isRequiredEmail = true;
             }
+
+            if (collect($listSettings)->contains(config('settings.setting.allow_add_option'))) {
+                $isAllowAddOption = true;
+            }
         }
 
         if ($voteLimit && $poll->countParticipants() >= $voteLimit) {
             $isLimit = true;
         }
 
-        $now = Carbon::now();
+        //Add New Option and Get Id New Option
+        if ($isAllowAddOption && $inputs['newOption']) {
+            $newOption = $this->pollRepository->addOption($inputs, $inputs['pollId'], true);
+            $idNewOption = $newOption[0]->id;
+            $inputs['option'][] = $idNewOption;
+        }
 
+        $now = Carbon::now();
         if ($isLimit || $poll->isClosed() || !$inputs['option']
             || Carbon::now()->toAtomString() > Carbon::parse($poll->date_close)->toAtomString() || strlen($inputs['nameVote']) >= config('settings.length_poll.name')) {
             return redirect()->to($poll->getUserLink());
@@ -189,6 +201,7 @@ class VoteController extends Controller
             }
 
             $participant = $this->participantRepository->create($participantInformation);
+
             foreach ($inputs['option'] as $option) {
                 $participantVotes[] = [
                     'participant_id' => $participant->id,
@@ -197,6 +210,7 @@ class VoteController extends Controller
                     'updated_at' => $now,
                 ];
             }
+
             try {
                 DB::beginTransaction();
                 $this->participantVoteRepository->insert($participantVotes);

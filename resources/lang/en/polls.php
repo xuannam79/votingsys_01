@@ -45,6 +45,7 @@ return [
             'show_password' => 'Show password',
             'password_poll' => 'Password of poll: ',
             'is_set_ip' => 'A computer only vote one time',
+            'allow_new_option' => 'Allow voters to add new answers',
         ],
         'step_4' => 'Participant',
         'invite' => 'If you want send mail to participants, let enter email into below textbox!',

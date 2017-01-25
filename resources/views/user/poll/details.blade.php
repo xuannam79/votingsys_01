@@ -92,7 +92,7 @@
                                 {{ trans('polls.message_poll_time_out') }}
                             </div>
                         @endif
-                        {!! Form::open(['route' => 'vote.store','id' => 'form-vote']) !!}
+                        {!! Form::open(['route' => 'vote.store','id' => 'form-vote', 'files' => true]) !!}
                             <!-- VOTE OPTION -->
                             <div class="panel panel-default panel-vote-option">
                                 <div class="panel-body panel-body-vote-option">
@@ -194,6 +194,35 @@
                                                         </div>
                                                     </li>
                                                 @endforeach
+                                                @if ($isAllowAddOption)
+                                                    <li class="list-group-item parent-vote-new-option li-parent-vote">
+                                                        @if ($poll->multiple == trans('polls.label.multiple_choice'))
+                                                            {!! Form::checkbox('newOption[]', null, false, [
+                                                                    'class' => 'poll-new-option poll-option-detail-not-image new-option checkbox',
+                                                                ])
+                                                            !!}
+                                                        @else
+                                                            {!! Form::radio('newOption[]', null, false, [
+                                                                    'class' => 'poll-new-option poll-option-detail-not-image new-option',
+                                                                ])
+                                                            !!}
+                                                        @endif
+                                                        <div class="input-group wrapper-choose-image">
+                                                            {!! Form::text('optionText[]', null, ['class' => 'text-new-option', 'autocomplete' => 'off']) !!}
+                                                            <input type="file" id="input-file-image" name="optionImage[]">
+                                                            <div class="vote-preview-wrapper">
+                                                                <img src="" class="render-img" width="300" height="300">
+                                                            </div>
+                                                            <span class="btn-file-img vote-span-camera">
+                                                                <span class="fa fa-picture-o" aria-hidden="true"></span>
+                                                            </span>
+                                                            <div class="fa fa-minus-circle deleteImg"></div>
+                                                        </div>
+                                                        <div class="error_option has-error">
+                                                            <span id="title-error" class="help-block">{{ $messageImage }}</span>
+                                                        </div>
+                                                    </li>
+                                                @endif
                                             </div>
                                         </div>
 
@@ -240,6 +269,7 @@
                                                 @endforeach
                                             </div>
                                         </div>
+
                                     </div>
                                 </div>
                                 <div class="message-validation"></div>
