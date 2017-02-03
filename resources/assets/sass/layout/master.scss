@@ -776,7 +776,7 @@ body {
 }
 
 .panel-body-vote-option {
-  padding: 5px;
+  padding: 5px 5px 20px 5px;
 }
 
 /*--------------------------Tab: Vote--------------------------*/
@@ -837,12 +837,6 @@ body {
 
 .vote-style-detail {
   clear: both;
-}
-
-/* Horizontal option detail */
-.horizontal-overflow {
-  max-height: 400px;
-  overflow-y: scroll;
 }
 
 .li-parent-vote {

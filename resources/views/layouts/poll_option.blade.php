@@ -3,7 +3,7 @@
       'class' => 'file',
       'onchange' => "readURL(this, 'preview-idOption')"
     ]) !!}
-    <div class="input-group date" id="option-poll">
+    <div class="input-group date datetimepicker" id="option-poll">
         {!! Form::text('optionText[idOption]', null, [
             'class' => 'form-control',
             'id' => 'optionText-idOption',
@@ -13,6 +13,9 @@
             'onblur' => "checkOptionSame(this)",
             'onkeyup' => "checkOptionSame(this)",
         ]) !!}
+        <span class="input-group-addon pick-date">
+            <span class="glyphicon glyphicon-calendar"></span>
+        </span>
         <span class="input-group-btn">
             <button class="btn btn-darkcyan-not-shadow" type="button" onclick="showOptionImage('idOption')">
                 <span class="glyphicon glyphicon-picture"></span>

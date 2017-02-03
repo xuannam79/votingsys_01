@@ -232,28 +232,46 @@ $(document).ready(function(){
     }
 });
 
-function addNewOption() {
+var addNewOption = function () {
     this.init = function() {
         this.cacheDom();
         this.bindEvent();
     }
 
     this.cacheDom = function () {
+        // DOM to process image of option
         this.$preview = $('.render-img');
         this.$btnFileImg = $('.btn-file-img');
         this.$inputFileImg = $('#input-file-image');
         this.$deleteImg = $('.deleteImg');
-        this.$btnVote = $('.btn-vote');
+
+        // DOM to process option text
         this.$newOption = $('.new-option');
-        this.$inputTextOption = $('.text-new-option');
-        this.$boxVote = $('#voting_wizard');
-        this.$allOption = $('.poll-option');
         this.$liParent = $('.parent-vote');
-        this.$horizontalWrapper = $('.horizontal-overflow');
-        this.$showError = $('.error_option');
+        this.$inputTextOption = $('.text-new-option');
+        this.$allOption = $('.poll-option');
         this.$contentOption = $('.option-name').find('span');
+
+        // DOM button to vote
+        this.$btnVote = $('.btn-vote');
+        this.$boxVote = $('#voting_wizard');
+
+        // DOM warpper vote
+        this.$voteImageWrapper = $('.vote-preview-wrapper');
+
+        // DOM to scrollTop div
+        this.$horizontalWrapper = $('.horizontal-overflow');
+
+        // Check option that choose radio or checkbox
         this.isRadio = this.$newOption.is(':radio');
+
+        // DOM to show message validation
+        this.$showError = $('.error_option');
         this.messageValidate = this.$showError.data('message');
+
+        // DOM of datepicker
+        this.$datePicker = $('.date-time-picker');
+        this.$pickDate = $('.pick-date');
     }
 
     this.bindEvent = function () {
@@ -264,6 +282,31 @@ function addNewOption() {
         this.$boxVote.on('click', '.new-option', this.chooseOption.bind(this));
         this.$boxVote.on('click', '.deleteImg', this.deletePhoto.bind(this));
         this.$liParent.on('click', this.chooseOptionWithLi.bind(this));
+        this.$pickDate.on('click', this.getTextDatePicker.bind(this));
+        this.$datePicker.on('dp.hide', this.addTextDate.bind(this));
+    }
+
+    this.getTextDatePicker = function () {
+        this.$pickDate.data('isHasDate', true);
+        var textInput = typeof this.addText() === 'undefined' ? '' : this.addText().trim();
+        if (this._isValidDate(textInput)) {
+            textInput = '';
+        }
+
+        this.$datePicker.data('preText', textInput);
+        this.$datePicker.datetimepicker().data('DateTimePicker').show();
+    }
+
+    this.addTextDate = function (e) {
+        var dateChoosed = moment(e.date).format('MM/DD/YYYY h:mm A');
+        var preText = this.$datePicker.data('preText');
+        var fullText = (preText + ' ' + dateChoosed).trim();
+
+        this.$inputTextOption.val(fullText);
+
+        // Destroy event datepicker that convert text input
+        this.$datePicker.data('DateTimePicker').hide().destroy();
+        this.$pickDate.data('isHasDate', false);
     }
 
     this.readURL = function () {
@@ -296,26 +339,34 @@ function addNewOption() {
         this.$preview.attr('src', '').hide();
         this.$deleteImg.hide();
         this.$inputFileImg.val('');
+        this.$voteImageWrapper.css('border', 'none');
         if (this.$inputTextOption.val() == '') {
             this._notViewSubmit();
         }
     }
 
     this.addText = function () {
-        var lengthInput = this.$inputTextOption.val();
-
+        var lengthInput = this.$inputTextOption.val().trim();
         if (!this._validateDuplicate(lengthInput)) {
             this.$showError.hide();
             if (this.isRadio) {
                 this.$allOption.prop('checked', false);
             }
 
-            if (lengthInput.trim() == '' && this.$preview.attr('src') == '') {
+            if (lengthInput == '') {
+                if (this.$preview.attr('src') != '' || this.$pickDate.data('isHasDate')) {
+                    this._viewSubmit();
+
+                    return;
+                }
+
                 this._notViewSubmit();
 
                 return;
             }
             this._viewSubmit();
+
+            return lengthInput;
         } else {
             this._notViewSubmit();
             this._displayError(this.messageValidate.option_duplicate);
@@ -381,6 +432,8 @@ function addNewOption() {
 
         this.$preview.attr('src', e.target.result).show();
         this.$deleteImg.show();
+        this.$voteImageWrapper.css('border', '1px solid #ccc');
+        this.$voteImageWrapper.css('border-top', 'none');
         this._viewSubmit();
         this._toScrollLast();
     }
@@ -422,7 +475,12 @@ function addNewOption() {
         this.$showError.show();
         this._toScrollLast();
     }
+
+    this._isValidDate = function (dateString) {
+        var regEx = /^\d{2}\/\d{2}\/\d{4}\s+[\d]+:\d{2}\s+(AM|PM)$/;
+        return dateString.match(regEx) != null;
+    }
 }
 
-var addOption= new addNewOption();
+var addOption = new addNewOption();
 addOption.init();
