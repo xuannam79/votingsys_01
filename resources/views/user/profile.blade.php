@@ -5,10 +5,12 @@
     <div class="row">
         <div class="hide-validate" data-error-avatar="{{ trans('validation.image') }}"></div>
         <div class="col-md-6 col-md-offset-3">
+            
             <div class="panel panel-primary panel-darkcyan-profile">
                 <div class="panel-heading panel-heading-darkcyan">{{ trans('label.profile') }}</div>
                 <div class="panel-body">
                     @include('errors.errors')
+                    @include('layouts.message')
 
                     {{ Form::model($currentUser, ['method' => 'PATCH', 'route' => ['profile.update', $currentUser->id], 'class' => 'form-horizontal', 'role' => 'form', 'files' => true]) }}
                         <div class="form-group">
