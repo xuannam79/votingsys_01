@@ -107,7 +107,7 @@ class LinkController extends Controller
         $isAllowAddOption = false;
         $poll = $link->poll;
         $totalVote = config('settings.default_value');
-        $messageImage = trans('polls.message_client.image');
+        $messageImage = trans('polls.message_client');
 
         //get information vote poll
         $voteIds = $this->pollRepository->getVoteIds($poll->id);

@@ -159,13 +159,13 @@ function createOption(viewOption, number, oldInput) {
         }
     }
 
-    //Set event chose date if usr chose date
-    var isChooseDate = $('.not-choose-date').data('isChooseDate');
-    if (typeof isChooseDate != 'undefined') {
-        var $lastOptionPoll = $('.poll-option .form-group').last().find('.date');
-        $lastOptionPoll.addClass('option-poll').prepend(gliphyCalendarGroup);
-        setDatePicker($lastOptionPoll);
-    }
+    // Set Datepicker
+    setDatePicker($('.datetimepicker'));
+    $('.datetimepicker').each(function (index) {
+        var datePicker = $(this).data("DateTimePicker");
+        $(this).data('tempDatePicker', datePicker);
+        datePicker.hide().destroy();
+    });
 }
 
 /**
@@ -755,7 +755,7 @@ function checkOptionSame(input) {
     var isDuplicate = false;
     var message = ''
     $('input[name^="optionText"]').each(function () {
-        var value = $(this).val();
+        var value = $(this).val().trim();
         if (valuesSoFar.indexOf(value) !== -1 && value != "") {
             isDuplicate = true;
         }
@@ -851,6 +851,29 @@ function setDatePicker($domCurrent)
     });
 }
 
+/**
+ * Set datepicker
+ */
+function pickDateOption() {
+    $('#option').on('click', '.pick-date', function () {
+        $(this).parent().data('tempDatePicker').show();
+    });
+
+    $('#option').on('dp.hide', '.datetimepicker', function () {
+        var $this = $(this);
+        var input = $this.find('input[type=text]');
+        var dateText = input.val();
+        var typeText = typeof $this.data('pickingDate') === 'undefined' ? '' : $this.data('pickingDate').trim();
+        var fullText = (typeText + ' ' + dateText).trim();
+        input.val(fullText);
+    });
+
+    $('#option').on('input', 'input[name^=optionText]', function () {
+        var parentPicker = $(this).parent();
+        var dateText = parentPicker.find('input[type=text]').val();
+        parentPicker.data('pickingDate', dateText);
+    });
+}
 /*-----------------------------------------
                 EVENT
  -------------------------------------------*/
@@ -1049,43 +1072,6 @@ $(document).ready(function () {
             }
         }
     });
-
-    /**
-     * Update add datetime for poll option
-     */
-    $('#option').on('click', '.chooseDate', function () {
-        var $this = $(this);
-        var $optionPoll = $this.closest('.panel-darkcyan').find('.date');
-        $('input[name^="optionText"]').val('');
-        $this.addClass('not-choose-date').removeClass('chooseDate');
-
-        //append glipicon calendar
-        $optionPoll.addClass('option-poll').prepend(gliphyCalendarGroup);
-
-        //flag if choose option date
-        $this.data({ isChooseDate : true });
-
-        setDatePicker($optionPoll);
-    });
-
-    $('#option').on('click', '.not-choose-date', function () {
-        var $this = $(this);
-        $this.addClass('chooseDate').removeClass('not-choose-date');
-
-        //Remove buttun gliphicon of canlendar
-        $optionPoll =  $('.poll-option');
-        $optionPoll.find('.input-group-addon').remove();
-
-        $optionPollGroup = $optionPoll.find('.date');
-        $optionPollGroup.removeClass('option-poll');
-
-        //destroy event of datepicker
-        $optionPollGroup.each(function (index) {
-            $(this).data("DateTimePicker").hide().destroy();
-        });
-
-        $('input[name^="optionText"]').val('');
-    });
 });
 
 $(window).on('load', function() {
@@ -1094,6 +1080,7 @@ $(window).on('load', function() {
         var viewOption = pollData.view.option;
         var number = pollData.config.length.option;
         createOption(viewOption, number, oldInput);
+        pickDateOption();
 
         if (oldInput) {
             $('#email-participant').show();

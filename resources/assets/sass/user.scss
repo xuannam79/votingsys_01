@@ -2,11 +2,6 @@
     display: none !important;
 }
 
-//.preview-image {
-//    display: none;
-//    height: 500px;
-//}
-
 .email-participant {
     display: none;
 }
@@ -338,7 +333,7 @@ li {
         color: #000 !important;
         text-decoration: none;
     }
-
+}
 .wrapper-choose-image {
     left: 5px;
     input[type=text] {
@@ -370,7 +365,6 @@ li {
         position: absolute;
         text-align: center;
         font-size: 20px;
-        /* color: #ccc; */
         z-index: 3;
         cursor: pointer;
         transition: all .15s ease-in;
@@ -406,4 +400,91 @@ li {
 
 .option-name p {
     margin: 0;
+}
+
+.parent-vote-new-option {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    .wrapper-choose-image {
+        left: 5px;
+        input[type=text] {
+            width: 100%;
+            height: 30px;
+        }
+
+        .vote-span-camera {
+            width: 30px !important;
+            height: 30px !important;
+            right: 0 !important;
+            top: 0;
+            position: absolute;
+            text-align: center;
+            font-size: 20px;
+            z-index: 3;
+            cursor: pointer;
+            transition: all .15s ease-in;
+            &:hover {
+                background-color: #008b8b;
+                .fa-picture-o {
+                    color: #f0f0f0;
+                }
+            }
+            .fa-picture-o {
+                top: 3px;
+                color: #969696;
+            }
+        }
+    }
+
+    .date-time-picker {
+        margin-left: 20px;
+        .text-new-option {
+            border-radius: 0;
+        }
+        .btn-darkcyan-not-shadow {
+            border-radius: 0;
+        }
+    }
+
+    .deleteImg {
+        position: absolute;
+        top: 5px;
+        left: 130px;
+        font-size: 22px;
+        color: #969696;
+        cursor: pointer;
+        transition: all .15s ease-in;
+        display: none;
+        &:hover {
+            color: #d64541;
+        }
+    }
+
+    #input-file-image {
+        display: block;
+        visibility: hidden;
+        width: 0;
+        height: 0;
+    }
+
+    .vote-preview-wrapper {
+        position: relative;
+        margin: 0 1px 1px 20px;
+        transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+        border-top: none;
+        .render-img {
+            display: none;
+            padding: 5px;
+            max-height: 130px;
+            max-width: calc(100% - 70px);
+        }
+    }
+}
+
+.option-name p {
+    margin: 0;
+}
+
+.pick-date {
+    border-left: 0;
 }
