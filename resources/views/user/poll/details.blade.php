@@ -587,6 +587,7 @@
                                                                                             {{ str_limit($option->name, 10) }}
                                                                                         </p>
                                                                                     </center>
+                                                                                    <span class="badge float-xs-right result-poll">{{ $option->countVotes() }}</span>
                                                                                 </th>
                                                                             @endforeach
                                                                         </thead>

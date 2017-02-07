@@ -32,7 +32,7 @@ class SocialAuthController extends Controller
             if ($user) {
               auth()->login($user);
 
-              return redirect()->to(url('/'))->withMessage(trans('user.login_successfully'));
+              return redirect()->to(action('User\UsersController@index'))->withMessage(trans('user.login_successfully'));
             }
         } catch (\Exception $ex) {
             return redirect()->to(url('/login'));
