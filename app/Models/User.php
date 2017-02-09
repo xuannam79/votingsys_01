@@ -11,10 +11,11 @@ use App\Models\Comment;
 use App\Models\SocialAccount;
 use App\Models\Activity;
 use App\Models\Vote;
+use Laravel\Passport\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use Notifiable;
+    use Notifiable, HasApiTokens;
 
     const IS_ADMIN = 1;
 
