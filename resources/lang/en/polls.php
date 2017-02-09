@@ -82,6 +82,7 @@ return [
         'single_choice' => 'single',
         'multiple_choice' => 'multiple',
         'invite' => 'invite',
+        'add_picture_option' => 'Add Picture For Option',
     ],
     'placeholder' => [
         'full_name' => 'Enter your name... ',
@@ -117,6 +118,11 @@ return [
         'finish' => 'Finish',
         'administration' => 'ADMINISTRATION',
         'edit_back' => 'Back',
+        'okay' => 'Okay',
+        'cancel' => 'Cancel',
+        'upload' => 'Upload',
+        'delete' => 'Delete',
+        'add' => 'Add',
     ],
     'message' => [
         'create_success' => 'Create poll SUCCESS',
@@ -236,6 +242,9 @@ return [
         'option_image_duplicate' => 'Have two image same, are you sure use it',
         'number_edit' => 'Number limit must lager than total vote of poll. Number vote of poll is ',
         'image' => 'Image invalid, please check again!',
+        'empty_link_image' => 'Enter a url or click upload',
+        'not_type_url_image' => 'The image URL does not point to an image or the correct type of image.',
+        'time_out_url_image' => 'The image URL was not reachable.  Check that the URL is correct.',
     ],
     'mail' => [
         'label' => [

@@ -156,16 +156,12 @@ function createOption(viewOption, number, oldInput) {
             var option = "";
             option = viewOption.replace(/idOption/g, id);
             $('.poll-option').append(option);
+            var currentPicker = $('.datetimepicker').last();
+            setDatePicker(currentPicker)
+            currentPicker.data('tempDatePicker', currentPicker.data('DateTimePicker'));
+            currentPicker.last().data('DateTimePicker').hide().destroy();
         }
     }
-
-    // Set Datepicker
-    setDatePicker($('.datetimepicker'));
-    $('.datetimepicker').each(function (index) {
-        var datePicker = $(this).data("DateTimePicker");
-        $(this).data('tempDatePicker', datePicker);
-        datePicker.hide().destroy();
-    });
 }
 
 /**
@@ -356,10 +352,11 @@ function validateOption() {
 
     optionLists.each(function (key) {
         var id = $(this).attr('id');
+        var idOption = id.match(/optionText-(.*)/)[1];
 
         if ($(this).val() == "") {
             imageLists.each(function (keyImage) {
-                if (keyImage == key) {
+                if ($(this).attr('name').indexOf(idOption) > -1) {
                     if ($(this).val() != "") {
                         $('#' + id).addClass('error-input');
                         $('.error_option').addClass('has-error')
@@ -786,7 +783,7 @@ function checkImageSame() {
 
     $.each(images, function(key, image){
         temp = $('#' + $(image).attr("id")).attr("src");
-        if (temp != "#") {
+        if (temp != "#" && temp != '') {
             if($.inArray(temp, srcs) < 0){
                 srcs.push(temp);
             } else {

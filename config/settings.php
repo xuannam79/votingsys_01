@@ -79,7 +79,7 @@ return [
         'close' => 0,
     ],
     'option' => [
-        'path_image' => '/uploads/options/',
+        'path_image' => 'uploads/options/',
         'path_image_default' => '/uploads/images/default-thumb.gif',
         'path_trophy' => '/uploads/images/trophy.png',
     ],

@@ -19,6 +19,64 @@
     <meta property="og:image" content="{{ asset('/uploads/images/vote.png') }}" />
 @endsection
 @section('content')
+    <!-- START: Frame Upload Image By Link Or Upload File-->
+    <div class="modal fade" tabindex="-1" role="dialog" id="frame-upload-image">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="sub-tab">
+                        <div class="sel">{{ trans('polls.label_for.add_picture_option') }}</div>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <div class="win-img">
+                        <div class="photo-tb">
+                            <div class="row">
+                                <div class="col col-md-9 photo-tb-url">
+                                    <div class="add-link-image-group">
+                                        {!! Form::text('urlImageTemp', null, [
+                                            'class' => 'photo-tb-url-txt form-control',
+                                            'placeholder' => trans('polls.message_client.empty_link_image'),
+                                        ]) !!}
+                                        <span class="add-image-by-link label-info">
+                                            {{ trans('polls.button.add') }}
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col col-md-3 photo-tb-ui">
+                                    <div class="photo-tb-btn photo-tb-upload">
+                                        <span class="fa fa-camera"></span>
+                                        <p>{{ trans('polls.button.upload') }}</p>
+
+                                    </div>
+                                    <div class="photo-tb-btn photo-tb-del">
+                                        <span class="fa fa-times"></span>
+                                        <p>{{ trans('polls.button.delete') }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            {!! Form::file('fileImageTemp', ['class' => 'fileImgTemp file']) !!}
+                        </div>
+                        <div class="has-error">
+                            <div class="help-block error-win-img" id="title-error"></div>
+                        </div>
+                        <div class="photo-preivew">
+                            <img src="" class="img-pre-option">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-yes">
+                        {{ trans('polls.button.okay') }}
+                    </button>
+                    <button type="button" class="btn btn-no" data-dismiss="modal">
+                        {{ trans('polls.button.cancel') }}
+                    </button>
+                </div>
+            </div>
+      </div>
+    </div>
+    <!-- END: Frame Upload Image By Link Or Upload File-->
     <div class="hide_vote_socket"
          data-host="{{ config('app.key_program.socket_host') }}"
          data-port="{{ config('app.key_program.socket_port') }}">
@@ -195,20 +253,23 @@
                                                     </li>
                                                 @endforeach
                                                 @if ($isAllowAddOption)
-                                                    <li class="list-group-item parent-vote-new-option li-parent-vote">
+                                                    @php
+                                                        $idNewOption = rand();
+                                                    @endphp
+                                                    <li class="list-group-item parent-vote-new-option li-parent-vote" id="{{ $idNewOption }}">
                                                         @if ($poll->multiple == trans('polls.label.multiple_choice'))
-                                                            {!! Form::checkbox('newOption[]', null, false, [
+                                                            {!! Form::checkbox('newOption[' . $idNewOption . ']', null, false, [
                                                                     'class' => 'poll-new-option poll-option-detail-not-image new-option checkbox',
                                                                 ])
                                                             !!}
                                                         @else
-                                                            {!! Form::radio('newOption[]', null, false, [
+                                                            {!! Form::radio('newOption[' . $idNewOption . ']', null, false, [
                                                                     'class' => 'poll-new-option poll-option-detail-not-image new-option',
                                                                 ])
                                                             !!}
                                                         @endif
                                                         <div class="input-group date date-time-picker">
-                                                            {!! Form::text('optionText[]', null, [
+                                                            {!! Form::text('optionText[' . $idNewOption . ']', null, [
                                                                 'class' => 'text-new-option form-control',
                                                                 'autocomplete' => 'off',
                                                                 'placeholder' => trans('polls.placeholder.option'),
@@ -216,25 +277,35 @@
                                                             <span class="input-group-addon pick-date">
                                                                 <span class="glyphicon glyphicon-calendar"></span>
                                                             </span>
-                                                            <span class="input-group-btn btn-file-img">
+                                                            <span class="input-group-btn btn-file-img upload-photo">
                                                                 <button class="btn btn-darkcyan-not-shadow" type="button">
                                                                     <span class="glyphicon glyphicon-picture"></span>
                                                                 </button>
                                                             </span>
                                                         </div>
                                                         <input type="file" id="input-file-image" name="optionImage[]">
-                                                        <div class="vote-preview-wrapper">
-                                                            <img src="" class="render-img">
+                                                        <!--START: Win-Frame Add Image -->
+                                                        <div class="box-media-image box-frame">
+                                                            <a class="media-image upload-photo" href="javascript:void(0)">
+                                                                <div class="image-frame">
+                                                                    <div class="image-ratio">
+                                                                        <img src="" id="preview-idOption" class="render-img thumbOption"/>
+                                                                    </div>
+                                                                    <span class="cz-label label-new">
+                                                                        {{ trans('polls.image_preview') }}
+                                                                    </span>
+                                                                </div>
+                                                            </a>
                                                             <div class="fa fa-times deleteImg"></div>
                                                         </div>
-                                                        <div class="error_option has-error" data-message="{{ json_encode($messageImage) }}">
+                                                        <!--END: Win-Frame Add Image -->
+                                                        <div class="has-error" id="error_option" data-message="{{ json_encode($messageImage) }}">
                                                             <span id="title-error" class="help-block"></span>
                                                         </div>
                                                     </li>
                                                 @endif
                                             </div>
                                         </div>
-
                                         <!-- VOTE OPTION VERTICAL-->
                                         <div id="vertical" class="tab-pane fade in vote-style-detail">
                                             <div class="col-lg-12 vertical-overflow">
@@ -757,6 +828,12 @@
     <!-- COMMENT -->
     {!! Html::script('js/comment.js') !!}
 
+    <!-- PLUGIN ADD IMAGE FOR OPTIONS -->
+    {!! Html::script('js/jqAddImageOption.js') !!}
+
+    <!-- POLL -->
+    {!! Html::script('js/poll.js') !!}
+
     <!-- VOTE -->
     {!! Html::script('js/vote.js') !!}
 
@@ -766,8 +843,6 @@
     <!-- SOCIAL: like, share -->
     {!! Html::script('js/shareSocial.js') !!}
 
-    <!-- POLL -->
-    {!! Html::script('js/poll.js') !!}
 
     <!-- HIGHCHART-->
     {!! Html::script('bower/highcharts/highcharts.js') !!}

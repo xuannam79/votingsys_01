@@ -83,6 +83,7 @@ return [
         'single_choice' => '単一回答',
         'multiple_choice' => '複数回答',
         'invite' => '招待',
+        'add_picture_option' => 'Add Picture For Option',
     ],
     'placeholder' => [
         'full_name' => '名前',
@@ -118,6 +119,11 @@ return [
         'finish' => '終了',
         'administration' => '管理',
         'edit_back' => '戻る',
+        'okay' => 'Okay',
+        'cancel' => 'Cancel',
+        'upload' => 'Upload',
+        'delete' => 'Delete',
+        'add' => 'Add',
     ],
     'message' => [
         'create_success' => '作成できました',
@@ -234,6 +240,9 @@ return [
         'option_image_duplicate' => '同一のイメージがありますが、使用しますか',
         'number_edit' => '指定する最大投票数は現在の投票数よりも大きくなければなりません。現在の投票数は…',
         'image' => 'この画像は使用できません。ご確認ください',
+        'empty_url_image' => 'Enter a url or click upload',
+        'not_type_url_image' => 'The image URL does not point to an image or the correct type of image.',
+        'time_out_url_image' => 'The image URL was not reachable.  Check that the URL is correct.',
     ],
     'mail' => [
         'label' => [

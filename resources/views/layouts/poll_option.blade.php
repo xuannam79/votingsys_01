@@ -1,7 +1,6 @@
 <div class="form-group" id="idOption">
     {!! Form::file('optionImage[idOption]', [
       'class' => 'file',
-      'onchange' => "readURL(this, 'preview-idOption')"
     ]) !!}
     <div class="input-group date datetimepicker" id="option-poll">
         {!! Form::text('optionText[idOption]', null, [
@@ -17,7 +16,7 @@
             <span class="glyphicon glyphicon-calendar"></span>
         </span>
         <span class="input-group-btn">
-            <button class="btn btn-darkcyan-not-shadow" type="button" onclick="showOptionImage('idOption')">
+            <button class="btn btn-darkcyan-not-shadow upload-photo" type="button">
                 <span class="glyphicon glyphicon-picture"></span>
             </button>
             <button class="btn btn-danger btn-remove-option" type="button" onclick="removeOpion('idOption')">
@@ -25,5 +24,19 @@
             </button>
         </span>
     </div>
-    <img id="preview-idOption" src="#" class="preview-image"/>
+    <!--START: Win-Frame Add Image -->
+    <div class="box-media-image">
+        <a class="media-image upload-photo" href="javascript:void(0)">
+            <div class="image-frame">
+                <div class="image-ratio">
+                    <img src="" id="preview-idOption" class="render-img thumbOption"/>
+                </div>
+                <span class="cz-label label-new">
+                    {{ trans('polls.image_preview') }}
+                </span>
+            </div>
+        </a>
+        <div class="fa fa-times deleteImg"></div>
+    </div>
+    <!--END: Win-Frame Add Image -->
 </div>

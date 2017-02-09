@@ -17,4 +17,5 @@ elixir(function (mix) {
     mix.scripts('common.js');
     mix.scripts('requiredPassword.js');
     mix.scripts('chart.js');
+    mix.scripts('jqAddImageOption.js');
 });

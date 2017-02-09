@@ -13,7 +13,64 @@
     {{ trans('polls.title') }}
 @endsection
 @section('content')
+<!-- START: Frame Upload Image By Link Or Upload File-->
+<div class="modal fade" tabindex="-1" role="dialog" id="frame-upload-image">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="sub-tab">
+                    <div class="sel">{{ trans('polls.label_for.add_picture_option') }}</div>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="win-img">
+                    <div class="photo-tb">
+                        <div class="row">
+                            <div class="col col-md-9 photo-tb-url">
+                                <div class="add-link-image-group">
+                                    {!! Form::text('urlImageTemp', null, [
+                                        'class' => 'photo-tb-url-txt form-control',
+                                        'placeholder' => trans('polls.message_client.empty_link_image'),
+                                    ]) !!}
+                                    <span class="add-image-by-link label-info">
+                                        {{ trans('polls.button.add') }}
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col col-md-3 photo-tb-ui">
+                                <div class="photo-tb-btn photo-tb-upload">
+                                    <span class="fa fa-camera"></span>
+                                    <p>{{ trans('polls.button.upload') }}</p>
 
+                                </div>
+                                <div class="photo-tb-btn photo-tb-del">
+                                    <span class="fa fa-times"></span>
+                                    <p>{{ trans('polls.button.delete') }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        {!! Form::file('fileImageTemp', ['class' => 'fileImgTemp file']) !!}
+                    </div>
+                    <div class="has-error">
+                        <div class="help-block error-win-img" id="title-error"></div>
+                    </div>
+                    <div class="photo-preivew">
+                        <img src="" class="img-pre-option">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-yes">
+                    {{ trans('polls.button.okay') }}
+                </button>
+                <button type="button" class="btn btn-no" data-dismiss="modal">
+                    {{ trans('polls.button.cancel') }}
+                </button>
+            </div>
+        </div>
+  </div>
+</div>
+<!-- END: Frame Upload Image By Link Or Upload File-->
     <!-- Create poll -->
     <div class="row row-create-poll">
         <div class="loader"></div>
@@ -156,6 +213,16 @@
     <!-- JQUERY VALIDATE: validate info of poll -->
     {!! Html::script('bower/jquery-validation/dist/jquery.validate.min.js') !!}
 
+    <!-- PLUGIN ADD IMAGE FOR OPTIONS -->
+    {!! Html::script('js/jqAddImageOption.js') !!}
+
     <!-- POLL -->
     {!! Html::script('js/poll.js') !!}
+
+    <script type="text/javascript">
+        /**
+         * Init add images for options
+        */
+        var jqCreateImageOption = new jqAddImageOption();
+    </script>
 @endpush
