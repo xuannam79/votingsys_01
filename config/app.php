@@ -105,7 +105,7 @@ return [
 
     'key' => env('APP_KEY'),
 
-    'cipher' => 'AES-256-CBC',
+    'cipher' => 'AES-128-CBC',
 
     /*
     |--------------------------------------------------------------------------
@@ -174,6 +174,7 @@ return [
         Maatwebsite\Excel\ExcelServiceProvider::class,
         App\Providers\SocialiteCustomServiceProvider::class,
         Torann\DatabaseBackup\DatabaseBackupServiceProvider::class,
+        Laravel\Passport\PassportServiceProvider::class,
 
 
         /*

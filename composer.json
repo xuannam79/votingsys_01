@@ -10,14 +10,15 @@
         "laravelcollective/html": "5.3.*",
         "laravel/socialite": "^2.0",
         "vsmoraes/laravel-pdf": "^1.0",
-        "doctrine/dbal": "^2.4",
         "maatwebsite/excel": "~2.0.0",
         "fzaninotto/faker": "~1.4",
         "mercuryseries/flashy": "^1.0",
-        "guzzlehttp/guzzle": "^4.0",
         "torann/database-backup": "^0.1.0",
         "predis/predis": "^1.1",
-        "laracasts/flash": "^2.0"
+        "laracasts/flash": "^2.0",
+        "guzzlehttp/guzzle": "~5.3|~6.0",
+        "doctrine/dbal": "^2.4",
+        "laravel/passport": "^1.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
