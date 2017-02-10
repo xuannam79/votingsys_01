@@ -196,6 +196,7 @@ return [
         App\Providers\ValidationServiceProvider::class,
         MercurySeries\Flashy\FlashyServiceProvider::class,
         Laracasts\Flash\FlashServiceProvider::class,
+        App\Providers\ApiRepositoryServiceProvider::class,
 
     ],
 

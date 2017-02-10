@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Api\User;
 
-use App\Repositories\User\UserRepositoryInterface;
+use App\RepositoriesApi\Contracts\UserRepositoryInterface;
 use App\Http\Controllers\Api\ApiController;
 
 class UsersController extends ApiController
