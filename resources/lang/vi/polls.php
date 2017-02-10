@@ -48,6 +48,7 @@ return [
             'off' => 'OFF',
             'is_set_ip' => 'Mỗi máy chỉ được bầu chọn một lần',
             'allow_new_option' => 'Cho phép người tham gia thêm đáp án mới',
+            'not_same_email' => 'Không cho trùng email khi bầu chọn',
         ],
         'step_4' => 'Người tham gia',
         'invite' => 'Nếu bạn muốn gởi thư mời tham gia bầu chọn đến email cụ thể, hãy nhập vào ô dưới đây',
@@ -248,6 +249,8 @@ return [
         'empty_link_image' => 'Nhập link hình ảnh hoặc là tải hình ảnh lên',
         'not_type_url_image' => 'Link hình ảnh không hợp lệ!',
         'time_out_url_image' => 'Link hình ảnh không tìm thấy. Vui lòng check lại link hình ảnh',
+        'email_exists' => 'Địa chỉ email đã tồn tại trong hệ thống, vui lòng chọn địa chỉ email khác để bầu chọn',
+        'error_occurs' => 'Có lỗi xảy ra trong quá trình xử lý',
     ],
     'mail' => [
         'label' => [

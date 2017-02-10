@@ -374,4 +374,13 @@ class VoteController extends Controller
 
         return redirect()->to($poll->getUserLink())->with('message', trans('polls.remove_vote_successfully'));
     }
+
+    public function ajaxCheckIfExistEmailVote(Request $request)
+    {
+        if ($request->ajax()) {
+            $status = $this->pollRepository->checkIfEmailVoterExist($request->all());
+
+            return response()->json(['status' => $status]);
+        }
+    }
 }

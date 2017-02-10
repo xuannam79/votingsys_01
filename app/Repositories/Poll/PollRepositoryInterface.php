@@ -30,6 +30,7 @@ interface PollRepositoryInterface
     public function getOptionLeastVote($poll);
     public function getDataTableResult($poll);
     public function showSetting($settings);
+    public function checkIfEmailVoterExist($input);
 
     /*
      * send mail again

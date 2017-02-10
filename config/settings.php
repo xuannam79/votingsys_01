@@ -93,6 +93,7 @@ return [
         'required_name' => 7,
         'required_name_and_email' => 8,
         'allow_add_option' => 9,
+        'not_same_email' => 10,
     ],
     'email' => [
         'link_vote' => '/link/',

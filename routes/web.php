@@ -174,3 +174,5 @@ Route::get('tutorial', function () {
  */
 Route::get('feedback', 'FeedbackController@showFeedback');
 Route::post('feedback', 'FeedbackController@sendFeedback');
+
+Route::post('ajaxCheckIfExistEmailVoter', 'User\VoteController@ajaxCheckIfExistEmailVote');

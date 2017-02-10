@@ -5,21 +5,60 @@ $(document).ready(function(){
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
     });
+    $('.loader').hide();
+
+    $.extend({
+        xResponse: function(url, data, messageError) {
+            // local var
+            var theResponse = null;
+            // jQuery ajax
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data: data,
+                dataType: "json",
+                async: false,
+
+                beforeSend: function () {
+                    $('.loader').show();
+                },
+
+                success: function(respText) {
+                    theResponse = respText.status;
+                },
+
+                complete: function () {
+                    $('.loader').hide();
+                },
+
+                error: function () {
+                    showMessage(messageError);
+                    $('.loader').hide();
+                }
+            });
+            // Return the response text
+            return theResponse;
+        }
+    });
 
     $('.btn-vote').prop('disabled', true);
 
-    $('.loader').hide();
+
 
     $('.btn-vote').on('click', function() {
         var testEmail = /^[A-Z0-9._%+-]+@([A-Z0-9-]+\.)+[A-Z]{2,4}$/i;
         divChangeAmount = $(this).parent();
         var url = divChangeAmount.data('url');
+        var idPoll = divChangeAmount.data('idPoll');
+        var urlCheckExistEmail = divChangeAmount.data('urlCheckExistEmail');
         var isRequiredEmail = divChangeAmount.data('isRequiredEmail');
         var isRequiredName = divChangeAmount.data('isRequiredName');
         var isRequiredNameAndEmail = divChangeAmount.data('isRequiredNameAndEmail');
+        var isNotTheSameEmail = divChangeAmount.data('isNotSameEmail');
         var nameVote = $('.nameVote').val();
         var emailVote = $('.emailVote').val();
         var message = '';
+        var data = divChangeAmount.data();
 
         if (isRequiredEmail == 1) {
             if (emailVote.trim() != '') {
@@ -35,6 +74,17 @@ $(document).ready(function(){
                             $('.emailVote').removeClass('error');
                         }
                     } else {
+                        // Check email exist if propety require email
+                        if (isNotTheSameEmail) {
+                            var status = $.xResponse(urlCheckExistEmail, {idPoll: idPoll, emailVote: emailVote});
+
+                            if (status) {
+                                showMessage(data.messageEmailExists, data.messageErrorOccurs);
+
+                                return;
+                            }
+                        }
+
                         this.disabled = true;
                         removeClassError();
                         $('.message-validation').removeClass('alert alert-warning alert-poll-set-ip').html('');
@@ -127,6 +177,17 @@ $(document).ready(function(){
                     }
                 } else {
                     if (testEmail.test(emailVote)) {
+                        // Check email exist if propety require email
+                        if (isNotTheSameEmail) {
+                            var status = $.xResponse(urlCheckExistEmail, {idPoll: idPoll, emailVote: emailVote});
+
+                            if (status) {
+                                showMessage(data.messageEmailExists, data.messageErrorOccurs);
+
+                                return;
+                            }
+                        }
+
                         this.disabled = true;
                         removeClassError();
                         $('.message-validation').removeClass('alert alert-warning alert-poll-set-ip').html('');
@@ -211,6 +272,16 @@ $(document).ready(function(){
             }
 
             if (isPassValidate) {
+                // Check email exist if propety require email
+                if (isNotTheSameEmail) {
+                    var status = $.xResponse(urlCheckExistEmail, {idPoll: idPoll, emailVote: emailVote});
+
+                    if (status) {
+                        showMessage(data.messageEmailExists, data.messageErrorOccurs);
+
+                        return;
+                    }
+                }
                 this.disabled = true;
                 removeClassError();
                 $('.message-validation').removeClass('alert alert-warning alert-poll-set-ip').html('');
@@ -230,6 +301,19 @@ $(document).ready(function(){
             $('.nameVote').removeClass('error');
         }
     }
+
+    function showMessage(message)
+    {
+        var message = "<span class='glyphicon glyphicon-warning-sign'></span>"
+            + ' ' +  message;
+        $('.message-validation').addClass('alert alert-warning alert-poll-set-ip').html(message);
+        $('.emailVote').addClass('error');
+
+        if ($('.nameVote').hasClass('error')) {
+            $('.nameVote').removeClass('error');
+        }
+    }
+
 });
 
 /**

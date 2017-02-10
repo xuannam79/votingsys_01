@@ -505,6 +505,12 @@ li {
             }
         }
 
+        .modal-body {
+            @media screen and (max-width: 768px) {
+                padding: 10px 0 0 0;
+            }
+        }
+
         .modal-content {
             border-radius: 0;
             .win-img {
@@ -516,6 +522,9 @@ li {
                         padding-right: 0;
                         .add-link-image-group {
                             padding: 10px 0 5px 10px;
+                            @media screen and (max-width: 992px) {
+                                padding: 10px 25px 5px 10px;
+                            }
                             .photo-tb-url-txt {
                                 width: 100%;
                                 border-radius: 0;
@@ -536,6 +545,9 @@ li {
                                 border: 1px solid #5bc0de;
                                 top: 10px;
                                 right: 0;
+                                @media screen and (max-width: 992px) {
+                                    right: 25px;
+                                }
                                 &:hover {
                                     background-color: #4dbbdb;
                                 }
@@ -575,7 +587,7 @@ li {
                     margin-top: 10px;
                     text-align: center;
                     img {
-                        max-height: 430px;
+                        max-height: 350px;
                         max-width: 100%;
                     }
                 }
@@ -583,6 +595,10 @@ li {
         }
 
         .modal-footer {
+            @media screen and (max-width: 768px) {
+                border: none;
+                padding-top: 5px;
+            }
             .btn {
                 border-radius: 0;
                 color: #fff;
