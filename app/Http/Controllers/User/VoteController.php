@@ -45,7 +45,6 @@ class VoteController extends Controller
 
     public function store(Request $request)
     {
-        //dd($request->all());
         //get MAC address of Client
         $client  = @$_SERVER['HTTP_CLIENT_IP'];
         $forward = @$_SERVER['HTTP_X_FORWARDED_FOR'];

@@ -84,6 +84,7 @@ return [
         'single_choice' => 'single',
         'multiple_choice' => 'multiple',
         'invite' => 'invite',
+        'add_picture_option' => 'Thêm hình ảnh cho tùy chọn',
     ],
     'placeholder' => [
         'full_name' => 'Nhập tên bạn...',
@@ -119,6 +120,11 @@ return [
         'finish' => 'Kết thúc',
         'administration' => 'QUẢN LÝ POLL',
         'edit_back' => 'Quay lại',
+        'okay' => 'Lưu',
+        'cancel' => 'Hủy bỏ',
+        'upload' => 'Tải lên',
+        'delete' => 'Xóa',
+        'add' => 'Thêm',
     ],
     'message' => [
         'create_success' => 'Tạo Poll THÀNH CÔNG',
@@ -239,6 +245,9 @@ return [
         'option_image_duplicate' => 'Có hai hình ảnh giống nhau, bạn chắc chắn sử dụng nó?',
         'number_edit' => 'Số lượng bầu chọn tối đa phải lớn hơn tổng số lượt bình chọn, tổng số lượt bình chọn hiện tại là ',
         'image' => 'Hình ảnh không hợp lệ, vui lòng kiểm tra lại',
+        'empty_link_image' => 'Nhập link hình ảnh hoặc là tải hình ảnh lên',
+        'not_type_url_image' => 'Link hình ảnh không hợp lệ!',
+        'time_out_url_image' => 'Link hình ảnh không tìm thấy. Vui lòng check lại link hình ảnh',
     ],
     'mail' => [
         'label' => [

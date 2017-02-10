@@ -19,6 +19,7 @@ use DB;
 use App\Repositories\BaseRepository;
 use Mail;
 use Session;
+use Intervention\Image\Facades\Image;
 
 class PollRepository extends BaseRepository implements PollRepositoryInterface
 {
@@ -283,10 +284,8 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
 
         if ($arrInputImage) {
             foreach ($arrInputImage as $key => $image) {
-                do {
-                    $imageNames['optionImage'][$key] = uniqid(rand(), true) . '.' . $image->getClientOriginalExtension();
-                    $path = public_path() . config('settings.option.path_image') . $imageNames['optionImage'][$key];
-                } while (File::exists($path));
+                $extensionImg = is_string($image) ? pathinfo($image, PATHINFO_EXTENSION) : $image->getClientOriginalExtension();
+                $imageNames['optionImage'][$key] = uniqid(time(), true) . '.' . $extensionImg;
             }
         }
 
@@ -317,11 +316,10 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
 
             /* upload new image */
             if ($images) {
-                $pathTo = public_path() . config('settings.option.path_image');
-
                 foreach ($images as $key => $image) {
-                    $pathFrom = $pathTo . $imageNames['optionImage'][$key];
-                    $image->move($pathTo, $pathFrom);
+                    $img = Image::make($image);
+                    $pathFrom = config('settings.option.path_image') . $imageNames['optionImage'][$key];
+                    $img->save($pathFrom);
                 }
             }
         } catch (Exception $ex) {
@@ -344,6 +342,14 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
         try {
             $options = $input['optionText'];
             $images = $input['optionImage'];
+            if ($images) {
+                foreach ($images as $key => $value) {
+                    if (!$value) {
+                        unset($images[$key]);
+                    }
+                }
+            }
+
             $dataOptionInserted = [];
             $imageNames = $this->createFileName($images);
             $now = Carbon::now();

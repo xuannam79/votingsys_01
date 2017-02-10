@@ -105,7 +105,7 @@ return [
 
     'key' => env('APP_KEY'),
 
-    'cipher' => 'AES-128-CBC',
+    'cipher' => 'AES-256-CBC',
 
     /*
     |--------------------------------------------------------------------------
@@ -175,6 +175,7 @@ return [
         App\Providers\SocialiteCustomServiceProvider::class,
         Torann\DatabaseBackup\DatabaseBackupServiceProvider::class,
         Laravel\Passport\PassportServiceProvider::class,
+        Intervention\Image\ImageServiceProvider::class,
 
 
         /*
@@ -250,6 +251,7 @@ return [
         'PDF' => Vsmoraes\Pdf\PdfFacade::class,
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
         'Flashy' => MercurySeries\Flashy\Flashy::class,
+        'Image' => Intervention\Image\Facades\Image::class,
 
     ],
 
