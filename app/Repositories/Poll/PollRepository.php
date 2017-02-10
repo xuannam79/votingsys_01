@@ -213,6 +213,7 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
                 $settingPollConfig['set_limit'] => $pollTrans['setting']['set_limit'],
                 $settingPollConfig['set_password'] => $pollTrans['setting']['set_password'],
                 $settingPollConfig['allow_add_option'] => $pollTrans['setting']['allow_new_option'],
+                $settingPollConfig['not_same_email'] => $pollTrans['setting']['not_same_email'],
             ],
         ];
         return compact('jsonData', 'viewData');
@@ -1439,6 +1440,32 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
         }
 
        return $dataSizeRtn;
+    }
+
+    public function checkIfEmailVoterExist($input)
+    {
+        $poll = $this->model->find($input['idPoll']);
+        $emailVote = $input['emailVote'];
+
+        if ($poll) {
+            $poll->load('options.users', 'options.participants');
+
+            foreach ($poll->options as $option) {
+                foreach ($option->users as $user) {
+                    if (isset($user->email) && $user->email == $emailVote) {
+                        return true;
+                    }
+                }
+
+                foreach ($option->participants as $participant) {
+                    if (isset($participant->email) && $participant->email == $emailVote) {
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
     }
 }
 

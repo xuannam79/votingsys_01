@@ -48,6 +48,7 @@ return [
             'off' => 'OFF',
             'is_set_ip' => 'PC、パソコン等1台は1回だけ投票することができます。',
             'allow_new_option' => 'Allow voters to add new answers',
+            'not_same_email' => 'Not the same email when vote',
         ],
         'step_4' => '投票者',
         'invite' => '特定のメール宛に投票参加招待のメールを送信する場合は下記枠に入力してください',
@@ -243,6 +244,8 @@ return [
         'empty_url_image' => 'Enter a url or click upload',
         'not_type_url_image' => 'The image URL does not point to an image or the correct type of image.',
         'time_out_url_image' => 'The image URL was not reachable.  Check that the URL is correct.',
+        'email_exists' => 'Địa chỉ email đã tồn tại trong hệ thống, vui lòng chọn địa chỉ email khác để bầu chọn',
+        'error_occurs' => 'Có lỗi xảy ra trong quá trình xử lý',
     ],
     'mail' => [
         'label' => [

@@ -105,6 +105,7 @@ class LinkController extends Controller
         $isHideResult = false;
         $isTimeOut = false;
         $isAllowAddOption = false;
+        $isNoTheSameEmail = false;
         $poll = $link->poll;
         $totalVote = config('settings.default_value');
         $messageImage = trans('polls.message_client');
@@ -239,6 +240,10 @@ class LinkController extends Controller
                     $isAllowAddOption = true;
                 }
 
+                if (collect($listSettings)->contains(config('settings.setting.not_same_email'))) {
+                    $isNoTheSameEmail = true;
+                }
+
                 if ($voteLimit && $countParticipantsVoted >= $voteLimit) {
                     $isLimit = true;
                 }
@@ -275,6 +280,7 @@ class LinkController extends Controller
                 'isUserVoted', 'isParticipantVoted', // vote type
                 'isTimeOut', //time out of poll
                 'isAllowAddOption',// allow to voter add new option
+                'isNoTheSameEmail',// setting not same email when setting had required email
                 'optionRateBarChart', 'dataTableResult', 'mergedParticipantVotes', //result
                 'countParticipantsVoted', 'isHaveImages', 'nameOptions', 'dataToDrawPieChart',
                 'isOwnerPoll', 'fontSize', 'messageImage'

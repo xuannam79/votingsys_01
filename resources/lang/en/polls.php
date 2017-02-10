@@ -46,6 +46,7 @@ return [
             'password_poll' => 'Password of poll: ',
             'is_set_ip' => 'A computer only vote one time',
             'allow_new_option' => 'Allow voters to add new answers',
+            'not_same_email' => 'Not the same email when vote',
         ],
         'step_4' => 'Participant',
         'invite' => 'If you want send mail to participants, let enter email into below textbox!',
@@ -245,6 +246,8 @@ return [
         'empty_link_image' => 'Enter a url or click upload',
         'not_type_url_image' => 'The image URL does not point to an image or the correct type of image.',
         'time_out_url_image' => 'The image URL was not reachable.  Check that the URL is correct.',
+        'email_exists' => 'Email exist in system. Please enter a new email to vote',
+        'error_occurs' => 'Error occurs while processing',
     ],
     'mail' => [
         'label' => [

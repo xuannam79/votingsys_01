@@ -47,4 +47,14 @@ class Option extends Model
 
         return asset(config('settings.option.path_image_default'));
     }
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'votes');
+    }
+
+    public function participants()
+    {
+        return $this->belongsToMany(Participant::class, 'participant_votes');
+    }
 }
