@@ -383,4 +383,124 @@ class VoteController extends Controller
             return response()->json(['status' => $status]);
         }
     }
+
+    public function update(Request $request, $id)
+    {
+        $input = $request->only(['optionImage', 'optionText', 'optionDeleteImage']);
+        if ($this->pollRepository->editVoted($id, $input)) {
+            //get data of poll for socket
+            $poll = $this->pollRepository->findPollById($id);
+            $voteIds = $this->pollRepository->getVoteIds($poll->id);
+            $votes = $this->voteRepository->getVoteWithOptionsByVoteId($voteIds);
+            $participantVoteIds = $this->pollRepository->getParticipantVoteIds($poll->id);
+            $participantVotes = $this->participantVoteRepository->getVoteWithOptionsByVoteId($participantVoteIds);
+            $mergedParticipantVotes = $votes->toBase()->merge($participantVotes->toBase());
+
+            if ($mergedParticipantVotes->count()) {
+                foreach ($mergedParticipantVotes as $mergedParticipantVote) {
+                    $createdAt[] = $mergedParticipantVote->first()->created_at;
+                }
+
+                $sortedParticipantVotes = collect($createdAt)->sort();
+                $resultParticipantVotes = collect();
+                foreach ($sortedParticipantVotes as $sortedParticipantVote) {
+                    foreach ($mergedParticipantVotes as $mergedParticipantVote) {
+                        foreach ($mergedParticipantVote as $participantVote) {
+                            if ($participantVote->created_at == $sortedParticipantVote) {
+                                $resultParticipantVotes->push($mergedParticipantVote);
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                $mergedParticipantVotes = $resultParticipantVotes;
+            }
+
+            $isHaveImages = false;
+
+            foreach ($poll->options as $option) {
+                if ($option->image) {
+                    $isHaveImages = true;
+                    break;
+                }
+            }
+
+            $numberOfVote = config('settings.default_value');
+            $html = view('user.poll.vote_details_layouts', [
+                'mergedParticipantVotes' => $mergedParticipantVotes,
+                'numberOfVote' => $numberOfVote,
+                'poll' => $poll,
+                'isHaveImages' => $isHaveImages,
+            ])->render();
+
+             //data for draw chart
+            $optionRateBarChart = [];
+            $totalVote = config('settings.default_value');
+
+            foreach ($poll->options as $option) {
+                $totalVote += $option->countVotes();
+            }
+
+            if ($totalVote) {
+                foreach ($poll->options as $option) {
+                    $countOption = $option->countVotes();
+                    if ($countOption) {
+                        if ($isHaveImages) {
+                            $optionRateBarChart[] = ['<img src="' . $option->showImage() .'" class="image-option-poll">' . '<span class="name-option-poll">' . $option->name . '</span>', $countOption];
+                        } else {
+                            $optionRateBarChart[] = ['<p>' . $option->name . '</p>', $countOption];
+                        }
+                    }
+                }
+            } else {
+                $optionRateBarChart = null;
+            }
+
+            $optionRateBarChart = json_encode($optionRateBarChart);
+
+            $optionRatePieChart = json_encode($this->pollRepository->getDataToDrawPieChart($poll, $isHaveImages));
+
+            $chartNameData = json_encode($this->pollRepository->getNameOptionToDrawChart($poll, $isHaveImages));
+            $fontSize = $this->pollRepository->getSizeChart($poll)['fontSize'];
+
+            //get data result to sort number of vote
+            $dataTableResult = $this->pollRepository->getDataTableResult($poll);
+
+            //sort option and count vote by number of vote
+            $dataTableResult = array_values(array_reverse(array_sort($dataTableResult, function ($value) {
+                return $value['numberOfVote'];
+            })));
+
+            //use socket.io
+            $redis = LRedis::connection();
+            $redis->publish('votes', json_encode([
+                'result' => $poll->countVotesWithOption(),
+                'poll_id' => $poll->id,
+                'count_participant' => $mergedParticipantVotes->count(),
+                'success' => true,
+                'html' => $html,
+                'html_result_vote' => view('user.poll.result_vote_layouts', ['dataTableResult' => $dataTableResult])->render(),
+                'html_pie_bar_manage_chart' => view('user.poll.pie_bar_manage_chart_layouts')->render(),
+                'html_pie_bar_chart' => view('user.poll.pie_bar_chart_layouts')->render(),
+                'htmlPieChart' => view('user.poll.piechart_layouts', [
+                    'optionRatePieChart' => $optionRatePieChart,
+                    'isHaveImages' => $isHaveImages,
+                ])->render(),
+                'htmlBarChart' => view('user.poll.barchart_layouts', [
+                    'optionRateBarChart' => $optionRateBarChart,
+                    'chartNameData' => $chartNameData,
+                    'fontSize' => $fontSize,
+                ])->render(),
+            ]));
+
+            flash(trans('polls.message.update_option_success'), 'success');
+
+            return back();
+        }
+
+        flash(trans('polls.message.update_option_fail'), 'error');
+
+        return back();
+    }
 }

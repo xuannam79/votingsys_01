@@ -49,6 +49,7 @@ return [
             'is_set_ip' => 'Mỗi máy chỉ được bầu chọn một lần',
             'allow_new_option' => 'Cho phép người tham gia thêm đáp án mới',
             'not_same_email' => 'Không cho trùng email khi bầu chọn',
+            'allow_edit_vote_of_poll' => 'Cho phép chỉnh sửa tùy chọn',
         ],
         'step_4' => 'Người tham gia',
         'invite' => 'Nếu bạn muốn gởi thư mời tham gia bầu chọn đến email cụ thể, hãy nhập vào ô dưới đây',

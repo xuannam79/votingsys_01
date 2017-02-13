@@ -106,6 +106,7 @@ class LinkController extends Controller
         $isTimeOut = false;
         $isAllowAddOption = false;
         $isNoTheSameEmail = false;
+        $isEditVoted = false;
         $poll = $link->poll;
         $totalVote = config('settings.default_value');
         $messageImage = trans('polls.message_client');
@@ -244,6 +245,10 @@ class LinkController extends Controller
                     $isNoTheSameEmail = true;
                 }
 
+                if (collect($listSettings)->contains(config('settings.setting.allow_edit_vote_of_poll'))) {
+                    $isEditVoted = true;
+                }
+
                 if ($voteLimit && $countParticipantsVoted >= $voteLimit) {
                     $isLimit = true;
                 }
@@ -270,6 +275,8 @@ class LinkController extends Controller
 
             $isOwnerPoll = \Gate::allows('ownerPoll', $poll);
 
+            $viewOption = $this->pollRepository->getDataPollSystem()['jsonData'];
+            
             return view('user.poll.details', compact(
                 'poll', 'numberOfVote', 'linkUser', //poll info
                 'isRequiredEmail', 'isRequiredName', 'isRequiredNameAndEmail', //setting required
@@ -281,9 +288,11 @@ class LinkController extends Controller
                 'isTimeOut', //time out of poll
                 'isAllowAddOption',// allow to voter add new option
                 'isNoTheSameEmail',// setting not same email when setting had required email
+                'isEditVoted', // Allow edit vote of poll
                 'optionRateBarChart', 'dataTableResult', 'mergedParticipantVotes', //result
                 'countParticipantsVoted', 'isHaveImages', 'nameOptions', 'dataToDrawPieChart',
-                'isOwnerPoll', 'fontSize', 'messageImage'
+                'isOwnerPoll', 'fontSize', 'messageImage',
+                'viewOption'
             ));
         } else {
             foreach ($poll->links as $link) {

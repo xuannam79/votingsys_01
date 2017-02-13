@@ -47,6 +47,7 @@ return [
             'is_set_ip' => 'A computer only vote one time',
             'allow_new_option' => 'Allow voters to add new answers',
             'not_same_email' => 'Not the same email when vote',
+            'allow_edit_vote_of_poll' => 'Allow edit vote of poll',
         ],
         'step_4' => 'Participant',
         'invite' => 'If you want send mail to participants, let enter email into below textbox!',

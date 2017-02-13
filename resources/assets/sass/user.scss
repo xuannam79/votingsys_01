@@ -489,7 +489,9 @@ li {
     border-left: 0;
 }
 
-#frame-upload-image {
+#frame-upload-image,
+#frame-edit-poll,
+#frame-upload-image-edit {
     .modal-dialog {
         .modal-header {
             padding: 0;
@@ -509,6 +511,9 @@ li {
             @media screen and (max-width: 768px) {
                 padding: 10px 0 0 0;
             }
+            .btn-darkcyan-not-shadow {
+                border-radius: 0;
+            }
         }
 
         .modal-content {
@@ -525,7 +530,8 @@ li {
                             @media screen and (max-width: 992px) {
                                 padding: 10px 25px 5px 10px;
                             }
-                            .photo-tb-url-txt {
+                            .photo-tb-url-txt
+                            .photo-tb-url-txt-edit {
                                 width: 100%;
                                 border-radius: 0;
                                 border-right: 0;
@@ -534,7 +540,8 @@ li {
                                     -webkit-appearance: none;
                                 }
                             }
-                            .add-image-by-link {
+                            .add-image-by-link,
+                            .add-image-by-link-edit {
                                 position: absolute;
                                 padding: 6px 15px;
                                 font-size: 14px;
@@ -606,7 +613,9 @@ li {
                     outline: none !important;
                 }
             }
-            .btn-yes {
+            .btn-yes,
+            .btn-yes-edit,
+            .btn-edit-submit {
                 background-color: darkcyan;
                 &:hover {
                     background-color: #009c9c;
@@ -622,10 +631,16 @@ li {
     }
 }
 
+#frame-edit-poll .modal-dialog {
+    @media screen and (min-width: 768px) {
+        width: 720px;
+    }
+}
 .thumbOption {
     max-height: 130px;
 }
 
+#frame-edit-poll.modal.fade .modal-dialog,
 #frame-upload-image.modal.fade .modal-dialog {
     -webkit-transform: scale(0.1);
     -moz-transform: scale(0.1);
@@ -638,6 +653,7 @@ li {
     transition: all 0.2s;
 }
 
+#frame-edit-poll.modal.fade.in .modal-dialog,
 #frame-upload-image.modal.fade.in .modal-dialog {
     -webkit-transform: scale(1);
     -moz-transform: scale(1);

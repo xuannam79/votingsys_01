@@ -111,7 +111,7 @@ Route::group(['prefix' => 'user'], function() {
 
 Route::group(['prefix' => 'user', 'middleware' => 'XSS'], function() {
     Route::resource('vote', 'User\VoteController', [
-        'only' => ['store', 'destroy']
+        'only' => ['store', 'destroy', 'update']
     ]);
 });
 

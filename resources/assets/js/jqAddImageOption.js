@@ -102,10 +102,27 @@ jqAddImageOption.prototype.bindEvents = function () {
     $(this.wrapperPoll).on('click', this.deleteImg, this.deleteQuick.bind(this));
 }
 
-jqAddImageOption.prototype.deleteQuick = function () {
-    this.elBoxThumb.hide();
-    this.elParentOption.find(this.thumbImageOption).attr('src', '');
-    this.elParentOption.find('input[name^=optionImage]').val('');
+jqAddImageOption.prototype.deleteQuick = function (e) {
+    var self = e.currentTarget;
+    var elBoxThumb = $(self).closest(this.boxThumb);
+
+    this.handleDelete(elBoxThumb);
+}
+
+jqAddImageOption.prototype.handleDelete = function (elBoxThumb) {
+    if (!elBoxThumb.siblings('input[name^=optionDeleteImage]').length) {
+        var idOption = elBoxThumb.closest(this.parentOption).prop('id');
+        var inputDeleteImg = $('<input>').attr({
+            type: 'hidden',
+            name: 'optionDeleteImage[' + idOption + ']',
+            value: idOption,
+        });
+        elBoxThumb.closest(this.parentOption).prepend(inputDeleteImg);
+    }
+
+    elBoxThumb.hide();
+    elBoxThumb.find(this.thumbImageOption).attr('src', '');
+    elBoxThumb.siblings('input[name^=optionImage]').val('');
 }
 
 jqAddImageOption.prototype.addImageByLink = function () {
@@ -134,8 +151,10 @@ jqAddImageOption.prototype.addImageByLink = function () {
                 value: ''
             });
 
-            if (this.elParentOption.find('input[type=hidden]').length) {
-                this.elParentOption.find('input[type=hidden]').remove();
+            var elOldUrlText = this.elParentOption.find('input[type=hidden]').not('input[name^=optionDeleteImage]');
+
+            if (elOldUrlText.length) {
+                elOldUrlText.remove();
             }
 
             this.elParentOption.prepend(inputUrlText);
@@ -186,7 +205,9 @@ jqAddImageOption.prototype.confirmYes = function () {
         this.elParentOption.find('input[type=file]').remove();
 
         if (this.addByLink) {
-            this.elParentOption.find('input[type=hidden]').val(this.frInputHiddenTemp);
+            this.elParentOption.find('input[type=hidden]')
+                .not('input[name^=optionDeleteImage]')
+                .val(this.frInputHiddenTemp);
         } else {
             var elCloneInputFile = $(this.frInputFileTemp).clone();
             var idOption = this.elParentOption.attr('id');
@@ -206,14 +227,12 @@ jqAddImageOption.prototype.confirmYes = function () {
         // Init trigger change input File
         $(this.frInputFileTemp).val('');
     } else {
-        this.elParentOption.find('input[type=file]').val('');
-        this.elParentOption.find('input[type=hidden]').val('');
-        this.elBoxThumb.hide();
-        this.elParentOption.find(this.thumbImageOption).attr('src', '');
-        elThumbImg.hide();
+        var elBoxThumb = $(this.elParentOption).find(this.boxThumb);
+
+        this.handleDelete(elBoxThumb);
     }
 
-    window.checkImageSame();
+    //window.checkImageSame();
     $(this.frImage).modal('hide');
 }
 

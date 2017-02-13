@@ -77,6 +77,104 @@
       </div>
     </div>
     <!-- END: Frame Upload Image By Link Or Upload File-->
+
+    @if($isEditVoted)
+        <!-- START: Frame Upload Image By Link Or Upload File [Edit Voting]-->
+        <div class="modal fade" tabindex="-1" role="dialog" id="frame-edit-poll">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div class="sub-tab">
+                            <div class="sel">{{ trans('label.mail.edit_option.subject') }}</div>
+                        </div>
+                    </div>
+
+                    <div class="modal-body">
+                        {!! Form::open([
+                            'action' => ['User\VoteController@update', $poll->id],
+                            'id' => 'edit-voted-content',
+                            'method' => 'PATCH',
+                            'files' => true,
+                        ]) !!}
+                            <div class="poll-option">
+
+                            </div>
+                            <div class="error_option"></div>
+                        {!! Form::close() !!}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-edit-submit">
+                            {{ trans('polls.button.okay') }}
+                        </button>
+                        <button type="button" class="btn btn-no" data-dismiss="modal">
+                            {{ trans('polls.button.cancel') }}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- END: Frame Upload Image By Link Or Upload File [Edit Voting]-->
+
+        <!-- START: Model form edit voting-->
+        <div class="modal" tabindex="-1" role="dialog" id="frame-upload-image-edit">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div class="sub-tab">
+                            <div class="sel">{{ trans('polls.label_for.add_picture_option') }}</div>
+                        </div>
+                    </div>
+                    <div class="modal-body">
+                        <div class="win-img">
+                            <div class="photo-tb">
+                                <div class="row">
+                                    <div class="col col-md-9 photo-tb-url">
+                                        <div class="add-link-image-group">
+                                            {!! Form::text('urlImageTemp', null, [
+                                                'class' => 'photo-tb-url-txt-edit form-control',
+                                                'placeholder' => trans('polls.message_client.empty_link_image'),
+                                            ]) !!}
+                                            <span class="add-image-by-link-edit label-info">
+                                                {{ trans('polls.button.add') }}
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="col col-md-3 photo-tb-ui">
+                                        <div class="photo-tb-btn photo-tb-upload-edit">
+                                            <span class="fa fa-camera"></span>
+                                            <p>{{ trans('polls.button.upload') }}</p>
+
+                                        </div>
+                                        <div class="photo-tb-btn photo-tb-del-edit">
+                                            <span class="fa fa-times"></span>
+                                            <p>{{ trans('polls.button.delete') }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                {!! Form::file('fileImageTemp', ['class' => 'fileImgTempEdit file']) !!}
+                            </div>
+                            <div class="has-error">
+                                <div class="help-block error-win-img-edit" id="title-error"></div>
+                            </div>
+                            <div class="photo-preivew">
+                                <img src="" class="img-pre-option-edit">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-yes-edit">
+                            {{ trans('polls.button.okay') }}
+                        </button>
+                        <button type="button" class="btn btn-no" data-dismiss="modal">
+                            {{ trans('polls.button.cancel') }}
+                        </button>
+                    </div>
+                </div>
+          </div>
+        </div>
+        <!-- END: Model form edit voting-->
+    @endif
+
     <div class="hide_vote_socket"
          data-host="{{ config('app.key_program.socket_host') }}"
          data-port="{{ config('app.key_program.socket_port') }}">
@@ -90,6 +188,7 @@
     <div class="container">
         <div class="row">
             <div class="loader"></div>
+            @include('noty.message');
             <div id="voting_wizard" class="col-lg-10 col-lg-offset-1
                                             col-md-10 col-md-offset-1
                                             col-sm-10 col-sm-offset-1
@@ -183,8 +282,15 @@
                                     </div>
                                     <div class="tab-content tab-content-detail">
                                         <div class="col-lg-12">
-                                            <div class="col-lg-2 col-lg-offset-10 vote-style">
+                                            <div class="col-lg-3 col-lg-offset-9 vote-style" data-option="{{ $viewOption }}">
                                                 <ul class="nav nav-pills">
+                                                    @if($isEditVoted)
+                                                        <li>
+                                                            <a href="javascript:void(0)" class="btn-vote-style edit-each-option">
+                                                                <i class="fa fa-pencil" aria-hidden="true"></i>
+                                                            </a>
+                                                        </li>
+                                                    @endif
                                                     @if (!$isHideResult || Gate::allows('administer', $poll))
                                                         <li>
                                                             <a id="hide" class="btn-show-result-poll btn-vote-style" onclick="showResultPoll()">
@@ -228,7 +334,7 @@
                                                                 {!!
                                                                     Form::checkbox('option[]', $option->id, false, [
                                                                         'onClick' => 'voted("' . $option->id  .'", "horizontal")',
-                                                                        'class' => ($isHaveImages) ? 'poll-option  poll-option-detail' : 'poll-option  poll-option-detail-not-image',
+                                                                        'class' => ($isHaveImages) ? 'poll-option-detail' : 'poll-option-detail-not-image',
                                                                         'id' => 'horizontal-' . $option->id
                                                                     ])
                                                                 !!}
@@ -236,7 +342,7 @@
                                                                 {!!
                                                                     Form::radio('option[]', $option->id, false, [
                                                                         'onClick' => 'voted("' . $option->id  .'", "horizontal")',
-                                                                        'class' => ($isHaveImages) ? 'poll-option  poll-option-detail' : 'poll-option  poll-option-detail-not-image',
+                                                                        'class' => ($isHaveImages) ? 'poll-option-detail' : 'poll-option-detail-not-image',
                                                                         'id' => 'horizontal-' . $option->id
                                                                     ])
                                                                 !!}
@@ -318,7 +424,6 @@
                                                                         {!!
                                                                             Form::checkbox('option_vertical[]', $option->id, false, [
                                                                                 'onClick' => 'voted("' . $option->id  .'","vertical")',
-                                                                                'class' => 'poll-option',
                                                                                 'id' => 'vertical-' . $option->id
                                                                             ])
                                                                         !!}
@@ -326,7 +431,6 @@
                                                                         {!!
                                                                             Form::radio('option_vertical[]', $option->id, false, [
                                                                                 'onClick' => 'voted("' . $option->id  .'","vertical")',
-                                                                                'class' => 'poll-option',
                                                                                 'id' => 'vertical-' . $option->id
                                                                             ])
                                                                         !!}
