@@ -188,11 +188,11 @@
     <div class="container">
         <div class="row">
             <div class="loader"></div>
-            @include('noty.message');
+            @include('noty.message')
             <div id="voting_wizard" class="col-lg-10 col-lg-offset-1
                                             col-md-10 col-md-offset-1
                                             col-sm-10 col-sm-offset-1
-                                            well wrap-poll">
+                                            wrap-poll">
                 <div class="navbar panel panel-default panel-detail-poll">
                     <div class="panel-body navbar-inner col-lg-12 panel-body-detail-poll">
                         <div class="col-lg-6 col-lg-offset-3
@@ -398,7 +398,7 @@
                                                                         <img src="" id="preview-idOption" class="render-img thumbOption"/>
                                                                     </div>
                                                                     <span class="cz-label label-new">
-                                                                        {{ trans('polls.image_preview') }}
+                                                                        {{ trans('polls.label_for.option_image') }}
                                                                     </span>
                                                                 </div>
                                                             </a>

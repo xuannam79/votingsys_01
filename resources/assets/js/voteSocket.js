@@ -11,26 +11,35 @@ $(document).ready(function(){
     //socket vote poll
     socket.on('votes', function (data) {
         var pollId = $('.hide-vote').data('pollId');
+        var socketData = $.parseJSON(data);
 
-        if ($.parseJSON(data).success && $.parseJSON(data).poll_id == pollId) {
-            $('.count-participant').html($.parseJSON(data).count_participant);
-            jQuery.each($.parseJSON(data).result, function(key, value ) {
+        if (socketData.success && socketData.poll_id == pollId) {
+            $('.count-participant').html(socketData.count_participant);
+            jQuery.each(socketData.result, function(key, value ) {
                 //update count vote latest
                 $('#id1' + value.option_id).html(value.count_vote);
                 $('#id2' + value.option_id).html(value.count_vote);
                 $('.result-vote-poll').empty();
-                $('.result-vote-poll').append($.parseJSON(data).html_result_vote)
+                $('.result-vote-poll').append(socketData.html_result_vote)
                 $('.model-show-details').empty();
-                $('.model-show-details').append($.parseJSON(data).html);
+                $('.model-show-details').append(socketData.html);
             });
 
+            if (typeof socketData.horizontalOption != 'undefined') {
+                $('.horizontal-overflow').html(socketData.horizontalOption);
+            }
+
+            if (typeof socketData.verticalOption != 'undefined') {
+                $('.vertical-overflow').html(socketData.verticalOption);
+            }
+
             if ($('.bar-pie-chart').html() == "") {
-                $('.bar-pie-chart').html($.parseJSON(data).html_pie_bar_chart);
+                $('.bar-pie-chart').html(socketData.html_pie_bar_chart);
             }
 
             if ($('.manage-poll-count-participant').text() == '0') {
                 $('.li-result-table').removeClass('hide-result-li');
-                $('.pie_bar_chart_manage').append($.parseJSON(data).html_pie_bar_manage_chart);
+                $('.pie_bar_chart_manage').append(socketData.html_pie_bar_manage_chart);
                 $('.manage-poll-count-participant').text('1');
             }
 
@@ -40,9 +49,9 @@ $(document).ready(function(){
             $('.menu-add-soket').css('display', 'block');
 
             $('.show-piechart').empty();
-            $('.show-piechart').append($.parseJSON(data).htmlPieChart);
+            $('.show-piechart').append(socketData.htmlPieChart);
             $('.show-barchart').empty();
-            $('.show-barchart').append($.parseJSON(data).htmlBarChart);
+            $('.show-barchart').append(socketData.htmlBarChart);
         }
     });
 

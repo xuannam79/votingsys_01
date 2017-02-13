@@ -17,6 +17,7 @@ jqAddImageOption.prototype.extendOptions = function (config) {
         elParentOption: '',
         srcThumbImageOption: '',
         btnChooseImage: '.upload-photo',
+        horizontalWrapper: '',
 
         /**
          * DOM Conent Thumbnail Option
@@ -56,6 +57,7 @@ jqAddImageOption.prototype.initDom = function (config) {
     this.elParentOption = options.elParentOption;
     this.srcThumbImageOption = options.srcThumbImageOption;
     this.btnChooseImage = options.btnChooseImage;
+    this.horizontalWrapper = options.horizontalWrapper;
 
     this.boxThumb = options.boxThumb;
     this.deleteImg = options.deleteImg;
@@ -226,6 +228,9 @@ jqAddImageOption.prototype.confirmYes = function () {
 
         // Init trigger change input File
         $(this.frInputFileTemp).val('');
+
+        // Scroll to div
+        this.scrollToDiv();
     } else {
         var elBoxThumb = $(this.elParentOption).find(this.boxThumb);
 
@@ -318,4 +323,14 @@ jqAddImageOption.prototype.checkExtensionImage = function (value) {
     }
 
     return false;
+}
+
+jqAddImageOption.prototype.scrollToDiv = function (){
+    var scrollHeight = $(this.horizontalWrapper).prop("scrollHeight");
+
+    if (scrollHeight > 400) {
+        $(this.horizontalWrapper).animate({
+                scrollTop: scrollHeight
+        }, 1000);
+    }
 }

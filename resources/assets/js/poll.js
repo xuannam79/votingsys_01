@@ -1055,12 +1055,15 @@ $(document).ready(function () {
     $('#voting_wizard').bootstrapWizard({
         // 'tabClass': 'nav nav-pills'
     });
+
     $('#manager_poll_wizard').bootstrapWizard({
         // 'tabClass': 'nav nav-pills'
     });
+
     $('#edit_poll_wizard').bootstrapWizard({
         // 'tabClass': 'nav nav-pills'
     });
+
     $('#duplicate_poll_wizard').bootstrapWizard({
         'tabClass': 'nav nav-tabs',
         onNext: function(tab, navigation, index) {
@@ -1080,6 +1083,19 @@ $(document).ready(function () {
             }
         }
     });
+
+    $('input[name^=setting_child]').on('change', function () {
+        var value = $(this).val();
+        var settings = pollData.config.setting;
+
+        if (value == settings.required_name) {
+            $('.setting-' + settings.not_same_email).fadeOut();
+
+            return;
+        }
+
+        $('.setting-' + settings.not_same_email).fadeIn();
+    })
 });
 
 $(window).on('load', function() {

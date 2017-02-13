@@ -95,15 +95,15 @@
                                                 col-md-8 col-md-offset-2
                                                 col-sm-8 col-sm-offset-2
                                                 col-xs-10 col-xs-offset-1 col-xs-create-poll
-                                                well wrap-poll animated fadeInLeft">
+                                                wrap-poll animated fadeInLeft">
                 @include('layouts.error')
                 @include('layouts.message')
-                <div class="progress">
+                <div class="progress cz-progress">
                     <div class="progress-bar progress-bar-success progress-bar-striped bar" role="progressbar"
                          aria-valuenow="40" aria-valuemin="0" aria-valuemax="100">
                     </div>
                 </div>
-                <div class="navbar panel">
+                <div class="navbar panel cz-panel">
                     <div class="navbar-inner board">
                         <div class="col-lg-10 col-lg-offset-1 panel-heading board-inner panel-heading-create-poll">
                             <ul class="nav nav-tabs voting">

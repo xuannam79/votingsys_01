@@ -28,7 +28,7 @@
             </label>
         </div>
     @else
-        <div class="form-group">
+        <div class="form-group setting-{{ $settingKey }}">
             <label>
                 {{
                     Form::checkbox('setting[' . $settingKey . ']', $settingKey,
