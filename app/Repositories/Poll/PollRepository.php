@@ -214,6 +214,7 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
                 $settingPollConfig['set_password'] => $pollTrans['setting']['set_password'],
                 $settingPollConfig['allow_add_option'] => $pollTrans['setting']['allow_new_option'],
                 $settingPollConfig['not_same_email'] => $pollTrans['setting']['not_same_email'],
+                $settingPollConfig['allow_edit_vote_of_poll'] => $pollTrans['setting']['allow_edit_vote_of_poll'],
             ],
         ];
         return compact('jsonData', 'viewData');
@@ -320,7 +321,7 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
                 foreach ($images as $key => $image) {
                     $img = Image::make($image);
                     $pathFrom = config('settings.option.path_image') . $imageNames['optionImage'][$key];
-                    $img->save($pathFrom);
+                    $img->save(ltrim($pathFrom, '/'));
                 }
             }
         } catch (Exception $ex) {
@@ -1466,6 +1467,79 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
         }
 
         return false;
+    }
+
+    public function editVoted($idPoll, $input)
+    {
+        if (!$input || !$idPoll) {
+            return false;
+        }
+
+        DB::beginTransaction();
+        try {
+            $poll = $this->model->find($idPoll)->load('options');
+            $images = isset($input['optionImage']) ? $input['optionImage'] : null;
+            $imagesOption = isset($input['optionDeleteImage']) ? $input['optionDeleteImage'] : null;
+            $textOptions = $input['optionText'];
+
+            $idsVoted = [];
+
+            if ($images) {
+                foreach ($images as $key => $value) {
+                    if (!$value) {
+                        unset($images[$key]);
+                    }
+                }
+                $idsVoted = array_merge($idsVoted, array_keys($images));
+            }
+
+            if ($imagesOption) {
+                $idsVoted = array_merge($idsVoted, array_keys($imagesOption));
+            }
+
+            if ($images || $imagesOption) {
+                $imagesDelete = Option::whereIn('id', array_unique($idsVoted))
+                    ->pluck('image')
+                    ->toArray();
+
+                $imageNames = $this->createFileName($images);
+
+                $this->updateImage($images, $imageNames, $imagesDelete);
+            }
+
+
+            foreach ($poll->options as $option) {
+                $idOption = $option->id;
+
+                $image = !isset($imageNames['optionImage'][$idOption])
+                    ? null
+                    : $imageNames['optionImage'][$idOption];
+
+                $optionText = $textOptions[$idOption];
+
+                if (in_array($option->id, $idsVoted) && !$image) {
+                    $option->update(['image' => null]);
+                }
+
+                if ($option->name == $optionText) {
+                    if (isset($image)) {
+                        $option->update(['image' => $image]);
+                    }
+                } elseif (isset($image)) {
+                    $option->update(['image' => $image, 'name' => $optionText]);
+                } else {
+                    $option->update(['name' => $optionText]);
+                }
+            }
+
+            DB::commit();
+
+            return true;
+        } catch (Exception $ex) {
+            DB::rollBack();
+
+            return false;
+        }
     }
 }
 

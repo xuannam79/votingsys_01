@@ -79,7 +79,7 @@ return [
         'close' => 0,
     ],
     'option' => [
-        'path_image' => 'uploads/options/',
+        'path_image' => '/uploads/options/',
         'path_image_default' => '/uploads/images/default-thumb.gif',
         'path_trophy' => '/uploads/images/trophy.png',
     ],
@@ -94,6 +94,7 @@ return [
         'required_name_and_email' => 8,
         'allow_add_option' => 9,
         'not_same_email' => 10,
+        'allow_edit_vote_of_poll' => 11,
     ],
     'email' => [
         'link_vote' => '/link/',

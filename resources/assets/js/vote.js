@@ -43,8 +43,6 @@ $(document).ready(function(){
 
     $('.btn-vote').prop('disabled', true);
 
-
-
     $('.btn-vote').on('click', function() {
         var testEmail = /^[A-Z0-9._%+-]+@([A-Z0-9-]+\.)+[A-Z]{2,4}$/i;
         divChangeAmount = $(this).parent();
@@ -314,6 +312,84 @@ $(document).ready(function(){
         }
     }
 
+    $('.btn-edit-submit').on('click', function () {
+        var isEmpty = false;
+        $('input[id^=optionText]').each(function () {
+            if ($(this).val() == '') {
+                return isEmpty = true;
+            }
+        });
+
+        if (isEmpty) {
+            var messageEmpty = $('.vote-style').data('option').message.option_required;
+            $('.btn-edit-submit').prop('disabled', true);
+            $('.error_option').addClass('has-error').html('<span id="title-error" class="help-block">' + messageEmpty + '</span>');
+
+            return;
+        }
+
+        $('.btn-edit-submit').prop('disabled', false);
+        $('#edit-voted-content').submit();
+    });
+
+    $('#message-flash').fadeIn().delay(3000).fadeOut();
+
+    $('.edit-each-option').on('click', function () {
+        var dataClient = $(this).closest('.vote-style').data('option');
+        var dataViewOption = dataClient.view.option;
+        var data = {optionText: {}};
+
+        var elContentVote = $('.content-option-vote').length
+            ? $('.content-option-vote')
+            : $('.content-option-not-image');
+
+        elContentVote.each(function (index) {
+            var idOption = $('input[name="option[]"]').eq(index).val();
+            data.optionText[idOption] = $(this).text();
+        });
+
+        $('.poll-option').html('')
+        createOption(dataViewOption, '', data);
+
+        var frnCheckTheSame = ['checkOptionSame(\'', dataClient.message.option_duplicate, '\')'].join('');
+        $('#frame-edit-poll').find('.btn-remove-option').remove();
+        $('#frame-edit-poll').find('input[name^=optionText]')
+            .removeAttr('onfocus onclick')
+            .attr({
+                onblur: frnCheckTheSame,
+                onkeyup: frnCheckTheSame
+            });
+
+        pickDateOption();
+
+        $('.li-parent-vote').find('.image-option-vote').each(function (index) {
+            var srcImage = $(this).prop('src');
+            if (srcImage.indexOf('default-thumb.gif') == -1 ) {
+                $('#frame-edit-poll').find('.render-img').eq(index).attr('src', srcImage);
+                $('#frame-edit-poll').find('.box-media-image').eq(index).css('display', 'inline-block');
+            }
+        });
+
+        $('#frame-edit-poll').modal('show');
+    });
+
+});
+
+var jqAddNewImageOption11 = new jqAddImageOption({
+    wrapperPoll: '.poll-option',
+    parentOption: '.form-group',
+    thumbImageOption: '.render-img',
+    btnChooseImage: '.upload-photo',
+    frImage: "#frame-upload-image-edit",
+    frUploadFile: '.photo-tb-upload-edit',
+    frPreImage: '.img-pre-option-edit',
+    frAddImgLink: '.add-image-by-link-edit',
+    frInputText: '.photo-tb-url-txt-edit',
+    frDelPhoto: '.photo-tb-del-edit',
+    frConfirmYes: '.btn-yes-edit',
+    frInputFileTemp: '.fileImgTempEdit',
+    frContentError : '.error-win-img-edit',
+    messages: 'div[data-option]'
 });
 
 /**
@@ -336,7 +412,8 @@ var addNewOption = function () {
         this.$newOption = $('.new-option');
         this.$liParent = $('.parent-vote');
         this.$inputTextOption = $('.text-new-option');
-        this.$allOption = $('.poll-option');
+        this.$allOption = $('input[id^=horizontal]');
+
         this.$contentOption = $('.option-name').find('span');
 
         // DOM button to vote
@@ -573,6 +650,16 @@ var jqAddNewImageOption = new jqAddImageOption({
     btnChooseImage: '.upload-photo',
     parentOption: '.parent-vote-new-option',
     messages: 'div[data-message]',
+    frImage: "#frame-upload-image",
+    frUploadFile: '.photo-tb-upload',
+    frPreImage: '.img-pre-option',
+    frAddImgLink: '.add-image-by-link',
+    frInputText: '.photo-tb-url-txt',
+    frDelPhoto: '.photo-tb-del',
+    frConfirmYes: '.btn-yes',
+    frInputFileTemp: '.fileImgTemp',
+    frContentError : '.error-win-img',
+    messages: 'div[data-option]'
 });
 
 var addOption = new addNewOption();

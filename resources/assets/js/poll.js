@@ -144,11 +144,13 @@ function createOption(viewOption, number, oldInput) {
 
     if (oldInput != null) {
         var oldOption = oldInput.optionText;
+
         jQuery.each( oldOption, function( id, val ) {
             var option = "";
             option = viewOption.replace(/idOption/g, id);
             $('.poll-option').append(option);
-            $('#content-option-' + id).val(val);
+            setObjectDatePicker();
+            $('#optionText-' + id).val(val);
         });
     } else {
         for (var i = 0; i < number; i++) {
@@ -156,10 +158,7 @@ function createOption(viewOption, number, oldInput) {
             var option = "";
             option = viewOption.replace(/idOption/g, id);
             $('.poll-option').append(option);
-            var currentPicker = $('.datetimepicker').last();
-            setDatePicker(currentPicker)
-            currentPicker.data('tempDatePicker', currentPicker.data('DateTimePicker'));
-            currentPicker.last().data('DateTimePicker').hide().destroy();
+            setObjectDatePicker();
         }
     }
 }
@@ -750,7 +749,8 @@ function changeLinkUser() {
 function checkOptionSame(input) {
     var valuesSoFar = [];
     var isDuplicate = false;
-    var message = ''
+    var message = typeof input == 'string' ? input : pollData.message.option_duplicate;
+
     $('input[name^="optionText"]').each(function () {
         var value = $(this).val().trim();
         if (valuesSoFar.indexOf(value) !== -1 && value != "") {
@@ -760,10 +760,11 @@ function checkOptionSame(input) {
     });
 
     if (isDuplicate) {
-
-        $('.error_option').addClass('has-error').html('<span id="title-error" class="help-block">' + pollData.message.option_duplicate + '</span>');
+        $('.error_option').addClass('has-error').html('<span id="title-error" class="help-block">' + message + '</span>');
+        $('.btn-edit-submit').length && $('.btn-edit-submit').prop('disabled', true);
     } else {
         $('.error_option').removeClass('has-error').html('');
+        $('.btn-edit-submit').length && $('.btn-edit-submit').prop('disabled', false);
     }
 
     return isDuplicate;
@@ -849,14 +850,24 @@ function setDatePicker($domCurrent)
 }
 
 /**
+ * Set Object datepicker
+ */
+function setObjectDatePicker() {
+    var currentPicker = $('.datetimepicker').last();
+    setDatePicker(currentPicker);
+    currentPicker.data('tempDatePicker', currentPicker.data('DateTimePicker'));
+    currentPicker.last().data('DateTimePicker').hide().destroy();
+}
+
+/**
  * Set datepicker
  */
 function pickDateOption() {
-    $('#option').on('click', '.pick-date', function () {
+    $('.poll-option').on('click', '.pick-date', function () {
         $(this).parent().data('tempDatePicker').show();
     });
 
-    $('#option').on('dp.hide', '.datetimepicker', function () {
+    $('.poll-option').on('dp.hide', '.datetimepicker', function () {
         var $this = $(this);
         var input = $this.find('input[type=text]');
         var dateText = input.val();
@@ -865,7 +876,7 @@ function pickDateOption() {
         input.val(fullText);
     });
 
-    $('#option').on('input', 'input[name^=optionText]', function () {
+    $('.poll-option').on('input', 'input[name^=optionText]', function () {
         var parentPicker = $(this).parent();
         var dateText = parentPicker.find('input[type=text]').val();
         parentPicker.data('pickingDate', dateText);

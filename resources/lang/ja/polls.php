@@ -49,6 +49,7 @@ return [
             'is_set_ip' => 'PC、パソコン等1台は1回だけ投票することができます。',
             'allow_new_option' => 'Allow voters to add new answers',
             'not_same_email' => 'Not the same email when vote',
+            'allow_edit_vote_of_poll' => 'Allow edit vote of poll',
         ],
         'step_4' => '投票者',
         'invite' => '特定のメール宛に投票参加招待のメールを送信する場合は下記枠に入力してください',
