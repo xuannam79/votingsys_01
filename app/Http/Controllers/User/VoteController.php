@@ -395,6 +395,7 @@ class VoteController extends Controller
             $participantVoteIds = $this->pollRepository->getParticipantVoteIds($poll->id);
             $participantVotes = $this->participantVoteRepository->getVoteWithOptionsByVoteId($participantVoteIds);
             $mergedParticipantVotes = $votes->toBase()->merge($participantVotes->toBase());
+            $settingsPoll = $this->pollRepository->getSettingsPoll($id);
 
             if ($mergedParticipantVotes->count()) {
                 foreach ($mergedParticipantVotes as $mergedParticipantVote) {
@@ -472,6 +473,30 @@ class VoteController extends Controller
                 return $value['numberOfVote'];
             })));
 
+            // Get result option horizontal
+            $isTimeOut = false;
+            $isHaveImages = false;
+            $isLimit = false;
+            $voteLimit = $settingsPoll[config('settings.setting.set_limit')]['value'];
+            //count number of vote
+            $countParticipantsVoted = $mergedParticipantVotes->count();
+
+            foreach ($poll->options as $option) {
+                if ($option->image) {
+                    $isHaveImages = true;
+
+                    break;
+                }
+            }
+
+            if ($voteLimit && $countParticipantsVoted >= $voteLimit) {
+                $isLimit = true;
+            }
+
+            if (Carbon::now()->toAtomString() > Carbon::parse($poll->date_close)->toAtomString()) {
+                $isTimeOut = true;
+            }
+
             //use socket.io
             $redis = LRedis::connection();
             $redis->publish('votes', json_encode([
@@ -480,6 +505,8 @@ class VoteController extends Controller
                 'count_participant' => $mergedParticipantVotes->count(),
                 'success' => true,
                 'html' => $html,
+                'horizontalOption' => view('.user.poll.option_horizontal', compact('settingsPoll', 'poll', 'isTimeOut', 'isHaveImages', 'isLimit'))->render(),
+                'verticalOption' => view('.user.poll.option_vertical', compact('settingsPoll', 'poll', 'isTimeOut', 'isHaveImages', 'isLimit'))->render(),
                 'html_result_vote' => view('user.poll.result_vote_layouts', ['dataTableResult' => $dataTableResult])->render(),
                 'html_pie_bar_manage_chart' => view('user.poll.pie_bar_manage_chart_layouts')->render(),
                 'html_pie_bar_chart' => view('user.poll.pie_bar_chart_layouts')->render(),

@@ -334,6 +334,10 @@ $(document).ready(function(){
 
     $('#message-flash').fadeIn().delay(3000).fadeOut();
 
+    $('#frame-upload-image-edit').on('hidden.bs.modal', function () {
+        $('body').attr('class', 'modal-open');
+    });
+
     $('.edit-each-option').on('click', function () {
         var dataClient = $(this).closest('.vote-style').data('option');
         var dataViewOption = dataClient.view.option;
@@ -389,7 +393,7 @@ var jqAddNewImageOption11 = new jqAddImageOption({
     frConfirmYes: '.btn-yes-edit',
     frInputFileTemp: '.fileImgTempEdit',
     frContentError : '.error-win-img-edit',
-    messages: 'div[data-option]'
+    messages: 'div[data-option]',
 });
 
 /**
@@ -462,7 +466,10 @@ var addNewOption = function () {
         }
 
         this.$datePicker.data('preText', textInput);
-        this.$datePicker.datetimepicker().data('DateTimePicker').show();
+        this.$datePicker.datetimepicker({
+            showClose: true,
+            icons: {close: 'glyphicon glyphicon-ok'}
+        }).data('DateTimePicker').show();
     }
 
     this.addTextDate = function (e) {
@@ -659,7 +666,8 @@ var jqAddNewImageOption = new jqAddImageOption({
     frConfirmYes: '.btn-yes',
     frInputFileTemp: '.fileImgTemp',
     frContentError : '.error-win-img',
-    messages: 'div[data-option]'
+    messages: 'div[data-option]',
+    horizontalWrapper: '.horizontal-overflow',
 });
 
 var addOption = new addNewOption();

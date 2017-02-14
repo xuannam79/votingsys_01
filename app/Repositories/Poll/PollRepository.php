@@ -1541,5 +1541,28 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
             return false;
         }
     }
-}
 
+    public function getSettingsPoll($idPoll)
+    {
+        if (!$idPoll) {
+            return [];
+        }
+
+        $arrSetting = [];
+
+        $poll = $this->model->find($idPoll)->load('settings');
+        $settings = config('settings.setting');
+
+        foreach ($settings as $keySetting) {
+            $arrSetting[$keySetting]['isHave'] = false;
+            $arrSetting[$keySetting]['value'] = null;
+        }
+
+        foreach ($poll->settings as $pollSetting) {
+            $arrSetting[$pollSetting->key]['isHave'] = true;
+            $arrSetting[$pollSetting->key]['value'] = $pollSetting->value;
+        }
+
+        return $arrSetting;
+    }
+}

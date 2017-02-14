@@ -32,7 +32,7 @@
                     <img src="" id="preview-idOption" class="render-img thumbOption"/>
                 </div>
                 <span class="cz-label label-new">
-                    {{ trans('polls.image_preview') }}
+                    {{ trans('polls.label_for.option_image') }}
                 </span>
             </div>
         </a>
