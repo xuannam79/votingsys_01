@@ -213,7 +213,6 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
                 $settingPollConfig['set_limit'] => $pollTrans['setting']['set_limit'],
                 $settingPollConfig['set_password'] => $pollTrans['setting']['set_password'],
                 $settingPollConfig['allow_add_option'] => $pollTrans['setting']['allow_new_option'],
-                $settingPollConfig['not_same_email'] => $pollTrans['setting']['not_same_email'],
                 $settingPollConfig['allow_edit_vote_of_poll'] => $pollTrans['setting']['allow_edit_vote_of_poll'],
             ],
         ];

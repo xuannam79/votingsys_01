@@ -781,12 +781,6 @@ $frame-padding: 5px;
     display: none;
 }
 
-.horizontal-overflow,
-.vertical-overflow {
-    overflow-y: scroll;
-    max-height: 400px;
-}
-
 .cz-progress {
     background-color: #fff;
     background-image: -webkit-linear-gradient(to bottom,#fff 0,#fff 100%);
