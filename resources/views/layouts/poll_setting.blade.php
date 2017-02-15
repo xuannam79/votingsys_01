@@ -9,6 +9,7 @@
        ])
     }}
 @endif
+
 @foreach ($data['viewData']['settings'] as $settingKey => $settingText)
     @if (isset($page)
         && ($page == 'edit' || $page == 'duplicate')
@@ -51,31 +52,69 @@
                                     || array_key_exists(config('settings.setting.required_name'), $setting)
                                     || array_key_exists(config('settings.setting.required_name_and_email'), $setting))) ? "" : "setting-advance" }}"
              id="setting-required">
-            <label class="radio-inline radio-setting-required">
-                {{ Form::radio('setting_child[required]', config('settings.setting.required_name'), true) }}
-                {{ trans('polls.label.setting.required_name') }}
-            </label>
-            <label class="radio-inline radio-setting-required">
-                {{
-                    Form::radio('setting_child[required]', config('settings.setting.required_email'),
-                        (isset($page)
-                        && ($page == 'edit' || $page == 'duplicate')
-                        && $settingKey == config('settings.setting.required')
-                        && array_key_exists(config('settings.setting.required_email'), $setting)) ? true : null)
-                }}
-                {{ trans('polls.label.setting.required_email') }}
-            </label>
-            <label class="radio-inline radio-setting-required">
-                {{
-                    Form::radio('setting_child[required]',
-                        config('settings.setting.required_name_and_email'),
-                        (isset($page)
-                        && ($page == 'edit' || $page == 'duplicate')
-                        && $settingKey == config('settings.setting.required')
-                        && array_key_exists(config('settings.setting.required_name_and_email'), $setting)) ? true : null)
-                }}
-                {{ trans('polls.label.setting.required_name_and_email') }}
-            </label>
+            <div class="nav">
+                <div class="required-input">
+                    <div class="st">
+                        <label class="radio-inline radio-setting-required">
+                            {{ Form::radio('setting_child[required]', config('settings.setting.required_name'), true) }}
+                            {{ trans('polls.label.setting.required_name') }}
+                        </label>
+                    </div>
+
+                    <div class="st">
+                        <label class="radio-inline radio-setting-required">
+                            {{
+                                Form::radio('setting_child[required]', config('settings.setting.required_email'),
+                                    (isset($page)
+                                    && ($page == 'edit' || $page == 'duplicate')
+                                    && $settingKey == config('settings.setting.required')
+                                    && array_key_exists(config('settings.setting.required_email'), $setting)) ? true : null)
+                            }}
+                            {{ trans('polls.label.setting.required_email') }}
+                        </label>
+                        @php
+                            $settingNotSameEmail = config('settings.setting.not_same_email');
+                        @endphp
+                        <div class="setting-{{ $settingNotSameEmail }}">
+                            <label>
+                                {{
+                                    Form::checkbox('setting[' . $settingNotSameEmail . ']', $settingNotSameEmail, null, [
+                                        'class' => 'switch-checkbox-setting'
+                                    ])
+                                }}
+                                <span class='span-text-setting'>{{ trans('polls.label.setting.not_same_email') }} </span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="st">
+                        <label class="radio-inline radio-setting-required">
+                            {{
+                                Form::radio('setting_child[required]',
+                                    config('settings.setting.required_name_and_email'),
+                                    (isset($page)
+                                    && ($page == 'edit' || $page == 'duplicate')
+                                    && $settingKey == config('settings.setting.required')
+                                    && array_key_exists(config('settings.setting.required_name_and_email'), $setting)) ? true : null)
+                            }}
+                            {{ trans('polls.label.setting.required_name_and_email') }}
+                        </label>
+                        @php
+                            $settingNotSameEmail = config('settings.setting.not_same_email');
+                        @endphp
+                        <div class="setting-{{ $settingNotSameEmail }}">
+                            <label>
+                                {{
+                                    Form::checkbox('setting[' . $settingNotSameEmail . ']', $settingNotSameEmail, null, [
+                                        'class' => 'switch-checkbox-setting'
+                                    ])
+                                }}
+                                <span class='span-text-setting'>{{ trans('polls.label.setting.not_same_email') }} </span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     @elseif ($settingKey == config('settings.setting.custom_link'))
         <div class="form-group

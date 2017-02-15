@@ -960,8 +960,9 @@ $(document).ready(function () {
     if (typeof pollData !== "undefined") {
         $.each(pollData.config.setting, function (index, value) {
             $("[name='setting\\[" + value + "\\]']").bootstrapSwitch({
-                'onText' : pollData.message.on,
-                'offText' : pollData.message.off
+                'onText': pollData.message.on,
+                'offText': pollData.message.off,
+                'size': index == 'not_same_email' ? 'small' : null
             });
         });
 
@@ -1094,7 +1095,9 @@ $(document).ready(function () {
             return;
         }
 
-        $('.setting-' + settings.not_same_email).fadeIn();
+        var elSetting = $(this).parent().siblings('.setting-' + settings.not_same_email);
+        $('.setting-' + settings.not_same_email).not(elSetting).hide();
+        elSetting.fadeIn().css('display', 'inline-block');
     })
 });
 
