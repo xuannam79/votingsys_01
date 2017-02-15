@@ -78,7 +78,7 @@
     </div>
     <!-- END: Frame Upload Image By Link Or Upload File-->
 
-    @if($isEditVoted)
+    @if($isEditVoted && !$isLimit && !$poll->isClosed() && !$isTimeOut)
         <!-- START: Frame Upload Image By Link Or Upload File [Edit Voting]-->
         <div class="modal fade" tabindex="-1" role="dialog" id="frame-edit-poll">
             <div class="modal-dialog" role="document">
@@ -174,6 +174,18 @@
         </div>
         <!-- END: Model form edit voting-->
     @endif
+
+    <!-- START: List voters-->
+    <div class="modal fade" tabindex="-1" role="dialog" id="voters-modal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body" id="result-voters">
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- END: List voters-->
 
     <div class="hide_vote_socket"
          data-host="{{ config('app.key_program.socket_host') }}"
@@ -284,7 +296,7 @@
                                         <div class="col-lg-12">
                                             <div class="col-lg-3 col-lg-offset-9 vote-style" data-option="{{ $viewOption }}">
                                                 <ul class="nav nav-pills">
-                                                    @if($isEditVoted)
+                                                    @if($isEditVoted && !$isLimit && !$poll->isClosed() && !$isTimeOut)
                                                         <li>
                                                             <a href="javascript:void(0)" class="btn-vote-style edit-each-option">
                                                                 <i class="fa fa-pencil" aria-hidden="true"></i>
@@ -356,9 +368,24 @@
                                                                 <span class="{{ ($isHaveImages) ? 'content-option-vote' :  'content-option-not-image'}}">{{ $option->name ? $option->name : " " }}</span>
                                                             </p>
                                                         </div>
+                                                        <div class="voters clearfix">
+                                                            @foreach($option->showListVoterDemo() as $voter)
+                                                                <div class="voter-avatar" data-toggle="tooltip" title="{{ $voter['name'] }}">
+                                                                    <img src="{{ $voter['avatar'] }}">
+                                                                </div>
+                                                            @endforeach
+                                                            @if($option->countVotes() > config('settings.limit_voters_option'))
+                                                                <div class="voter-avatar">
+                                                                    <div class="hidden-counter"
+                                                                        data-url-modal-voter="{{ action('User\VoteController@getModalOptionVoters', $option->id) }}">
+                                                                        <span>{{ $option->countVotes() - config('settings.limit_voters_option') }}</span>
+                                                                    </div>
+                                                                </div>
+                                                            @endif
+                                                        </div>
                                                     </li>
                                                 @endforeach
-                                                @if ($isAllowAddOption)
+                                                @if ($isAllowAddOption && !$isLimit && !$poll->isClosed() && !$isTimeOut)
                                                     @php
                                                         $idNewOption = rand();
                                                     @endphp

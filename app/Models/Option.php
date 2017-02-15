@@ -39,6 +39,29 @@ class Option extends Model
         return $count;
     }
 
+    public function showListVoterDemo()
+    {
+        $voters = [];
+
+        foreach ($this->users as $user) {
+            $voters[] = [
+                'name' => $user->name,
+                'email' => $user->email,
+                'avatar' => $user->getAvatarPath(),
+            ];
+        }
+
+        foreach ($this->participants as $participant) {
+            $voters[] = [
+                'name' => $participant->name,
+                'email' => $participant->email,
+                'avatar' => asset(config('settings.image_default_path')),
+            ];
+        }
+
+        return array_slice($voters, 0, config('settings.limit_voters_option'));
+    }
+
     public function showImage()
     {
         if ($this->image) {
