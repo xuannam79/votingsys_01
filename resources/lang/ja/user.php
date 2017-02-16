@@ -107,6 +107,8 @@ return [
             'password' => 'パスワードを入力してください',
         ],
     ],
+    'logout_fail' => 'Đăng xuất thất bại, vui lòng thử lại',
+    'logout_success' => 'Đăng xuất thành công',
     'register' => [
         'placeholder' => [
             'name' => '名前を入力してください',

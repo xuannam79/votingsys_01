@@ -17,6 +17,12 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:api');
 
-Route::group(['prefix' => 'v1', 'middleware' => ['auth:api'], 'namespace' => 'Api\User'], function() {
-    Route::resource('user', 'UsersController');
+Route::group(['prefix' => 'v1', 'namespace' => 'Api'], function () {
+    Route::post('register', 'Auth\RegisterController@create');
+    Route::post('login', 'Auth\AuthController@login');
+
+    Route::group(['middleware' => 'auth:api'], function () {
+        Route::post('logout', 'Auth\AuthController@logout');
+        Route::resource('user', 'User\UsersController');
+    });
 });
