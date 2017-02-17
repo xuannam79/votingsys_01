@@ -47,7 +47,7 @@ return [
             'on' => 'ON',
             'off' => 'OFF',
             'is_set_ip' => 'Mỗi máy chỉ được bầu chọn một lần',
-            'allow_new_option' => 'Cho phép người tham gia thêm đáp án mới',
+            'allow_new_option' => 'Cho phép người tham gia thêm tùy chọn mới',
             'not_same_email' => 'Không cho trùng email khi bầu chọn',
             'allow_edit_vote_of_poll' => 'Cho phép chỉnh sửa tùy chọn',
         ],
