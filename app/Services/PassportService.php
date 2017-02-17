@@ -6,7 +6,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\RequestException;
 
-class Passport
+class PassportService
 {
     protected $client;
 

@@ -4,9 +4,17 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use constants;
+use Illuminate\Support\Facades\Auth;
 
 abstract class ApiController extends Controller
 {
+    protected $currentUser;
+    protected $guard = 'api';
+
+    public function __construct()
+    {
+        $this->currentUser = Auth::guard($this->guard)->user();
+    }
 
     /**
      * Function build true json
@@ -15,9 +23,9 @@ abstract class ApiController extends Controller
      * @param array $extra
      * @return \Illuminate\Http\JsonResponse
      */
-    public function true_json($data = NULL, $extra = array())
+    public function trueJson($data = null, $extra = [])
     {
-        $ex = array('error' => FALSE);
+        $ex = ['error' => false];
 
         $status = constants::API_RESPONSE_CODE_OK;
 
@@ -29,7 +37,7 @@ abstract class ApiController extends Controller
             $ex = array_merge($ex, $extra);
         }
 
-        return $this->__build_json($status, $data, $ex);
+        return $this->buildJson($status, $data, $ex);
     }
 
     /**
@@ -40,20 +48,20 @@ abstract class ApiController extends Controller
      * @param array $extra
      * @return \Illuminate\Http\JsonResponse
      */
-    public function false_json($errcode, $errmsg = NULL, $extra = array())
+    public function falseJson($errcode, $errmsg = null, $extra = [])
     {
         if (is_null($errmsg)) {
-            $errmsg = "rescode_" . $errcode;
+            $errmsg = 'rescode_' . $errcode;
         }
 
-        $error = array('error' => TRUE, 'message' => $errmsg);
+        $error = ['error' => true, 'message' => $errmsg];
         $status = $errcode;
-        
+
         if (!empty($extra)) {
             $error = array_merge($error, $extra);
         }
 
-        return $this->__build_json($status, NULL, $error);
+        return $this->buildJson($status, null, $error);
     }
 
     /**
@@ -64,7 +72,7 @@ abstract class ApiController extends Controller
      * @param array $extra
      * @return \Illuminate\Http\JsonResponse
      */
-    private function __build_json($status, $result = NULL, $extra = NULL)
+    private function buildJson($status, $result = null, $extra = null)
     {
         $arr['status'] = $status;
 
