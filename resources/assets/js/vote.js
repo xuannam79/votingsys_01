@@ -377,6 +377,31 @@ $(document).ready(function(){
         $('#frame-edit-poll').modal('show');
     });
 
+    $('.horizontal-overflow').on('click', '.hidden-counter', function () {
+        var url = $(this).data('url-modal-voter');
+
+        $.ajax({
+            url: url,
+            method: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                if (data.status) {
+                    $('#result-voters').html(data.voters);
+                    $('.loader').hide();
+                } 
+            },
+
+            beforeSend: function () {
+                $('.loader').show();
+            },
+
+            complete: function () {
+                $('.loader').hide();
+                $('#voters-modal').modal('show');
+            },
+        });
+    });
+
 });
 
 var jqAddNewImageOption11 = new jqAddImageOption({
@@ -447,7 +472,7 @@ var addNewOption = function () {
         this.$preview.on('load', this.loadPreImage.bind(this));
         this.$inputTextOption.on('input', this.addText.bind(this));
         this.$boxVote.on('click', '.new-option', this.chooseOption.bind(this));
-        this.$liParent.on('click', this.chooseOptionWithLi.bind(this));
+        this.$boxVote.on('click', '.parent-vote' ,this.chooseOptionWithLi.bind(this));
         this.$pickDate.on('click', this.getTextDatePicker.bind(this));
         this.$datePicker.on('dp.hide', this.addTextDate.bind(this));
     }
@@ -522,7 +547,7 @@ var addNewOption = function () {
         if (!this._validateDuplicate(lengthInput)) {
             this.$showError.hide();
             if (this.isRadio) {
-                this.$allOption.prop('checked', false);
+                $('input[id^=horizontal]').prop('checked', false);
             }
 
             if (lengthInput == '' && !this.$pickDate.data('isHasDate')) {
@@ -553,10 +578,10 @@ var addNewOption = function () {
         }
 
         if (this.isRadio) {
-            this.$allOption.prop('checked', false);
+            $('input[id^=horizontal]').prop('checked', false);
         } else {
             //is checkbox
-            if (!this.$newOption.prop('checked') && !this.$allOption.is(':checked')) {
+            if (!this.$newOption.prop('checked') && !$('input[id^=horizontal]').is(':checked')) {
                 this.$btnVote.prop('disabled', true);
 
                 return;
@@ -573,7 +598,7 @@ var addNewOption = function () {
             this.deletePhoto();
         }
 
-        this.$btnVote.prop('disabled', !(this.$allOption.is(':checked')));
+        this.$btnVote.prop('disabled', !($('input[id^=horizontal]').is(':checked')));
         if (this.$newOption.is(':checked')) {
             this.$btnVote.prop('disabled', false);
         }
@@ -585,7 +610,7 @@ var addNewOption = function () {
     }
 
     this._notViewSubmit = function () {
-        if (!this.$allOption.is(':checked')) {
+        if (!$('input[id^=horizontal]').is(':checked')) {
             this.$btnVote.prop('disabled', true);
         }
 
@@ -594,7 +619,7 @@ var addNewOption = function () {
 
     this._renderImage = function (e) {
         if (this.isRadio) {
-            this.$allOption.prop('checked', false);
+            $('input[id^=horizontal]').prop('checked', false);
         }
 
         this.$preview.attr('src', e.target.result).show();

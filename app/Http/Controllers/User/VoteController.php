@@ -16,6 +16,7 @@ use App\Repositories\Poll\PollRepositoryInterface;
 use App\Repositories\ParticipantVote\ParticipantVoteRepositoryInterface;
 use App\Repositories\Participant\ParticipantRepositoryInterface;
 use App\Repositories\User\UserRepositoryInterface;
+use Exception;
 
 class VoteController extends Controller
 {
@@ -60,6 +61,7 @@ class VoteController extends Controller
 
         $inputs = $request->only('option', 'nameVote', 'emailVote', 'pollId', 'optionImage', 'optionText', 'newOption');
         $poll = $this->pollRepository->findPollById($inputs['pollId']);
+        $settingsPoll = $this->pollRepository->getSettingsPoll($poll->id);
         $isSetIp = false;
         $voteLimit = null;
         $isRequiredEmail = false;
@@ -336,6 +338,10 @@ class VoteController extends Controller
             'count_participant' => $mergedParticipantVotes->count(),
             'success' => true,
             'html' => $html,
+            'horizontalOption' => view('.user.poll.option_horizontal',
+                compact('settingsPoll', 'poll', 'isHaveImages', 'isLimit'))->render(),
+            'verticalOption' => view('.user.poll.option_vertical',
+                compact('settingsPoll', 'poll', 'isHaveImages', 'isLimit'))->render(),
             'html_result_vote' => view('user.poll.result_vote_layouts', ['dataTableResult' => $dataTableResult])->render(),
             'html_pie_bar_manage_chart' => view('user.poll.pie_bar_manage_chart_layouts')->render(),
             'html_pie_bar_chart' => view('user.poll.pie_bar_chart_layouts')->render(),
@@ -493,10 +499,6 @@ class VoteController extends Controller
                 $isLimit = true;
             }
 
-            if (Carbon::now()->toAtomString() > Carbon::parse($poll->date_close)->toAtomString()) {
-                $isTimeOut = true;
-            }
-
             //use socket.io
             $redis = LRedis::connection();
             $redis->publish('votes', json_encode([
@@ -505,8 +507,8 @@ class VoteController extends Controller
                 'count_participant' => $mergedParticipantVotes->count(),
                 'success' => true,
                 'html' => $html,
-                'horizontalOption' => view('.user.poll.option_horizontal', compact('settingsPoll', 'poll', 'isTimeOut', 'isHaveImages', 'isLimit'))->render(),
-                'verticalOption' => view('.user.poll.option_vertical', compact('settingsPoll', 'poll', 'isTimeOut', 'isHaveImages', 'isLimit'))->render(),
+                'horizontalOption' => view('.user.poll.option_horizontal', compact('settingsPoll', 'poll', 'isHaveImages', 'isLimit'))->render(),
+                'verticalOption' => view('.user.poll.option_vertical', compact('settingsPoll', 'poll', 'isHaveImages', 'isLimit'))->render(),
                 'html_result_vote' => view('user.poll.result_vote_layouts', ['dataTableResult' => $dataTableResult])->render(),
                 'html_pie_bar_manage_chart' => view('user.poll.pie_bar_manage_chart_layouts')->render(),
                 'html_pie_bar_chart' => view('user.poll.pie_bar_chart_layouts')->render(),
@@ -529,5 +531,36 @@ class VoteController extends Controller
         flash(trans('polls.message.update_option_fail'), 'error');
 
         return back();
+    }
+
+    public function getModalOptionVoters($idOption)
+    {
+        try {
+            $option = Option::find($idOption)->load('users', 'participants');
+            $voters = [];
+
+            foreach ($option->users as $user) {
+                $voters[] = [
+                    'name' => $user->name,
+                    'email' => $user->email,
+                    'avatar' => $user->getAvatarPath(),
+                ];
+            }
+
+            foreach ($option->participants as $participant) {
+                $voters[] = [
+                    'name' => $participant->name,
+                    'email' => $participant->email,
+                    'avatar' => asset(config('settings.image_default_path')),
+                ];
+            }
+
+            return response()->json([
+                'status' => true,
+                'voters' => view('layouts.modal_voters', compact('voters'))->render(),
+            ]);
+        } catch (Exception $e) {
+            throw new Exception(trans('message.find_error'));
+        }
     }
 }

@@ -26,7 +26,8 @@ $(document).ready(function(){
             });
 
             if (typeof socketData.horizontalOption != 'undefined') {
-                $('.horizontal-overflow').html(socketData.horizontalOption);
+                $('.li-parent-vote').not('.parent-vote-new-option').remove();
+                $('.horizontal-overflow').prepend(socketData.horizontalOption);
             }
 
             if (typeof socketData.verticalOption != 'undefined') {

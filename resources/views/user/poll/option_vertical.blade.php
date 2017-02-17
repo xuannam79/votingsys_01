@@ -1,5 +1,6 @@
 @php
     $isHideResult = $settingsPoll[config('settings.setting.hide_result')]['isHave'];
+    $isTimeOut = $poll->isTimeOut();
 @endphp
 @foreach ($poll->options as $option)
     <div class="col-lg-4 vertical-option">

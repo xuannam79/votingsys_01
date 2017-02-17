@@ -1,5 +1,6 @@
 @php
     $isHideResult = $settingsPoll[config('settings.setting.hide_result')]['isHave'];
+    $isTimeOut = $poll->isTimeOut();
 @endphp
 @foreach ($poll->options as $option)
     <li class="list-group-item parent-vote li-parent-vote" onclick="voted('{{ $option->id }}', 'horizontal')">
@@ -33,6 +34,21 @@
                 @endif
                 <span class="{{ ($isHaveImages) ? 'content-option-vote' :  'content-option-not-image'}}">{{ $option->name ? $option->name : " " }}</span>
             </p>
+        </div>
+        <div class="voters clearfix">
+            @foreach($option->showListVoterDemo() as $voter)
+                <div class="voter-avatar" data-toggle="tooltip" title="{{ $voter['name'] }}">
+                    <img src="{{ $voter['avatar'] }}">
+                </div>
+            @endforeach
+            @if($option->countVotes() > config('settings.limit_voters_option'))
+                <div class="voter-avatar">
+                    <div class="hidden-counter"
+                        data-url-modal-voter="{{ action('User\VoteController@getModalOptionVoters', $option->id) }}">
+                        <span>{{ $option->countVotes() > config('settings.limit_voters_option') }}</span>
+                    </div>
+                </div>
+            @endif
         </div>
     </li>
 @endforeach

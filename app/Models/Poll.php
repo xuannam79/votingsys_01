@@ -10,6 +10,7 @@ use App\Models\Setting;
 use App\Models\Link;
 use App\Models\Activity;
 use App\Models\Comment;
+use Carbon\Carbon;
 
 class Poll extends Model
 {
@@ -260,4 +261,11 @@ class Poll extends Model
         return $listEmail;
     }
 
+    public function isTimeOut()
+    {
+        $dateNow = Carbon::now()->toAtomString();
+        $dateClosePoll = Carbon::parse($this->date_close)->toAtomString();
+        
+        return  $dateNow > $dateClosePoll ? true : false;
+    }
 }

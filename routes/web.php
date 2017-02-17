@@ -176,3 +176,5 @@ Route::get('feedback', 'FeedbackController@showFeedback');
 Route::post('feedback', 'FeedbackController@sendFeedback');
 
 Route::post('ajaxCheckIfExistEmailVoter', 'User\VoteController@ajaxCheckIfExistEmailVote');
+
+Route::get('get-modal-option-voters/{idOption}', 'User\VoteController@getModalOptionVoters');

@@ -276,7 +276,7 @@ class LinkController extends Controller
             $isOwnerPoll = \Gate::allows('ownerPoll', $poll);
 
             $viewOption = $this->pollRepository->getDataPollSystem()['jsonData'];
-            
+
             return view('user.poll.details', compact(
                 'poll', 'numberOfVote', 'linkUser', //poll info
                 'isRequiredEmail', 'isRequiredName', 'isRequiredNameAndEmail', //setting required
