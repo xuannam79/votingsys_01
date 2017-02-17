@@ -28,6 +28,7 @@ $(document).ready(function(){
             if (typeof socketData.horizontalOption != 'undefined') {
                 $('.li-parent-vote').not('.parent-vote-new-option').remove();
                 $('.horizontal-overflow').prepend(socketData.horizontalOption);
+                $('[data-toggle="tooltip"]').tooltip();
             }
 
             if (typeof socketData.verticalOption != 'undefined') {
