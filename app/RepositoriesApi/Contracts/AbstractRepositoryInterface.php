@@ -16,6 +16,8 @@ interface AbstractRepositoryInterface
 
     public function findBy($column, $option);
 
+    public function findWhere($array = [], $column = ['*']);
+
     public function paginate($limit);
 
     public function create($inputs = []);

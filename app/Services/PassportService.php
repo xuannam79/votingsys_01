@@ -44,4 +44,9 @@ class PassportService
 
         return json_decode((string)$response->getBody(), true);
     }
+
+    public function getTokenByUser($user)
+    {
+        return $user->createToken('myToken')->accessToken;
+    }
 }
