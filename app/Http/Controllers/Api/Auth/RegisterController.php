@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use App\RepositoriesApi\UserRepositoryEloquent;
 use App\Http\Requests\Api\UserCreateRequest;
 use App\Http\Controllers\Api\ApiController;
-use constants;
 
 class RegisterController extends ApiController
 {
@@ -35,7 +34,7 @@ class RegisterController extends ApiController
         $user = $this->userRepository->createUser($input);
 
         if (empty($user)) {
-            return $this->falseJson(constants::API_RESPONSE_CODE_INTER_SERVER_ERROR, trans('user.message.create_fail'));
+            return $this->falseJson(API_RESPONSE_CODE_INTER_SERVER_ERROR, trans('user.message.create_fail'));
         }
 
         return $this->trueJson($user);

@@ -5,6 +5,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\RepositoriesApi\Contracts\AbstractRepositoryInterface;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
+use App\Models\User;
 
 abstract class AbstractRepositoryEloquent implements AbstractRepositoryInterface
 {
@@ -17,7 +18,7 @@ abstract class AbstractRepositoryEloquent implements AbstractRepositoryInterface
 
     public function currentUser()
     {
-        return Auth::user();
+        return Auth::guard('api')->user();
     }
 
     public function getModel()
@@ -79,5 +80,19 @@ abstract class AbstractRepositoryEloquent implements AbstractRepositoryInterface
     public function show($id)
     {
         return $this->model->find($id);
+    }
+
+    public function getUserId($email = null)
+    {
+        $authUser = $this->currentUser();
+        if ($authUser) {
+            return $authUser->id;
+        }
+
+        if ($user = app(User::class)->where('email', $email)->first()) {
+            return $user->id;
+        }
+
+        return null;
     }
 }

@@ -176,6 +176,7 @@ return [
         ],
         'type' => [
             'required' => 'Vui lòng chọn kiểu của poll',
+            'boolean' => 'Tùy chọn option không hợp lệ',
         ],
         'option' => [
             'option' => 'Vui lòng nhập một tùy chọn cho poll',
@@ -185,6 +186,9 @@ return [
         ],
         'participant' => [
             'email' => 'Vui lòng nhập địa chỉ email của người tham gia',
+        ],
+        'date_close' => [
+            'format' => 'Thời gian đóng poll phải đúng định dạng d-m-Y',
         ],
     ],
     'table' => [

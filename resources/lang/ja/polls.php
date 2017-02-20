@@ -172,6 +172,7 @@ return [
         ],
         'type' => [
             'required' => '投票の種類を一つ選んでください',
+            'boolean' => 'Type of poll invalid',
         ],
         'option' => [
             'option' => '少なくとも選択肢の一つに入力してください',
@@ -181,6 +182,9 @@ return [
         ],
         'participant' => [
             'email' => '参加者のメールを入力してください',
+        ],
+        'date_close' => [
+            'format' => 'Date of close poll must be d-m-Y format',
         ],
     ],
     'table' => [

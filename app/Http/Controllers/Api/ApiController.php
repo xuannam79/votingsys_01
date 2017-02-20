@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use constants;
 use Illuminate\Support\Facades\Auth;
 
 abstract class ApiController extends Controller
@@ -27,7 +26,7 @@ abstract class ApiController extends Controller
     {
         $ex = ['error' => false];
 
-        $status = constants::API_RESPONSE_CODE_OK;
+        $status = API_RESPONSE_CODE_OK;
 
         if (in_array('status', $extra)) {
             $status = $extra['status'];

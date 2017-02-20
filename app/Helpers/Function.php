@@ -10,12 +10,14 @@ function uploadImage($image, $path, $oldImage = null)
 {
     if ($image) {
         //set unique name avatar
-        $fileName = uniqid(time()) . '.' . $image->getClientOriginalExtension();
+        $extensionImg = is_string($image) ? pathinfo($image, PATHINFO_EXTENSION) : $image->getClientOriginalExtension();
+        $fileName = uniqid(time(), true) . '.' . $extensionImg;
 
         //move directory folder image
         $img = Image::make($image);
-        $pathImage = $path . '/' . $fileName;
-        $img->save($pathImage);
+        $pathImage = trim($path, '/') . '/' . $fileName;
+
+        $img->save($pathImage, '/');
 
         //delete old image for update image2wbmp(image)
         if (!empty($oldImage)) {

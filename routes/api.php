@@ -21,6 +21,8 @@ Route::group(['prefix' => 'v1', 'namespace' => 'Api'], function () {
     Route::post('register', 'Auth\RegisterController@create');
     Route::post('login', 'Auth\AuthController@login');
 
+    Route::resource('poll', 'PollController', ['only' => ['update', 'destroy', 'store']]);
+
     Route::group(['middleware' => 'auth:api'], function () {
         Route::post('logout', 'Auth\AuthController@logout');
         Route::resource('user', 'User\UsersController');

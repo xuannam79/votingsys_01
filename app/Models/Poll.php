@@ -26,6 +26,8 @@ class Poll extends Model
         'email',
     ];
 
+    private $withoutAppends = false;
+
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -207,6 +209,10 @@ class Poll extends Model
 
     public function getMultipleAttribute($value)
     {
+        if ($this->withoutAppends) {
+            return $value;
+        }
+
         return ($value == config('settings.type_poll.multiple_choice')
             ? trans('polls.label.multiple_choice')
             : trans('polls.label.single_choice'));
@@ -214,6 +220,10 @@ class Poll extends Model
 
     public function getStatusAttribute($value)
     {
+        if ($this->withoutAppends) {
+            return $value;
+        }
+
         return ($value == config('settings.status.open')
             ? trans('polls.label.poll_opening')
             : trans('polls.label.poll_closed'));
@@ -265,7 +275,44 @@ class Poll extends Model
     {
         $dateNow = Carbon::now()->toAtomString();
         $dateClosePoll = Carbon::parse($this->date_close)->toAtomString();
-        
+
         return  $dateNow > $dateClosePoll ? true : false;
+    }
+
+    public function getPassword()
+    {
+        $settingPassword = $this->settings->where('key', config('settings.setting.set_password'))->first();
+
+        return $settingPassword ? $settingPassword->value : false;
+    }
+
+    public function getNameCreator()
+    {
+        return isset($this->user->name) ? $this->user->name : $this->name;
+    }
+
+    public function getEmailCreator()
+    {
+        return isset($this->user->email) ? $this->user->email : $this->email;
+    }
+
+    public static function boot()
+    {
+        parent::boot();
+
+        $callback = function ($model) {
+            foreach ($model->attributes as $key => $value) {
+                $model->{$key} = (string) $value == '' ? null : $value;
+            }
+        };
+
+        static::saving($callback);
+    }
+
+    public function withoutAppends()
+    {
+        $this->withoutAppends = true;
+
+        return $this;
     }
 }

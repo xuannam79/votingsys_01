@@ -174,6 +174,7 @@ return [
         ],
         'type' => [
             'required' => 'Please choose type of poll',
+            'boolean' => 'Type of poll invalid',
         ],
         'option' => [
             'option' => 'Please enter one option of poll',
@@ -183,6 +184,9 @@ return [
         ],
         'participant' => [
             'email' => 'Please enter one email of participant',
+        ],
+        'date_close' => [
+            'format' => 'Date of close poll must be d-m-Y format',
         ],
     ],
     'table' => [
