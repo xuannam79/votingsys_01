@@ -7,6 +7,7 @@ use App\RepositoriesApi\Contracts\PollRepositoryInterface;
 use App\Mail\InviteParticipant;
 use App\Mail\CreatePoll;
 use Illuminate\Support\Facades\Mail;
+use App\Mail\RegisterUser;
 use Illuminate\Support\Facades\DB;
 use Exception;
 
@@ -286,5 +287,10 @@ class PollRepositoryEloquent extends AbstractRepositoryEloquent implements PollR
         ];
 
         return $poll->activities()->create($activity);
+    }
+
+    public function getPollWithLinks($id)
+    {
+        return $poll = $this->model->with('links')->find($id);
     }
 }

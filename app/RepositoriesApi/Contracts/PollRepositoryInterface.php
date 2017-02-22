@@ -8,4 +8,6 @@ interface PollRepositoryInterface
 
     public function editPoll($poll, $input);
     public function editOption($poll, $input);
+
+    public function getPollWithLinks($id);
 }

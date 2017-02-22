@@ -23,7 +23,7 @@ Route::group(['prefix' => 'v1', 'namespace' => 'Api'], function () {
     Route::get('loginSocial', 'User\SocialAccountsController@loginSocial');
 
     Route::resource('poll', 'PollController', ['only' => ['update', 'destroy', 'store']]);
-
+    Route::get('poll/{id}', 'PollController@getPollDetail');
     // Voting
     Route::get('link/{token}', 'LinkController@show');
 
