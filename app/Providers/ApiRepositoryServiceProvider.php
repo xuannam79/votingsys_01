@@ -13,6 +13,11 @@ class ApiRepositoryServiceProvider extends ServiceProvider
             \App\RepositoriesApi\UserRepositoryEloquent::class,
         ],
 
+        'poll' => [
+            \App\RepositoriesApi\Contracts\PollRepositoryInterface::class,
+            \App\RepositoriesApi\PollRepositoryEloquent::class,
+        ],
+
     ];
 
     /**

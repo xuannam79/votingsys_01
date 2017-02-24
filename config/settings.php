@@ -54,6 +54,7 @@ return [
     'str_limit' => [
         'location' => 20,
     ],
+    'link_limit' => 2,
     'length_poll' => [
         'name' => 100,
         'content' => 255,
@@ -166,5 +167,11 @@ return [
         'success' => 'success',
         'danger' => 'danger',
         'warning' => 'warning',
+    ],
+
+    'btn_edit_poll' => [
+        'save_info' => 1,
+        'save_option' => 2,
+        'save_setting' => 3,
     ],
 ];

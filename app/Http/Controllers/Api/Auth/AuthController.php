@@ -8,7 +8,6 @@ use App\Http\Requests\Api\LoginRequest;
 use App\RepositoriesApi\UserRepositoryEloquent;
 use Illuminate\Support\Facades\Auth;
 use App\Services\PassportService;
-use constants;
 
 class AuthController extends ApiController
 {
@@ -33,7 +32,7 @@ class AuthController extends ApiController
         $user = $this->userRepository->findBy('email', $dataAttempt['email'])->first();
 
         if (! $user) {
-            return $this->falseJson(constants::API_RESPONSE_CODE_UNPROCESSABLE, trans('user.login_fail'));
+            return $this->falseJson(API_RESPONSE_CODE_UNPROCESSABLE, trans('user.login_fail'));
         }
 
         if ($user->is_active == config('settings.is_active')) {
@@ -41,10 +40,10 @@ class AuthController extends ApiController
                 return $this->trueJson($passport->passwordGrantToken($dataAttempt));
             }
 
-            return $this->falseJson(constants::API_RESPONSE_CODE_UNPROCESSABLE, trans('user.login_fail'));
+            return $this->falseJson(API_RESPONSE_CODE_UNPROCESSABLE, trans('user.login_fail'));
         }
 
-        return $this->falseJson(constants::API_RESPONSE_CODE_UNPROCESSABLE, trans('user.account_unactive'));
+        return $this->falseJson(API_RESPONSE_CODE_UNPROCESSABLE, trans('user.account_unactive'));
     }
 
     /**
@@ -60,6 +59,6 @@ class AuthController extends ApiController
             return $this->trueJson([], ['message' => trans('user.logout_success')]);
         }
 
-        return $this->falseJson(constants::API_RESPONSE_CODE_UNPROCESSABLE, trans('user.logout_fail'));
+        return $this->falseJson(API_RESPONSE_CODE_UNPROCESSABLE, trans('user.logout_fail'));
     }
 }
