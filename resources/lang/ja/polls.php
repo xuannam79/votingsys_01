@@ -186,6 +186,9 @@ return [
         'date_close' => [
             'format' => 'Date of close poll must be d-m-Y format',
         ],
+        'member' => [
+            'format' => 'Thông tin email của người tham gia không đúng',
+        ],
     ],
     'table' => [
         'thead' => [

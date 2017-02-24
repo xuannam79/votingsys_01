@@ -188,6 +188,9 @@ return [
         'date_close' => [
             'format' => 'Date of close poll must be d-m-Y format',
         ],
+        'member' => [
+            'regex' => 'Email of participants are invalid',
+        ],
     ],
     'table' => [
         'thead' => [

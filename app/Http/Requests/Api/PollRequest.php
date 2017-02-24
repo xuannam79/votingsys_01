@@ -28,6 +28,7 @@ class PollRequest extends AbstractRequest
             'title' => 'required|max:' . $config['title'],
             'multiple' => 'required|boolean',
             'date_close' => 'date_format:"d-m-Y H:i"|after:"' . date('d-m-Y H:i') . '"',
+            'member' => 'regex:/^([a-z][a-z0-9_\.]{3,}@[a-z0-9]{2,}(\.[a-z0-9]{2,4}){1,2}[,]{0,1}[,]{0,1}[\s]*)+(?<!,)(?<!\s)$/',
         ];
     }
 
@@ -51,6 +52,7 @@ class PollRequest extends AbstractRequest
             'multiple.boolean' => $trans['type']['boolean'],
             'date_close.after' => trans('polls.message_client.time_close_poll'),
             'date_close.date_format' => $trans['date_close']['format'],
+            'member.regex' => $trans['member']['regex'],
         ];
     }
 }
