@@ -9,15 +9,19 @@
 function uploadImage($image, $path, $oldImage = null)
 {
     if ($image) {
-        //set unique name avatar
-        $extensionImg = is_string($image) ? pathinfo($image, PATHINFO_EXTENSION) : $image->getClientOriginalExtension();
-        $fileName = uniqid(time(), true) . '.' . $extensionImg;
-
         //move directory folder image
         $img = Image::make($image);
-        $pathImage = trim($path, '/') . '/' . $fileName;
 
-        $img->save($pathImage, '/');
+        // Get Extension Image
+        $extensionImg = is_string($image) ? getExtension($img->mime()) : $image->getClientOriginalExtension();
+        $fileName = uniqid(time(), true) . '.' . $extensionImg;
+
+        if (!$fileName) {
+            return null;
+        }
+
+        $pathImage = trim($path, '/') . '/' . $fileName;
+        $img->save($pathImage);
 
         //delete old image for update image2wbmp(image)
         if (!empty($oldImage)) {
@@ -45,4 +49,20 @@ function deleteImage($path, $nameFile)
     }
 
     return false;
+}
+
+/**
+ * Get extension image by mine type
+ */
+function getExtension($mimeType)
+{
+    $extensions = [
+        'image/jpeg' => 'jpg',
+        'image/gif' => 'gif',
+        'image/png' => 'png',
+        'image/bmp' => 'bmp',
+        'image/vnd.microsoft.icon' => 'ico',
+    ];
+
+    return isset($extensions[$mimeType]) ? $extensions[$mimeType] : '';
 }

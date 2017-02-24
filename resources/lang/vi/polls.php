@@ -190,6 +190,9 @@ return [
         'date_close' => [
             'format' => 'Thời gian đóng poll phải đúng định dạng d-m-Y',
         ],
+        'member' => [
+            'format' => 'Thông tin email của người tham gia không đúng',
+        ],
     ],
     'table' => [
         'thead' => [

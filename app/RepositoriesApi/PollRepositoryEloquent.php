@@ -39,7 +39,8 @@ class PollRepositoryEloquent extends AbstractRepositoryEloquent implements PollR
              * Send mail participant
              */
             if ($input['member']) {
-                $members = explode(',', $input['member']);
+                $members = array_map('trim', explode(',', $input['member']));
+
                 Mail::to($members)->queue(new InviteParticipant($poll));
             }
 
@@ -50,7 +51,8 @@ class PollRepositoryEloquent extends AbstractRepositoryEloquent implements PollR
 
             DB::commit();
 
-            return $poll;
+
+            return $poll->withoutAppends();
         } catch (Exception $e) {
             DB::rollBack();
 
