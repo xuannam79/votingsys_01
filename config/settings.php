@@ -180,4 +180,6 @@ return [
         'google',
         'twitter',
     ],
+
+    'hour_default' => '00:00',
 ];

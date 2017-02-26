@@ -492,7 +492,8 @@ li {
 #voters-modal,
 #frame-upload-image,
 #frame-edit-poll,
-#frame-upload-image-edit {
+#frame-upload-image-edit,
+#myModal {
     .modal-dialog {
         .modal-header {
             padding: 0;
@@ -907,4 +908,75 @@ $frame-padding: 5px;
 
 .result-poll {
     margin-right: 3px;
+}
+
+.option-date {
+    tbody {
+        tr {
+            td {
+                border: 1px solid #fff !important;
+            }
+        }
+    }
+    .opsep.pn {
+        background-color: #ffccca;
+    }
+
+    .opsep.pop {
+        background-color: #d1f3d1;
+        text-align: center;
+    }
+
+    .opsep.pn,
+    .opsep.pop {
+        border: 2px solid #fff;
+    }
+}
+
+.msep,
+.dsep,
+.hsep,
+.hname,
+.hemail {
+    background-color: darkcyan;
+    color: #fff;
+    border-right: 1px dotted #fff !important;
+    border-bottom: 1px dotted #fff !important;
+}
+
+.nsep,
+.esep {
+    background-color: #ececec;
+    color: #000;
+}
+
+.hsep {
+    text-align: center;
+    .fa-minus {
+        font-size: 8px;
+    }
+}
+
+.msep,
+.dsep,
+.hname,
+.hemail {
+    font-weight: 700;
+}
+
+.opsep.pop {
+    .fa-check {
+        font-size: 18px;
+        color: #1b926c;
+    }
+}
+
+.header.date.month {
+    td[colspan='2'] {
+        width: 35%;
+    }
+}
+
+#myModal {
+
 }

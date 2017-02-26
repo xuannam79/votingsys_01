@@ -845,7 +845,8 @@ function setDatePicker($domCurrent)
 {
     $domCurrent.datetimepicker({
         showClose: true,
-        icons: {close: 'glyphicon glyphicon-ok'}
+        icons: {close: 'glyphicon glyphicon-ok'},
+        format: 'DD-MM-YYYY HH:mm',
     });
 }
 

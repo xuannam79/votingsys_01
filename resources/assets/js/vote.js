@@ -388,7 +388,7 @@ $(document).ready(function(){
                 if (data.status) {
                     $('#result-voters').html(data.voters);
                     $('.loader').hide();
-                } 
+                }
             },
 
             beforeSend: function () {
@@ -493,12 +493,13 @@ var addNewOption = function () {
         this.$datePicker.data('preText', textInput);
         this.$datePicker.datetimepicker({
             showClose: true,
-            icons: {close: 'glyphicon glyphicon-ok'}
+            icons: {close: 'glyphicon glyphicon-ok'},
+            format: 'DD-MM-YYYY HH:mm',
         }).data('DateTimePicker').show();
     }
 
     this.addTextDate = function (e) {
-        var dateChoosed = moment(e.date).format('MM/DD/YYYY h:mm A');
+        var dateChoosed = moment(e.date).format('DD-MM-YYYY HH:mm');
         var preText = this.$datePicker.data('preText');
         var fullText = (preText + ' ' + dateChoosed).trim();
 
@@ -669,7 +670,7 @@ var addNewOption = function () {
     }
 
     this._isValidDate = function (dateString) {
-        var regEx = /^\d{2}\/\d{2}\/\d{4}\s+[\d]+:\d{2}\s+(AM|PM)$/;
+        var regEx = /^(0[1-9]|[1-2][0-9]|3[0-1])-(0[1-9]|1[0-2])-[0-9]{4}\s+([01]?[0-9]|2[0-3]):[0-5][0-9]$/;
         return dateString.match(regEx) != null;
     }
 }

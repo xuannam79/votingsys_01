@@ -36,7 +36,7 @@
             </p>
         </div>
         <div class="voters clearfix">
-            @foreach($option->showListVoterDemo() as $voter)
+            @foreach(array_slice($option->listVoter(), 0, config('settings.limit_voters_option')) as $voter)
                 <div class="voter-avatar" data-toggle="tooltip" title="{{ $voter['name'] }}">
                     <img src="{{ $voter['avatar'] }}">
                 </div>

@@ -136,12 +136,6 @@ jqAddImageOption.prototype.addImageByLink = function () {
         return;
     }
 
-    if (!this.checkExtensionImage(urlImage)) {
-        this.showMessage(this.messages.not_type_url_image);
-
-        return;
-    }
-
     this.checkTimeLoadImage(urlImage, function (result) {
         if (result == 'success') {
             this.removeMessage();
@@ -287,7 +281,7 @@ jqAddImageOption.prototype.preImage = function (e) {
 }
 
 jqAddImageOption.prototype.checkTimeLoadImage = function(url, callback, timeout) {
-    var timeout = timeout || 5000;
+    var timeout = timeout || 3000;
     var timedOut = false, timer;
     var img = new Image();
 

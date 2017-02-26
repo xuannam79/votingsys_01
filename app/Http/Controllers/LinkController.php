@@ -111,6 +111,9 @@ class LinkController extends Controller
         $totalVote = config('settings.default_value');
         $messageImage = trans('polls.message_client');
 
+        // Show result options
+        $optionDates = $this->pollRepository->showOptionDate($poll);
+
         //get information vote poll
         $voteIds = $this->pollRepository->getVoteIds($poll->id);
         $votes = $this->voteRepository->getVoteWithOptionsByVoteId($voteIds);
@@ -292,7 +295,8 @@ class LinkController extends Controller
                 'optionRateBarChart', 'dataTableResult', 'mergedParticipantVotes', //result
                 'countParticipantsVoted', 'isHaveImages', 'nameOptions', 'dataToDrawPieChart',
                 'isOwnerPoll', 'fontSize', 'messageImage',
-                'viewOption'
+                'viewOption',
+                'optionDates'
             ));
         } else {
             foreach ($poll->links as $link) {

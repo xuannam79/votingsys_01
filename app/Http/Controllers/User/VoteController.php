@@ -253,6 +253,9 @@ class VoteController extends Controller
         $participantVotes = $this->participantVoteRepository->getVoteWithOptionsByVoteId($participantVoteIds);
         $mergedParticipantVotes = $votes->toBase()->merge($participantVotes->toBase());
 
+        // Show result options
+        $optionDates = $this->pollRepository->showOptionDate($poll);
+
         if ($mergedParticipantVotes->count()) {
             foreach ($mergedParticipantVotes as $mergedParticipantVote) {
                 $createdAt[] = $mergedParticipantVote->first()->created_at;
@@ -284,12 +287,7 @@ class VoteController extends Controller
         }
 
         $numberOfVote = config('settings.default_value');
-        $html = view('user.poll.vote_details_layouts', [
-            'mergedParticipantVotes' => $mergedParticipantVotes,
-            'numberOfVote' => $numberOfVote,
-            'poll' => $poll,
-            'isHaveImages' => $isHaveImages
-        ])->render();
+        $html = view('user.poll.vote_details_layouts', compact('optionDates'))->render();
 
          //data for draw chart
         $optionRateBarChart = [];
@@ -403,6 +401,9 @@ class VoteController extends Controller
             $mergedParticipantVotes = $votes->toBase()->merge($participantVotes->toBase());
             $settingsPoll = $this->pollRepository->getSettingsPoll($id);
 
+            // Show result options
+            $optionDates = $this->pollRepository->showOptionDate($poll);
+
             if ($mergedParticipantVotes->count()) {
                 foreach ($mergedParticipantVotes as $mergedParticipantVote) {
                     $createdAt[] = $mergedParticipantVote->first()->created_at;
@@ -434,12 +435,7 @@ class VoteController extends Controller
             }
 
             $numberOfVote = config('settings.default_value');
-            $html = view('user.poll.vote_details_layouts', [
-                'mergedParticipantVotes' => $mergedParticipantVotes,
-                'numberOfVote' => $numberOfVote,
-                'poll' => $poll,
-                'isHaveImages' => $isHaveImages,
-            ])->render();
+            $html = view('user.poll.vote_details_layouts', compact('optionDates'))->render();
 
              //data for draw chart
             $optionRateBarChart = [];
