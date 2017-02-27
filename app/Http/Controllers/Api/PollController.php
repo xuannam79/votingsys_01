@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\ApiController;
 use App\RepositoriesApi\Contracts\PollRepositoryInterface;
 use App\Http\Requests\Api\PollRequest;
 use Validator;
+use Auth;
 
 class PollController extends ApiController
 {
@@ -15,6 +16,23 @@ class PollController extends ApiController
     public function __construct(PollRepositoryInterface $pollRepository)
     {
         $this->pollRepository = $pollRepository;
+    }
+
+    /**
+     * get info poll with links.
+     *
+     * @param  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function getPollDetail($id)
+    {
+        $poll = $this->pollRepository->getPollWithLinks($id);
+
+        if (empty($poll)) {
+            return $this->falseJson(API_RESPONSE_CODE_NOT_FOUND, trans('messages.error.not_found'));
+        }
+
+        return $this->trueJson(['poll' => $poll]);
     }
 
     /**
