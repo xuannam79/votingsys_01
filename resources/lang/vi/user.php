@@ -111,6 +111,7 @@ return [
     ],
     'logout_fail' => 'Đăng xuất thất bại, vui lòng thử lại',
     'logout_success' => 'Đăng xuất thành công',
+    'not_found_provider' => 'Không tìm thấy provider',
     'register' => [
         'placeholder' => [
             'name' => 'Nhập tên của bạn...',

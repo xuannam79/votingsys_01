@@ -20,6 +20,7 @@ Route::get('/user', function (Request $request) {
 Route::group(['prefix' => 'v1', 'namespace' => 'Api'], function () {
     Route::post('register', 'Auth\RegisterController@create');
     Route::post('login', 'Auth\AuthController@login');
+    Route::get('loginSocial', 'User\SocialAccountsController@loginSocial');
 
     Route::resource('poll', 'PollController', ['only' => ['update', 'destroy', 'store']]);
 

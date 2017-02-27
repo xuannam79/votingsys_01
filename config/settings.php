@@ -174,4 +174,10 @@ return [
         'save_option' => 2,
         'save_setting' => 3,
     ],
+
+    'provider' => [
+        'facebook',
+        'google',
+        'twitter',
+    ],
 ];
