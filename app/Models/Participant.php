@@ -40,4 +40,19 @@ class Participant extends Model
 
         return $this->name;
     }
+
+    public function options()
+    {
+        return $this->belongsToMany(Option::class, 'participant_votes')->withTimestamps();
+    }
+
+    public static function boot()
+    {
+        parent::boot();
+
+        static::saving(function ($model) {
+            $model->name = $model->name ?: trans('polls.no_name');
+            $model->email = $model->email ?: null;
+        });
+    }
 }

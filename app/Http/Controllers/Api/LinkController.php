@@ -18,7 +18,14 @@ class LinkController extends ApiController
     public function show($token)
     {
         if ($link = $this->linkRepository->findBy('token', $token)->first()) {
-            $poll = $link->poll->withoutAppends()->load('user', 'settings', 'options', 'comments');
+            $poll = $link->poll->withoutAppends();
+
+            if (!$poll->status) {
+                return $this->falseJson(API_RESPONSE_CODE_UNPROCESSABLE, trans('polls.message_poll_closed'));
+            }
+
+            $poll->load('user', 'settings', 'options', 'comments');
+
             $data = [
                 'poll' => $poll,
                 'countParticipant' => $poll->countParticipants(),

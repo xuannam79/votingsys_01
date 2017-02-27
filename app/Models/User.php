@@ -12,6 +12,7 @@ use App\Models\SocialAccount;
 use App\Models\Activity;
 use App\Models\Vote;
 use Laravel\Passport\HasApiTokens;
+use App\Models\Option;
 
 class User extends Authenticatable
 {
@@ -127,5 +128,10 @@ class User extends Authenticatable
             $user->is_active = true;
             $user->token_verification = '';
         });
+    }
+
+    public function options()
+    {
+        return $this->belongsToMany(Option::class, 'votes')->withTimestamps();
     }
 }
