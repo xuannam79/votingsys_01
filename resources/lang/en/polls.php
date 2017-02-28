@@ -151,6 +151,8 @@ return [
         'no_poll_create' => 'User don\'t create poll',
         'no_poll_participant' => 'User don\'t participate poll',
         'no_poll_close' => 'User don\'t close poll',
+        'polls_of_user_fail' => 'Get polls of user fail',
+        'not_found_user' => 'Not found User',
     ],
     'validation' => [
         'name' => [

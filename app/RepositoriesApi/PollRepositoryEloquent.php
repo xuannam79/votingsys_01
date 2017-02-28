@@ -7,7 +7,6 @@ use App\RepositoriesApi\Contracts\PollRepositoryInterface;
 use App\Mail\InviteParticipant;
 use App\Mail\CreatePoll;
 use Illuminate\Support\Facades\Mail;
-use App\Mail\RegisterUser;
 use Illuminate\Support\Facades\DB;
 use Exception;
 use App\Models\Participant;
@@ -351,5 +350,10 @@ class PollRepositoryEloquent extends AbstractRepositoryEloquent implements PollR
 
             return false;
         }
+    }
+
+    public function getPollsOfUser($userId)
+    {
+        return $this->model->with('links', 'settings', 'options')->where('user_id', $userId)->get();
     }
 }
