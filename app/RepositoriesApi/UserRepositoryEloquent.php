@@ -8,6 +8,7 @@ use App\Mail\RegisterUser;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\DB;
 use Exception;
+use Input;
 
 class UserRepositoryEloquent extends AbstractRepositoryEloquent implements UserRepositoryInterface
 {
@@ -49,6 +50,43 @@ class UserRepositoryEloquent extends AbstractRepositoryEloquent implements UserR
             return $createUser;
         } catch (Exception $e) {
             DB::rollback();
+
+            return false;
+        }
+    }
+
+    public function updateUser($inputs = [], $avatar = null, $id)
+    {
+        $currentUser = $this->model->find($id);
+
+        if (!empty($inputs['password'])) {
+            $inputs['password'] = bcrypt($inputs['password']);
+        } else {
+            $inputs['password'] = $currentUser->password;
+        }
+
+        if (!$inputs['gender']) {
+            $inputs['gender'] = null;
+        }
+
+        $oldImage = $currentUser->avatar;
+
+        if ($avatar) {
+            $inputs['avatar'] = uploadImage($avatar,
+                public_path(config('settings.avatar_path')), $oldImage);
+        } else {
+            $inputs['avatar'] = $oldImage;
+        }
+
+        DB::beginTransaction();
+        try {
+            $user = $this->model->find($id);
+            $user->update($inputs);
+            DB::commit();
+
+            return $user;
+        } catch (Exception $e) {
+            DB::rollBack();
 
             return false;
         }

@@ -14,6 +14,7 @@ return [
         ],
 
         'register_faild' => 'Register user faild',
+        'update_profile_error' => 'Update Profile Error',
     ],
 
     'success' => [
@@ -25,5 +26,4 @@ return [
         'key_missing' => 'Api key missing',
         'access_denied' => 'Access Denied. Invalid Api key'
     ],
-
 ];
