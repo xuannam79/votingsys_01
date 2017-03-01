@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests\Api;
 
-class UserEditRequest extends AbstractRequest
+class FeedbackRequest extends AbstractRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,9 +25,8 @@ class UserEditRequest extends AbstractRequest
 
         return [
             'name' => 'required|max:' . $length['name'],
-            'email' => 'required|email',
-            'chatwork_id' => 'max:' . $length['chatwork'],
-            'avatar' => 'image|max:' . $length['avatar'],
+            'email' => 'required|email|max:' . $length['email'],
+            'feedback' => 'required|max:' . $length['feedback'],
         ];
     }
 
@@ -45,9 +44,9 @@ class UserEditRequest extends AbstractRequest
             'name.max' => $trans['name']['max'],
             'email.required' => $trans['email']['required'],
             'email.email' => $trans['email']['email'],
-            'chatwork_id.max' => $trans['chatwork']['max'],
-            'avatar.image' => $trans['avatar']['image'],
-            'avatar.max' => $trans['avatar']['max'],
+            'email.max' => $trans['email']['max'],
+            'feedback.required' => $trans['feedback']['required'],
+            'feedback.max' => $trans['feedback']['max'],
         ];
     }
 }

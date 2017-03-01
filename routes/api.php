@@ -27,6 +27,7 @@ Route::group(['prefix' => 'v1', 'namespace' => 'Api'], function () {
     // Voting
     Route::get('link/{token}', 'LinkController@show');
     Route::post('user/vote', 'VoteController@store');
+    Route::post('feedback', 'FeedBackController@sendFeedback');
 
     Route::group(['middleware' => 'auth:api'], function () {
         Route::post('logout', 'Auth\AuthController@logout');
