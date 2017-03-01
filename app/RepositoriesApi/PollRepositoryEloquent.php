@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\DB;
 use Exception;
 use App\Models\Participant;
+use App\Mail\CloseOrReOpenPoll;
+use App\Mail\DeleteVotedPoll;
 
 class PollRepositoryEloquent extends AbstractRepositoryEloquent implements PollRepositoryInterface
 {
@@ -355,5 +357,67 @@ class PollRepositoryEloquent extends AbstractRepositoryEloquent implements PollR
     public function getPollsOfUser($userId)
     {
         return $this->model->with('links', 'settings', 'options')->where('user_id', $userId)->get();
+    }
+
+    public function closeOrOpen($poll)
+    {
+        DB::beginTransaction();
+        try {
+            $poll->withoutAppends();
+
+            $poll->status = (int) !$poll->status;
+
+            // Create Activity
+            if (!$poll->save()) {
+                return false;
+            }
+
+            // Save activity
+            $activity = $poll->status ? config('settings.activity.reopen_poll') : config('settings.activity.close_poll');
+            $this->createActivity($poll, $activity);
+
+            DB::commit();
+
+            /**
+             * Send mail to poll creator
+             */
+            $email = $poll->user_id ? $poll->user->email : $poll->email;
+            Mail::to($email)->queue(new CloseOrReOpenPoll($poll));
+
+            return true;
+        } catch (Exception $e) {
+            DB::rollBack();
+
+            return false;
+        }
+    }
+
+    public function resetVoted($poll)
+    {
+        if ($poll->options->isEmpty()) {
+            return false;
+        }
+
+        DB::beginTransaction();
+        try {
+            foreach ($poll->options as $option) {
+                $option->users()->detach();
+                $option->participants()->detach();
+            }
+
+            DB::commit();
+
+            $this->createActivity($poll, config('settings.activity.all_participants_deleted'));
+
+            //Send mail to admin when user delete all voted of options
+            $email = $poll->user_id ? $poll->user->email : $poll->email;
+            Mail::to($email)->queue(new DeleteVotedPoll($poll->getAdminLink()));
+
+            return true;
+        } catch (Exception $e) {
+            DB::rollBack();
+
+            return false;
+        }
     }
 }

@@ -13,8 +13,8 @@ abstract class AbstractRequest extends FormRequest
     public function formatErrors(Validator $validator)
     {
         return [
-            'error' => true,
             'status' => API_RESPONSE_CODE_UNPROCESSABLE,
+            'error' => true,
             'messages' => $validator->errors()->all(),
         ];
     }

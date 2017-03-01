@@ -17,4 +17,8 @@ interface PollRepositoryInterface
     public function vote($poll, $input);
 
     public function getPollsOfUser($userId);
+
+    public function closeOrOpen($poll);
+
+    public function resetVoted($poll);
 }
