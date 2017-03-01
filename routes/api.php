@@ -31,5 +31,6 @@ Route::group(['prefix' => 'v1', 'namespace' => 'Api'], function () {
     Route::group(['middleware' => 'auth:api'], function () {
         Route::post('logout', 'Auth\AuthController@logout');
         Route::resource('user', 'User\UsersController');
+        Route::post('updateProfile', 'User\UsersController@updateProfile');
     });
 });
