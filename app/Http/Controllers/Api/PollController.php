@@ -15,6 +15,7 @@ class PollController extends ApiController
 
     public function __construct(PollRepositoryInterface $pollRepository)
     {
+        parent::__construct();
         $this->pollRepository = $pollRepository;
     }
 
@@ -137,5 +138,20 @@ class PollController extends ApiController
     public function destroy($id)
     {
         //
+    }
+
+    public function getPollsOfUser()
+    {
+        if (empty($this->currentUser)) {
+            return $this->falseJson(API_RESPONSE_CODE_NOT_FOUND, trans('polls.message.not_found_user'));
+        }
+
+        $polls = $this->pollRepository->getPollsOfUser($this->currentUser->id);
+
+        if (!$polls) {
+            return $this->falseJson(API_RESPONSE_CODE_UNPROCESSABLE, trans('polls.message.polls_of_user_fail'));
+        }
+
+        return $this->trueJson($polls);
     }
 }

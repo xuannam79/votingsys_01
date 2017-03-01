@@ -32,5 +32,6 @@ Route::group(['prefix' => 'v1', 'namespace' => 'Api'], function () {
         Route::post('logout', 'Auth\AuthController@logout');
         Route::resource('user', 'User\UsersController');
         Route::post('updateProfile', 'User\UsersController@updateProfile');
+        Route::get('getPollsOfUser', 'PollController@getPollsOfUser');
     });
 });

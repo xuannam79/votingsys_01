@@ -15,4 +15,6 @@ interface PollRepositoryInterface
     public function getSettingsPoll($poll);
 
     public function vote($poll, $input);
+
+    public function getPollsOfUser($userId);
 }
