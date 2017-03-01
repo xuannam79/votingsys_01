@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\RegisterUser;
 use Illuminate\Support\Facades\DB;
 use Exception;
+use App\Models\Participant;
 
 class PollRepositoryEloquent extends AbstractRepositoryEloquent implements PollRepositoryInterface
 {
@@ -292,5 +293,63 @@ class PollRepositoryEloquent extends AbstractRepositoryEloquent implements PollR
     public function getPollWithLinks($id)
     {
         return $poll = $this->model->with('links')->find($id);
+    }
+
+    public function getSettingsPoll($poll)
+    {
+        $arrSetting = [];
+
+        $settings = config('settings.setting');
+
+        foreach ($settings as $keySetting) {
+            $arrSetting[$keySetting]['status'] = false;
+            $arrSetting[$keySetting]['value'] = null;
+        }
+
+        foreach ($poll->settings as $pollSetting) {
+            $arrSetting[$pollSetting->key]['status'] = true;
+            $arrSetting[$pollSetting->key]['value'] = $pollSetting->value;
+        }
+
+        return $arrSetting;
+    }
+
+    public function vote($poll, $input)
+    {
+        if (!$input['option']) {
+            return false;
+        }
+
+        DB::beginTransaction();
+        try {
+            $input['user_id'] = $this->getUserId($input['email']);
+
+            $idOption = array_values($input['option']);
+
+            $user = $this->currentUser();
+
+            if ($user && $user->name == $input['name'] && $user->email == $input['email']) {
+                $user->options()->attach($idOption);
+                DB::commit();
+
+                return true;
+            }
+
+            $participant = new Participant;
+
+            if (!$participant->fill($input)->save()) {
+                return false;
+            }
+
+            // Add Voter that is voting
+            $participant->options()->attach($idOption);
+            DB::commit();
+
+            return true;
+        } catch (Exception $e) {
+            DB::rollBack();
+
+            return false;
+        }
     }
 }

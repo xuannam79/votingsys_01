@@ -92,15 +92,14 @@ abstract class AbstractRepositoryEloquent implements AbstractRepositoryInterface
 
     public function getUserId($email = null)
     {
+        if ($email) {
+            $user = app(User::class)->where('email', $email)->first();
+
+            return ($user ? $user->id : null);
+        }
+
         $authUser = $this->currentUser();
-        if ($authUser) {
-            return $authUser->id;
-        }
 
-        if ($user = app(User::class)->where('email', $email)->first()) {
-            return $user->id;
-        }
-
-        return null;
+        return $authUser ? $authUser->id : null;
     }
 }
