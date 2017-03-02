@@ -258,6 +258,8 @@ return [
         'time_out_url_image' => 'The image URL was not reachable.  Check that the URL is correct.',
         'email_exists' => 'Email exist in system. Please enter a new email to vote',
         'error_occurs' => 'Error occurs while processing',
+        'success_comment' => 'Comment was successful',
+        'fail_comment' => 'Comment fail',
     ],
     'mail' => [
         'label' => [

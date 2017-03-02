@@ -420,4 +420,22 @@ class PollRepositoryEloquent extends AbstractRepositoryEloquent implements PollR
             return false;
         }
     }
+
+    public function comment($poll, $input)
+    {
+        DB::beginTransaction();
+        try {
+            $input['user_id'] = $this->getUserId();
+
+            $comment = $poll->comments()->create($input);
+
+            DB::commit();
+
+            return $comment;
+        } catch (Exception $e) {
+            DB::rollBack();
+
+            return false;
+        }
+    }
 }
