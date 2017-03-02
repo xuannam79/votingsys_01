@@ -24,10 +24,14 @@ Route::group(['prefix' => 'v1', 'namespace' => 'Api'], function () {
 
     Route::resource('poll', 'PollController', ['only' => ['update', 'destroy', 'store']]);
     Route::get('poll/{id}', 'PollController@getPollDetail');
+
     // Voting
     Route::get('link/{token}', 'LinkController@show');
     Route::post('user/vote', 'VoteController@store');
     Route::post('feedback', 'FeedBackController@sendFeedback');
+
+    // Participant
+    Route::delete('poll/participants/{token}', 'ParticipantController@deleteAll');
 
     Route::group(['middleware' => 'auth:api'], function () {
         Route::post('logout', 'Auth\AuthController@logout');
