@@ -15,6 +15,7 @@ return [
 
         'register_faild' => 'Register user faild',
         'update_profile_error' => 'Update Profile Error',
+        'not_found_language' => 'Not found language',
     ],
 
     'success' => [
