@@ -4,6 +4,7 @@ namespace App\RepositoriesApi;
 
 use App\Models\SocialAccount;
 use App\Models\User;
+use GuzzleHttp\Exception\ClientException;
 use Laravel\Socialite\Contracts\Provider;
 use App\RepositoriesApi\Contracts\SocialAccountRepositoryInterface;
 
@@ -16,7 +17,11 @@ class SocialAccountRepositoryEloquent extends AbstractRepositoryEloquent impleme
 
     public function createOrGetUser(Provider $provider, $data)
     {
-        $providerUser = $provider->userFromToken($data['token']);
+        try {
+            $providerUser = $provider->userFromToken($data['token']);
+        } catch (ClientException $e) {
+            return false;
+        }
         $account = $this->model->whereProvider($data['provider'])
             ->whereProviderUserId($providerUser->getId())
             ->first();
