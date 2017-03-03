@@ -33,6 +33,9 @@ Route::group(['prefix' => 'v1', 'namespace' => 'Api'], function () {
     // Participant
     Route::delete('poll/participants/{token}', 'ParticipantController@deleteAll');
 
+    // Comment Poll
+    Route::post('poll/comment', 'CommentController@store');
+
     Route::group(['middleware' => 'auth:api'], function () {
         Route::post('logout', 'Auth\AuthController@logout');
         Route::resource('user', 'User\UsersController');

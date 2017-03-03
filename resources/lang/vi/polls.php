@@ -259,6 +259,8 @@ return [
         'time_out_url_image' => 'Link hình ảnh không tìm thấy. Vui lòng check lại link hình ảnh',
         'email_exists' => 'Địa chỉ email đã tồn tại trong hệ thống, vui lòng chọn địa chỉ email khác để bầu chọn',
         'error_occurs' => 'Có lỗi xảy ra trong quá trình xử lý',
+        'success_comment' => 'Bình luận thành công',
+        'fail_comment' => 'Bình luận thất bại! Vui lòng kiểm tra lại',
     ],
     'mail' => [
         'label' => [

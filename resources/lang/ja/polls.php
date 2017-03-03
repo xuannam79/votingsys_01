@@ -254,6 +254,8 @@ return [
         'time_out_url_image' => 'The image URL was not reachable.  Check that the URL is correct.',
         'email_exists' => 'Địa chỉ email đã tồn tại trong hệ thống, vui lòng chọn địa chỉ email khác để bầu chọn',
         'error_occurs' => 'Có lỗi xảy ra trong quá trình xử lý',
+        'success_comment' => 'Comment was successful',
+        'fail_comment' => 'Comment fail',
     ],
     'mail' => [
         'label' => [
