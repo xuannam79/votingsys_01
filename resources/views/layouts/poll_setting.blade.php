@@ -60,7 +60,10 @@
                             {{ trans('polls.label.setting.required_name') }}
                         </label>
                     </div>
-
+                    @php
+                        $settingNotSameEmail = config('settings.setting.not_same_email');
+                        $settingAddTypeEmail = config('settings.setting.add_type_mail');
+                    @endphp
                     <div class="st">
                         <label class="radio-inline radio-setting-required">
                             {{
@@ -72,18 +75,44 @@
                             }}
                             {{ trans('polls.label.setting.required_email') }}
                         </label>
-                        @php
-                            $settingNotSameEmail = config('settings.setting.not_same_email');
-                        @endphp
-                        <div class="setting-{{ $settingNotSameEmail }}">
+
+                        <div class="setting-{{ $settingNotSameEmail }}
+                            {{ isset($page) && array_key_exists(config('settings.setting.required_email'), $setting) ? 'be-show' : '' }}">
                             <label>
                                 {{
-                                    Form::checkbox('setting[' . $settingNotSameEmail . ']', $settingNotSameEmail, null, [
+                                    Form::checkbox('setting[' . $settingNotSameEmail . ']', $settingNotSameEmail,
+                                        isset($page) && existSetting($page, config('settings.setting.required_email'), $setting, $settingNotSameEmail), [
                                         'class' => 'switch-checkbox-setting'
                                     ])
                                 }}
                                 <span class='span-text-setting'>{{ trans('polls.label.setting.not_same_email') }} </span>
                             </label>
+                        </div>
+                        <div class="setting-{{ $settingAddTypeEmail }}
+                            {{ isset($page) && array_key_exists(config('settings.setting.required_email'), $setting) ? 'be-show' : '' }}">
+                            <label>
+                                {{
+                                    Form::checkbox('setting[' . $settingAddTypeEmail . ']', $settingAddTypeEmail,
+                                        isset($page) && existSetting($page, config('settings.setting.required_email'), $setting, $settingAddTypeEmail), [
+                                        'class' => 'switch-checkbox-setting st-add-type-email',
+                                    ])
+                                }}
+                                <span class='span-text-setting'>{{ trans('polls.label.setting.add_type_mail') }} </span>
+                            </label>
+                        </div>
+                        <div class="form-group add-type-email
+                            {{ isset($page) && existSetting($page, config('settings.setting.required_email'), $setting, $settingAddTypeEmail) ? '' : 'setting-advance'}}">
+                            <div class="input-group">
+                                <span class="input-group-addon">@</span>
+                                {{ Form::text('value[listEmail]',
+                                    isset($page, $setting[$settingAddTypeEmail])
+                                    && array_key_exists(config('settings.setting.required_email'), $setting) ? $setting[$settingAddTypeEmail] : null, [
+                                    'class' => 'form-control tags-email',
+                                    'placeholder' => trans('polls.placeholder.email_participant'),
+                                    'data-role' => 'tagsinput',
+                                ]) }}
+                            </div>
+                            <div class="error-type-email"></div>
                         </div>
                     </div>
 
@@ -99,18 +128,43 @@
                             }}
                             {{ trans('polls.label.setting.required_name_and_email') }}
                         </label>
-                        @php
-                            $settingNotSameEmail = config('settings.setting.not_same_email');
-                        @endphp
-                        <div class="setting-{{ $settingNotSameEmail }}">
+                        <div class="setting-{{ $settingNotSameEmail }}
+                            {{ isset($page) && array_key_exists(config('settings.setting.required_name_and_email'), $setting) ? 'be-show' : '' }}">
                             <label>
                                 {{
-                                    Form::checkbox('setting[' . $settingNotSameEmail . ']', $settingNotSameEmail, null, [
-                                        'class' => 'switch-checkbox-setting'
+                                    Form::checkbox('setting[' . $settingNotSameEmail . ']', $settingNotSameEmail,
+                                        isset($page) && existSetting($page, config('settings.setting.required_name_and_email'), $setting, $settingNotSameEmail), [
+                                        'class' => 'switch-checkbox-setting',
                                     ])
                                 }}
                                 <span class='span-text-setting'>{{ trans('polls.label.setting.not_same_email') }} </span>
                             </label>
+                        </div>
+                        <div class="setting-{{ $settingAddTypeEmail }}
+                            {{ isset($page) && array_key_exists(config('settings.setting.required_name_and_email'), $setting) ? 'be-show' : '' }}">
+                            <label>
+                                {{
+                                    Form::checkbox('setting[' . $settingAddTypeEmail . ']', $settingAddTypeEmail,
+                                        isset($page) && existSetting($page, config('settings.setting.required_name_and_email'), $setting, $settingAddTypeEmail), [
+                                        'class' => 'switch-checkbox-setting st-add-type-email',
+                                    ])
+                                }}
+                                <span class='span-text-setting'>{{ trans('polls.label.setting.add_type_mail') }} </span>
+                            </label>
+                        </div>
+                        <div class="form-group add-type-email
+                            {{ isset($page) && existSetting($page, config('settings.setting.required_name_and_email'), $setting, $settingAddTypeEmail) ? '' : 'setting-advance'}}">
+                            <div class="input-group">
+                                <span class="input-group-addon">@</span>
+                                {{ Form::text('value[typeEmail]',
+                                    isset($page, $setting[$settingAddTypeEmail])
+                                    && array_key_exists(config('settings.setting.required_name_and_email'), $setting) ? $setting[$settingAddTypeEmail] : null, [
+                                    'class' => 'form-control tags-email',
+                                    'placeholder' => trans('polls.placeholder.type_email'),
+                                    'data-role' => 'tagsinput',
+                                ]) }}
+                            </div>
+                            <div class="error-type-email"></div>
                         </div>
                     </div>
                 </div>

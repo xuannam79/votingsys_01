@@ -92,3 +92,11 @@ function validateDate($date)
         return false;
     }
 }
+
+function existSetting($page, $keyConfig, $setting, $needleKey)
+{
+    return (
+        ($page == 'edit' || $page == 'duplicate')
+        && array_key_exists($keyConfig, $setting)
+        && array_key_exists($needleKey, $setting));
+}

@@ -423,7 +423,7 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
                         $dataSettingInserted[] = [
                             'poll_id' => $pollId,
                             'key' => $setting,
-                            'value' => $this->getValueOfSetting($setting, $value),
+                            'value' => $this->getValueOfSetting($setting, $value, $settingChilds),
                             'created_at' => $now,
                         ];
                     }
@@ -449,7 +449,7 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
      *
      * @return null|string
      */
-    public function getValueOfSetting($setting, $values)
+    public function getValueOfSetting($setting, $values, $settingChilds)
     {
         $config = config('settings.setting');
 
@@ -463,6 +463,14 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
 
         if ($setting == $config['set_password']) {
             return $values['password'];
+        }
+
+        if ($setting == $config['add_type_mail']) {
+            if ($settingChilds['required'] == $config['required_email']) {
+                return $values['listEmail'];
+            }
+
+            return $values['typeEmail'];
         }
 
         return null;
@@ -1259,6 +1267,7 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
                 'numberOfVote' => $option->countVotes(),
                 'lastVoteDate' => (strcmp($userVoteLast, $participantVoteLast) < 0) ? $participantVoteLast : $userVoteLast,
                 'option_id' => $option->id,
+                'listVoter' => $option->listVoter(),
             ];
         }
 

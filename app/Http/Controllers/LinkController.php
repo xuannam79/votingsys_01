@@ -106,6 +106,7 @@ class LinkController extends Controller
         $isTimeOut = false;
         $isAllowAddOption = false;
         $isNoTheSameEmail = false;
+        $isAccecptTypeMail = false;
         $isEditVoted = false;
         $poll = $link->poll;
         $totalVote = config('settings.default_value');
@@ -208,6 +209,7 @@ class LinkController extends Controller
             }
 
             $requiredPassword = null;
+            $typeEmail = null;
 
             //get all settings of poll
             $listSettings = [];
@@ -221,6 +223,10 @@ class LinkController extends Controller
 
                     if ($setting->key == config('settings.setting.set_password')) {
                         $requiredPassword = $setting->value;
+                    }
+
+                    if ($setting->key == config('settings.setting.add_type_mail')) {
+                        $typeEmail = $setting->value;
                     }
                 }
 
@@ -250,6 +256,10 @@ class LinkController extends Controller
 
                 if (collect($listSettings)->contains(config('settings.setting.allow_edit_vote_of_poll'))) {
                     $isEditVoted = true;
+                }
+
+                if (collect($listSettings)->contains(config('settings.setting.add_type_mail'))) {
+                    $isAccecptTypeMail = true;
                 }
 
                 if ($voteLimit && $countParticipantsVoted >= $voteLimit) {
@@ -296,7 +306,8 @@ class LinkController extends Controller
                 'countParticipantsVoted', 'isHaveImages', 'nameOptions', 'dataToDrawPieChart',
                 'isOwnerPoll', 'fontSize', 'messageImage',
                 'viewOption',
-                'optionDates'
+                'optionDates',
+                'isAccecptTypeMail', 'typeEmail' // Setting for only accecpt that mail
             ));
         } else {
             foreach ($poll->links as $link) {

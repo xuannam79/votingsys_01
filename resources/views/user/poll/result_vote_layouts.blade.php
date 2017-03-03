@@ -15,11 +15,29 @@
         @foreach ($dataTableResult as $key => $data)
             <tr>
                 <td>{{ $key + 1 }}</td>
-                <td class="td-detail-option">
-                    <img src="{{ asset($data['image']) }}">
-                    <span class="option-name">{{ $data['name'] }}</span>
+                <td class="{{ ($isHaveImages) ? 'td-poll-result' : '' }}">
+                    @if ($isHaveImages)
+                        <img src="{{ asset($data['image']) }}">
+                    @endif
+                    <p>{{ $data['name'] }}</p>
                 </td>
-                <td><span id="id3{{ $data['option_id'] }}" class="badge">{{ $data['numberOfVote'] }}</span></td>
+                <td>
+                    <div class="voters voters-td clearfix">
+                        @foreach (array_slice($data['listVoter'], 0, config('settings.limit_voters_option')) as $voter)
+                            <div class="voter-avatar" data-toggle="tooltip" title="{{ $voter['name'] }}">
+                                <img src="{{ $voter['avatar'] }}">
+                            </div>
+                        @endforeach
+                        @if ($data['numberOfVote'] > config('settings.limit_voters_option'))
+                            <div class="voter-avatar">
+                                <div class="hidden-counter"
+                                    data-url-modal-voter="{{ action('User\VoteController@getModalOptionVoters', $data['option_id']) }}">
+                                    <span>{{ $data['numberOfVote'] - config('settings.limit_voters_option') }}</span>
+                                </div>
+                            </div>
+                        @endif
+                    </div>
+                </td>
                 <td>
                     @if ($maxVote == $data['numberOfVote'] && $voted)
                         @php

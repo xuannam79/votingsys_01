@@ -5,6 +5,10 @@
 
     <!-- DATETIME PICKER: time close of poll -->
     {!! Html::style('bower/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css') !!}
+
+    <!-- TAG INPUT: participant -->
+    {!! Html::style('bower/bootstrap-tagsinput/dist/bootstrap-tagsinput.css') !!}
+
 @endpush
 @section('title')
     {{ trans('polls.title') }}
@@ -90,6 +94,9 @@
 
     <!-- JQUERY VALIDATE: validate info of poll -->
     {!! Html::script('bower/jquery-validation/dist/jquery.validate.min.js') !!}
+
+    <!-- PLUGIN ADD IMAGE FOR OPTIONS -->
+    {!! Html::script('js/jqAddImageOption.js') !!}
 
     <!-- VOTE -->
     {!! Html::script('js/vote.js') !!}

@@ -647,6 +647,9 @@ function checkValidFormWinzard(elementWizard, formId, validator) {
                 case (pollData.config.setting.set_password):
                     isValid = checkPassword();
                     break;
+                case (pollData.config.setting.add_type_mail):
+                    isValid = checkTypeEmail();
+                    break;
                 default:
                     break;
             }
@@ -746,10 +749,27 @@ function changeLinkUser() {
  * @param input
  * @returns {boolean}
  */
-function checkOptionSame(input) {
+function checkOptionSame(input, message = null) {
     var valuesSoFar = [];
     var isDuplicate = false;
-    var message = typeof input == 'string' ? input : pollData.message.option_duplicate;
+    var message = message ? message : pollData.message.option_duplicate;
+
+
+    if (typeof input !== 'undefined') {
+        // show notity if duplicate
+        var value = $(input).val().trim();
+
+        $('input[name^="optionText"]').not($(input)).each(function (index, item) {
+            if (value && item.value == value && !$(item).hasClass('duplication')) {
+                $(input).addClass('duplication');
+
+                return false;
+            }
+
+            $(input).removeClass('duplication');
+        });
+    }
+
 
     $('input[name^="optionText"]').each(function () {
         var value = $(this).val().trim();
@@ -765,6 +785,7 @@ function checkOptionSame(input) {
     } else {
         $('.error_option').removeClass('has-error').html('');
         $('.btn-edit-submit').length && $('.btn-edit-submit').prop('disabled', false);
+        $('input[name^="optionText"]').removeClass('duplication');
     }
 
     return isDuplicate;
@@ -883,6 +904,45 @@ function pickDateOption() {
         parentPicker.data('pickingDate', dateText);
     });
 }
+
+/**
+ *  Check valid type email
+ */
+function checkTypeEmail()
+{
+    var domTypeEmail = $('.add-type-email:visible');
+    var domShowError = domTypeEmail.find('.error-type-email');
+    var valTypeEmail = domTypeEmail.find('.tags-email').tagsinput('items');
+    var parttern = /^([A-Z0-9-]+\.)+[A-Z]{2,4}$/i;
+
+    if (!valTypeEmail.length) {
+        domShowError.addClass('has-error')
+            .html('<span id="title-error" class="help-block">' + pollData.message.required + '</span>');
+
+        return false;
+    }
+
+    var typeEmailValid = true;
+    valTypeEmail.some(function (item, index) {
+        if (!parttern.test(item)) {
+            typeEmailValid = false;
+
+            return true;
+        }
+    });
+
+    if (!typeEmailValid) {
+        domShowError.addClass('has-error')
+            .html('<span id="title-error" class="help-block">' + pollData.message.type_email_invalid + '</span>');
+
+        return false;
+    }
+
+    domShowError.removeClass('has-error');
+
+    return true;
+}
+
 /*-----------------------------------------
                 EVENT
  -------------------------------------------*/
@@ -963,7 +1023,7 @@ $(document).ready(function () {
             $("[name='setting\\[" + value + "\\]']").bootstrapSwitch({
                 'onText': pollData.message.on,
                 'offText': pollData.message.off,
-                'size': index == 'not_same_email' ? 'small' : null
+                'size': (index == 'not_same_email' || index == 'add_type_mail')  ? 'small' : null
             });
         });
 
@@ -1091,15 +1151,50 @@ $(document).ready(function () {
         var settings = pollData.config.setting;
 
         if (value == settings.required_name) {
-            $('.setting-' + settings.not_same_email).fadeOut();
+            $('.setting-' + settings.not_same_email)
+                .add('.setting-' + settings.add_type_mail).fadeOut();
+            $('.add-type-email').hide();
+            return;
+        }
+
+        var parent = $(this).parent();
+        var boxSettingNotTheEmail = parent.siblings('.setting-' + settings.not_same_email);
+        var boxSettingTypeEmail = parent.siblings('.setting-' + settings.add_type_mail);
+        var boxInputTypeEmail = parent.siblings('.add-type-email');
+
+        boxInputTypeEmail.find('input[name^=value]').tagsinput('removeAll');
+
+        $('.setting-' + settings.not_same_email).not(boxSettingNotTheEmail).hide();
+        $('.setting-' + settings.add_type_mail).not(boxSettingTypeEmail).hide();
+        $('.setting-' + settings.add_type_mail).find('.switch-checkbox-setting').bootstrapSwitch('state', false);
+        $('.add-type-email').hide();
+
+        boxSettingNotTheEmail
+            .add(boxSettingTypeEmail)
+            .fadeIn()
+            .css('display', 'block');
+    });
+
+    $('.st-add-type-email').on('switchChange.bootstrapSwitch', function(event, state) {
+        var boxAddTypeEmail = $(this).closest('div[class^=setting]').siblings('.add-type-email');
+        boxAddTypeEmail.slideToggle();
+    });
+
+    $('.tab-content').on('itemAdded', '.add-type-email:visible .tags-email', function (event) {
+        var parttern = /^[A-Z0-9-]+\.+[A-Z]{2,4}$/i;
+        var typeEmail = event.item;
+        var domError = $(this).parent().next();
+
+        if (!parttern.test(typeEmail)) {
+            $(this).tagsinput('remove', typeEmail);
+            domError.addClass('has-error')
+                .html('<span id="title-error" class="help-block">' + pollData.message.type_email_invalid + ': ' + typeEmail +'</span>');
 
             return;
         }
 
-        var elSetting = $(this).parent().siblings('.setting-' + settings.not_same_email);
-        $('.setting-' + settings.not_same_email).not(elSetting).hide();
-        elSetting.fadeIn().css('display', 'inline-block');
-    })
+        domError.removeClass('has-error').html('');
+    });
 });
 
 $(window).on('load', function() {

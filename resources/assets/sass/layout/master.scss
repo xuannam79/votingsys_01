@@ -1761,7 +1761,11 @@ EDIT POLL
         margin: 0;
       }
       margin-bottom: 5px;
-      .setting-10 {
+      .setting-12 {
+        margin-top: 10px;
+      }
+      .setting-10,
+      .setting-12 {
         display: none;
         margin-left: 20px;
         .span-text-setting {
@@ -1770,6 +1774,17 @@ EDIT POLL
           }
         }
       }
+      .setting-12.be-show, .setting-10.be-show {
+        display: block;
+      }
     }
+  }
+}
+
+.add-type-email {
+  margin: 5px 0 5px 20px;
+  .bootstrap-tagsinput {
+    min-height: auto;
+    border-radius: 0;
   }
 }

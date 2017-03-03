@@ -340,7 +340,7 @@ class VoteController extends Controller
                 compact('settingsPoll', 'poll', 'isHaveImages', 'isLimit'))->render(),
             'verticalOption' => view('.user.poll.option_vertical',
                 compact('settingsPoll', 'poll', 'isHaveImages', 'isLimit'))->render(),
-            'html_result_vote' => view('user.poll.result_vote_layouts', ['dataTableResult' => $dataTableResult])->render(),
+            'html_result_vote' => view('user.poll.result_vote_layouts', compact('dataTableResult', 'isHaveImages'))->render(),
             'html_pie_bar_manage_chart' => view('user.poll.pie_bar_manage_chart_layouts')->render(),
             'html_pie_bar_chart' => view('user.poll.pie_bar_chart_layouts')->render(),
             'htmlPieChart' => view('user.poll.piechart_layouts', [
@@ -505,7 +505,7 @@ class VoteController extends Controller
                 'html' => $html,
                 'horizontalOption' => view('.user.poll.option_horizontal', compact('settingsPoll', 'poll', 'isHaveImages', 'isLimit'))->render(),
                 'verticalOption' => view('.user.poll.option_vertical', compact('settingsPoll', 'poll', 'isHaveImages', 'isLimit'))->render(),
-                'html_result_vote' => view('user.poll.result_vote_layouts', ['dataTableResult' => $dataTableResult])->render(),
+                'html_result_vote' => view('user.poll.result_vote_layouts', compact('dataTableResult', 'isHaveImages'))->render(),
                 'html_pie_bar_manage_chart' => view('user.poll.pie_bar_manage_chart_layouts')->render(),
                 'html_pie_bar_chart' => view('user.poll.pie_bar_chart_layouts')->render(),
                 'htmlPieChart' => view('user.poll.piechart_layouts', [
