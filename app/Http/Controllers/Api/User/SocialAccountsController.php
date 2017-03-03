@@ -32,7 +32,9 @@ class SocialAccountsController extends ApiController
         $data = $request->only('token', 'provider');
 
         if (!in_array($data['provider'], config('settings.provider'))) {
-            return $this->falseJson(API_RESPONSE_CODE_UNPROCESSABLE, trans('user.not_found_provider'));
+            return $this->falseJson(API_RESPONSE_CODE_UNPROCESSABLE, null, [
+                'messages' => [trans('user.not_found_provider')]
+            ]);
         }
 
         if ($data['token'] && $data['provider']) {
@@ -46,9 +48,13 @@ class SocialAccountsController extends ApiController
                 ]);
             }
 
-            return $this->falseJson(API_RESPONSE_CODE_UNPROCESSABLE, trans('user.login_fail'));
+            return $this->falseJson(API_RESPONSE_CODE_UNPROCESSABLE, null, [
+                'messages' => [trans('user.login_fail')]
+            ]);
         }
 
-        return $this->falseJson(API_RESPONSE_CODE_BAD_REQUEST, trans('user.not_enough_info'));
+        return $this->falseJson(API_RESPONSE_CODE_BAD_REQUEST, null, [
+            'messages' => [trans('user.not_enough_info')]
+        ]);
     }
 }
