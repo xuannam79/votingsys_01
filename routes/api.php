@@ -43,6 +43,8 @@ Route::group(['prefix' => 'v1', 'namespace' => 'Api'], function () {
     //Result Voted
     Route::get('poll/result/{token}', 'ResultController@show');
 
+    Route::post('duplicatePoll', 'DuplicateController@store');
+
     Route::group(['middleware' => 'auth:api'], function () {
         Route::post('logout', 'Auth\AuthController@logout');
         Route::resource('user', 'User\UsersController');

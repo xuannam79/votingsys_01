@@ -12,6 +12,12 @@ use Exception;
 use App\Models\Participant;
 use App\Mail\CloseOrReOpenPoll;
 use App\Mail\DeleteVotedPoll;
+use Carbon\Carbon;
+use App\Models\Option;
+use Auth;
+use File;
+use Session;
+use Intervention\Image\Facades\Image;
 
 class PollRepositoryEloquent extends AbstractRepositoryEloquent implements PollRepositoryInterface
 {
@@ -139,8 +145,10 @@ class PollRepositoryEloquent extends AbstractRepositoryEloquent implements PollR
                 return $poll->settings()->createMany($settings);
             }
         } catch (Exception $e) {
-            return false;
+
         }
+
+        return false;
     }
 
     private function createSetting($input)
@@ -458,5 +466,201 @@ class PollRepositoryEloquent extends AbstractRepositoryEloquent implements PollR
         } catch (Exception $e) {
             return false;
         }
+    }
+
+    public function store($input)
+    {
+        DB::beginTransaction();
+        try {
+            $poll = $this->addInfo($input);
+
+            if (!$poll || !($this->addDuplicateOption($input, $poll->id) && $this->addSetting($poll, $input))) {
+                DB::rollback();
+
+                return false;
+            }
+
+            $links = $this->addLink($poll, $input);
+
+            if (!$links) {
+                DB::rollback();
+
+                return false;
+            }
+
+            $poll = Poll::with('user')->find($poll->id);
+
+            // send mail participant
+            $password = false;
+
+            if (count($input['setting'])) {
+                $password = in_array(config('settings.setting.set_password'), $input['setting'])
+                    ? $input['value']['password'] : false;
+            }
+
+            $dataRtn = [
+                'poll' => $poll,
+                'link' => $links,
+            ];
+
+            if ($input['member']) {
+                $members = explode(",", $input['member']);
+                $view = config('settings.view.participant_mail');
+                $data = [
+                    'linkVote' => $poll->getUserLink(),
+                    'poll' => $poll,
+                    'password' => $password,
+                ];
+                $subject = trans('label.mail.participant_vote.subject');
+                $this->sendEmail($members, $view, $data, $subject);
+            }
+
+            // send mail creator
+            $creatorView = config('settings.view.poll_mail');
+            $emailOfCreator = $input['email'];
+            $data = [
+                'userName' => $input['name'],
+                'linkVote' => $poll->getUserLink(),
+                'linkAdmin' => $poll->getAdminLink(),
+                'poll' => $poll,
+                'password' => $password,
+            ];
+            $subject = trans('label.mail.create_poll.subject');
+            $this->sendEmail($emailOfCreator, $creatorView, $data, $subject);
+            DB::commit();
+
+            return $dataRtn;
+        } catch (Exception $ex) {
+            DB::rollback();
+
+            return false;
+        }
+    }
+
+    public function sendEmail($email, $view, $viewData, $subject)
+    {
+        try {
+            Mail::queue($view, $viewData, function ($message) use ($email, $subject) {
+                $message->to($email)->subject($subject);
+            });
+        } catch (Exception $ex) {
+            throw new Exception(trans('polls.message.send_mail_fail'));
+        }
+    }
+
+    public function addDuplicateOption($input, $pollId)
+    {
+        DB::beginTransaction();
+        try {
+            $now = Carbon::now();
+            $oldImage = $input['oldImage'];
+            $optionOldImage = $input['optionOldImage'];
+            $nameOldImage = $this->createFileName($optionOldImage);
+            $optionImage = $input['optionImage'];
+            $nameImage = $this->createFileName($optionImage);
+            $optionText = $input['optionText'];
+            $dataInsert = [];
+
+            foreach ($optionText as $key => $value) {
+                if (! $value) {
+                    continue;
+                }
+                if ($optionOldImage && array_key_exists($key, $optionOldImage)) {
+                    $dataInsert[] = [
+                        'poll_id' => $pollId,
+                        'name' => $value,
+                        'image' => $nameOldImage['optionImage'][$key],
+                    ];
+                } elseif ($oldImage && array_key_exists($key, $oldImage)) {
+                    $dataInsert[] = [
+                        'poll_id' => $pollId,
+                        'name' => $value,
+                        'image' => $oldImage[$key],
+                    ];
+                } else {
+                    $dataInsert[] = [
+                        'poll_id' => $pollId,
+                        'name' => $value,
+                        'image' => ($nameImage && array_key_exists($key, $nameImage['optionImage'])) ?
+                            $nameImage['optionImage'][$key] : null,
+                    ];
+                }
+            }
+
+            if ($dataInsert) {
+                Option::insert($dataInsert);
+                $this->updateImage($optionOldImage, $nameOldImage);
+                $this->updateImage($optionImage, $nameImage);
+            }
+            DB::commit();
+
+            return true;
+        } catch (Exception $ex) {
+            DB::rollback();
+
+            return false;
+        }
+    }
+
+    /**
+     *
+     * Delete old image and upload a new image
+     *
+     * @param $images
+     * @param $imageNames
+     * @param array $oldImages
+     * @throws Exception
+     */
+    private function updateImage($images, $imageNames, $oldImages = [])
+    {
+        try {
+            // delete old image
+            if (is_array($oldImages) && $oldImages) {
+                foreach ($oldImages as $image) {
+                    $path = public_path() . config('settings.option.path_image') . $image;
+                    if (File::exists($path)) {
+                        File::delete($path);
+                    }
+                }
+            }
+
+            // upload new image
+            if ($images) {
+                foreach ($images as $key => $image) {
+                    $img = Image::make($image);
+                    $pathFrom = config('settings.option.path_image') . $imageNames['optionImage'][$key];
+                    $img->save(ltrim($pathFrom, '/'));
+                }
+            }
+        } catch (Exception $ex) {
+            throw new Exception(trans('polls.message.upload_image_fail'));
+        }
+    }
+
+    /**
+     *
+     * Create a array contain name of image randed by system
+     *
+     * @param $arrInputImage
+     *
+     * @return array
+     */
+    private function createFileName($arrInputImage)
+    {
+        $imageNames = [];
+
+        if ($arrInputImage) {
+            foreach ($arrInputImage as $key => $image) {
+                $img = Image::make($image);
+
+                // Get Extension Image
+                $extensionImg = is_string($image) ? getExtension($img->mime()) : $image->getClientOriginalExtension();
+                $filename = uniqid(time(), true) . '.' . $extensionImg;
+
+                $imageNames['optionImage'][$key] = uniqid(time(), true) . '.' . $filename;
+            }
+        }
+
+        return $imageNames;
     }
 }
