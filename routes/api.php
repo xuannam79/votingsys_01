@@ -30,6 +30,8 @@ Route::group(['prefix' => 'v1', 'namespace' => 'Api'], function () {
     Route::post('user/vote', 'VoteController@store');
     Route::post('feedback', 'FeedBackController@sendFeedback');
 
+    Route::post('language', 'LanguageController@store');
+
     // Participant
     Route::delete('poll/participants/{token}', 'ParticipantController@deleteAll');
 

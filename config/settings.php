@@ -181,5 +181,11 @@ return [
         'twitter',
     ],
 
+    'languages' => [
+        'en',
+        'vi',
+        'ja',
+    ],
+
     'hour_default' => '00:00',
 ];
