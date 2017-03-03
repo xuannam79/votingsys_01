@@ -39,7 +39,7 @@ class Option extends Model
         return $count;
     }
 
-    public function showListVoterDemo()
+    public function listVoter()
     {
         $voters = [];
 
@@ -48,6 +48,8 @@ class Option extends Model
                 'name' => $user->name,
                 'email' => $user->email,
                 'avatar' => $user->getAvatarPath(),
+                'id' => collect([])->push($this->id),
+                'created_at' => $user->pivot->created_at,
             ];
         }
 
@@ -56,10 +58,12 @@ class Option extends Model
                 'name' => $participant->name,
                 'email' => $participant->email,
                 'avatar' => asset(config('settings.image_default_path')),
+                'id' => collect([])->push($this->id),
+                'created_at' => $participant->pivot->created_at,
             ];
         }
 
-        return array_slice($voters, 0, config('settings.limit_voters_option'));
+        return $voters;
     }
 
     public function showImage()
@@ -73,11 +77,11 @@ class Option extends Model
 
     public function users()
     {
-        return $this->belongsToMany(User::class, 'votes');
+        return $this->belongsToMany(User::class, 'votes')->withTimestamps();
     }
 
     public function participants()
     {
-        return $this->belongsToMany(Participant::class, 'participant_votes');
+        return $this->belongsToMany(Participant::class, 'participant_votes')->withTimestamps();
     }
 }

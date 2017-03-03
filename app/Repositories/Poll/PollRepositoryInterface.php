@@ -41,4 +41,7 @@ interface PollRepositoryInterface
 
     public function getDataToDrawPieChart($poll, $isHasImage);
     public function getSizeChart($poll);
+
+    // Show option with date
+    public function showOptionDate($poll);
 }

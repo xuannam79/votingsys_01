@@ -66,3 +66,29 @@ function getExtension($mimeType)
 
     return isset($extensions[$mimeType]) ? $extensions[$mimeType] : '';
 }
+
+/**
+ * Check string if is date
+ */
+function validateDate($date)
+{
+    try {
+        $pattern = '/^(0[1-9]|[1-9]|[1-2][0-9]|3[0-1])[\/-](0[1-9]|[1-9]|1[0-2])[\/-][0-9]{4}\s*(([01]?[0-9]|2[0-3]):[0-5][0-9]){0,1}$/';
+
+        if (!preg_match($pattern, $date)) {
+            return false;
+        }
+
+        $date = str_replace('/', '-', $date);
+
+        $objectDate = new DateTime($date);
+
+        return [
+            'monthYear' => $objectDate->format('F Y'),
+            'day' => $objectDate->format('D d'),
+            'hour' => $objectDate->format('H:i'),
+        ];
+    } catch (Exception $e) {
+        return false;
+    }
+}

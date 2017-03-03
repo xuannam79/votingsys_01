@@ -1,71 +1,131 @@
 <div class="modal-dialog">
     <div class="modal-content">
         <div class="modal-body scroll-result">
-            @if ($mergedParticipantVotes->count())
-                <table class="table table-bordered table-detail-result">
-                    <thead>
-                    <th>{{ trans('polls.no') }}</th>
-                    <th>{{ trans('polls.name')}}</th>
-                    <th>{{ trans('polls.email')}}</th>
-                    @foreach ($poll->options as $option)
-                        <th style="min-width: 100px">
-                            <center>
-                                @if ($isHaveImages)
-                                    <img src="{{ $option->showImage() }}" width="16px" height="16px">
-                                @endif
-                                <p>
-                                    {{ str_limit($option->name, 10) }}
-                                </p>
-                            </center>
-                        </th>
-                    @endforeach
-                    </thead>
-                    <tbody>
-                    @foreach ($mergedParticipantVotes as $vote)
-                        <tr>
-                            <td><center>{{ ++$numberOfVote }}</center></td>
-                            @php
-                                $isShowVoteName = false;
-                            @endphp
-                            @foreach ($poll->options as $option)
-                                @php
-                                    $isShowOptionUserVote = false;
-                                @endphp
-                                @foreach ($vote as $item)
-                                    @if (! $isShowVoteName)
-                                        @if (isset($item->user_id))
-                                            <td>{{ $item->user->name }}</td>
-                                            <td>{{ $item->user->email }}</td>
-                                        @else
-                                            <td>{{ $item->participant->name }}</td>
-                                            <td>{{ $item->participant->email }}</td>
-                                        @endif
-                                        @php
-                                            $isShowVoteName = true;
-                                        @endphp
-                                    @endif
-                                    @if ($item->option_id == $option->id)
-                                        <td>
-                                            <center><label class="label label-default"><span class="glyphicon glyphicon-ok"> </span></label></center>
-                                        </td>
-                                        @php
-                                            $isShowOptionUserVote = true;
-                                        @endphp
-                                    @endif
+            <!--START: Show option details-->
+            <table class="table option-date" cellspacing="0" cellpadding="0">
+                <tbody>
+                    @if($optionDates['hours'])
+                        <!--START: Show month + year of option -->
+                        <tr class="header date month">
+                            @if($optionDates['notHour'])
+                                <td colspan="2">
+                                    <h4>
+                                        <strong>
+                                            {{ $optionDates['participants']->count() . ' ' . trans('polls.participants')}}
+                                        </strong>
+                                    </h4>
+                                </td>
+                            @else
+                                <td colspan="2"></td>
+                            @endif
+                            @foreach($optionDates['months'] as $data)
+                                <td class="msep" colspan="{{ $data['count'] }}">
+                                    {{ $data['month'] }}
+                                </td>
+                            @endforeach
+                            @if($optionDates['text'])
+                                <td class="hsep" colspan="{{ count($optionDates['text']) }}"></td>
+                            @endif
+                        </tr>
+                        <!--END: Show month + year of option -->
+                        <!--START: Show week + day or only of option -->
+                        <tr class="header date day">
+                            @if($optionDates['notHour'])
+                                <td class="hname">
+                                    {{ trans('polls.name')}}
+                                </td>
+                                <td class="hemail">
+                                    {{ trans('polls.email')}}
+                                </td>
+                            @else
+                                <td colspan="2">
+                                    <h4>
+                                        <strong>
+                                            {{ $optionDates['participants']->count() . ' ' . trans('polls.participants')}}
+                                        </strong>
+                                    </h4>
+                                </td>
+                            @endif
+                            @foreach($optionDates['days'] as $data)
+                                @foreach($data as $days)
+                                    <td class="dsep" colspan="{{ $days['count'] }}">
+                                        {{ $days['day'] }}
+                                    </td>
                                 @endforeach
-                                @if (!$isShowOptionUserVote)
-                                    <td></td>
+                            @endforeach
+                            @if(!$optionDates['notHour'])
+                                @if($optionDates['text'])
+                                    <td class="hsep" colspan="{{ count($optionDates['text']) }}"></td>
+                                @endif
+                            @else
+                                @foreach($optionDates['text'] as $data)
+                                    <td class="hsep" colspan="1">
+                                        {{ $data['text'] }}
+                                    </td>
+                                @endforeach
+                            @endif
+                        </tr>
+                        <!--END: Show week + day or only of option -->
+                    @endif
+                    @if(!$optionDates['notHour'])
+                        <!--START: Show hour or text of option -->
+                        <tr class="header date time">
+                            <td class="hname">
+                                {{ trans('polls.name')}}
+                            </td>
+                            <td class="hemail">
+                                {{ trans('polls.email')}}
+                            </td>
+                            @foreach($optionDates['hours'] as $data)
+                                @if($data['hour'] == config('settings.hour_default'))
+                                    <td class="hsep" colspan="1">
+                                        <i class="fa fa-minus" aria-hidden="true"></i>
+                                    </td>
+                                @else
+                                    <td class="hsep" colspan="1">
+                                        {{ $data['hour'] }}
+                                    </td>
                                 @endif
                             @endforeach
+                            @foreach($optionDates['text'] as $data)
+                                <td class="hsep" colspan="1">
+                                    {{ $data['text'] }}
+                                </td>
+                            @endforeach
+                        </tr>
+                        <!--END: Show hour or text of option -->
+                    @endif
+                    @foreach($optionDates['participants'] as $voter)
+                        <tr>
+                            <td class="nsep">{{ $voter['name'] }}</td>
+                            <td class="esep">{{ $voter['email'] }}</td>
+                            @if($optionDates['hours'])
+                                @foreach($optionDates['hours'] as $hour)
+                                    @if($voter['id']->contains($hour['id']))
+                                        <td class="opsep pop">
+                                            <i class="fa fa-check" aria-hidden="true"></i>
+                                        </td>
+                                        @continue
+                                    @endif
+                                    <td class="opsep pn"></td>
+                                @endforeach
+                            @endif
+                            @if($optionDates['text'])
+                                @foreach($optionDates['text'] as $text)
+                                    @if($voter['id']->contains($text['id']))
+                                        <td class="opsep pop">
+                                            <i class="fa fa-check" aria-hidden="true"></i>
+                                        </td>
+                                        @continue
+                                    @endif
+                                    <td class="opsep pn"></td>
+                                @endforeach
+                            @endif
                         </tr>
                     @endforeach
-                    </tbody>
-                </table>
-            @else
-                <div class="alert alert-info">
-                    <p>{{ trans('polls.vote_empty') }}</p>
-                </div>
-            @endif
+                </tbody>
+            </table>
+            <!--END: Show option details-->
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">{{ trans('polls.close') }}</button>
