@@ -72,6 +72,15 @@ $(document).ready(function(){
                             $('.emailVote').removeClass('error');
                         }
                     } else {
+                        // Check pass type email of setting
+                        if (data.isAccecptTypeMail) {
+                            if (!checkAccecptTypeEmail(data.typeEmail.trim(), emailVote.trim())) {
+                                showMessage(data.messageRequiredTypeEmail);
+
+                                return;
+                            }
+                        }
+
                         // Check email exist if propety require email
                         if (isNotTheSameEmail) {
                             var status = $.xResponse(urlCheckExistEmail, {idPoll: idPoll, emailVote: emailVote});
@@ -175,6 +184,15 @@ $(document).ready(function(){
                     }
                 } else {
                     if (testEmail.test(emailVote)) {
+                        // Check pass type email of setting
+                        if (data.isAccecptTypeMail) {
+                            if (!checkAccecptTypeEmail(data.typeEmail, emailVote)) {
+                                showMessage(data.messageRequiredTypeEmail);
+
+                                return;
+                            }
+                        }
+
                         // Check email exist if propety require email
                         if (isNotTheSameEmail) {
                             var status = $.xResponse(urlCheckExistEmail, {idPoll: idPoll, emailVote: emailVote});
@@ -312,6 +330,21 @@ $(document).ready(function(){
         }
     }
 
+    function checkAccecptTypeEmail(typeEmail, email)
+    {
+        var type = email.substr(email.indexOf('@') + 1).trim();
+        var typeEmail = typeEmail.split(',');
+        var sameExtensionEmail = false;
+
+        if (type.length && typeEmail.length) {
+            typeEmail.some(function (item) {
+                return sameExtensionEmail = (item.trim() === type);
+            });
+        }
+
+        return sameExtensionEmail;
+    }
+
     $('.btn-edit-submit').on('click', function () {
         var isEmpty = false;
         $('input[id^=optionText]').each(function () {
@@ -355,7 +388,7 @@ $(document).ready(function(){
         $('.poll-option').html('')
         createOption(dataViewOption, '', data);
 
-        var frnCheckTheSame = ['checkOptionSame(\'', dataClient.message.option_duplicate, '\')'].join('');
+        var frnCheckTheSame = ['checkOptionSame(this, \'', dataClient.message.option_duplicate, '\')'].join('');
         $('#frame-edit-poll').find('.btn-remove-option').remove();
         $('#frame-edit-poll').find('input[name^=optionText]')
             .removeAttr('onfocus onclick')
@@ -377,7 +410,7 @@ $(document).ready(function(){
         $('#frame-edit-poll').modal('show');
     });
 
-    $('.horizontal-overflow').on('click', '.hidden-counter', function () {
+    $('.tab-content').on('click', '.hidden-counter', function () {
         var url = $(this).data('url-modal-voter');
 
         $.ajax({

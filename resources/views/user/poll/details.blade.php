@@ -526,9 +526,12 @@
                                                     data-message-required-email="{{ trans('polls.message_required_email') }}"
                                                     data-message-required-name="{{ trans('polls.message_validate_name') }}"
                                                     data-message-required-name-and-email="{{ trans('polls.message_validate_name_and_email') }}"
+                                                    data-message-required-type-email="{{ trans('polls.required_type_email', ['type' => $typeEmail]) }}"
                                                     data-is-required-email="{{ $isRequiredEmail ? 1 : 0 }}"
                                                     data-is-required-name="{{ $isRequiredName ? 1 : 0 }}"
                                                     data-is-not-same-email="{{ $isNoTheSameEmail ? 1 : 0 }}"
+                                                    data-is-accecpt-type-mail="{{ $isAccecptTypeMail ? 1 : 0 }}"
+                                                    data-type-email="{{ $typeEmail }} "
                                                     data-is-required-name-and-email="{{ $isRequiredNameAndEmail ? 1 : 0 }}"
                                                     data-vote-limit-name="{{ trans('polls.validation.name.max') }}">
                                                     {{ Form::button(trans('polls.vote'), ['class' => 'btn btn-success btn-vote', ! $isUserVoted ? 'disabled' : '']) }}
@@ -935,9 +938,21 @@
                                                                         <p>{{ $data['name'] }}</p>
                                                                     </td>
                                                                     <td>
-                                                                        <span id="id3{{ $data['option_id'] }}" class="badge">
-                                                                            {{ $data['numberOfVote'] }}
-                                                                        </span>
+                                                                        <div class="voters voters-td clearfix">
+                                                                            @foreach (array_slice($data['listVoter'], 0, config('settings.limit_voters_option')) as $voter)
+                                                                                <div class="voter-avatar" data-toggle="tooltip" title="{{ $voter['name'] }}">
+                                                                                    <img src="{{ $voter['avatar'] }}">
+                                                                                </div>
+                                                                            @endforeach
+                                                                            @if ($data['numberOfVote'] > config('settings.limit_voters_option'))
+                                                                                <div class="voter-avatar">
+                                                                                    <div class="hidden-counter"
+                                                                                        data-url-modal-voter="{{ action('User\VoteController@getModalOptionVoters', $data['option_id']) }}">
+                                                                                        <span>{{ $data['numberOfVote'] - config('settings.limit_voters_option') }}</span>
+                                                                                    </div>
+                                                                                </div>
+                                                                            @endif
+                                                                        </div>
                                                                     </td>
                                                                     <td>
                                                                         @if ($maxVote == $data['numberOfVote'] && $voted)

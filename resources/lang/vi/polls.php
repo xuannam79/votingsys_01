@@ -50,6 +50,7 @@ return [
             'allow_new_option' => 'Cho phép người tham gia thêm tùy chọn mới',
             'not_same_email' => 'Không cho trùng email khi bầu chọn',
             'allow_edit_vote_of_poll' => 'Cho phép chỉnh sửa tùy chọn',
+            'add_type_mail' => 'Thêm loại mail khi bầu chọn',
         ],
         'step_4' => 'Người tham gia',
         'invite' => 'Nếu bạn muốn gởi thư mời tham gia bầu chọn đến email cụ thể, hãy nhập vào ô dưới đây',
@@ -104,6 +105,7 @@ return [
         'comment' => 'Nhập nội dung bình luận...',
         'enter_name' => 'Nhập tên của bạn...',
         'token_link' => 'Vui lòng nhập token...',
+        'type_email' => 'Vui lòng nhập loại email...',
     ],
     'button' => [
         'search_poll' => 'TÌM KIẾM',
@@ -261,6 +263,7 @@ return [
         'error_occurs' => 'Có lỗi xảy ra trong quá trình xử lý',
         'success_comment' => 'Bình luận thành công',
         'fail_comment' => 'Bình luận thất bại! Vui lòng kiểm tra lại',
+        'type_email_invalid' => 'Loại email này không hợp lệ',
     ],
     'mail' => [
         'label' => [
@@ -409,4 +412,5 @@ return [
     'poll_voted' => 'Poll này đã có bầu chọn, bạn không thể chỉnh sửa các tùy chọn của nó.',
     'message_poll_time_out' => 'Xin lỗi, poll này đã hết thời gian bầu chọn, bạn không thể bầu chọn poll này',
     'link' => 'Link',
+    'required_type_email' => 'Bầu chọn này chỉ cho phép email: :type',
 ];

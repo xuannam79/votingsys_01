@@ -977,6 +977,13 @@ $frame-padding: 5px;
     }
 }
 
-#myModal {
+.voters-td {
+    float: left;
+}
 
+.duplication:focus,
+.duplication  {
+    outline: none;
+    border-color: #a94442;
+    box-shadow: 0 0 1.5px #a94442;
 }

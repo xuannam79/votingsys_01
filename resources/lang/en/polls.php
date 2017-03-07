@@ -48,6 +48,7 @@ return [
             'allow_new_option' => 'Allow voters to add new answers',
             'not_same_email' => 'Not the same email when vote',
             'allow_edit_vote_of_poll' => 'Allow edit vote of poll',
+            'add_type_mail' => 'Add type of email when voted',
         ],
         'step_4' => 'Participant',
         'invite' => 'If you want send mail to participants, let enter email into below textbox!',
@@ -102,6 +103,7 @@ return [
         'comment' => 'Enter a comment...',
         'enter_name' => 'Enter your name...',
         'token_link' => 'Please enter a token...',
+        'type_email' => 'Please enter type email...',
     ],
     'button' => [
         'search_poll' => 'SEARCH NOW',
@@ -260,6 +262,7 @@ return [
         'error_occurs' => 'Error occurs while processing',
         'success_comment' => 'Comment was successful',
         'fail_comment' => 'Comment fail',
+        'type_email_invalid' => 'Type of email was invalid',
     ],
     'mail' => [
         'label' => [
@@ -408,4 +411,5 @@ return [
     'view_setting' => 'View setting',
     'poll_voted' => 'This poll have been voted. You can\'t edit option of it',
     'link' => 'Link',
+    'required_type_email' => 'Email must be have extension: :type',
 ];

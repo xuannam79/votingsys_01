@@ -50,6 +50,7 @@ return [
             'allow_new_option' => 'Allow voters to add new answers',
             'not_same_email' => 'Not the same email when vote',
             'allow_edit_vote_of_poll' => 'Allow edit vote of poll',
+            'add_type_mail' => 'Add type of email when voted',
         ],
         'step_4' => '投票者',
         'invite' => '特定のメール宛に投票参加招待のメールを送信する場合は下記枠に入力してください',
@@ -103,6 +104,7 @@ return [
         'comment' => 'コメント',
         'enter_name' => '名前',
         'token_link' => 'トークンを入力してください',
+        'type_email' => 'Please enter type email...',
     ],
     'button' => [
         'search_poll' => '検索',
@@ -256,6 +258,7 @@ return [
         'error_occurs' => 'Có lỗi xảy ra trong quá trình xử lý',
         'success_comment' => 'Comment was successful',
         'fail_comment' => 'Comment fail',
+        'type_email_invalid' => 'Type of email was invalid',
     ],
     'mail' => [
         'label' => [
@@ -403,4 +406,5 @@ return [
     'action' => 'ビューの管理',
     'required' => '必須',
     'edit_link_admin_successfully' => '管理用のリンクが更新されました。',
+    'required_type_email' => 'Email must be have extension: :type',
 ];
