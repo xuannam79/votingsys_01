@@ -22,18 +22,19 @@ abstract class ApiController extends Controller
      * @param array $extra
      * @return \Illuminate\Http\JsonResponse
      */
-    public function trueJson($data = null, $extra = [])
+    public function trueJson($data = null, $extra = null)
     {
         $ex = ['error' => false];
 
         $status = API_RESPONSE_CODE_OK;
 
-        if (in_array('status', $extra)) {
-            $status = $extra['status'];
+        if (is_array($extra)) {
+            $status = in_array('status', $extra) ? $extra['status'] : $status;
+            $ex = array_merge($ex, $extra);
         }
 
-        if (is_array($extra)) {
-            $ex = array_merge($ex, $extra);
+        if (is_string($extra) || is_null($extra)) {
+            $ex = array_merge($ex, ['messages' => is_null($extra) ? [] : [$extra]]);
         }
 
         return $this->buildJson($status, $data, $ex);
@@ -53,7 +54,7 @@ abstract class ApiController extends Controller
             $errmsg = 'rescode_' . $errcode;
         }
 
-        $error = ['error' => true, 'message' => $errmsg];
+        $error = ['error' => true, 'messages' => [$errmsg]];
         $status = $errcode;
 
         if (!empty($extra)) {

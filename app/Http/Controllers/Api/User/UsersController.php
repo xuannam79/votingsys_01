@@ -41,7 +41,7 @@ class UsersController extends ApiController
             'name',
             'password',
             'gender',
-            'chatwork_id'
+            'chatwork_id',
         ]);
         $result = $this->userRepository->updateUser($data, Input::file('avatar'), $this->currentUser->id);
 
@@ -49,6 +49,6 @@ class UsersController extends ApiController
             return $this->falseJson(API_RESPONSE_CODE_UNPROCESSABLE, trans('messages.error.update_profile_error'));
         }
 
-        return $this->trueJson($result);
+        return $this->trueJson($result, trans('user.update_profile_successfully'));
     }
 }

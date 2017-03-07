@@ -31,7 +31,7 @@ class ParticipantController extends ApiController
         $poll = $link->poll->load('options.votes', 'options.participants', 'links');
 
         if ($this->pollRepository->resetVoted($poll)) {
-            return $this->trueJson(null, ['message' => trans('polls.delete_all_participants_successfully')]);
+            return $this->trueJson(null, trans('polls.delete_all_participants_successfully'));
         }
 
         return $this->falseJson(API_RESPONSE_CODE_UNPROCESSABLE, trans('polls.link_not_found'));
