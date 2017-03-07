@@ -37,7 +37,9 @@ class AuthController extends ApiController
 
         if ($user->is_active == config('settings.is_active')) {
             if (Auth::guard('web')->attempt($dataAttempt)) {
-                return $this->trueJson($passport->passwordGrantToken($dataAttempt));
+                $data = array_merge($passport->passwordGrantToken($dataAttempt), ['user' => Auth::user()]);
+
+                return $this->trueJson($data, trans('user.login_successfully'));
             }
 
             return $this->falseJson(API_RESPONSE_CODE_UNPROCESSABLE, trans('user.login_fail'));
@@ -56,7 +58,7 @@ class AuthController extends ApiController
         if ($this->currentUser) {
             $this->currentUser->token()->revoke();
 
-            return $this->trueJson([], ['message' => trans('user.logout_success')]);
+            return $this->trueJson([], trans('user.logout_success'));
         }
 
         return $this->falseJson(API_RESPONSE_CODE_UNPROCESSABLE, trans('user.logout_fail'));

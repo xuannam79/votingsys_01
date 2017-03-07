@@ -32,6 +32,6 @@ class CommentController extends ApiController
             return $this->falseJson(API_RESPONSE_CODE_UNPROCESSABLE, trans('polls.message_client.fail_comment'));
         }
 
-        return $this->trueJson($comment, ['message' => trans('polls.message_client.success_comment')]);
+        return $this->trueJson($comment, trans('polls.message_client.success_comment'));
     }
 }

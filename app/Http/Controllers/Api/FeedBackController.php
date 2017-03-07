@@ -17,6 +17,6 @@ class FeedBackController extends ApiController
             return $this->falseJson(API_RESPONSE_CODE_UNPROCESSABLE, config('settings.notification.danger'));
         }
 
-        return $this->trueJson(config('settings.notification.success'));
+        return $this->trueJson(null, config('settings.notification.success'));
     }
 }

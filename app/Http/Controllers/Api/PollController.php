@@ -61,7 +61,7 @@ class PollController extends ApiController
         ]);
 
         if ($data = $this->pollRepository->storePoll($input)) {
-            return $this->trueJson($data);
+            return $this->trueJson($data, trans('polls.message.create_success'));
         }
 
         return $this->falseJson(API_RESPONSE_CODE_INTER_SERVER_ERROR, trans('polls.message.create_fail'));
@@ -96,7 +96,7 @@ class PollController extends ApiController
 
                 // Save information poll
                 if ($this->pollRepository->editPoll($poll, $request->all())) {
-                    return $this->trueJson(null, ['message' => trans('polls.message.update_poll_info_success')]);
+                    return $this->trueJson(null, trans('polls.message.update_poll_info_success'));
                 }
 
                 return $this->falseJson(API_RESPONSE_CODE_UNPROCESSABLE, trans('polls.message.update_poll_info_fail'));
@@ -105,7 +105,7 @@ class PollController extends ApiController
 
                 // Save options of poll
                 if ($this->pollRepository->editOption($poll, $input)) {
-                    return $this->trueJson(null, ['message' => trans('polls.message.update_option_success')]);
+                    return $this->trueJson(null, trans('polls.message.update_option_success'));
                 }
 
                 return $this->falseJson(API_RESPONSE_CODE_UNPROCESSABLE, trans('polls.message.update_option_fail'));
@@ -118,7 +118,7 @@ class PollController extends ApiController
 
                 // Save settings of poll
                 if ($this->pollRepository->addSetting($poll, $input)) {
-                    return $this->trueJson(null, ['message' => trans('polls.message.update_setting_success')]);
+                    return $this->trueJson(null, trans('polls.message.update_setting_success'));
                 }
 
                 return $this->falseJson(API_RESPONSE_CODE_UNPROCESSABLE, trans('polls.message.update_setting_fail'));
@@ -148,10 +148,10 @@ class PollController extends ApiController
         }
 
         if ($poll->status) {
-            return $this->trueJson(null, ['message' => trans('polls.reopen_poll_successfully')]);
+            return $this->trueJson(null, trans('polls.reopen_poll_successfully'));
         }
 
-        return $this->trueJson(null, ['message' => trans('polls.close_poll_successfully')]);
+        return $this->trueJson(null, trans('polls.close_poll_successfully'));
     }
 
     public function getPollsOfUser()

@@ -37,6 +37,6 @@ class RegisterController extends ApiController
             return $this->falseJson(API_RESPONSE_CODE_INTER_SERVER_ERROR, trans('user.message.create_fail'));
         }
 
-        return $this->trueJson($user);
+        return $this->trueJson($user, trans('user.message.create_success'));
     }
 }
