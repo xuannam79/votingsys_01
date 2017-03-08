@@ -58,7 +58,7 @@ class AuthController extends ApiController
         if ($this->currentUser) {
             $this->currentUser->token()->revoke();
 
-            return $this->trueJson([], trans('user.logout_success'));
+            return $this->trueJson(new \stdClass, trans('user.logout_success'));
         }
 
         return $this->falseJson(API_RESPONSE_CODE_UNPROCESSABLE, trans('user.logout_fail'));

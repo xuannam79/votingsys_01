@@ -22,7 +22,9 @@ Route::group(['prefix' => 'v1', 'namespace' => 'Api'], function () {
     Route::post('login', 'Auth\AuthController@login');
     Route::get('loginSocial', 'User\SocialAccountsController@loginSocial');
 
-    Route::resource('poll', 'PollController', ['only' => ['update', 'destroy', 'store']]);
+    Route::resource('poll', 'PollController', ['only' => ['destroy', 'store']]);
+    Route::post('poll/update/{id}', 'PollController@update');
+
     Route::get('poll/{id}', 'PollController@getPollDetail');
 
     // Voting

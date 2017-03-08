@@ -82,7 +82,7 @@ class PollController extends ApiController
 
         if ($poll) {
             // Load eager loading
-            $poll->load('options', 'settings', 'user', 'activities');
+            $poll->load('options', 'settings', 'user', 'activities')->withoutAppends();
 
             if ($button == config('settings.btn_edit_poll.save_info')) {
                 // Validate edit information poll
@@ -96,7 +96,7 @@ class PollController extends ApiController
 
                 // Save information poll
                 if ($this->pollRepository->editPoll($poll, $request->all())) {
-                    return $this->trueJson(null, trans('polls.message.update_poll_info_success'));
+                    return $this->trueJson($poll, trans('polls.message.update_poll_info_success'));
                 }
 
                 return $this->falseJson(API_RESPONSE_CODE_UNPROCESSABLE, trans('polls.message.update_poll_info_fail'));
@@ -105,7 +105,7 @@ class PollController extends ApiController
 
                 // Save options of poll
                 if ($this->pollRepository->editOption($poll, $input)) {
-                    return $this->trueJson(null, trans('polls.message.update_option_success'));
+                    return $this->trueJson($poll, trans('polls.message.update_option_success'));
                 }
 
                 return $this->falseJson(API_RESPONSE_CODE_UNPROCESSABLE, trans('polls.message.update_option_fail'));
@@ -118,7 +118,7 @@ class PollController extends ApiController
 
                 // Save settings of poll
                 if ($this->pollRepository->addSetting($poll, $input)) {
-                    return $this->trueJson(null, trans('polls.message.update_setting_success'));
+                    return $this->trueJson($poll, trans('polls.message.update_setting_success'));
                 }
 
                 return $this->falseJson(API_RESPONSE_CODE_UNPROCESSABLE, trans('polls.message.update_setting_fail'));
