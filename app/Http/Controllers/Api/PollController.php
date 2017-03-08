@@ -154,6 +154,21 @@ class PollController extends ApiController
         return $this->trueJson(null, trans('polls.close_poll_successfully'));
     }
 
+    public function loadClosedPolls()
+    {
+        if (empty($this->currentUser)) {
+            return $this->falseJson(API_RESPONSE_CODE_NOT_FOUND, trans('polls.message.not_found_user'));
+        }
+
+        $closedPolls = $this->pollRepository->getClosedPolls($this->currentUser->id);
+
+        if (!$closedPolls) {
+            return $this->falseJson(API_RESPONSE_CODE_NOT_FOUND, trans('polls.message.get_closed_poll_error'));
+        }
+
+        return $this->trueJson($closedPolls);
+    }
+
     public function getPollsOfUser()
     {
         if (empty($this->currentUser)) {

@@ -304,6 +304,26 @@ class PollRepositoryEloquent extends AbstractRepositoryEloquent implements PollR
         return $poll = $this->model->with('links')->find($id);
     }
 
+    public function getClosedPolls($userId)
+    {
+        if (empty($userId)) {
+            return [];
+        }
+
+        $params = [
+            'user_id' => $userId,
+            'status' => config('settings.status.close'),
+        ];
+
+        $polls = $this->findWhere($params)->sortByDesc('id');
+
+        $polls = $polls->map(function ($poll) {
+            return $poll->withoutAppends()->load('activities');
+        });
+
+        return $polls;
+    }
+
     public function getSettingsPoll($poll)
     {
         $arrSetting = [];
@@ -364,7 +384,19 @@ class PollRepositoryEloquent extends AbstractRepositoryEloquent implements PollR
 
     public function getPollsOfUser($userId)
     {
-        return $this->model->with('links', 'settings', 'options')->where('user_id', $userId)->get();
+        if (empty($userId)) {
+            return [];
+        }
+
+        $polls = $this->findWhere([
+            'user_id' => $userId
+        ])->sortByDesc('id');
+
+        $polls = $polls->map(function ($poll) {
+            return $poll->withoutAppends()->load('activities');
+        });
+
+        return $polls;
     }
 
     public function closeOrOpen($poll)
