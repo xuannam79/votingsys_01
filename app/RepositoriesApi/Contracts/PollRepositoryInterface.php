@@ -25,4 +25,6 @@ interface PollRepositoryInterface
     public function comment($poll, $input);
 
     public function resultsVoted($poll);
+
+    public function getClosedPolls($userId);
 }

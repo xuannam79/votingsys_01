@@ -50,5 +50,6 @@ Route::group(['prefix' => 'v1', 'namespace' => 'Api'], function () {
         Route::resource('user', 'User\UsersController');
         Route::post('updateProfile', 'User\UsersController@updateProfile');
         Route::get('getPollsOfUser', 'PollController@getPollsOfUser');
+        Route::get('getClosedPolls', 'PollController@loadClosedPolls');
     });
 });
