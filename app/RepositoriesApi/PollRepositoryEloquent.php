@@ -438,4 +438,25 @@ class PollRepositoryEloquent extends AbstractRepositoryEloquent implements PollR
             return false;
         }
     }
+
+    public function resultsVoted($poll)
+    {
+        try {
+            $data['results'] = collect([]);
+
+            $poll->load('options.participantVotes', 'options.votes');
+
+            foreach ($poll->options as $option) {
+                $data['results']->push([
+                    'name' => $option->name,
+                    'image' => $option->showImage(),
+                    'voters' => $option->countVotes(),
+                ]);
+            }
+
+            return $data;
+        } catch (Exception $e) {
+            return false;
+        }
+    }
 }

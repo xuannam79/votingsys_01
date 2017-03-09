@@ -40,6 +40,9 @@ Route::group(['prefix' => 'v1', 'namespace' => 'Api'], function () {
     // Comment Poll
     Route::post('poll/comment', 'CommentController@store');
 
+    //Result Voted
+    Route::get('poll/result/{token}', 'ResultController@show');
+
     Route::group(['middleware' => 'auth:api'], function () {
         Route::post('logout', 'Auth\AuthController@logout');
         Route::resource('user', 'User\UsersController');
