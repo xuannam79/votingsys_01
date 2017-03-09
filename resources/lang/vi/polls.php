@@ -155,6 +155,7 @@ return [
         'no_poll_create' => 'Bạn chưa tạo poll nào.',
         'no_poll_participant' => 'Bạn chưa tham gia poll nào.',
         'no_poll_close' => 'Bạn chưa đóng poll nào.',
+        'duplicate_poll_error' => 'Sao chép poll lỗi',
     ],
     'validation' => [
         'name' => [

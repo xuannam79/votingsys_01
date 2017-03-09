@@ -168,4 +168,22 @@ class PollController extends ApiController
 
         return $this->trueJson($polls);
     }
+
+    public function duplicatePoll(Request $request)
+    {
+        $input = $request->only(
+            'title', 'location', 'description', 'name', 'email', 'chatwork_id', 'type', 'closingTime',
+            'optionText', 'optionImage', 'oldImage', 'optionOldImage',
+            'setting', 'value', 'setting_child',
+            'member'
+        );
+        $input['page'] = 'duplicate';
+        $data = $this->pollRepository->store($input);
+
+        if (!$data) {
+            return $this->falseJson(API_RESPONSE_CODE_UNPROCESSABLE, trans('polls.message.duplicate_poll_error'));
+        }
+
+        return $this->trueJson($data);
+    }
 }
