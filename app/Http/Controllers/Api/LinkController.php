@@ -24,7 +24,7 @@ class LinkController extends ApiController
                 return $this->falseJson(API_RESPONSE_CODE_UNPROCESSABLE, trans('polls.message_poll_closed'));
             }
 
-            $poll->load('user', 'settings', 'options', 'comments');
+            $poll->load('user', 'settings', 'options', 'comments', 'links');
 
             $data = [
                 'poll' => $poll,

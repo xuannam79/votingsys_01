@@ -23,4 +23,6 @@ interface PollRepositoryInterface
     public function resetVoted($poll);
 
     public function comment($poll, $input);
+
+    public function resultsVoted($poll);
 }
