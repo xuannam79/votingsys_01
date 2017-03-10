@@ -266,15 +266,8 @@
                             <div class="panel panel-default panel-vote-option">
                                 <div class="panel-body panel-body-vote-option">
                                     <div class="col-lg-12">
-                                        <h4>{{ $poll->title }}
-                                            @if ($poll->description)
-                                                <span>
-                                                    <a href="#" data-placement="right" data-toggle="tooltip" title="{{ $poll->description }}">
-                                                        <i class="fa fa-info-circle" aria-hidden="true"></i>
-                                                    </a>
-                                                </span>
-                                            @endif
-                                        </h4>
+                                        <h4>{{ $poll->title }}</h4>
+                                        <p class="description-poll">{!! cleanText($poll->description) !!}</p>
                                         <label class="poll-count">
                                             <span class="label label-primary glyphicon glyphicon-user poll-details">
                                                 <span class="count-participant">{{ $countParticipantsVoted }}</span>
@@ -567,16 +560,8 @@
                             <div class="panel-body panel-body-vote-option">
                             <!-- POLL INFO -->
                                 <div class="col-lg-12 poll-info">
-                                    <h4>
-                                        {{ $poll->title }}
-                                        @if ($poll->description)
-                                            <span>
-                                                <a href="#" data-placement="right" data-toggle="tooltip" title="{{ $poll->description }}">
-                                                    <i class="fa fa-info-circle" aria-hidden="true"></i>
-                                                </a>
-                                            </span>
-                                        @endif
-                                    </h4>
+                                    <h4>{{ $poll->title }}</h4>
+                                    <p class="description-poll">{!! cleanText($poll->description) !!}</p>
                                     <p class="poll-info-not-xs">
                                         <span class="span-info">
                                             <i class="fa fa-clock-o" aria-hidden="true"></i> {{ $poll->created_at }}

@@ -45,7 +45,7 @@
                 <div class="voter-avatar">
                     <div class="hidden-counter"
                         data-url-modal-voter="{{ action('User\VoteController@getModalOptionVoters', $option->id) }}">
-                        <span>{{ $option->countVotes() > config('settings.limit_voters_option') }}</span>
+                        <span>{{ $option->countVotes() - config('settings.limit_voters_option') }}</span>
                     </div>
                 </div>
             @endif

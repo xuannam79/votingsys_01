@@ -72,6 +72,13 @@ $(document).ready(function(){
             $('.comment-count').html(parseInt(commentCount) + 1);
             $('#content' + pollId).val('');
         }
+
+        var scrollHeight = $('.comments').prop('scrollHeight');
+        if (scrollHeight > 300) {
+            $('.comments').animate({
+                    scrollTop: scrollHeight
+            }, 1000);
+        }
     });
 
     //socket close poll
