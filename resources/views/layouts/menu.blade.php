@@ -65,7 +65,7 @@
                         </form>
                     </li>
                 @endif
-                <li>
+                <li class="native">
                     <div class="hide_language" data-route="{{ url('language') }}" data-token="{{ csrf_token() }}"></div>
                     <div class="multiple-lang">
                         <select name="lang" id="countries" class="form-control btn-multiple-language">

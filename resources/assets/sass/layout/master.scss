@@ -10,7 +10,7 @@
 .navbar-default .navbar-nav > .active > a, .navbar-default .navbar-nav > .active >
 a:hover, .navbar-default .navbar-nav > .active > a:focus {
   color: white; /*BACKGROUND color for active*/
-  background: #ff8d00 !important
+  background: #007272 !important
 }
 
 .navbar-default {
@@ -27,29 +27,38 @@ a:hover, .navbar-default .navbar-nav > .active > a:focus {
 }
 
 .nav > li > a {
-  transition: all ease 0.5s;
-  -moz-transition: all ease 0.5s;
-  -webkit-transition: all ease 0.5s;
-  -o-transition: all ease 0.5s;
+  transition: all .15s ease-in-out;
+  -moz-transition: all .15s ease-in-out;
+  -webkit-transition: all .15s ease-in-out;
+  -o-transition: all .15s ease-in-out;
   position: relative;
 }
 
-.nav > li > a::after {
-  content: '';
-  display: block;
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  height: 5px;
-  width: 0;
-  background: transparent;
-  transition: width .5s ease, background-color .5s ease, left .5s ease;
+.navbar {
+  height: 50px;
+  @media screen and (max-width: 768px) {
+    height: auto;
+  }
 }
 
-.nav-menu > li > a:hover::after {
-  width: 100%;
-  left: 0;
-  background: #EE7600;
+.nav-menu > li {
+  height: 50px;
+  overflow: hidden;
+}
+
+.nav-menu > li > a {
+  height: 55px;
+  border-bottom: 5px solid #EE7600;
+}
+
+.nav-menu > li > a:hover {
+  height: 50px;
+  cursor: pointer;
+  font-weight: 400;
+}
+
+.native {
+  overflow: inherit !important;
 }
 
 .voting>li>a:focus, .voting>li>a:hover {

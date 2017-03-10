@@ -15,6 +15,19 @@ class Comment extends Model
         'content',
     ];
 
+    protected $appends = ['avatar'];
+
+    protected $hidden = ['user'];
+
+    public function getAvatarAttribute()
+    {
+        if ($this->user) {
+            return $this->attributes['avatar'] = $this->user->getAvatarPath();
+        }
+
+        return $this->attributes['avatar'] = $this->showDefaultAvatar();
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class);

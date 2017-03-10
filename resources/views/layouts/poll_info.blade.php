@@ -88,7 +88,7 @@
             'class' => 'form-control',
             'id' => 'description',
             'placeholder' => trans('polls.placeholder.description'),
-            'rows' => 2,
+            'rows' => 5,
         ])
     }}
 </div>
