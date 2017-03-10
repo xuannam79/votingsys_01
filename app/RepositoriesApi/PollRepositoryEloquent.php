@@ -3,6 +3,7 @@
 namespace App\RepositoriesApi;
 
 use App\Models\Poll;
+use App\Models\Vote;
 use App\RepositoriesApi\Contracts\PollRepositoryInterface;
 use App\Mail\InviteParticipant;
 use App\Mail\CreatePoll;
@@ -397,6 +398,34 @@ class PollRepositoryEloquent extends AbstractRepositoryEloquent implements PollR
         });
 
         return $polls;
+    }
+
+    public function getParticipatedPolls($currentUser)
+    {
+        try {
+            $listPollIds = [];
+            $votes = Vote::where('user_id', $currentUser->id)->with('option.poll')->get();
+
+            foreach ($votes as $vote) {
+                if ($vote->option->poll) {
+                    $listPollIds[] = $vote->option->poll->id;
+                }
+            }
+
+            $participantPolls = $this->findWhereIn('id', array_unique($listPollIds))->sortByDesc('id');
+
+            foreach ($currentUser->participantVotes as $participantVote) {
+                $participantPolls->push($participantVote->option->poll);
+            }
+
+            $participantPolls = $participantPolls->map(function ($poll) {
+                return $poll->withoutAppends()->load('activities');
+            });
+
+            return $participantPolls->unique();
+        } catch (Exception $e) {
+            return false;
+        }
     }
 
     public function closeOrOpen($poll)

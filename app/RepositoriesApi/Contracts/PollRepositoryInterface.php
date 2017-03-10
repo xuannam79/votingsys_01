@@ -27,4 +27,6 @@ interface PollRepositoryInterface
     public function resultsVoted($poll);
 
     public function getClosedPolls($userId);
+
+    public function getParticipatedPolls($currentUser);
 }
