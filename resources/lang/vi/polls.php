@@ -414,4 +414,5 @@ return [
     'message_poll_time_out' => 'Xin lỗi, poll này đã hết thời gian bầu chọn, bạn không thể bầu chọn poll này',
     'link' => 'Link',
     'required_type_email' => 'Bầu chọn này chỉ cho phép email: :type',
+    'only_one_voted' => 'Bầu chọn không hợp lệ! Bạn chỉ chọn được một bầu chọn duy nhất',
 ];

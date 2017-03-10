@@ -407,4 +407,5 @@ return [
     'required' => '必須',
     'edit_link_admin_successfully' => '管理用のリンクが更新されました。',
     'required_type_email' => 'Email must be have extension: :type',
+    'only_one_voted' => 'You must choose only voted once',
 ];

@@ -41,10 +41,9 @@ class PollRepositoryEloquent extends AbstractRepositoryEloquent implements PollR
                 return false;
             }
 
-            $poll->load('settings', 'links', 'user');
-
             $settings = $this->addSetting($poll, $input);
 
+            $poll->load('settings', 'links', 'user');
             /*
              * Send mail participant
              */
