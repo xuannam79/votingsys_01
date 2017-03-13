@@ -108,7 +108,7 @@
                                     isset($page, $setting[$settingAddTypeEmail])
                                     && array_key_exists(config('settings.setting.required_email'), $setting) ? $setting[$settingAddTypeEmail] : null, [
                                     'class' => 'form-control tags-email',
-                                    'placeholder' => trans('polls.placeholder.email_participant'),
+                                    'placeholder' => trans('polls.placeholder.type_email'),
                                     'data-role' => 'tagsinput',
                                 ]) }}
                             </div>

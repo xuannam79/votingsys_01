@@ -1458,7 +1458,7 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
 
     public function checkIfEmailVoterExist($input)
     {
-        $poll = $this->model->find($input['idPoll']);
+        $poll = $this->model->find($input['pollId']);
         $emailVote = $input['emailVote'];
 
         if ($poll) {

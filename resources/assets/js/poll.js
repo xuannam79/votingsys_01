@@ -1181,11 +1181,11 @@ $(document).ready(function () {
     });
 
     $('.tab-content').on('itemAdded', '.add-type-email:visible .tags-email', function (event) {
-        var parttern = /^[A-Z0-9-]+\.+[A-Z]{2,4}$/i;
+        var pattern = /^[A-Z0-9-]+(\.+([A-Z]+)){1,4}$/i;
         var typeEmail = event.item;
         var domError = $(this).parent().next();
 
-        if (!parttern.test(typeEmail)) {
+        if (!pattern.test(typeEmail)) {
             $(this).tagsinput('remove', typeEmail);
             domError.addClass('has-error')
                 .html('<span id="title-error" class="help-block">' + pollData.message.type_email_invalid + ': ' + typeEmail +'</span>');

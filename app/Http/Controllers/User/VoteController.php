@@ -17,6 +17,7 @@ use App\Repositories\ParticipantVote\ParticipantVoteRepositoryInterface;
 use App\Repositories\Participant\ParticipantRepositoryInterface;
 use App\Repositories\User\UserRepositoryInterface;
 use Exception;
+use App\Http\Requests\VoteRequest;
 
 class VoteController extends Controller
 {
@@ -44,7 +45,7 @@ class VoteController extends Controller
         $this->userRepository = $userRepository;
     }
 
-    public function store(Request $request)
+    public function store(VoteRequest $request)
     {
         //get MAC address of Client
         $client  = @$_SERVER['HTTP_CLIENT_IP'];
@@ -65,6 +66,9 @@ class VoteController extends Controller
         $isSetIp = false;
         $voteLimit = null;
         $isRequiredEmail = false;
+        $isRequiredEmailName = false;
+        $isRequiredName = false;
+        $isNotSameEmail = false;
         $isLimit = false;
         $isAllowAddOption = false;
 
@@ -87,6 +91,18 @@ class VoteController extends Controller
                 $isRequiredEmail = true;
             }
 
+            if (collect($listSettings)->contains(config('settings.setting.required_name_and_email'))) {
+                $isRequiredEmailName = true;
+            }
+
+            if (collect($listSettings)->contains(config('settings.setting.required_name'))) {
+                $isRequiredName = true;
+            }
+
+            if (collect($listSettings)->contains(config('settings.setting.not_same_email'))) {
+                $isNotSameEmail = true;
+            }
+
             if (collect($listSettings)->contains(config('settings.setting.allow_add_option'))) {
                 $isAllowAddOption = true;
             }
@@ -103,10 +119,53 @@ class VoteController extends Controller
             $inputs['option'][] = $idNewOption;
         }
 
+
+        // Check condition to vote
+
         $now = Carbon::now();
         if ($isLimit || $poll->isClosed() || !$inputs['option']
             || Carbon::now()->toAtomString() > Carbon::parse($poll->date_close)->toAtomString() || strlen($inputs['nameVote']) >= config('settings.length_poll.name')) {
             return redirect()->to($poll->getUserLink());
+        }
+
+        // check setting's poll have require input name
+        if ($isRequiredName && !$inputs['nameVote']) {
+            flash(trans('polls.message_validate_name'), config('settings.notification.danger'));
+
+            return back();
+        }
+
+        // check setting's poll have require input email
+        if ($isRequiredEmail && !$inputs['emailVote']) {
+            flash(trans('polls.message_required_email'), config('settings.notification.danger'));
+
+            return back();
+        }
+
+        // check setting's poll have require input name and email
+        if ($isRequiredEmailName && !$inputs['emailVote'] && !$inputs['nameVote']) {
+            flash(trans('polls.message_validate_name_and_email'), config('settings.notification.danger'));
+
+            return back();
+        }
+
+        // Check same email when vote if have setting not the same email
+        if ($isNotSameEmail && $this->pollRepository->checkIfEmailVoterExist($inputs)) {
+            flash(trans('polls.message_client.email_exists'), config('settings.notification.danger'));
+
+            return back();
+        }
+
+        if ($poll->multiple == trans('polls.label.single_choice') && count($inputs['option']) > 1) {
+            flash(trans('polls.only_one_voted'), config('settings.notification.danger'));
+
+            return back();
+        }
+
+        if ($isAllowAddOption && !$inputs['newOption']) {
+            flash(trans('polls.message_client.option_required'), config('settings.notification.danger'));
+
+            return back();
         }
 
         //user vote poll

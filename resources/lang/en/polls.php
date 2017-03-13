@@ -415,4 +415,5 @@ return [
     'poll_voted' => 'This poll have been voted. You can\'t edit option of it',
     'link' => 'Link',
     'required_type_email' => 'Email must be have extension: :type',
+    'only_one_voted' => 'You must choose only voted once',
 ];

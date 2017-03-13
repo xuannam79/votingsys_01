@@ -19,6 +19,7 @@
     <meta property="og:image" content="{{ asset('/uploads/images/vote.png') }}" />
 @endsection
 @section('content')
+
     <!-- START: Frame Upload Image By Link Or Upload File-->
     <div class="modal fade" tabindex="-1" role="dialog" id="frame-upload-image">
         <div class="modal-dialog" role="document">
@@ -201,6 +202,7 @@
         <div class="row">
             <div class="loader"></div>
             @include('noty.message')
+            @include('errors.errors')
             <div id="voting_wizard" class="col-lg-10 col-lg-offset-1
                                             col-md-10 col-md-offset-1
                                             col-sm-10 col-sm-offset-1

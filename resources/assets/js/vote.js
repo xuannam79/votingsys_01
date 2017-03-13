@@ -83,7 +83,7 @@ $(document).ready(function(){
 
                         // Check email exist if propety require email
                         if (isNotTheSameEmail) {
-                            var status = $.xResponse(urlCheckExistEmail, {idPoll: idPoll, emailVote: emailVote});
+                            var status = $.xResponse(urlCheckExistEmail, {pollId: idPoll, emailVote: emailVote});
 
                             if (status) {
                                 showMessage(data.messageEmailExists, data.messageErrorOccurs);
@@ -195,7 +195,7 @@ $(document).ready(function(){
 
                         // Check email exist if propety require email
                         if (isNotTheSameEmail) {
-                            var status = $.xResponse(urlCheckExistEmail, {idPoll: idPoll, emailVote: emailVote});
+                            var status = $.xResponse(urlCheckExistEmail, {pollId: idPoll, emailVote: emailVote});
 
                             if (status) {
                                 showMessage(data.messageEmailExists, data.messageErrorOccurs);
@@ -290,7 +290,7 @@ $(document).ready(function(){
             if (isPassValidate) {
                 // Check email exist if propety require email
                 if (isNotTheSameEmail) {
-                    var status = $.xResponse(urlCheckExistEmail, {idPoll: idPoll, emailVote: emailVote});
+                    var status = $.xResponse(urlCheckExistEmail, {pollId: idPoll, emailVote: emailVote});
 
                     if (status) {
                         showMessage(data.messageEmailExists, data.messageErrorOccurs);
