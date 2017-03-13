@@ -184,6 +184,21 @@ class PollController extends ApiController
         return $this->trueJson($polls);
     }
 
+    public function getParticipantedPolls()
+    {
+        if (empty($this->currentUser)) {
+            return $this->falseJson(API_RESPONSE_CODE_NOT_FOUND, trans('polls.message.not_found_user'));
+        }
+
+        $participatedPolls = $this->pollRepository->getParticipatedPolls($this->currentUser);
+
+        if (!$participatedPolls) {
+            return $this->falseJson(API_RESPONSE_CODE_UNPROCESSABLE, trans('polls.message.get_participated_polls_error'));
+        }
+
+        return $this->trueJson($participatedPolls);
+    }
+
     public function duplicatePoll(Request $request)
     {
         $input = $request->only(

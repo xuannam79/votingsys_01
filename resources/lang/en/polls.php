@@ -157,6 +157,7 @@ return [
         'not_found_user' => 'Not found User',
         'duplicate_poll_error' => 'Duplicate poll error',
         'get_closed_poll_error' => 'Get closed poll error',
+        'get_participated_polls_error' => 'Get Participated Polls Error',
     ],
     'validation' => [
         'name' => [

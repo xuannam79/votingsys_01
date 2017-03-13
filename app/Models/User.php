@@ -13,6 +13,7 @@ use App\Models\Activity;
 use App\Models\Vote;
 use Laravel\Passport\HasApiTokens;
 use App\Models\Option;
+use App\Models\ParticipantVote;
 
 class User extends Authenticatable
 {
@@ -74,6 +75,11 @@ class User extends Authenticatable
     public function votes()
     {
         return $this->hasMany(Vote::class);
+    }
+
+    public function participantVotes()
+    {
+        return $this->hasManyThrough(ParticipantVote::class, Participant::class);
     }
 
     public function setPasswordAttribute($value)

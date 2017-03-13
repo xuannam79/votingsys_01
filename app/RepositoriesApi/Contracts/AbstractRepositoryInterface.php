@@ -18,6 +18,8 @@ interface AbstractRepositoryInterface
 
     public function findWhere($array = [], $column = ['*']);
 
+    public function findWhereIn($field, $array = [], $column = ['*']);
+
     public function paginate($limit);
 
     public function create($inputs = []);
