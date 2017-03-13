@@ -45,6 +45,9 @@ Route::group(['prefix' => 'v1', 'namespace' => 'Api'], function () {
 
     Route::post('duplicatePoll', 'DuplicateController@store');
 
+    // Reset Password
+    Route::post('password/reset', 'Auth\ForgotPasswordController@sendResetLinkEmail');
+
     Route::group(['middleware' => 'auth:api'], function () {
         Route::post('logout', 'Auth\AuthController@logout');
         Route::resource('user', 'User\UsersController');
