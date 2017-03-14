@@ -302,7 +302,7 @@ class Poll extends Model
 
         $callback = function ($model) {
             foreach ($model->attributes as $key => $value) {
-                if ($key != 'status') {
+                if ($key != 'status' && $key != 'multiple') {
                     $model->{$key} = (string) $value == '' ? null : $value;
                 }
             }

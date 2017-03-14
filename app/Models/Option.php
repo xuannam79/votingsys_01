@@ -15,6 +15,10 @@ class Option extends Model
         'image',
     ];
 
+    protected $hidden = ['image', 'votes', 'participantVotes'];
+
+    protected $appends = ['url_image'];
+
     public function poll()
     {
         return $this->belongsTo(Poll::class);
@@ -83,5 +87,20 @@ class Option extends Model
     public function participants()
     {
         return $this->belongsToMany(Participant::class, 'participant_votes')->withTimestamps();
+    }
+
+    public function getUrlImageAttribute()
+    {
+        $image = $this->attributes['image'];
+
+        if (!isset($image)) {
+            return $this->attributes['url_image'] = $image;
+        }
+
+        if (strpos($image, 'default')) {
+            return $this->attributes['url_image'] = asset(config('settings.option.path_image_default'));
+        }
+
+        return $this->attributes['url_image'] = asset(config('settings.option.path_image'). $image);
     }
 }
