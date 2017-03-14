@@ -16,6 +16,8 @@ class Participant extends Model
         'ip_address',
     ];
 
+    protected $hidden = ['pivot'];
+
     public function user()
     {
         return $this->belongsTo(User::class);

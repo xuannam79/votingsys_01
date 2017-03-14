@@ -44,7 +44,9 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'password',
+        'remember_token',
+        'pivot',
     ];
 
     public function polls()
@@ -139,5 +141,14 @@ class User extends Authenticatable
     public function options()
     {
         return $this->belongsToMany(Option::class, 'votes')->withTimestamps();
+    }
+
+    public function getAvatarAttribute()
+    {
+        $avatar = $this->attributes['avatar'];
+
+        return $this->attributes['avatar'] = preg_match('#^(http)|(https).*$#', $avatar)
+            ? $avatar
+            : asset('/' . config('settings.avatar_path') . '/' . $avatar);
     }
 }

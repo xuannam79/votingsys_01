@@ -723,4 +723,51 @@ class PollRepositoryEloquent extends AbstractRepositoryEloquent implements PollR
 
         return $imageNames;
     }
+
+    public function sendMailAgain($poll)
+    {
+        try {
+            $poll->load('links', 'settings', 'user');
+
+            $email = $poll->user_id ? $poll->user->email : $poll->email;
+
+            // Get link of poll
+            $links = $poll->links->reduce(function ($lookup, $link) {
+                $lookup[$link->link_admin] = $link->token;
+
+                return $lookup;
+            }, []);
+
+            // Get settings
+            $settings = $poll->settings->reduce(function ($settingLookup, $setting) {
+                $settingLookup[$setting->key] = $setting->value;
+
+                return $settingLookup;
+            }, []);
+
+            $data = [
+                'userName' => $poll->user_id ? $poll->user->name : $poll->name,
+                'title' => $poll->title,
+                'type' => $poll->multiple,
+                'location' => $poll->location,
+                'description' => $poll->description,
+                'closeDate' => $poll->date_close,
+                'createdAt' => $poll->created_at,
+                'linkVote' => action('LinkController@show', ['token' => $links[config('settings.link_poll.vote')]]),
+                'linkAdmin' => action('LinkController@show', ['token' => $links[config('settings.link_poll.admin')]]),
+                'password' => isset($settings[config('settings.setting.set_password')])
+                    ? $settings[config('settings.setting.set_password')] : null,
+            ];
+
+            $creatorView = config('settings.view.poll_mail');
+
+            $subject = trans('label.mail.create_poll.subject');
+
+            $this->sendEmail($email, $creatorView, $data, $subject);
+
+            return $poll->withoutAppends();
+        } catch (Exception $e) {
+            return false;
+        }
+    }
 }
