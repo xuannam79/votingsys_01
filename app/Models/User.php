@@ -84,7 +84,7 @@ class User extends Authenticatable
 
     public function setPasswordAttribute($value)
     {
-        $this->attributes['password'] = bcrypt($value);
+        $this->attributes['password'] = \Hash::needsRehash($value) ? bcrypt($value) : $value;
     }
 
     public function getAvatarPath()

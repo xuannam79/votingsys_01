@@ -22,3 +22,5 @@ define('MAX_MEMBER_GROUP', 5);
 
 // Max length string token
 define('MAX_LENGTH_TOKEN', 60);
+
+define('RESET_LINK_SENT', 'passwords.sent');
