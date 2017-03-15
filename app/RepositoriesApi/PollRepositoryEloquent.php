@@ -315,7 +315,7 @@ class PollRepositoryEloquent extends AbstractRepositoryEloquent implements PollR
             'status' => config('settings.status.close'),
         ];
 
-        $polls = $this->findWhere($params)->sortByDesc('id');
+        $polls = $this->model->where($params)->orderBy('id', 'desc')->get();
 
         $polls = $polls->map(function ($poll) {
             return $poll->withoutAppends()->load('activities');
@@ -388,10 +388,9 @@ class PollRepositoryEloquent extends AbstractRepositoryEloquent implements PollR
             return [];
         }
 
-        $polls = $this->findWhere([
+        $polls = $this->model->where([
             'user_id' => $userId
-        ])->sortByDesc('id');
-
+        ])->orderBy('id', 'desc')->get();
         $polls = $polls->map(function ($poll) {
             return $poll->withoutAppends()->load('activities');
         });
@@ -411,7 +410,7 @@ class PollRepositoryEloquent extends AbstractRepositoryEloquent implements PollR
                 }
             }
 
-            $participantPolls = $this->findWhereIn('id', array_unique($listPollIds))->sortByDesc('id');
+            $participantPolls = $this->model->whereIn('id', array_unique($listPollIds))->orderBy('id', 'desc')->get();
 
             foreach ($currentUser->participantVotes as $participantVote) {
                 $participantPolls->push($participantVote->option->poll);
