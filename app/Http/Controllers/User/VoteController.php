@@ -112,19 +112,13 @@ class VoteController extends Controller
             $isLimit = true;
         }
 
-        //Add New Option and Get Id New Option
-        if ($isAllowAddOption && $inputs['newOption']) {
-            $newOption = $this->pollRepository->addOption($inputs, $inputs['pollId'], true);
-            $idNewOption = $newOption[0]->id;
-            $inputs['option'][] = $idNewOption;
-        }
-
-
         // Check condition to vote
-
         $now = Carbon::now();
-        if ($isLimit || $poll->isClosed() || !$inputs['option']
-            || Carbon::now()->toAtomString() > Carbon::parse($poll->date_close)->toAtomString() || strlen($inputs['nameVote']) >= config('settings.length_poll.name')) {
+        if ($isLimit || $poll->isClosed()
+            || (!$inputs['option'] && !$inputs['newOption'])
+            || Carbon::now()->toAtomString() > Carbon::parse($poll->date_close)->toAtomString()
+            || strlen($inputs['nameVote']) >= config('settings.length_poll.name')
+        ) {
             return redirect()->to($poll->getUserLink());
         }
 
@@ -162,10 +156,21 @@ class VoteController extends Controller
             return back();
         }
 
-        if ($isAllowAddOption && !$inputs['newOption']) {
+        $inputs['optionText'] = array_filter($inputs['optionText'], function ($v) {
+            return $v != '';
+        });
+
+        if ($isAllowAddOption && !$inputs['optionText'] && !count($inputs['option'])) {
             flash(trans('polls.message_client.option_required'), config('settings.notification.danger'));
 
             return back();
+        }
+
+        //Add New Option and Get Id New Option
+        if ($isAllowAddOption && $inputs['newOption']) {
+            $newOption = $this->pollRepository->addOption($inputs, $inputs['pollId'], true);
+            $idNewOption = $newOption[0]->id;
+            $inputs['option'][] = $idNewOption;
         }
 
         //user vote poll
