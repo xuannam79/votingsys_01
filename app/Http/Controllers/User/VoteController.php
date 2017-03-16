@@ -156,11 +156,13 @@ class VoteController extends Controller
             return back();
         }
 
-        $inputs['optionText'] = array_filter($inputs['optionText'], function ($v) {
-            return $v != '';
-        });
+        if (!empty($inputs['optionText'])) {
+            $inputs['optionText'] = array_filter($inputs['optionText'], function ($v) {
+                return $v != '';
+            });
+        }
 
-        if ($isAllowAddOption && !$inputs['optionText'] && !count($inputs['option'])) {
+        if ($isAllowAddOption && empty($inputs['optionText']) && empty($inputs['option'])) {
             flash(trans('polls.message_client.option_required'), config('settings.notification.danger'));
 
             return back();
