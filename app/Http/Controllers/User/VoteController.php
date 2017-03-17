@@ -169,7 +169,7 @@ class VoteController extends Controller
         }
 
         //Add New Option and Get Id New Option
-        if ($isAllowAddOption && $inputs['newOption']) {
+        if ($isAllowAddOption && !empty($inputs['newOption']) && !empty($inputs['optionText'])) {
             $newOption = $this->pollRepository->addOption($inputs, $inputs['pollId'], true);
             $idNewOption = $newOption[0]->id;
             $inputs['option'][] = $idNewOption;
