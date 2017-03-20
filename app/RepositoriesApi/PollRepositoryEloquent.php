@@ -799,7 +799,7 @@ class PollRepositoryEloquent extends AbstractRepositoryEloquent implements PollR
             unset($result['id']);
 
             return $result;
-        });
+        })->values();
 
         return [
             'options' => $options,
