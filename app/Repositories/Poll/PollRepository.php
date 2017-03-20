@@ -212,6 +212,8 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
                 $settingPollConfig['custom_link'] => $pollTrans['setting']['custom_link'],
                 $settingPollConfig['set_limit'] => $pollTrans['setting']['set_limit'],
                 $settingPollConfig['set_password'] => $pollTrans['setting']['set_password'],
+            ],
+            'configOptions' => [
                 $settingPollConfig['allow_add_option'] => $pollTrans['setting']['allow_new_option'],
                 $settingPollConfig['allow_edit_vote_of_poll'] => $pollTrans['setting']['allow_edit_vote_of_poll'],
             ],
@@ -793,6 +795,23 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
         $pollId = $id;
         $now = Carbon::now();
         $options = [];
+
+        $settings = $poll->settings->filter(function ($setting) {
+            return ($setting->key == config('settings.setting.allow_add_option')
+                    || $setting->key == config('settings.setting.allow_edit_vote_of_poll'));
+        })->each(function ($item) {
+            $item->delete();
+        });
+
+        if (count($input['setting']) && $settings->isEmpty()) {
+            $getData = function ($value) {
+                return ['key' => $value];
+            };
+
+            $data = array_map($getData, $input['setting']);
+
+            $poll->settings()->createMany(array_values($data));
+        }
 
         try {
             $oldOptions = $poll->options;
@@ -1666,6 +1685,7 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
                 $data['hours'][] = [
                     'hour' => $hour,
                     'id' => $option->id,
+                    'counter' => empty($voters) ? count($option->listVoter()) : count($voters),
                 ];
 
                 continue;
@@ -1675,6 +1695,7 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
             $data['text'][] = [
                 'text' => $option->name,
                 'id' => $option->id,
+                'counter' => empty($voters) ? count($option->listVoter()) : count($voters),
             ];
             $countText++;
         }
@@ -1690,6 +1711,13 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
         if ($countNotHour && $countNotHour == $options->count() - $countText) {
                 $data['notHour'] = true;
         }
+
+        // List Id option sort by
+        $data['id'] = array_reduce(array_merge($data['hours'], $data['text']), function ($carry, $data) {
+            $carry[$data['id']]= $data['counter'];
+
+            return $carry;
+        });
 
         return $data;
     }

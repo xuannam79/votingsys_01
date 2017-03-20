@@ -154,6 +154,23 @@
                                 {{ trans('polls.label.step_2') }}
                             </div>
                             <div class="panel-body">
+                                @foreach ($data['viewData']['configOptions'] as $key => $text)
+                                    <label class="config-option">
+                                        {!!
+                                            Form::checkbox('setting[' . $key . ']', $key,
+                                            (isset($page)
+                                            && ($page == 'edit' || $page == 'duplicate')
+                                            && array_key_exists($key, $setting)) ? true : null, [
+                                                'onchange' => 'settingAdvance(' . $key . ')',
+                                                'class' => 'switch-checkbox-setting config-option',
+                                            ])
+                                        !!}
+                                        <span class='span-text-setting'>{{ $text }}</span>
+                                    </label>
+                                    @if ($loop->first)
+                                        <br>
+                                    @endif
+                                @endforeach
                                 @include('layouts.poll_options')
                             </div>
                         </div>

@@ -11,11 +11,28 @@
 @endif
 
 <!-- ERROR OPTION -->
-<div class="col-lg-12 form-group">
+<div class="col-lg-12 form-group box-error-create">
     <div class="error_option"></div>
 </div>
 
 @if ((isset($page) && ($page == 'edit' || $page == 'duplicate')))
+    @foreach ($data['viewData']['configOptions'] as $key => $text)
+        <label class="config-option-edit">
+            {!!
+                Form::checkbox('setting[' . $key . ']', $key,
+                (isset($page)
+                && ($page == 'edit' || $page == 'duplicate')
+                && array_key_exists($key, $setting)) ? true : null, [
+                    'onchange' => 'settingAdvance(' . $key . ')',
+                    'class' => 'switch-checkbox-setting config-option',
+                ])
+            !!}
+            <span class='span-text-setting'>{{ $text }}</span>
+        </label>
+        @if ($loop->first)
+            <br>
+        @endif
+    @endforeach
     <div class="old-option">
         <!-- LIST OLD OPTION -->
         @foreach($poll->options as $option)

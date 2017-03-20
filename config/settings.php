@@ -54,6 +54,7 @@ return [
     'str_limit' => [
         'location' => 20,
     ],
+    'limit_show_option_below' => 15,
     'link_limit' => 2,
     'length_poll' => [
         'name' => 100,

@@ -581,7 +581,10 @@ var addNewOption = function () {
         if (!this._validateDuplicate(lengthInput)) {
             this.$showError.hide();
             if (this.isRadio) {
-                $('input[id^=horizontal]').prop('checked', false);
+                $('input[id^=horizontal]')
+                    .add('input[id^=vertical]')
+                    .add('input[id^=timeline]')
+                    .prop('checked', false);
             }
 
             if (lengthInput == '' && !this.$pickDate.data('isHasDate')) {
@@ -712,7 +715,7 @@ var addNewOption = function () {
  * Init plugin add image for option
  */
 var jqAddNewImageOption = new jqAddImageOption({
-    wrapperPoll: '.horizontal-overflow',
+    wrapperPoll: '.box-style-option',
     btnChooseImage: '.upload-photo',
     parentOption: '.parent-vote-new-option',
     messages: 'div[data-message]',

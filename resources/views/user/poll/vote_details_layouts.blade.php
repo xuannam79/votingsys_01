@@ -9,11 +9,9 @@
                         <tr class="header date month">
                             @if($optionDates['notHour'])
                                 <td colspan="2">
-                                    <h4>
-                                        <strong>
-                                            {{ $optionDates['participants']->count() . ' ' . trans('polls.participants')}}
-                                        </strong>
-                                    </h4>
+                                    <strong>
+                                        {{ $optionDates['participants']->count() . ' ' . trans('polls.participants')}}
+                                    </strong>
                                 </td>
                             @else
                                 <td colspan="2"></td>
@@ -39,11 +37,9 @@
                                 </td>
                             @else
                                 <td colspan="2">
-                                    <h4>
-                                        <strong>
-                                            {{ $optionDates['participants']->count() . ' ' . trans('polls.participants')}}
-                                        </strong>
-                                    </h4>
+                                    <strong>
+                                        {{ $optionDates['participants']->count() . ' ' . trans('polls.participants')}}
+                                    </strong>
                                 </td>
                             @endif
                             @foreach($optionDates['days'] as $data)
@@ -123,12 +119,30 @@
                             @endif
                         </tr>
                     @endforeach
+                    <!--Start: Show result -->
+                    <tr>
+                        <td colspan="2">
+                            <strong>
+                                {{ $optionDates['participants']->count() . ' ' . trans('polls.participants')}}
+                            </strong>
+                        </td>
+                        @foreach ($optionDates['id'] as $counter)
+                            <td class="text-center">
+                                @if (max(array_values($optionDates['id'])) == $counter)
+                                    <strong>{{ $counter }}</strong>
+                                @else
+                                    {{ $counter }}
+                                @endif
+                            </td>
+                        @endforeach
+                    </tr>
+                    <!--END: Show result -->
                 </tbody>
             </table>
             <!--END: Show option details-->
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">{{ trans('polls.close') }}</button>
+            <button type="button" class="btn btn-yes" data-dismiss="modal">{{ trans('polls.close') }}</button>
         </div>
     </div>
 </div>
