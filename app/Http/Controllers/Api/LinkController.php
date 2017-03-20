@@ -38,4 +38,73 @@ class LinkController extends ApiController
 
         return $this->falseJson(API_RESPONSE_CODE_UNPROCESSABLE, trans('polls.message.not_found_polls'));
     }
+
+    public function update(Request $request)
+    {
+        $data = $request->only([
+            'oldLinkUser',
+            'oldLinkAdmin',
+            'newLinkUser',
+            'newLinkAdmin',
+        ]);
+
+        if ($data['oldLinkUser'] == $data['newLinkUser']) {
+            return $this->falseJson(
+                API_RESPONSE_CODE_UNPROCESSABLE,
+                trans('link.message.old_link_and_new_link_of_user_not_different')
+            );
+        }
+
+        if ($data['oldLinkAdmin'] == $data['newLinkAdmin']) {
+            return $this->falseJson(
+                API_RESPONSE_CODE_UNPROCESSABLE,
+                trans('link.message.old_link_and_new_link_of_admin_not_different')
+            );
+        }
+
+        if ($data['newLinkUser'] && $this->linkRepository->findBy('token', $data['newLinkUser'])->first()) {
+            return $this->falseJson(API_RESPONSE_CODE_UNPROCESSABLE, trans('link.message.new_link_user_exist'));
+        }
+
+        if ($data['newLinkAdmin'] && $this->linkRepository->findBy('token', $data['newLinkAdmin'])->first()) {
+            return $this->falseJson(API_RESPONSE_CODE_UNPROCESSABLE, trans('link.message.new_link_admin_exist'));
+        }
+
+        $arrayLinks = [];
+
+        if ($data['oldLinkUser']) {
+            $arrayLinks['oldLinkUser'] = $this->linkRepository->findWhere([
+                'token' => $data['oldLinkUser'],
+                'link_admin' => config('settings.link_poll.vote'),
+            ])->first();
+        }
+
+        if ($data['oldLinkAdmin']) {
+            $arrayLinks['oldLinkAdmin'] = $this->linkRepository->findWhere([
+                'token' => $data['oldLinkAdmin'],
+                'link_admin' => config('settings.link_poll.admin'),
+            ])->first();
+        }
+
+        if (!$arrayLinks['oldLinkUser'] || !$arrayLinks['oldLinkAdmin']) {
+            return $this->falseJson(
+                API_RESPONSE_CODE_UNPROCESSABLE,
+                trans('settings.message.link_user_or_admin_not_exist')
+            );
+        }
+
+        if ($arrayLinks['oldLinkUser']->poll->poll_id != $arrayLinks['oldLinkAdmin']->poll->poll_id) {
+            return $this->falseJson(API_RESPONSE_CODE_UNPROCESSABLE, trans('link.message.two_link_are_not_one_poll'));
+        }
+
+        if ($arrayLinks['oldLinkUser']->poll->user_id != auth()->user()->id) {
+            return $this->falseJson(API_RESPONSE_CODE_UNPROCESSABLE, trans('link.message.poll_is_not_current_user'));
+        }
+
+        if (!$this->linkRepository->updateLinkUserAndAdmin($arrayLinks, $data)) {
+            return $this->falseJson(API_RESPONSE_CODE_UNPROCESSABLE, trans('link.message.update_link_not_success'));
+        }
+
+        return $this->trueJson([trans('link.message.update_link_success')]);
+    }
 }

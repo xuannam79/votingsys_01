@@ -46,12 +46,9 @@ abstract class AbstractRepositoryEloquent implements AbstractRepositoryInterface
         return $this->model->where($column, $option)->get();
     }
 
-    public function findWhere($wheres = [], $columns = ['*']) {
-        foreach ($wheres as $field => $value) {
-            $this->model = $this->model->where($field, '=', $value);
-        }
-
-        return $model = $this->model->get($columns);
+    public function findWhere($wheres = [], $columns = ['*'])
+    {
+        return $this->model->where($wheres)->get($columns);
     }
 
     public function findWhereIn($field, $array = [], $column = ['*'])
