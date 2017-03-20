@@ -357,11 +357,11 @@ class PollRepositoryEloquent extends AbstractRepositoryEloquent implements PollR
 
             $user = $this->currentUser();
 
-            if ($user && $user->name == $input['name'] && $user->email == $input['email']) {
+            if ($user && $user->name == $input['name'] && $user->email == $input['email'] && !$poll->withoutAppends()->multiple) {
                 $user->options()->attach($idOption);
                 DB::commit();
 
-                return true;
+                return $user;
             }
 
             $participant = new Participant;
@@ -374,7 +374,7 @@ class PollRepositoryEloquent extends AbstractRepositoryEloquent implements PollR
             $participant->options()->attach($idOption);
             DB::commit();
 
-            return true;
+            return $participant;
         } catch (Exception $e) {
             DB::rollBack();
 
@@ -746,12 +746,7 @@ class PollRepositoryEloquent extends AbstractRepositoryEloquent implements PollR
 
             $data = [
                 'userName' => $poll->user_id ? $poll->user->name : $poll->name,
-                'title' => $poll->title,
-                'type' => $poll->multiple,
-                'location' => $poll->location,
-                'description' => $poll->description,
-                'closeDate' => $poll->date_close,
-                'createdAt' => $poll->created_at,
+                'poll' => $poll,
                 'linkVote' => action('LinkController@show', ['token' => $links[config('settings.link_poll.vote')]]),
                 'linkAdmin' => action('LinkController@show', ['token' => $links[config('settings.link_poll.admin')]]),
                 'password' => isset($settings[config('settings.setting.set_password')])
@@ -768,5 +763,47 @@ class PollRepositoryEloquent extends AbstractRepositoryEloquent implements PollR
         } catch (Exception $e) {
             return false;
         }
+    }
+
+    public function getResultDetail($poll)
+    {
+        $options = $poll->options->map(function ($option) {
+            return [
+                'id' => $option->id,
+                'name' => $option->name,
+            ];
+        });
+
+        $results = $poll->options->map(function ($option) {
+            // Merge users and participants
+            $option->users->each(function ($item) use ($option) {
+                $option->participants->push($item);
+            });
+
+            // Sort by created at
+            return $option->participants->sortBy(function ($participant) {
+                return $participant->created_at->timestamp;
+            })->map(function ($participant) use ($option) {
+                $class = get_class($participant);
+
+                return [
+                    'id' => $class . $participant->id,
+                    'name' => $participant->name,
+                    'email' => $participant->email,
+                    'votes' => $class === Participant::class ? $participant->options->pluck('id') : [$option->id],
+                ];
+            });
+        })->flatMap(function ($result) {
+            return $result;
+        })->unique('id')->map(function ($result) {
+            unset($result['id']);
+
+            return $result;
+        });
+
+        return [
+            'options' => $options,
+            'results' => $results,
+        ];
     }
 }
