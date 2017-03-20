@@ -318,7 +318,7 @@ class PollRepositoryEloquent extends AbstractRepositoryEloquent implements PollR
         $polls = $this->model->where($params)->orderBy('id', 'desc')->get();
 
         $polls = $polls->map(function ($poll) {
-            return $poll->withoutAppends()->load('activities');
+            return $poll->withoutAppends()->load('activities', 'links');
         });
 
         return $polls;
@@ -392,7 +392,7 @@ class PollRepositoryEloquent extends AbstractRepositoryEloquent implements PollR
             'user_id' => $userId
         ])->orderBy('id', 'desc')->get();
         $polls = $polls->map(function ($poll) {
-            return $poll->withoutAppends()->load('activities');
+            return $poll->withoutAppends()->load('activities', 'links');
         });
 
         return $polls;
@@ -417,7 +417,7 @@ class PollRepositoryEloquent extends AbstractRepositoryEloquent implements PollR
             }
 
             $participantPolls = $participantPolls->map(function ($poll) {
-                return $poll->withoutAppends()->load('activities');
+                return $poll->withoutAppends()->load('activities', 'links');
             });
 
             return $participantPolls->unique();
