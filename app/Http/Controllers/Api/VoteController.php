@@ -65,8 +65,8 @@ class VoteController extends ApiController
         }
 
         // Save participant voted
-        if ($this->pollRepository->vote($poll, $input)) {
-            return $this->trueJson(null, trans('polls.voted_poll'));
+        if ($participant = $this->pollRepository->vote($poll, $input)) {
+            return $this->trueJson($participant, trans('polls.voted_poll'));
         }
 
         return $this->falseJson(API_RESPONSE_CODE_INTER_SERVER_ERROR, trans('polls.message_client.error_occurs'));

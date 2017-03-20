@@ -17,26 +17,28 @@ class LinkController extends ApiController
 
     public function show($token)
     {
-        if ($link = $this->linkRepository->findBy('token', $token)->first()) {
-            $poll = $link->poll->withoutAppends();
+        $link = $this->linkRepository->findBy('token', $token)->first();
 
-            if (!$poll->status) {
-                return $this->falseJson(API_RESPONSE_CODE_UNPROCESSABLE, trans('polls.message_poll_closed'));
-            }
-
-            $poll->load('user', 'settings', 'options.participants', 'options.users', 'comments', 'links');
-
-            $data = [
-                'poll' => $poll,
-                'countParticipant' => $poll->countParticipants(),
-                'countComments' => $poll->comments()->count(),
-                'result_voted' => $poll->countVotesWithOption(),
-            ];
-
-            return $this->trueJson($data);
+        if (!$token || !$link) {
+            return $this->falseJson(API_RESPONSE_CODE_UNPROCESSABLE, trans('polls.message.not_found_polls'));
         }
 
-        return $this->falseJson(API_RESPONSE_CODE_UNPROCESSABLE, trans('polls.message.not_found_polls'));
+        $poll = $link->poll->withoutAppends();
+
+        if (!$poll->status) {
+            return $this->falseJson(API_RESPONSE_CODE_UNPROCESSABLE, trans('polls.message_poll_closed'));
+        }
+
+        $poll->load('user', 'settings', 'options.participants', 'options.users', 'comments', 'links');
+
+        $data = [
+            'poll' => $poll,
+            'countParticipant' => $poll->countParticipants(),
+            'countComments' => $poll->comments()->count(),
+            'result_voted' => $poll->countVotesWithOption(),
+        ];
+
+        return $this->trueJson($data);
     }
 
     public function update(Request $request)

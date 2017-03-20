@@ -124,3 +124,86 @@ function cleanText($text, $html = true)
 
     return implode('\r\n', $arrText);
 }
+
+// Validate Setting
+function settingsRules()
+{
+    $settings = config('settings.setting');
+
+    $rules = [];
+
+    $required = [$settings['required_email'], $settings['required_name'], $settings['required_name_and_email']];
+
+    foreach (array_values($settings) as $key) {
+        switch ($key) {
+            case $settings['required']:
+                $rules[] = [
+                    'setting.' . $key,
+                    'in:' . $key,
+                    'required_with:setting_child.' . $key,
+                ];
+
+                $rules[] = [
+                    'setting_child.' . $key,
+                    'in:' . implode(',', $required),
+                    'required_with:setting.' . $key,
+                ];
+
+                break;
+
+            case $settings['custom_link']:
+            case $settings['set_limit']:
+            case $settings['set_password']:
+                $rules[] = [
+                    'setting.' . $key,
+                    'in:' . $key,
+                    'required_with:value.' . $key,
+                ];
+
+                if ($settings['custom_link'] == $key) {
+                    $rules[] = [
+                        'value.' . $key,
+                        'string',
+                        'unique:links,token',
+                        'required_with:setting.'. $key,
+                        'max:255',
+                    ];
+                } else if ($settings['set_limit'] == $key) {
+                    $rules[] = [
+                        'value.' . $key,
+                        'numeric',
+                        'required_with:setting.' . $key,
+                    ];
+                } else {
+                    $rules[] = [
+                        'value.' . $key,
+                        'string',
+                        'required_with:setting.' . $key,
+                        'max:255',
+                    ];
+                }
+
+                break;
+
+            default:
+                if (!in_array($key, $required)) {
+                    $rules[] = [
+                        'setting.' . $key,
+                        'in:' . $key,
+                    ];
+                }
+
+                break;
+        }
+    }
+
+    $rules = collect($rules)->reduce(function ($lookup, $value) {
+        $lookup[$value[0]] = implode('|', array_filter($value, function ($k) {
+            return $k;
+        }, ARRAY_FILTER_USE_KEY));
+
+        return $lookup;
+    });
+
+    return $rules;
+}

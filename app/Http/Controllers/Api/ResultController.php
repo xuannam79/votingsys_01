@@ -38,4 +38,17 @@ class ResultController extends ApiController
 
         return $this->trueJson($results);
     }
+
+    public function resultDetail($token)
+    {
+        $link = $this->linkRepository->findBy('token', $token)->first();
+
+        if (!$link || !$link->poll) {
+            return $this->falseJson(API_RESPONSE_CODE_UNPROCESSABLE, trans('polls.message.not_found_polls'));
+        }
+
+        $poll = $link->poll->withoutAppends();
+
+        return $this->trueJson($this->pollRepository->getResultDetail($poll));
+    }
 }

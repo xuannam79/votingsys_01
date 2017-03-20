@@ -22,6 +22,7 @@ class PollRequest extends AbstractRequest
     public function rules()
     {
         $config = config('settings.length_poll');
+
         return [
             'name' => 'required|max:' . $config['name'],
             'email' => 'required|email|max:' . $config['email'],
@@ -29,7 +30,7 @@ class PollRequest extends AbstractRequest
             'multiple' => 'required|boolean',
             'date_close' => 'date_format:"d-m-Y H:i"|after:"' . date('d-m-Y H:i') . '"',
             'member' => 'regex:/^([a-z][a-z0-9_\.]{3,}@[a-z0-9]{2,}(\.[a-z0-9]{2,4}){1,2}[,]{0,1}[,]{0,1}[\s]*)+(?<!,)(?<!\s)$/',
-        ];
+        ] + settingsRules();
     }
 
     /**

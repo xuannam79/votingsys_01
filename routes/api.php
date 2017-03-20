@@ -51,6 +51,8 @@ Route::group(['prefix' => 'v1', 'namespace' => 'Api'], function () {
     // Send email again for create poll
     Route::post('send-mail-again', 'CheckMailController@sendMail');
 
+    Route::get('poll/result-detail/{token}', 'ResultController@resultDetail');
+
     Route::group(['middleware' => 'auth:api'], function () {
         Route::post('logout', 'Auth\AuthController@logout');
         Route::resource('user', 'User\UsersController');

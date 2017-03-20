@@ -76,7 +76,7 @@ class PollController extends ApiController
      */
     public function update(Request $request, $id)
     {
-        $button = $request->btn_edit;
+        $button = $request->type_edit;
 
         $poll = $this->pollRepository->find($id);
 
