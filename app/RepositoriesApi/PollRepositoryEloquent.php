@@ -767,42 +767,52 @@ class PollRepositoryEloquent extends AbstractRepositoryEloquent implements PollR
 
     public function getResultDetail($poll)
     {
-        $options = $poll->options->map(function ($option) {
-            return [
-                'id' => $option->id,
-                'name' => $option->name,
-            ];
-        });
-
         $results = $poll->options->map(function ($option) {
-            // Merge users and participants
+            // Push users to participants
             $option->users->each(function ($item) use ($option) {
                 $option->participants->push($item);
             });
 
-            // Sort by created at
-            return $option->participants->sortBy(function ($participant) {
-                return $participant->created_at->timestamp;
-            })->map(function ($participant) use ($option) {
+            return $option->participants->map(function ($participant) use ($option) {
                 $class = get_class($participant);
+
+                $getResult = function ($item) {
+                    return [
+                        'id' => $item->id,
+                        'name' => $item->name,
+                        'image' => $item->url_image,
+                    ];
+                };
+
+                $votes = [];
+
+                if ($class === Participant::class) {
+                    $votes = $participant->options->map(function ($item) use ($getResult) {
+                        return call_user_func($getResult, $item);
+                    });
+                } else {
+                    $votes = call_user_func($getResult, $option);
+                }
 
                 return [
                     'id' => $class . $participant->id,
+                    'created_at' => $participant->created_at,
                     'name' => $participant->name,
                     'email' => $participant->email,
-                    'votes' => $class === Participant::class ? $participant->options->pluck('id') : [$option->id],
+                    'votes' => $votes,
                 ];
             });
-        })->flatMap(function ($result) {
-            return $result;
-        })->unique('id')->map(function ($result) {
-            unset($result['id']);
+        })->flatMap(function ($flatten) {
+            return $flatten;
+        })->unique('id')->sortBy(function ($option) {
+            return $option['created_at']->timestamp;
+        })->map(function ($result) {
+            unset($result['id'], $result['created_at']);
 
             return $result;
         })->values();
 
         return [
-            'options' => $options,
             'results' => $results,
         ];
     }
