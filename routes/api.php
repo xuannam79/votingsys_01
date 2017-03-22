@@ -55,6 +55,8 @@ Route::group(['prefix' => 'v1', 'namespace' => 'Api'], function () {
 
     Route::get('checkLinkExist', 'LinkController@checkLinkExist');
 
+    Route::get('showActivity', 'ActivityController@showActivity');
+
     Route::group(['middleware' => 'auth:api'], function () {
         Route::post('logout', 'Auth\AuthController@logout');
         Route::resource('user', 'User\UsersController');
