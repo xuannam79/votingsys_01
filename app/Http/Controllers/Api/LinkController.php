@@ -109,4 +109,15 @@ class LinkController extends ApiController
 
         return $this->trueJson([trans('link.message.update_link_success')]);
     }
+
+    public function checkLinkExist(Request $request)
+    {
+        $link = $this->linkRepository->findBy('token', $request->only('token'));
+
+        if ($link->count()) {
+            return $this->falseJson(API_RESPONSE_CODE_UNPROCESSABLE, trans('polls.message.link_exists'));
+        }
+
+        return $this->trueJson(true, trans('polls.message.link_valid'));
+    }
 }
