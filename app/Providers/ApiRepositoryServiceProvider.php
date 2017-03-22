@@ -24,6 +24,10 @@ class ApiRepositoryServiceProvider extends ServiceProvider
             \App\RepositoriesApi\Contracts\LinkRepositoryInterface::class,
             \App\RepositoriesApi\LinkRepositoryEloquent::class,
         ],
+        'activity' => [
+            \App\RepositoriesApi\Contracts\ActivityRepositoryInterface::class,
+            \App\RepositoriesApi\ActivityRepositoryEloquent::class
+        ],
     ];
 
     /**
