@@ -7,6 +7,7 @@ use App\Models\User;
 use GuzzleHttp\Exception\ClientException;
 use Laravel\Socialite\Contracts\Provider;
 use App\RepositoriesApi\Contracts\SocialAccountRepositoryInterface;
+use Laravel\Socialite\One\TwitterProvider;
 
 class SocialAccountRepositoryEloquent extends AbstractRepositoryEloquent implements SocialAccountRepositoryInterface
 {
@@ -18,10 +19,13 @@ class SocialAccountRepositoryEloquent extends AbstractRepositoryEloquent impleme
     public function createOrGetUser(Provider $provider, $data)
     {
         try {
-            $providerUser = $provider->userFromToken($data['token']);
+            $providerUser = get_class($provider) === TwitterProvider::class
+                ? $provider->userFromTokenAndSecret($data['token'], $data['secret'])
+                : $provider->userFromToken($data['token']);
         } catch (ClientException $e) {
             return false;
         }
+
         $account = $this->model->whereProvider($data['provider'])
             ->whereProviderUserId($providerUser->getId())
             ->first();
@@ -32,8 +36,9 @@ class SocialAccountRepositoryEloquent extends AbstractRepositoryEloquent impleme
 
         $account = new SocialAccount([
             'provider_user_id' => $providerUser->getId(),
-            'provider' => $data['provider']
+            'provider' => $data['provider'],
         ]);
+
         $user = User::whereEmail($providerUser->getEmail())->first();
 
         if (!$user || $user && $user->email == null) {

@@ -29,7 +29,7 @@ class SocialAccountsController extends ApiController
 
     public function loginSocial(Request $request, PassportService $passportService)
     {
-        $data = $request->only('token', 'provider');
+        $data = $request->only('token', 'provider','secret');
 
         if (!in_array($data['provider'], config('settings.provider'))) {
             return $this->falseJson(API_RESPONSE_CODE_UNPROCESSABLE, trans('user.not_found_provider'));
