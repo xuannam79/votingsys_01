@@ -1626,26 +1626,23 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
         $multipleChoice = $poll->multiple == trans('polls.label.multiple_choice');
 
         foreach ($options as $option) {
-            if (!$multipleChoice) {
-                //Set Participants
-                if ($voters = $option->listVoter()) {
-                    foreach ($voters as $voter) {
-                        $data['participants']->push($voter);
-                    }
-                }
-            } else {
-                foreach ($option->participants as $participant) {
-                    if (!$data['participants']->contains('id_participant', $participant->id)) {
-                        $data['participants']->push([
-                            'id_participant' => $participant->id,
-                            'name' => $participant->name,
-                            'email' => $participant->email,
-                            'id' => $participant->options->pluck('id'),
-                            'created_at' => $participant->pivot->created_at,
-                        ]);
-                    }
-                }
-            }
+            $option->users->each(function ($item) use ($option) {
+                $option->participants->push($item);
+            });
+
+            $data['participants'] = $data['participants']->push($option->participants->map(function ($participant) use ($option) {
+                $class = get_class($participant);
+
+                return [
+                    'id_participant' => $class . $participant->id,
+                    'name' => $participant->name,
+                    'email' => $participant->email,
+                    'id' => $class === Participant::class
+                        ? $participant->options->pluck('id')
+                        : collect([])->push($option->id),
+                    'created_at' => $participant->pivot->created_at,
+                ];
+            }));
 
             // Check option if is date
             if ($opt = validateDate($option->name)) {
@@ -1700,12 +1697,9 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
             $countText++;
         }
 
-        // Sort by date of participants that voted if exist
-        if ($participants = $data['participants']) {
-            $data['participants'] = collect($participants)->sortBy(function ($voter) {
-                return $voter['created_at']->timestamp;
-            });
-        }
+        $data['participants'] = $data['participants']->flatten(1)->unique('id_participant')->sortBy(function ($voter) {
+            return $voter['created_at']->timestamp;
+        });
 
         // Check all option have hour
         if ($countNotHour && $countNotHour == $options->count() - $countText) {
