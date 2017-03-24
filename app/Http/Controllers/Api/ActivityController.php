@@ -33,6 +33,11 @@ class ActivityController extends ApiController
             return $this->falseJson(API_RESPONSE_CODE_UNPROCESSABLE, trans('activity.message.not_found_activities'));
         }
 
-        return $this->trueJson($activities);
+        $poll = $link->poll->withoutAppends();
+
+        return $this->trueJson([
+            'poll' => $poll,
+            'activities' => $activities,
+        ]);
     }
 }
