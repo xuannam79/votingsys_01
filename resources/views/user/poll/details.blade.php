@@ -371,12 +371,12 @@
                                                         @endif
                                                         @if (!$isHideResult || Gate::allows('administer', $poll))
                                                             <div class="voters clearfix result-poll">
-                                                                @foreach(array_slice($option->listVoter(), 0, config('settings.limit_voters_option')) as $voter)
+                                                                @foreach (array_slice($listVoter[$option->id], 0, config('settings.limit_voters_option')) as $voter)
                                                                     <div class="voter-avatar" data-toggle="tooltip" title="{{ $voter['name'] }}">
                                                                         <img src="{{ $voter['avatar'] }}">
                                                                     </div>
                                                                 @endforeach
-                                                                @if($option->countVotes() > config('settings.limit_voters_option'))
+                                                                @if ($option->countVotes() > config('settings.limit_voters_option'))
                                                                     <div class="voter-avatar">
                                                                         <div class="hidden-counter"
                                                                             data-url-modal-voter="{{ action('User\VoteController@getModalOptionVoters', $option->id) }}">
@@ -664,14 +664,19 @@
                                                                     <!--END: Show month + year of option -->
                                                                 @endif
                                                             </tbody>
+                                                        @endif
                                                         @if (!$isHideResult || Gate::allows('administer', $poll))
                                                             <!--Start: Show result -->
                                                             <tr class="result-poll">
-                                                                <td colspan="2">
+                                                                @if ($optionDates['participants']->count() > config('settings.limit_show_option_below'))
+                                                                    <td colspan="2">
                                                                         <strong>
                                                                             {{ $optionDates['participants']->count() . ' ' . trans('polls.participants')}}
                                                                         </strong>
-                                                                </td>
+                                                                    </td>
+                                                                @else
+                                                                     <td colspan="2">
+                                                                @endif
                                                                 @foreach ($optionDates['id'] as $counter)
                                                                     <td class="text-center">
                                                                         @if (max(array_values($optionDates['id'])) == $counter)
@@ -683,7 +688,6 @@
                                                                 @endforeach
                                                             </tr>
                                                             <!--END: Show result -->
-                                                        @endif
                                                         @endif
                                                     </tbody>
                                                 </table>
@@ -1161,11 +1165,15 @@
                                                                         @endforeach
                                                                         <!--Start: Show result -->
                                                                         <tr>
-                                                                            <td colspan="2">
-                                                                                <strong>
-                                                                                    {{ $optionDates['participants']->count() . ' ' . trans('polls.participants')}}
-                                                                                </strong>
-                                                                            </td>
+                                                                            @if ($optionDates['participants']->count() > config('settings.limit_show_option_below'))
+                                                                                <td colspan="2">
+                                                                                    <strong>
+                                                                                        {{ $optionDates['participants']->count() . ' ' . trans('polls.participants')}}
+                                                                                    </strong>
+                                                                                </td>
+                                                                            @else
+                                                                                 <td colspan="2">
+                                                                            @endif
                                                                             @foreach ($optionDates['id'] as $counter)
                                                                                 <td class="text-center">
                                                                                     @if (max(array_values($optionDates['id'])) == $counter)
@@ -1212,21 +1220,7 @@
                                                                         <p>{{ $data['name'] }}</p>
                                                                     </td>
                                                                     <td>
-                                                                        <div class="voters voters-td clearfix">
-                                                                            @foreach (array_slice($data['listVoter'], 0, config('settings.limit_voters_option')) as $voter)
-                                                                                <div class="voter-avatar" data-toggle="tooltip" title="{{ $voter['name'] }}">
-                                                                                    <img src="{{ $voter['avatar'] }}">
-                                                                                </div>
-                                                                            @endforeach
-                                                                            @if ($data['numberOfVote'] > config('settings.limit_voters_option'))
-                                                                                <div class="voter-avatar">
-                                                                                    <div class="hidden-counter"
-                                                                                        data-url-modal-voter="{{ action('User\VoteController@getModalOptionVoters', $data['option_id']) }}">
-                                                                                        <span>+{{ $data['numberOfVote'] - config('settings.limit_voters_option') }}</span>
-                                                                                    </div>
-                                                                                </div>
-                                                                            @endif
-                                                                        </div>
+                                                                        <span class="badge">{{ $data['numberOfVote'] }}</span>
                                                                     </td>
                                                                     <td>
                                                                         @if ($maxVote == $data['numberOfVote'] && $voted)

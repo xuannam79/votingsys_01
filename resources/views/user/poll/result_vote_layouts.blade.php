@@ -22,21 +22,7 @@
                     <p>{{ $data['name'] }}</p>
                 </td>
                 <td>
-                    <div class="voters voters-td clearfix">
-                        @foreach (array_slice($data['listVoter'], 0, config('settings.limit_voters_option')) as $voter)
-                            <div class="voter-avatar" data-toggle="tooltip" title="{{ $voter['name'] }}">
-                                <img src="{{ $voter['avatar'] }}">
-                            </div>
-                        @endforeach
-                        @if ($data['numberOfVote'] > config('settings.limit_voters_option'))
-                            <div class="voter-avatar">
-                                <div class="hidden-counter"
-                                    data-url-modal-voter="{{ action('User\VoteController@getModalOptionVoters', $data['option_id']) }}">
-                                    <span>{{ $data['numberOfVote'] - config('settings.limit_voters_option') }}</span>
-                                </div>
-                            </div>
-                        @endif
-                    </div>
+                    <span class="badge">{{ $data['numberOfVote'] }}</span>
                 </td>
                 <td>
                     @if ($maxVote == $data['numberOfVote'] && $voted)

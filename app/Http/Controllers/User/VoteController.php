@@ -312,6 +312,12 @@ class VoteController extends Controller
             }
         }
 
+        $listVoter = $poll->options->reduce(function ($lookup, $item) {
+            $lookup[$item->id] = $item->listVoter();
+
+            return $lookup;
+        });
+
         //get data of poll
         $voteIds = $this->pollRepository->getVoteIds($poll->id);
         $votes = $this->voteRepository->getVoteWithOptionsByVoteId($voteIds);
@@ -407,7 +413,7 @@ class VoteController extends Controller
             'html' => $html,
             'horizontalOption' => view(
                 '.user.poll.option_horizontal',
-                compact('settingsPoll', 'poll', 'isHaveImages', 'isLimit')
+                compact('settingsPoll', 'poll', 'isHaveImages', 'isLimit', 'listVoter')
             )->render(),
             'verticalOption' => view(
                 '.user.poll.option_vertical',

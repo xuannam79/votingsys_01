@@ -229,14 +229,19 @@
                         <!--END: Show month + year of option -->
                     @endif
                 </tbody>
+            @endif
             @if (!$isHideResult || Gate::allows('administer', $poll))
                 <!--Start: Show result -->
                 <tr class="result-poll">
-                    <td colspan="2">
+                    @if ($optionDates['participants']->count() > config('settings.limit_show_option_below'))
+                        <td colspan="2">
                             <strong>
                                 {{ $optionDates['participants']->count() . ' ' . trans('polls.participants')}}
                             </strong>
-                    </td>
+                        </td>
+                    @else
+                         <td colspan="2">
+                    @endif
                     @foreach ($optionDates['id'] as $counter)
                         <td class="text-center">
                             @if (max(array_values($optionDates['id'])) == $counter)
@@ -248,7 +253,6 @@
                     @endforeach
                 </tr>
                 <!--END: Show result -->
-            @endif
             @endif
         </tbody>
     </table>
