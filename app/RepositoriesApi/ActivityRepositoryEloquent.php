@@ -16,8 +16,8 @@ class ActivityRepositoryEloquent extends AbstractRepositoryEloquent implements A
     {
         $activities = $this->model->where('poll_id', $pollId)->get();
 
-        return $activities->each(function ($item) {
-            $item->poll = $item->poll->withoutAppends()->load('options');
+        return $activities->map(function ($activity) {
+            return $activity->load('user');
         });
     }
 }
