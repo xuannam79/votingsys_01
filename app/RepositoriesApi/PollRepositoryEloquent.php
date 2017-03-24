@@ -795,7 +795,7 @@ class PollRepositoryEloquent extends AbstractRepositoryEloquent implements PollR
                 }
 
                 return [
-                    'id' => $class . $participant->id,
+                    'id' => $class === Participant::class ? $class . $participant->id : uniqid(time(), true),
                     'created_at' => $participant->created_at,
                     'name' => $participant->name,
                     'email' => $participant->email,

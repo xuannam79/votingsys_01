@@ -121,11 +121,15 @@
                     @endforeach
                     <!--Start: Show result -->
                     <tr>
-                        <td colspan="2">
-                            <strong>
-                                {{ $optionDates['participants']->count() . ' ' . trans('polls.participants')}}
-                            </strong>
-                        </td>
+                        @if ($optionDates['participants']->count() > config('settings.limit_show_option_below'))
+                            <td colspan="2">
+                                <strong>
+                                    {{ $optionDates['participants']->count() . ' ' . trans('polls.participants')}}
+                                </strong>
+                            </td>
+                        @else
+                             <td colspan="2">
+                        @endif
                         @foreach ($optionDates['id'] as $counter)
                             <td class="text-center">
                                 @if (max(array_values($optionDates['id'])) == $counter)

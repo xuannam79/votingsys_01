@@ -112,6 +112,14 @@ class LinkController extends Controller
         $totalVote = config('settings.default_value');
         $messageImage = trans('polls.message_client');
 
+        $poll->load('options.users', 'options.participants', 'settings', 'links');
+
+        $listVoter = $poll->options->reduce(function ($lookup, $item) {
+            $lookup[$item->id] = $item->listVoter();
+
+            return $lookup;
+        });
+
         // Show result options
         $optionDates = $this->pollRepository->showOptionDate($poll);
 
@@ -307,7 +315,8 @@ class LinkController extends Controller
                 'isOwnerPoll', 'fontSize', 'messageImage',
                 'viewOption',
                 'optionDates',
-                'isAccecptTypeMail', 'typeEmail' // Setting for only accecpt that mail
+                'isAccecptTypeMail', 'typeEmail', // Setting for only accecpt that mail
+                'listVoter'
             ));
         } else {
             foreach ($poll->links as $link) {

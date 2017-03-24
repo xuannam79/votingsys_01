@@ -46,12 +46,12 @@
         @endif
         @if (!$isHideResult || Gate::allows('administer', $poll))
             <div class="voters clearfix result-poll">
-                @foreach(array_slice($option->listVoter(), 0, config('settings.limit_voters_option')) as $voter)
+                @foreach (array_slice($listVoter[$option->id], 0, config('settings.limit_voters_option')) as $voter)
                     <div class="voter-avatar" data-toggle="tooltip" title="{{ $voter['name'] }}">
                         <img src="{{ $voter['avatar'] }}">
                     </div>
                 @endforeach
-                @if($option->countVotes() > config('settings.limit_voters_option'))
+                @if ($option->countVotes() > config('settings.limit_voters_option'))
                     <div class="voter-avatar">
                         <div class="hidden-counter"
                             data-url-modal-voter="{{ action('User\VoteController@getModalOptionVoters', $option->id) }}">

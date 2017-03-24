@@ -1634,7 +1634,7 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
                 $class = get_class($participant);
 
                 return [
-                    'id_participant' => $class . $participant->id,
+                    'id_participant' => $class === Participant::class ? $class . $participant->id : uniqid(time(), true),
                     'name' => $participant->name,
                     'email' => $participant->email,
                     'id' => $class === Participant::class
@@ -1682,7 +1682,7 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
                 $data['hours'][] = [
                     'hour' => $hour,
                     'id' => $option->id,
-                    'counter' => empty($voters) ? count($option->listVoter()) : count($voters),
+                    'counter' => $option->countVotes(),
                 ];
 
                 continue;
@@ -1692,7 +1692,7 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
             $data['text'][] = [
                 'text' => $option->name,
                 'id' => $option->id,
-                'counter' => empty($voters) ? count($option->listVoter()) : count($voters),
+                'counter' => $option->countVotes(),
             ];
             $countText++;
         }
