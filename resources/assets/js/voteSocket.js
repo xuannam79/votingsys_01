@@ -35,6 +35,10 @@ $(document).ready(function(){
                 $('.vertical-overflow').html(socketData.verticalOption);
             }
 
+            if (typeof socketData.timelineOption != 'undefined') {
+                $('#timeline').html(socketData.timelineOption);
+            }
+
             if ($('.bar-pie-chart').html() == "") {
                 $('.bar-pie-chart').html(socketData.html_pie_bar_chart);
             }

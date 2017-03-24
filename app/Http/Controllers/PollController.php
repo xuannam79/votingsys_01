@@ -126,18 +126,30 @@ class PollController extends Controller
 
         if ($button == trans('polls.button.save_info')) {
             $input = $request->only(
-                'name', 'email', 'chatwork_id', 'title', 'location', 'description', 'type'
+                'name',
+                'email',
+                'chatwork_id',
+                'title',
+                'location',
+                'description',
+                'type'
             );
             $input['date_close'] = $request->closingTime;
             $message = $this->pollRepository->editInfor($input, $id);
         } elseif ($button == trans('polls.button.save_option')) {
             $input = $request->only(
-                'option', 'image', 'optionImage', 'optionText'
+                'option',
+                'image',
+                'optionImage',
+                'optionText',
+                'setting'
             );
             $message = $this->pollRepository->editPollOption($input, $id);
         } else {
             $input = $request->only(
-                'setting', 'value', 'setting_child'
+                'setting',
+                'value',
+                'setting_child'
             );
             $message = $this->pollRepository->editPollSetting($input, $id);
         }

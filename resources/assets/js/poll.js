@@ -92,7 +92,7 @@ function showModelImage(image) {
  *
  */
 function showResultPoll() {
-    $('.result-poll').toggle();
+    $('.result-poll').fadeToggle();
 
     if ($('.btn-show-result-poll').attr('id') == 'show') {
         $('.li-show-result-poll').removeClass('fa-eye').addClass('fa-eye-slash');
@@ -124,11 +124,14 @@ function hideLabelMessage(element) {
  */
 function voted(id, type) {
     if (type == 'horizontal') {
-        $('#horizontal-' +id).prop('checked',! $('#horizontal-' + id).prop('checked'));
-        $('#vertical-' +id).prop('checked', $('#horizontal-' + id).prop('checked'));
+        $('#horizontal-' + id).prop('checked', !$('#horizontal-' + id).prop('checked'));
+        $('#vertical-' + id).add('#timeline-' + id).prop('checked', $('#horizontal-' + id).prop('checked'));
+    } else if (type == 'vertical') {
+        $('#vertical-' + id).prop('checked', !$('#vertical-' + id).prop('checked'));
+        $('#horizontal-' +id).add('#timeline-' + id).prop('checked', $('#vertical-' + id).prop('checked'));
     } else {
-        $('#vertical-' + id).prop('checked',! $('#vertical-' + id).prop('checked'));
-        $('#horizontal-' +id).prop('checked', $('#vertical-' + id).prop('checked'));
+        $('#timeline-' + id).prop('checked', !$('#timeline-' + id).prop('checked'));
+        $('#vertical-' + id).add('#horizontal-' + id).prop('checked', $('#timeline-' + id).prop('checked'));
     }
 }
 
@@ -257,20 +260,35 @@ function settingAdvance(key) {
 
     switch (key) {
         case pollData.config.setting.required:
-            $("#setting-required").slideToggle();
+            switchSettingValue('setting-required', key);
+
             break;
         case pollData.config.setting.custom_link:
-            $("#setting-link").slideToggle();
+            switchSettingValue('setting-link', key);
+
             break;
         case pollData.config.setting.set_limit:
-            $("#setting-limit").slideToggle();
+            switchSettingValue('setting-limit', key);
+
             break;
         case pollData.config.setting.set_password:
-            $("#setting-password").slideToggle();
+            switchSettingValue('setting-password', key);
+
             break;
         default:
             break;
     }
+}
+
+function switchSettingValue(id, key)
+{
+    if ($('[name="setting[' + key +']"]').bootstrapSwitch('state')) {
+        $('#' + id).slideDown();
+
+        return;
+    }
+
+    $('#' + id).slideUp();
 }
 
 /**
@@ -1023,7 +1041,7 @@ $(document).ready(function () {
             $("[name='setting\\[" + value + "\\]']").bootstrapSwitch({
                 'onText': pollData.message.on,
                 'offText': pollData.message.off,
-                'size': (index == 'not_same_email' || index == 'add_type_mail')  ? 'small' : null
+                'size': (index == 'not_same_email' || index == 'add_type_mail' ||  index == 'allow_add_option' ||  index == 'allow_edit_vote_of_poll')  ? 'small' : null
             });
         });
 

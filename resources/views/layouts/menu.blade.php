@@ -56,9 +56,8 @@
                         <a href="{{ url('/logout') }}"
                            onclick="event.preventDefault();
                                          document.getElementById('logout-form').submit();">
-                                    <span class="glyphicon glyphicon-log-out">
-                                        {{ trans('label.logout') }}
-                                    </span>
+                                    <span class="glyphicon glyphicon-log-out"></span>
+                                    {{ trans('label.logout') }}
                         </a>
                         <form id="logout-form" action="{{ url('/logout') }}" method="POST">
                             {{ csrf_field() }}
