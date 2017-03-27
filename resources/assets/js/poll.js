@@ -1213,6 +1213,13 @@ $(document).ready(function () {
 
         domError.removeClass('has-error').html('');
     });
+
+    // Show Modal Image Option
+    $('#horizontal').on('click', '.pick-media-image', function () {
+        var image = $(this).find('img').prop('src');
+        $('#imageOfOptionPreview').attr("src", image);
+        $('#modalImageOption').modal('show');
+    });
 });
 
 $(window).on('load', function() {

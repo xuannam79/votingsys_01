@@ -475,8 +475,15 @@ class VoteController extends Controller
     {
         $input = $request->only(['optionImage', 'optionText', 'optionDeleteImage']);
         if ($this->pollRepository->editVoted($id, $input)) {
-            //get data of poll for socket
             $poll = $this->pollRepository->findPollById($id);
+
+            $listVoter = $poll->options->reduce(function ($lookup, $item) {
+                $lookup[$item->id] = $item->listVoter();
+
+                return $lookup;
+            });
+
+            //get data of poll for socket
             $voteIds = $this->pollRepository->getVoteIds($poll->id);
             $votes = $this->voteRepository->getVoteWithOptionsByVoteId($voteIds);
             $participantVoteIds = $this->pollRepository->getParticipantVoteIds($poll->id);
@@ -586,8 +593,18 @@ class VoteController extends Controller
                 'count_participant' => $mergedParticipantVotes->count(),
                 'success' => true,
                 'html' => $html,
-                'horizontalOption' => view('.user.poll.option_horizontal', compact('settingsPoll', 'poll', 'isHaveImages', 'isLimit'))->render(),
-                'verticalOption' => view('.user.poll.option_vertical', compact('settingsPoll', 'poll', 'isHaveImages', 'isLimit'))->render(),
+                'horizontalOption' => view(
+                    '.user.poll.option_horizontal',
+                    compact('settingsPoll', 'poll', 'isHaveImages', 'isLimit', 'listVoter')
+                )->render(),
+                'verticalOption' => view(
+                    '.user.poll.option_vertical',
+                    compact('settingsPoll', 'poll', 'isHaveImages', 'isLimit')
+                )->render(),
+                'timelineOption' => view(
+                    '.user.poll.option_timeline',
+                    compact('poll', 'isLimit', 'settingsPoll', 'optionDates')
+                )->render(),
                 'html_result_vote' => view('user.poll.result_vote_layouts', compact('dataTableResult', 'isHaveImages'))->render(),
                 'html_pie_bar_manage_chart' => view('user.poll.pie_bar_manage_chart_layouts')->render(),
                 'html_pie_bar_chart' => view('user.poll.pie_bar_chart_layouts')->render(),

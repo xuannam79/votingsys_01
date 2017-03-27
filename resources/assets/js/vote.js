@@ -376,11 +376,7 @@ $(document).ready(function(){
         var dataViewOption = dataClient.view.option;
         var data = {optionText: {}};
 
-        var elContentVote = $('.content-option-vote').length
-            ? $('.content-option-vote')
-            : $('.content-option-not-image');
-
-        elContentVote.each(function (index) {
+        $('.content-option-choose').each(function (index) {
             var idOption = $('input[name="option[]"]').eq(index).val();
             data.optionText[idOption] = $(this).text();
         });
@@ -399,7 +395,7 @@ $(document).ready(function(){
 
         pickDateOption();
 
-        $('.li-parent-vote').find('.image-option-vote').each(function (index) {
+        $('.li-parent-vote').find('.image-option-choose').each(function (index) {
             var srcImage = $(this).prop('src');
             if (srcImage.indexOf('default-thumb.gif') == -1 ) {
                 $('#frame-edit-poll').find('.render-img').eq(index).attr('src', srcImage);
