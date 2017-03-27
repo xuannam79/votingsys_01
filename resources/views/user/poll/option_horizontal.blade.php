@@ -24,28 +24,33 @@
                         ])
                     !!}
             @endif
-                <label>{{ $option->name ? $option->name : '' }}</label>
+                <label class="content-option-choose">{{ $option->name ? $option->name : '' }}</label>
                 <br>
             </div>
-            @if ($isHaveImages)
-                <!--START: Win-Frame Add Image -->
-                <div class="box-media-image-option image-option-detail">
-                    <a class="media-image" href="javascript:void(0)" onclick="showModelImage('{{ $option->showImage() }}')">
-                        <div class="image-frame">
-                            <div class="image-ratio">
-                                <img src="{{ $option->showImage() }}" class="thumbOption" />
-                            </div>
-                            <span class="cz-label label-new">
-                                {{ trans('polls.label_for.option_image') }}
-                            </span>
+        @else
+            @php
+                $hideChoose = true;
+            @endphp
+            <p class="content-option-choose">{{ $option->name ? $option->name : '' }}</p>
+        @endif
+        @if ($isHaveImages)
+            <!--START: Win-Frame Add Image -->
+            <div class="box-media-image-option image-option-detail {{ isset($hideChoose) ? 'image-option-detail-fix' : '' }}">
+                <a class="media-image pick-media-image" href="javascript:void(0)">
+                    <div class="image-frame">
+                        <div class="image-ratio">
+                            <img src="{{ $option->showImage() }}" class="thumbOption image-option-choose" />
                         </div>
-                    </a>
-                </div>
-                <!--END: Win-Frame Add Image -->
-            @endif
+                        <span class="cz-label label-new">
+                            {{ trans('polls.label_for.option_image') }}
+                        </span>
+                    </div>
+                </a>
+            </div>
+            <!--END: Win-Frame Add Image -->
         @endif
         @if (!$isHideResult || Gate::allows('administer', $poll))
-            <div class="voters clearfix result-poll">
+            <div class="voters clearfix result-poll {{ isset($hideChoose) ? 'voters-fix' : '' }}">
                 @foreach (array_slice($listVoter[$option->id], 0, config('settings.limit_voters_option')) as $voter)
                     <div class="voter-avatar" data-toggle="tooltip" title="{{ $voter['name'] }}">
                         <img src="{{ $voter['avatar'] }}">
