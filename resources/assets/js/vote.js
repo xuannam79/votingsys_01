@@ -1,5 +1,78 @@
 $(document).ready(function(){
 
+    // Plugin Search Row
+    $.fn.searchRow = function(options) {
+        // These are the defaults.
+        var defaults = {
+            jo: $('.model-show-details').find('tbody tr').not('.header, :last-child'),
+            warpper: '.model-show-details'
+        };
+
+        var options = $.extend(defaults, options);
+
+        var inputText = this[0];
+
+        $(options.warpper).on('keyup', inputText, function (e) {
+            var $this = e.target;
+
+            if (inputText === $this) {
+                //split the current value of searchInput
+                var data = $this.value.split(" ");
+
+                if ($this.value == "") {
+                    options.jo.show();
+                    return;
+                }
+
+                //hide all the rows
+                options.jo.hide();
+
+                //Recusively filter the jquery object to get results.
+                options.jo.filter(function (i, v) {
+                    var $t = $(this);
+                    for (var d = 0; d < data.length; ++d) {
+                        if ($t.is(":contains('" + data[d] + "')")) {
+                            return true;
+                        }
+                    }
+                    return false;
+                })
+                //show the rows that match.
+                .show();
+            }
+        });
+    }
+
+    $('.search-row-detail').searchRow();
+
+    // Set position thead
+    $('#timeline').scroll(function () {
+        var $boxTimeline = $('#timeline');
+        var scrollTop = $boxTimeline.scrollTop();
+
+        $('.fixed-header').css('top', scrollTop);
+
+        if ($boxTimeline.prop('scrollHeight') > $boxTimeline.height()) {
+            $('.td-fixed-check').css('bottom', -scrollTop);
+        }
+    });
+
+    $('.btn-vote-style').on('shown.bs.tab', function (e) {
+        var contentTab = $(e.target).prop('href');
+
+        if (contentTab.indexOf('timeline') !== -1) {
+            createWaypointThead();
+
+            if ($('#timeline').prop('scrollHeight') > $('#timeline').height() && !$('.td-fixed-check').length) {
+                createFixedTfoot();
+            }
+
+            return;
+        }
+
+        destroyDom();
+    });
+
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -406,7 +479,7 @@ $(document).ready(function(){
         $('#frame-edit-poll').modal('show');
     });
 
-    $('.tab-content').on('click', '.hidden-counter', function () {
+    $('#horizontal').on('click', '.hidden-counter', function () {
         var url = $(this).data('url-modal-voter');
 
         $.ajax({
@@ -426,7 +499,14 @@ $(document).ready(function(){
 
             complete: function () {
                 $('.loader').hide();
+
                 $('#voters-modal').modal('show');
+
+                $('#voters-modal').off('keyup');
+                $('.search-voters-row').searchRow({
+                    jo: $('.voters-row'),
+                    warpper: '#voters-modal'
+                });
             },
         });
     });
@@ -580,6 +660,7 @@ var addNewOption = function () {
                 $('input[id^=horizontal]')
                     .add('input[id^=vertical]')
                     .add('input[id^=timeline]')
+                    .add('input[id^=timeline-temp]')
                     .prop('checked', false);
             }
 

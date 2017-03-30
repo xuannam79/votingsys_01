@@ -328,69 +328,75 @@
                                         <div id="horizontal" class="tab-pane fade in active vote-style-detail">
                                             <div class="col-lg-12 horizontal-overflow">
                                                 @foreach ($poll->options as $option)
-                                                    <li class="list-group-item parent-vote li-parent-vote perform-option" onclick="voted('{{ $option->id }}', 'horizontal')">
-                                                        @if (!$isLimit && !$poll->isClosed() && !$isTimeOut)
-                                                            @if ($poll->multiple == trans('polls.label.multiple_choice'))
-                                                                <div class="checkbox checkbox-primary">
-                                                                    {!!
-                                                                        Form::checkbox('option[]', $option->id, false, [
-                                                                            'onClick' => 'voted("' . $option->id  . '", "horizontal")',
-                                                                            'class' => ($isHaveImages) ? 'poll-option-detail' : 'poll-option-detail-not-image',
-                                                                            'id' => 'horizontal-' . $option->id
-                                                                        ])
-                                                                    !!}
-                                                            @else
-                                                                <div class="radio radio-primary">
-                                                                    {!!
-                                                                        Form::radio('option[]', $option->id, false, [
-                                                                            'onClick' => 'voted("' . $option->id  . '", "horizontal")',
-                                                                            'class' => ($isHaveImages) ? 'poll-option-detail' : 'poll-option-detail-not-image',
-                                                                            'id' => 'horizontal-' . $option->id
-                                                                        ])
-                                                                    !!}
-                                                            @endif
-                                                                <label class="content-option-choose">{{ $option->name ? $option->name : '' }}</label>
-                                                                <br>
-                                                            </div>
-                                                        @else
-                                                            @php
-                                                                $hideChoose = true;
-                                                            @endphp
-                                                            <p class="content-option-choose">{{ $option->name ? $option->name : '' }}</p>
-                                                        @endif
-                                                        @if ($isHaveImages)
-                                                            <!--START: Win-Frame Add Image -->
-                                                            <div class="box-media-image-option image-option-detail {{ isset($hideChoose) ? 'image-option-detail-fix' : '' }}">
-                                                                <a class="media-image pick-media-image" href="javascript:void(0)">
-                                                                    <div class="image-frame">
-                                                                        <div class="image-ratio">
-                                                                            <img src="{{ $option->showImage() }}" class="thumbOption image-option-choose" />
-                                                                        </div>
-                                                                        <span class="cz-label label-new">
-                                                                            {{ trans('polls.label_for.option_image') }}
-                                                                        </span>
-                                                                    </div>
-                                                                </a>
-                                                            </div>
-                                                            <!--END: Win-Frame Add Image -->
-                                                        @endif
-                                                        @if (!$isHideResult || Gate::allows('administer', $poll))
-                                                            <div class="voters clearfix result-poll {{ isset($hideChoose) ? 'voters-fix' : '' }}">
-                                                                @foreach (array_slice($listVoter[$option->id], 0, config('settings.limit_voters_option')) as $voter)
-                                                                    <div class="voter-avatar" data-toggle="tooltip" title="{{ $voter['name'] }}">
-                                                                        <img src="{{ $voter['avatar'] }}">
-                                                                    </div>
-                                                                @endforeach
-                                                                @if ($option->countVotes() > config('settings.limit_voters_option'))
-                                                                    <div class="voter-avatar">
-                                                                        <div class="hidden-counter"
-                                                                            data-url-modal-voter="{{ action('User\VoteController@getModalOptionVoters', $option->id) }}">
-                                                                            <span>+{{ $option->countVotes() - config('settings.limit_voters_option') }}</span>
-                                                                        </div>
-                                                                    </div>
+                                                    <li class="list-group-item parent-vote li-parent-vote perform-option clearfix" onclick="voted('{{ $option->id }}', 'horizontal')">
+                                                        <div class="option-info pull-left">
+                                                            @if (!$isLimit && !$poll->isClosed() && !$isTimeOut)
+                                                                @if ($poll->multiple == trans('polls.label.multiple_choice'))
+                                                                    <div class="checkbox checkbox-primary">
+                                                                        {!!
+                                                                            Form::checkbox('option[]', $option->id, false, [
+                                                                                'onClick' => 'voted("' . $option->id  . '", "horizontal")',
+                                                                                'class' => ($isHaveImages) ? 'poll-option-detail' : 'poll-option-detail-not-image',
+                                                                                'id' => 'horizontal-' . $option->id
+                                                                            ])
+                                                                        !!}
+                                                                @else
+                                                                    <div class="radio radio-primary">
+                                                                        {!!
+                                                                            Form::radio('option[]', $option->id, false, [
+                                                                                'onClick' => 'voted("' . $option->id  . '", "horizontal")',
+                                                                                'class' => ($isHaveImages) ? 'poll-option-detail' : 'poll-option-detail-not-image',
+                                                                                'id' => 'horizontal-' . $option->id
+                                                                            ])
+                                                                        !!}
                                                                 @endif
-                                                            </div>
-                                                        @endif
+                                                                    <label class="content-option-choose">{{ $option->name ? $option->name : '' }}</label>
+                                                                    <br>
+                                                                </div>
+                                                            @else
+                                                                @php
+                                                                    $hideChoose = true;
+                                                                @endphp
+                                                                <p class="content-option-choose">{{ $option->name ? $option->name : '' }}</p>
+                                                            @endif
+                                                            @if ($isHaveImages)
+                                                                <!--START: Win-Frame Add Image -->
+                                                                <div class="box-media-image-option image-option-detail {{ isset($hideChoose) ? 'image-option-detail-fix' : '' }}">
+                                                                    <a class="media-image pick-media-image" href="javascript:void(0)">
+                                                                        <div class="image-frame">
+                                                                            <div class="image-ratio">
+                                                                                <img src="{{ $option->showImage() }}" class="thumbOption image-option-choose" />
+                                                                            </div>
+                                                                            <span class="cz-label label-new">
+                                                                                {{ trans('polls.label_for.option_image') }}
+                                                                            </span>
+                                                                        </div>
+                                                                    </a>
+                                                                </div>
+                                                                <!--END: Win-Frame Add Image -->
+                                                            @endif
+                                                        </div>
+                                                        <div class="voters-info pull-right">
+                                                            @if (!$isHideResult || Gate::allows('administer', $poll))
+                                                                <div class="voters clearfix result-poll {{ isset($hideChoose) ? 'voters-fix' : '' }}">
+                                                                    @foreach (array_slice($listVoter[$option->id], 0, config('settings.limit_voters_option')) as $voter)
+                                                                        <div class="voter-avatar" data-toggle="tooltip"
+                                                                            data-placement="{{ $loop->parent->last ? 'top' : 'bottom'}}"
+                                                                            title="{{ $voter['name'] }}">
+                                                                            <img src="{{ $voter['avatar'] }}">
+                                                                        </div>
+                                                                    @endforeach
+                                                                    @if ($option->countVotes() > config('settings.limit_voters_option'))
+                                                                        <div class="voter-avatar">
+                                                                            <div class="hidden-counter"
+                                                                                data-url-modal-voter="{{ action('User\VoteController@getModalOptionVoters', $option->id) }}">
+                                                                                <span>+{{ $option->countVotes() - config('settings.limit_voters_option') }}</span>
+                                                                            </div>
+                                                                        </div>
+                                                                    @endif
+                                                                </div>
+                                                            @endif
+                                                        </div>
                                                     </li>
                                                 @endforeach
                                             </div>
@@ -443,19 +449,43 @@
                                         <!--START: Show Option With Time line  -->
                                         <div id="timeline" class="tab-pane fade vote-style-detail">
                                             <!--START: Show option details-->
-                                                <table class="table option-date" cellspacing="0" cellpadding="0">
-                                                    <tbody>
-                                                        @if ($optionDates['hours'])
-                                                            <!--START: Show month + year of option -->
-                                                            <tr class="header date month">
-                                                                @if ($optionDates['notHour'])
+                                                <table class="table option-date tb-option" cellspacing="0" cellpadding="0">
+                                                    <thead class="thead">
+                                                        @if (!$isHideResult || Gate::allows('administer', $poll))
+                                                            <!--Start: Show result -->
+                                                            <tr class="fix-td result-poll">
+                                                                @if (!$optionDates['hours'])
                                                                     <td colspan="2">
                                                                         <strong>
                                                                             {{ $optionDates['participants']->count() . ' ' . trans('polls.participants')}}
                                                                         </strong>
                                                                     </td>
                                                                 @else
-                                                                    <td colspan="2"></td>
+                                                                    <td class="td-not-bg" colspan="2"></td>
+                                                                @endif
+                                                                @foreach ($optionDates['id'] as $counter)
+                                                                    <td class="text-center">
+                                                                        @if (max(array_values($optionDates['id'])) == $counter)
+                                                                            <strong>{{ $counter }}</strong>
+                                                                        @else
+                                                                            {{ $counter }}
+                                                                        @endif
+                                                                    </td>
+                                                                @endforeach
+                                                            </tr>
+                                                            <!--END: Show result -->
+                                                        @endif
+                                                        @if ($optionDates['hours'])
+                                                            <!--START: Show month + year of option -->
+                                                            <tr class="header date month">
+                                                                @if ($optionDates['notHour'])
+                                                                    <td class="td-empty" colspan="2">
+                                                                        <strong>
+                                                                            {{ $optionDates['participants']->count() . ' ' . trans('polls.participants')}}
+                                                                        </strong>
+                                                                    </td>
+                                                                @else
+                                                                    <td class="td-not-bg" colspan="2"></td>
                                                                 @endif
                                                                 @foreach ($optionDates['months'] as $data)
                                                                     <td class="msep" colspan="{{ $data['count'] }}">
@@ -477,7 +507,7 @@
                                                                         {{ trans('polls.email')}}
                                                                     </td>
                                                                 @else
-                                                                    <td colspan="2">
+                                                                    <td class="td-empty" colspan="2">
                                                                         <strong>
                                                                             {{ $optionDates['participants']->count() . ' ' . trans('polls.participants')}}
                                                                         </strong>
@@ -532,38 +562,40 @@
                                                             </tr>
                                                             <!--END: Show hour or text of option -->
                                                         @endif
-                                                        @if (!$isHideResult || Gate::allows('administer', $poll))
-                                                            <tbody class="result-poll">
-                                                                @foreach ($optionDates['participants'] as $voter)
-                                                                    <tr>
-                                                                        <td class="nsep">{{ $voter['name'] }}</td>
-                                                                        <td class="esep">{{ $voter['email'] }}</td>
-                                                                        @if ($optionDates['hours'])
-                                                                            @foreach ($optionDates['hours'] as $hour)
-                                                                                @if ($voter['id']->contains($hour['id']))
-                                                                                    <td class="opsep pop">
-                                                                                        <i class="fa fa-check" aria-hidden="true"></i>
-                                                                                    </td>
-                                                                                    @continue
-                                                                                @endif
-                                                                                <td class="opsep pn"></td>
-                                                                            @endforeach
-                                                                        @endif
-                                                                        @if ($optionDates['text'])
-                                                                            @foreach ($optionDates['text'] as $text)
-                                                                                @if ($voter['id']->contains($text['id']))
-                                                                                    <td class="opsep pop">
-                                                                                        <i class="fa fa-check" aria-hidden="true"></i>
-                                                                                    </td>
-                                                                                    @continue
-                                                                                @endif
-                                                                                <td class="opsep pn"></td>
-                                                                            @endforeach
-                                                                        @endif
-                                                                    </tr>
-                                                                @endforeach
-                                                            </tbody>
-                                                        @endif
+                                                    </thead>
+                                                    @if (!$isHideResult || Gate::allows('administer', $poll))
+                                                        <tbody class="result-poll waypoints">
+                                                            @foreach ($optionDates['participants'] as $voter)
+                                                                <tr>
+                                                                    <td class="nsep">{{ $voter['name'] }}</td>
+                                                                    <td class="esep">{{ $voter['email'] }}</td>
+                                                                    @if ($optionDates['hours'])
+                                                                        @foreach ($optionDates['hours'] as $hour)
+                                                                            @if ($voter['id']->contains($hour['id']))
+                                                                                <td class="opsep pop">
+                                                                                    <i class="fa fa-check" aria-hidden="true"></i>
+                                                                                </td>
+                                                                                @continue
+                                                                            @endif
+                                                                            <td class="opsep pn"></td>
+                                                                        @endforeach
+                                                                    @endif
+                                                                    @if ($optionDates['text'])
+                                                                        @foreach ($optionDates['text'] as $text)
+                                                                            @if ($voter['id']->contains($text['id']))
+                                                                                <td class="opsep pop">
+                                                                                    <i class="fa fa-check" aria-hidden="true"></i>
+                                                                                </td>
+                                                                                @continue
+                                                                            @endif
+                                                                            <td class="opsep pn"></td>
+                                                                        @endforeach
+                                                                    @endif
+                                                                </tr>
+                                                            @endforeach
+                                                        </tbody>
+                                                    @endif
+                                                    <tfoot class="tf-check-option">
                                                         @if (!$isLimit && !$poll->isClosed() && !$isTimeOut)
                                                             <tr>
                                                                 <td colspan="2" class="td-choose-option"></td>
@@ -592,109 +624,7 @@
                                                                 @endforeach
                                                             </tr>
                                                         @endif
-                                                        @if ($optionDates['participants']->count() > config('settings.limit_show_option_below'))
-                                                            <tbody class="result-poll">
-                                                                @if (!$optionDates['notHour'])
-                                                                    <!--START: Show hour or text of option -->
-                                                                    <tr class="header date time">
-                                                                        <td colspan="2"></td>
-                                                                        @foreach($optionDates['hours'] as $data)
-                                                                            @if($data['hour'] == config('settings.hour_default'))
-                                                                                <td class="hsep" colspan="1">
-                                                                                    <i class="fa fa-minus" aria-hidden="true"></i>
-                                                                                </td>
-                                                                            @else
-                                                                                <td class="hsep" colspan="1">
-                                                                                    {{ $data['hour'] }}
-                                                                                </td>
-                                                                            @endif
-                                                                        @endforeach
-                                                                        @foreach($optionDates['text'] as $data)
-                                                                            <td class="hsep" colspan="1">
-                                                                                {{ $data['text'] }}
-                                                                            </td>
-                                                                        @endforeach
-                                                                    </tr>
-                                                                    <!--END: Show hour or text of option -->
-                                                                @endif
-                                                                @if ($optionDates['hours'])
-                                                                    <!--START: Show week + day or only of option -->
-                                                                    <tr class="header date day">
-                                                                        @if ($optionDates['notHour'])
-                                                                            <td class="hname">
-                                                                                {{ trans('polls.name')}}
-                                                                            </td>
-                                                                            <td class="hemail">
-                                                                                {{ trans('polls.email')}}
-                                                                            </td>
-                                                                        @else
-                                                                            <td colspan="2"></td>
-                                                                        @endif
-                                                                        @foreach ($optionDates['days'] as $data)
-                                                                            @foreach ($data as $days)
-                                                                                <td class="dsep" colspan="{{ $days['count'] }}">
-                                                                                    {{ $days['day'] }}
-                                                                                </td>
-                                                                            @endforeach
-                                                                        @endforeach
-                                                                        @if (!$optionDates['notHour'])
-                                                                            @if ($optionDates['text'])
-                                                                                <td class="hsep" colspan="{{ count($optionDates['text']) }}"></td>
-                                                                            @endif
-                                                                        @else
-                                                                            @foreach ($optionDates['text'] as $data)
-                                                                                <td class="hsep" colspan="1">
-                                                                                    {{ $data['text'] }}
-                                                                                </td>
-                                                                            @endforeach
-                                                                        @endif
-                                                                    </tr>
-                                                                    <!--END: Show week + day or only of option -->
-                                                                    <!--START: Show month + year of option -->
-                                                                    <tr class="header date month">
-                                                                        @if ($optionDates['notHour'])
-                                                                            <td colspan="2"></td>
-                                                                        @else
-                                                                            <td colspan="2"></td>
-                                                                        @endif
-                                                                        @foreach ($optionDates['months'] as $data)
-                                                                            <td class="msep" colspan="{{ $data['count'] }}">
-                                                                                {{ $data['month'] }}
-                                                                            </td>
-                                                                        @endforeach
-                                                                        @if ($optionDates['text'])
-                                                                            <td class="hsep" colspan="{{ count($optionDates['text']) }}"></td>
-                                                                        @endif
-                                                                    </tr>
-                                                                    <!--END: Show month + year of option -->
-                                                                @endif
-                                                            </tbody>
-                                                        @endif
-                                                        @if (!$isHideResult || Gate::allows('administer', $poll))
-                                                            <!--Start: Show result -->
-                                                            <tr class="result-poll">
-                                                                @if ($optionDates['participants']->count() > config('settings.limit_show_option_below'))
-                                                                    <td colspan="2">
-                                                                        <strong>
-                                                                            {{ $optionDates['participants']->count() . ' ' . trans('polls.participants')}}
-                                                                        </strong>
-                                                                    </td>
-                                                                @else
-                                                                     <td colspan="2">
-                                                                @endif
-                                                                @foreach ($optionDates['id'] as $counter)
-                                                                    <td class="text-center">
-                                                                        @if (max(array_values($optionDates['id'])) == $counter)
-                                                                            <strong>{{ $counter }}</strong>
-                                                                        @else
-                                                                            {{ $counter }}
-                                                                        @endif
-                                                                    </td>
-                                                                @endforeach
-                                                            </tr>
-                                                            <!--END: Show result -->
-                                                        @endif
-                                                    </tbody>
+                                                    </tfoot>
                                                 </table>
                                             <!--END: Show option details-->
                                         </div>
@@ -1050,6 +980,17 @@
                                                     <div class="modal-dialog">
                                                         <div class="modal-content">
                                                             <div class="modal-body scroll-result">
+                                                                <div class="input-group col-xs-5 search-row">
+                                                                    {!! Form::text('searchTD', null, [
+                                                                        'class' => 'form-control search-row-detail',
+                                                                        'placeholder' => 'Search'
+                                                                    ]) !!}
+                                                                    <div class="input-group-btn">
+                                                                        {{ Form::button('<i class="glyphicon glyphicon-search"></i>', [
+                                                                            'class' => 'btn btn-yes'
+                                                                        ]) }}
+                                                                    </div>
+                                                                </div>
                                                                 <!--START: Show option details-->
                                                                 <table class="table option-date" cellspacing="0" cellpadding="0">
                                                                     <tbody>
@@ -1310,6 +1251,8 @@
     <!-- PLUGIN ADD IMAGE FOR OPTIONS -->
     {!! Html::script('js/jqAddImageOption.js') !!}
 
+    {!! Html::script('bower/waypoints/lib/jquery.waypoints.min.js') !!}
+
     <!-- POLL -->
     {!! Html::script('js/poll.js') !!}
 
@@ -1329,6 +1272,7 @@
 
     <!-- CHART -->
     {!! Html::script('js/chart.js') !!}
+
 
 @endpush
 

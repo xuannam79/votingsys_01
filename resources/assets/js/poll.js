@@ -101,6 +101,13 @@ function showResultPoll() {
         $('.li-show-result-poll').removeClass('fa-eye-slash').addClass('fa-eye');
         $('.btn-show-result-poll').attr('id', 'show');
     }
+
+    $('.fixed-header').remove();
+    $('.td-fixed-check').remove();
+
+    if ($('.li-show-result-poll').hasClass('fa-eye-slash')) {
+        createFixedTfoot();
+    }
 }
 
 /**
@@ -123,6 +130,15 @@ function hideLabelMessage(element) {
  * @param type
  */
 function voted(id, type) {
+    if (type == 'timeline-temp') {
+        $('#timeline-temp-' + id).prop('checked', !$('#timeline-temp-' + id).prop('checked'));
+        $('#vertical-' + id).add('#timeline-' + id)
+            .add('#horizontal-' + id)
+            .prop('checked', $('#timeline-temp-' + id).prop('checked'));
+
+        return;
+    }
+
     if (type == 'horizontal') {
         $('#horizontal-' + id).prop('checked', !$('#horizontal-' + id).prop('checked'));
         $('#vertical-' + id).add('#timeline-' + id).prop('checked', $('#horizontal-' + id).prop('checked'));
@@ -959,6 +975,103 @@ function checkTypeEmail()
     domShowError.removeClass('has-error');
 
     return true;
+}
+
+/**
+ * Fix Head Table
+ */
+function destroyDom()
+{
+    Waypoint.destroyAll();
+    $('.fixed-header').remove();
+    $('.td-fixed-check').remove();
+}
+
+function addSize(item)
+{
+    return {
+        'height': item.outerHeight(),
+        'width': item.outerWidth()
+    };
+}
+
+function createFixedTfoot()
+{
+    var $box = $('<div>').addClass('td-fixed-check');
+
+    var $checkOption = $('.tf-check-option tr');
+
+    var style = addSize($checkOption);
+
+    style.position = 'absolute';
+    style.bottom = -$('#timeline').scrollTop();
+
+    $box.css(style);
+
+    $('.tf-check-option tr td').each(function (index, item) {
+        var $chirenBox = $('<div>');
+        var $boxTemp = $(item);
+
+        $.each(this.attributes, function(i, attr){
+            if (attr.name != 'colspan') {
+                $chirenBox.attr(attr.name, attr.value);
+            }
+        });
+
+        $chirenBox.addClass('pull-left');
+
+        $chirenBox.css(addSize($boxTemp)).html($boxTemp.html());
+
+        $box.append($chirenBox);
+    });
+
+    var outerHTML = $box[0].outerHTML.replace(/timeline/g, 'timeline-temp');
+
+    $('#timeline').append(outerHTML);
+}
+
+function createWaypointThead()
+{
+    $('.fixed-header').remove();
+
+    // Waypont timelime first tr tbody
+    $('.waypoints tr:first-child').waypoint(function (direction) {
+        if (direction == 'down' && !$('.fixed-header').length && $('.li-show-result-poll').hasClass('fa-eye-slash')) {
+            var $thead = $("<div>").addClass('fixed-header').css({
+                'position': 'absolute',
+                'top' : $('#timeline').scrollTop()
+            });
+
+            $('.thead tr').each(function (eq, value) {
+                var $tr = $("<div>").addClass('clearfix');
+
+                $tr.css(addSize($(value)));
+
+                $(value).find('td').each(function (index, tdTemp) {
+                    var $td = $("<div>").addClass('pull-left td-text text-center');
+                    var $tdTemp = $(tdTemp);
+
+                    if ($tdTemp.is('.hname, .hemail, .msep, .dsep') || $tdTemp.attr('colspan') == 2) {
+                        $td.removeClass('text-center');
+                    }
+
+                    if ($tdTemp.hasClass('td-not-bg')) {
+                        $td.addClass('td-not-bg');
+                    }
+
+                    $td.css(addSize($tdTemp)).html($tdTemp.html());
+
+                    $tr.append($td);
+                })
+
+                $thead.append($tr);
+            })
+
+            $('#timeline').prepend($thead);
+        }
+    }, {
+        context: '#timeline'
+    });
 }
 
 /*-----------------------------------------

@@ -23,6 +23,8 @@ $(document).ready(function(){
                 $('.result-vote-poll').append(socketData.html_result_vote)
                 $('.model-show-details').empty();
                 $('.model-show-details').append(socketData.html);
+                $('.model-show-details').off();
+                $('.search-row-detail').searchRow();
             });
 
             if (typeof socketData.horizontalOption != 'undefined') {
@@ -36,7 +38,17 @@ $(document).ready(function(){
             }
 
             if (typeof socketData.timelineOption != 'undefined') {
-                $('#timeline').html(socketData.timelineOption);
+                $('.tb-option').remove();
+
+                if ($('.fixed-header').length) {
+                    $('.fixed-header').after(socketData.timelineOption);
+
+                    createWaypointThead();
+
+                    return;
+                }
+
+                $('#timeline').prepend(socketData.timelineOption);
             }
 
             if ($('.bar-pie-chart').html() == "") {
