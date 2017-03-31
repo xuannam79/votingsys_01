@@ -1,5 +1,14 @@
+<div class="input-group search-voters-box">
+    {!! Form::text('searchTD', null, [
+        'class' => 'form-control search-voters-row',
+        'placeholder' => 'Search'
+    ]) !!}
+    <div class="input-group-btn">
+        {{ Form::button('<i class="glyphicon glyphicon-search"></i>', ['class' => 'btn btn-yes']) }}
+    </div>
+</div>
 <ul class="nav listing-sppoll">
-    @foreach($voters as $voter)
+    @foreach ($voters as $voter)
         <li class="voters-row">
             <p class="voters-box">
                 <span class="search-avatar">

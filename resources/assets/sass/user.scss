@@ -820,8 +820,8 @@ $frame-padding: 5px;
         .hidden-counter,
         img {
             display: block;
-            width: 21px;
-            height: 21px;
+            width: 25px;
+            height: 25px;
             border-radius: 100%;
             max-width: 3.75rem;
             max-height: 3.75rem;
@@ -830,7 +830,8 @@ $frame-padding: 5px;
         .hidden-counter {
             background-color: #337ab7;
             text-align: center;
-            font-size: 12px;
+            font-size: 10px;
+            line-height: 24px;
             color: #fff;
             padding-top: 1px;
         }
@@ -918,7 +919,8 @@ $frame-padding: 5px;
 
 .option-date {
     font-size: 13px;
-    tbody {
+    tbody,
+    tfoot {
         tr {
             td {
                 border: 1px solid #fff !important;
@@ -1038,7 +1040,7 @@ textarea#description {
 
 .perform-option {
     border: none;
-    padding: 5px 5px 10px 5px;
+    padding: 5px 5px 5px 5px;
     min-height: auto;
     border-bottom: 1px solid #dbdbdb;
     margin-bottom: 0;
@@ -1066,11 +1068,17 @@ textarea#description {
 .td-choose-option {
     background-color: #e2ebf2;
     text-align: center;
+    padding: 5px 5px 5px 10px;
+    border-right: 1px solid #fff;
     .checkbox,
     .radio {
         margin: 0px;
         text-align: center;
     }
+}
+
+.tb-option {
+    margin: 0;
 }
 
 .nav-border {
@@ -1091,6 +1099,7 @@ textarea#description {
 #horizontal,
 #vertical {
     overflow: auto;
+    max-height: 500px;
 }
 
 .table>tbody+tbody {
@@ -1099,6 +1108,36 @@ textarea#description {
 
 #timeline {
     overflow-x: auto;
+    max-height: 500px;
+    position: relative;
+}
+
+table.option-date > thead > tr > td {
+    border: 1px solid #fff;
+}
+
+.td-text {
+    background-color: darkcyan;
+    border-right: 1px solid #fff;
+    border-bottom: 1px solid #fff;
+    color: #fff;
+    padding: 8px;
+}
+
+.fix-td {
+    td {
+        background-color: darkcyan;
+        color: #fff;
+    }
+}
+
+.td-empty {
+    background-color: darkcyan;
+    color: #fff;
+}
+
+.td-not-bg {
+    background-color: #fff !important;
 }
 
 .voters-fix {
@@ -1107,6 +1146,20 @@ textarea#description {
 
 .image-option-detail-fix {
     margin-left: 5px;
+}
+
+.search-row {
+    margin-bottom: 10px;
+}
+
+.search-row {
+    @media screen and (max-width: 640px) {
+        width: 100% !important;
+    }
+}
+
+.search-voters-box {
+    margin-bottom: 5px;
 }
 
 /* CSS: CUSTOM CHECKBOX + RADIO BOOSTRAP*/

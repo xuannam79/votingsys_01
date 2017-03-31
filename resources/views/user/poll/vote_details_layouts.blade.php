@@ -1,6 +1,19 @@
 <div class="modal-dialog">
     <div class="modal-content">
         <div class="modal-body scroll-result">
+            <div class="input-group col-xs-5 search-row">
+                {!! Form::text('searchTD', null, [
+                    'class' => 'form-control search-row-detail',
+                    'placeholder' => 'Search'
+                ]) !!}
+                <div class="input-group-btn">
+                    <div class="input-group-btn">
+                        {{ Form::button('<i class="glyphicon glyphicon-search"></i>', [
+                            'class' => 'btn btn-yes'
+                        ]) }}
+                    </div>
+                </div>
+            </div>
             <!--START: Show option details-->
             <table class="table option-date" cellspacing="0" cellpadding="0">
                 <tbody>
