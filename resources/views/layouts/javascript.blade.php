@@ -6,9 +6,9 @@
 
 <!-- DROPDOWN: multiple language -->
 {!! Html::script('bower/ms-Dropdown/js/msdropdown/jquery.dd.min.js') !!}
-{!! Html::script('js/multipleLanguage.js') !!}
+{!! Html::script(elixir('js/multipleLanguage.js')) !!}
 
-{!! Html::script('js/layout/master.js') !!}
+{!! Html::script(elixir('js/layout/master.js')) !!}
 
 @stack('create-scripts')
 

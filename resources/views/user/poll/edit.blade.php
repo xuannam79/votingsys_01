@@ -96,11 +96,11 @@
     {!! Html::script('bower/jquery-validation/dist/jquery.validate.min.js') !!}
 
     <!-- PLUGIN ADD IMAGE FOR OPTIONS -->
-    {!! Html::script('js/jqAddImageOption.js') !!}
+    {!! Html::script(elixir('js/jqAddImageOption.js')) !!}
 
     <!-- VOTE -->
-    {!! Html::script('js/vote.js') !!}
+    {!! Html::script(elixir('js/vote.js')) !!}
 
     <!-- POLL -->
-    {!! Html::script('js/poll.js') !!}
+    {!! Html::script(elixir('js/poll.js')) !!}
 @endpush

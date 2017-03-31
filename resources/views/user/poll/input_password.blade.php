@@ -74,24 +74,24 @@
     {!! Html::script('bower/socket.io-client/dist/socket.io.min.js') !!}
 
     <!-- COMMENT -->
-    {!! Html::script('js/comment.js') !!}
+    {!! Html::script(elixir('js/comment.js')) !!}
 
     <!-- VOTE -->
-    {!! Html::script('js/vote.js') !!}
+    {!! Html::script(elixir('js/vote.js')) !!}
 
     <!-- VOTE SOCKET-->
-    {!! Html::script('js/voteSocket.js') !!}
+    {!! Html::script(elixir('js/voteSocket.js')) !!}
 
     <!-- SOCIAL: like, share -->
-    {!! Html::script('js/shareSocial.js') !!}
+    {!! Html::script(elixir('js/shareSocial.js')) !!}
 
     <!-- POLL -->
-    {!! Html::script('js/poll.js') !!}
+    {!! Html::script(elixir('js/poll.js')) !!}
 
     <!-- HIGHCHART-->
     {!! Html::script('bower/highcharts/highcharts.js') !!}
     {!! Html::script('bower/highcharts/highcharts-3d.js') !!}
 
     <!-- CHART -->
-    {!! Html::script('js/chart.js') !!}
+    {!! Html::script(elixir('js/chart.js')) !!}
 @endpush
