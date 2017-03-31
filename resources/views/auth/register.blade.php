@@ -178,6 +178,6 @@
 @push('manage-scripts')
 
 <!-- MANAGE POLL -->
-{!! Html::script('js/managePoll.js') !!}
+{!! Html::script(elixir('js/managePoll.js')) !!}
 @endpush
 

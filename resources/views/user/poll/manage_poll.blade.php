@@ -566,21 +566,21 @@
 
 
     <!-- MANAGE POLL -->
-    {!! Html::script('js/managePoll.js') !!}
+    {!! Html::script(elixir('js/managePoll.js')) !!}
 
-    {!! Html::script('js/poll.js') !!}
+    {!! Html::script(elixir('js/poll.js')) !!}
 
     <!-- VOTE SOCKET-->
-    {!! Html::script('js/voteSocket.js') !!}
+    {!! Html::script(elixir('js/voteSocket.js')) !!}
 
     <!-- EDIT LINK POLL-->
-    {!! Html::script('js/editLink.js') !!}
+    {!! Html::script(elixir('js/editLink.js')) !!}
 
     <!-- HIGHCHART-->
     {!! Html::script('bower/highcharts/highcharts.js') !!}
     {!! Html::script('bower/highcharts/highcharts-3d.js') !!}
 
     <!-- CHART -->
-    {!! Html::script('js/chart.js') !!}
+    {!! Html::script(elixir('js/chart.js')) !!}
 
 @endpush

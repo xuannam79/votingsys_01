@@ -11,7 +11,7 @@
 {!! Html::script('bower/socket.io-client/dist/socket.io.min.js') !!}
 
 <!-- VOTE SOCKET-->
-{!! Html::script('js/voteSocket.js') !!}
+{!! Html::script(elixir('js/voteSocket.js')) !!}
 
 @endpush
 <div class="hide_vote_socket"

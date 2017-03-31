@@ -45,5 +45,5 @@
 @endsection
 @push('common-script')
     <!-- Common -->
-    {!! Html::script('js/common.js') !!}
+    {!! Html::script(elixir('js/common.js')) !!}
 @endpush

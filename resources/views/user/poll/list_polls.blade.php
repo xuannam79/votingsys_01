@@ -97,5 +97,5 @@
     <!-- ---------------------------------
         Javascript of list poll
     ---------------------------------------->
-    {!! Html::script('js/listPolls.js') !!}
+    {!! Html::script(elixir('js/listPolls.js')) !!}
 @endpush

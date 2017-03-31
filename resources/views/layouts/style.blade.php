@@ -1,4 +1,4 @@
-{!! Html::style('css/app.css') !!}
+{!! Html::style(elixir('css/app.css')) !!}
 
 <!-- DROPDOWN: multiple language -->
 {!! Html::style('bower/ms-Dropdown/css/msdropdown/dd.css') !!}
@@ -11,8 +11,8 @@
 {!! Html::style('bower/bootstrap/dist/css/bootstrap-theme.min.css') !!}
 
 <!-- STYLES -->
-{!! Html::style('css/layout/master.css') !!}
-{!! Html::style('css/user.css') !!}
+{!! Html::style(elixir('css/layout/master.css')) !!}
+{!! Html::style(elixir('css/user.css')) !!}
 
 <!-- ANIMATE -->
 {!! Html::style('bower/animate.css/animate.min.css') !!}
