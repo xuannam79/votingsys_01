@@ -97,8 +97,8 @@ class PollRepositoryEloquent extends AbstractRepositoryEloquent implements PollR
             return false;
         }
 
-        if ($poll->options()->createMany($options)) {
-            return true;
+        if ($options = $poll->options()->createMany($options)) {
+            return collect($options);
         }
 
         return false;
@@ -345,7 +345,7 @@ class PollRepositoryEloquent extends AbstractRepositoryEloquent implements PollR
 
     public function vote($poll, $input)
     {
-        if (!$input['option']) {
+        if (!$input['option'] && !$input['optionText']) {
             return false;
         }
 
@@ -353,7 +353,14 @@ class PollRepositoryEloquent extends AbstractRepositoryEloquent implements PollR
         try {
             $input['user_id'] = $this->getUserId($input['email']);
 
-            $idOption = array_values($input['option']);
+            $idOption = array_values((array) $input['option']);
+
+            if (!empty($input['optionText'])) {
+                $idOption = array_merge(
+                    $idOption,
+                    $this->addOption($poll, $input)->pluck('id')->toArray()
+                );
+            }
 
             $user = $this->currentUser();
 

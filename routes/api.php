@@ -53,6 +53,8 @@ Route::group(['prefix' => 'v1', 'namespace' => 'Api'], function () {
 
     Route::get('poll/result-detail/{token}', 'ResultController@resultDetail');
 
+    Route::get('link/poll-info/{token}', 'LinkController@getInfo');
+
     Route::get('checkLinkExist', 'LinkController@checkLinkExist');
 
     Route::get('showActivity', 'ActivityController@showActivity');
