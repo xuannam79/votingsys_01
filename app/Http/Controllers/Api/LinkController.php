@@ -120,4 +120,25 @@ class LinkController extends ApiController
 
         return $this->trueJson(true, trans('polls.message.link_valid'));
     }
+
+    public function checkLinkOfAdmin(Request $request)
+    {
+        $data = $request->only('token');
+
+        if (!$data['token']) {
+            return $this->falseJson(API_RESPONSE_CODE_UNPROCESSABLE, trans('polls.message.not_param_token'));
+        }
+
+        $link = $this->linkRepository->findBy('token', $data)->first();
+
+        if (!$link) {
+            return $this->falseJson(API_RESPONSE_CODE_UNPROCESSABLE, trans('activity.message.not_found_link'));
+        }
+
+        if (!$link->link_admin == config('settings.link_poll.admin')) {
+            return $this->falseJson(API_RESPONSE_CODE_UNPROCESSABLE, trans('link.message.not_link_admin'));
+        }
+
+        return $this->trueJson(true);
+    }
 }
