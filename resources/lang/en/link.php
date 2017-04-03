@@ -11,6 +11,5 @@ return [
         'update_link_not_success' => 'Update link not success',
         'update_link_success' => 'Update link success',
         'link_user_or_admin_not_exist' => 'Link vote or link admin not exist',
-        'not_link_admin' => 'Not link admin',
     ],
 ];
