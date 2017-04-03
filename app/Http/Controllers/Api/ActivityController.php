@@ -21,7 +21,13 @@ class ActivityController extends ApiController
 
     public function showActivity(Request $request)
     {
-        $link = $this->linkRepository->findBy('token', $request->only('token'))->first();
+        $data = $request->only('token');
+
+        if (!$data['token']) {
+            return $this->falseJson(API_RESPONSE_CODE_UNPROCESSABLE, trans('polls.message.not_param_token'));
+        }
+
+        $link = $this->linkRepository->findBy('token', $data)->first();
 
         if (!$link) {
             return $this->falseJson(API_RESPONSE_CODE_UNPROCESSABLE, trans('activity.message.not_found_link'));

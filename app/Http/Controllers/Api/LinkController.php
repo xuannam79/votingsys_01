@@ -112,7 +112,13 @@ class LinkController extends ApiController
 
     public function checkLinkExist(Request $request)
     {
-        $link = $this->linkRepository->findBy('token', $request->only('token'));
+        $data = $request->only('token');
+
+        if (!$data['token']) {
+            return $this->falseJson(API_RESPONSE_CODE_UNPROCESSABLE, trans('polls.message.not_param_token'));
+        }
+
+        $link = $this->linkRepository->findBy('token', $data);
 
         if ($link->count()) {
             return $this->falseJson(API_RESPONSE_CODE_UNPROCESSABLE, trans('polls.message.link_exists'));
