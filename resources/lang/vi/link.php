@@ -11,6 +11,5 @@ return [
         'update_link_not_success' => 'Cập nhập link không thành công',
         'update_link_success' => 'Cập nhập link thành công',
         'link_user_or_admin_not_exist' => 'Link bình chọn hoặc link admin không tồn tại',
-        'not_link_admin' => 'Không phải link của admin',
     ],
 ];
