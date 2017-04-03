@@ -158,6 +158,7 @@ return [
         'duplicate_poll_error' => 'Duplicate poll error',
         'get_closed_poll_error' => 'Get closed poll error',
         'get_participated_polls_error' => 'Get Participated Polls Error',
+        'not_param_token' => 'Not param token',
     ],
     'validation' => [
         'name' => [
