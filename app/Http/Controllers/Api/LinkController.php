@@ -141,4 +141,25 @@ class LinkController extends ApiController
 
         return $this->trueJson(true);
     }
+
+    public function getInfo($token)
+    {
+        $link = $this->linkRepository->findBy('token', $token)->first();
+
+        if (!$link) {
+            return $this->falseJson(API_RESPONSE_CODE_UNPROCESSABLE, trans('polls.message.not_found_polls'));
+        }
+
+        $poll = $link->poll->withoutAppends()->load('user', 'settings', 'options', 'links');
+
+        if (!$poll->status) {
+            return $this->falseJson(API_RESPONSE_CODE_UNPROCESSABLE, trans('polls.message_poll_closed'));
+        }
+
+        $poll->options->each(function ($option) use ($poll) {
+            $option->name = "$poll->title; $option->name";
+        });
+
+        return $this->trueJson(['poll' => $poll]);
+    }
 }

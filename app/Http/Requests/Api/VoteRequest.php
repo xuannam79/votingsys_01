@@ -22,9 +22,11 @@ class VoteRequest extends AbstractRequest
     public function rules()
     {
         $config = config('settings.length_poll');
+
         return [
             'name' => 'max:' . $config['name'],
             'email' => 'email|max:' . $config['email'],
+            'optionImage.*' => 'image|mimes:jpg,jpeg,png,gif,svg|max:1000',
         ];
     }
 

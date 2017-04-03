@@ -18,7 +18,7 @@ class VoteController extends ApiController
 
     public function store(VoteRequest $request)
     {
-        $input = $request->only('option', 'name', 'email', 'idPoll');
+        $input = $request->only('option', 'name', 'email', 'idPoll', 'optionText', 'optionImage');
 
         $poll = $this->pollRepository->find($input['idPoll']);
 
@@ -62,6 +62,24 @@ class VoteController extends ApiController
         // check setting's poll have require input name and email
         if ($settings[$config['required_name_and_email']]['status'] && !$input['email'] && !$input['name']) {
             return $this->falseJson(API_RESPONSE_CODE_UNPROCESSABLE, trans('polls.message_validate_name_and_email'));
+        }
+
+        // Only vote 1 option when poll was single choice
+        if (!$poll->withoutAppends()->multiple && count($input['option']) > 1) {
+            return $this->falseJson(API_RESPONSE_CODE_UNPROCESSABLE, trans('polls.only_one_voted'));
+        }
+
+        // If setting have a new option to vote
+        if ($settings[$config['allow_add_option']]['status']
+            && !is_null($input['optionText'])
+        ) {
+            if (count($input['optionText']) != 1) {
+                return $this->falseJson(API_RESPONSE_CODE_UNPROCESSABLE, trans('polls.only_one_voted'));
+            }
+
+            if ($poll->options->contains('name', reset($input['optionText']))) {
+                return $this->falseJson(API_RESPONSE_CODE_UNPROCESSABLE, trans('polls.message_client.option_duplicate'));
+            }
         }
 
         // Save participant voted
