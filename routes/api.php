@@ -59,7 +59,7 @@ Route::group(['prefix' => 'v1', 'namespace' => 'Api'], function () {
 
     Route::get('showActivity', 'ActivityController@showActivity');
 
-    Route::get('checkLinkOfAdmin', 'LinkController@checkLinkOfAdmin');
+    Route::post('checkLinkOfAdmin', 'LinkController@checkLinkOfAdmin');
 
     Route::group(['middleware' => 'auth:api'], function () {
         Route::post('logout', 'Auth\AuthController@logout');
