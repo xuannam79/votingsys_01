@@ -65,8 +65,12 @@ class VoteController extends ApiController
         }
 
         // Only vote 1 option when poll was single choice
-        if (!$poll->withoutAppends()->multiple && count($input['option']) > 1) {
-            return $this->falseJson(API_RESPONSE_CODE_UNPROCESSABLE, trans('polls.only_one_voted'));
+        if (!$poll->withoutAppends()->multiple) {
+            if (count($input['option']) > 1
+                || (count($input['optionText']) == 1 && count($input['option']))
+            ) {
+                return $this->falseJson(API_RESPONSE_CODE_UNPROCESSABLE, trans('polls.only_one_voted'));
+            }
         }
 
         // If setting have a new option to vote

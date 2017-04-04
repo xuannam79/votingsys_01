@@ -162,8 +162,8 @@ class LinkController extends ApiController
             return $this->falseJson(API_RESPONSE_CODE_UNPROCESSABLE, trans('polls.message_poll_closed'));
         }
 
-        $poll->options->each(function ($option) use ($poll) {
-            $option->name = "$poll->title; $option->name";
+        $poll->options->each(function ($option) {
+            $option->setNameMix();
         });
 
         return $this->trueJson(['poll' => $poll]);
