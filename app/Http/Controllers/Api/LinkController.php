@@ -33,6 +33,7 @@ class LinkController extends ApiController
 
         $data = [
             'poll' => $poll,
+            'token_type' => $link->link_admin,
             'countParticipant' => $poll->countParticipants(),
             'countComments' => $poll->comments()->count(),
             'result_voted' => $poll->countVotesWithOption(),
@@ -166,6 +167,9 @@ class LinkController extends ApiController
             $option->setNameMix();
         });
 
-        return $this->trueJson(['poll' => $poll]);
+        return $this->trueJson([
+            'poll' => $poll,
+            'token_type' => $link->link_admin,
+        ]);
     }
 }
