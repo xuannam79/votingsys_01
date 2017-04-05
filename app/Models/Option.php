@@ -103,4 +103,21 @@ class Option extends Model
 
         return $this->attributes['url_image'] = asset(config('settings.option.path_image'). $image);
     }
+
+    public function setNameMix()
+    {
+        $pattern = '/(0[1-9]|[1-9]|[1-2][0-9]|3[0-1])[\/-](0[1-9]|[1-9]|1[0-2])[\/-][0-9]{4}\s*(([01]?[0-9]|2[0-3]):[0-5][0-9]){0,1}/';
+
+        if (validateDate($this->name)) {
+            return $this->name = " ; $this->name";
+        }
+
+        if (preg_match_all($pattern, $this->name, $match)) {
+            $string = preg_replace($pattern, '%s', $this->name);
+
+            $dateOption = implode(' ; ', head($match));
+
+            return $this->name = "$string ; $dateOption";
+        }
+    }
 }
