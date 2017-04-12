@@ -396,8 +396,10 @@ class PollRepositoryEloquent extends AbstractRepositoryEloquent implements PollR
         }
 
         $polls = $this->model->where([
-            'user_id' => $userId
+            'user_id' => $userId,
+            'status' => config('settings.status.open'),
         ])->orderBy('id', 'desc')->get();
+
         $polls = $polls->map(function ($poll) {
             return $poll->withoutAppends()->load('activities', 'links');
         });
