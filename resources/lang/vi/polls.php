@@ -416,4 +416,5 @@ return [
     'link' => 'Link',
     'required_type_email' => 'Bầu chọn này chỉ cho phép email: :type',
     'only_one_voted' => 'Bầu chọn không hợp lệ! Bạn chỉ chọn được một bầu chọn duy nhất',
+    'invalid_option_voted' => 'Bầu chọn không hợp lệ',
 ];

@@ -28,6 +28,7 @@ class VoteController extends ApiController
 
         // Load eager loading
         $poll->load('options.users', 'options.participants', 'settings');
+        $options = $poll->options;
 
         $settings = $this->pollRepository->getSettingsPoll($poll);
         $config = config('settings.setting');
@@ -81,14 +82,18 @@ class VoteController extends ApiController
                 return $this->falseJson(API_RESPONSE_CODE_UNPROCESSABLE, trans('polls.only_one_voted'));
             }
 
-            if ($poll->options->contains('name', reset($input['optionText']))) {
+            if ($options->contains('name', reset($input['optionText']))) {
                 return $this->falseJson(API_RESPONSE_CODE_UNPROCESSABLE, trans('polls.message_client.option_duplicate'));
             }
         }
 
+        if ($options->pluck('id')->diff($input['option'])->count() == $options->count()) {
+            return $this->falseJson(API_RESPONSE_CODE_UNPROCESSABLE, trans('polls.invalid_option_voted'));
+        }
+
         // Save participant voted
         if ($participant = $this->pollRepository->vote($poll, $input)) {
-            return $this->trueJson($participant, trans('polls.voted_poll'));
+            return $this->trueJson($participant, trans('polls.vote_successfully'));
         }
 
         return $this->falseJson(API_RESPONSE_CODE_INTER_SERVER_ERROR, trans('polls.message_client.error_occurs'));
