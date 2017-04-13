@@ -417,4 +417,5 @@ return [
     'link' => 'Link',
     'required_type_email' => 'Email must be have extension: :type',
     'only_one_voted' => 'You must choose only voted once',
+    'invalid_option_voted' => 'Voting option invalid',
 ];
