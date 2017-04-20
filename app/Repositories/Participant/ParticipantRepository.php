@@ -60,4 +60,86 @@ class ParticipantRepository extends BaseRepository implements ParticipantReposit
             throw $e;
         }
     }
+
+    public function updateOption($input)
+    {
+        if (!$input['option']) {
+            return false;
+        }
+
+        DB::beginTransaction();
+        try {
+            $user = $this->getCurrentUser();
+
+            if ($user && $user->id == $input['id'] && $input['vote_id']) {
+                $this->getCurrentUser()
+                    ->options()
+                    ->wherePivot('id', $input['vote_id'])
+                    ->sync($input['option']);
+                DB::commit();
+
+                return true;
+            }
+
+            $participant = $this->model->find($input['id']);
+
+            $participant->options()->sync($input['option']);
+
+            if (!$input['user_id']) {
+                $input['name'] = $input['name'] ?: trans('polls.no_name');
+                $input['email'] = $input['email'] ?: null;
+                $input['user_id'] = $input['user_id'] ?: null;
+
+                $participant->fill($input)->save();
+            }
+
+            DB::commit();
+
+            return true;
+        } catch (Exception $e) {
+            DB::rollBack();
+
+            return false;
+        }
+    }
+
+    public function deleteVoter($input)
+    {
+        if (!$input['option'] || !$input['id']) {
+            return false;
+        }
+
+        DB::beginTransaction();
+        try {
+            $user = $this->getCurrentUser();
+
+            if ($user && $user->id == $input['id'] && $input['vote_id']) {
+                $this->getCurrentUser()
+                    ->options()
+                    ->wherePivot('id', $input['vote_id'])
+                    ->detach($input['option']);
+                DB::commit();
+
+                return true;
+            }
+
+            $participant = $this->model->find($input['id']);
+
+            $participant->options()->detach();
+
+            if (!$participant->delete()) {
+                DB::rollBack();
+
+                return false;
+            }
+
+            DB::commit();
+
+            return true;
+        } catch (Exception $e) {
+            DB::rollBack();
+
+            return false;
+        }
+    }
 }

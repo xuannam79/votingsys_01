@@ -36,38 +36,34 @@ class Option extends Model
 
     public function countVotes()
     {
-        $count = config('settings.default_value');
-        $this->votes ? $count += $this->votes->count() : '';
-        $this->participantVotes ? $count += $this->participantVotes->count() : '';
-
-        return $count;
+        return $this->participants->reject(function ($p) {
+            return get_class($p) === User::class;
+        })
+        ->push($this->users)
+        ->flatten()
+        ->count();
     }
 
     public function listVoter()
     {
-        $voters = [];
-
-        foreach ($this->users as $user) {
-            $voters[] = [
-                'name' => $user->name,
-                'email' => $user->email,
-                'avatar' => $user->getAvatarPath(),
+        return $this->participants->reject(function ($p) {
+            return get_class($p) === User::class;
+        })
+        ->push($this->users)
+        ->flatten()
+        ->map(function ($voter) {
+            return [
+                'class' => get_class($voter),
+                'name' => $voter->name,
+                'email' => $voter->email,
+                'avatar' => get_class($voter) === User::class
+                    ? $voter->getAvatarPath()
+                    : asset(config('settings.image_default_path')),
                 'id' => collect([])->push($this->id),
-                'created_at' => $user->pivot->created_at,
+                'created_at' => $voter->pivot->created_at,
             ];
-        }
-
-        foreach ($this->participants as $participant) {
-            $voters[] = [
-                'name' => $participant->name,
-                'email' => $participant->email,
-                'avatar' => asset(config('settings.image_default_path')),
-                'id' => collect([])->push($this->id),
-                'created_at' => $participant->pivot->created_at,
-            ];
-        }
-
-        return $voters;
+        })
+        ->toArray();
     }
 
     public function showImage()
@@ -81,7 +77,7 @@ class Option extends Model
 
     public function users()
     {
-        return $this->belongsToMany(User::class, 'votes')->withTimestamps();
+        return $this->belongsToMany(User::class, 'votes')->withPivot('id')->withTimestamps();
     }
 
     public function participants()

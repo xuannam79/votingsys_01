@@ -112,7 +112,7 @@ class LinkController extends Controller
         $totalVote = config('settings.default_value');
         $messageImage = trans('polls.message_client');
 
-        $poll->load('options.users', 'options.participants', 'settings', 'links');
+        $poll->load('options.users', 'options.participants', 'options.votes');
 
         $listVoter = $poll->options->reduce(function ($lookup, $item) {
             $lookup[$item->id] = $item->listVoter();
@@ -123,37 +123,8 @@ class LinkController extends Controller
         // Show result options
         $optionDates = $this->pollRepository->showOptionDate($poll);
 
-        //get information vote poll
-        $voteIds = $this->pollRepository->getVoteIds($poll->id);
-        $votes = $this->voteRepository->getVoteWithOptionsByVoteId($voteIds);
-        $participantVoteIds = $this->pollRepository->getParticipantVoteIds($poll->id);
-        $participantVotes = $this->participantVoteRepository->getVoteWithOptionsByVoteId($participantVoteIds);
-        $mergedParticipantVotes = $votes->toBase()->merge($participantVotes->toBase());
-
-        if ($mergedParticipantVotes->count()) {
-            foreach ($mergedParticipantVotes as $mergedParticipantVote) {
-                $createdAt[] = $mergedParticipantVote->first()->created_at;
-            }
-
-            $sortedParticipantVotes = collect($createdAt)->sort();
-            $resultParticipantVotes = collect();
-            foreach ($sortedParticipantVotes as $sortedParticipantVote) {
-                foreach ($mergedParticipantVotes as $mergedParticipantVote) {
-                    foreach ($mergedParticipantVote as $participantVote) {
-                        if ($participantVote->created_at == $sortedParticipantVote) {
-                            $resultParticipantVotes->push($mergedParticipantVote);
-                            break;
-                        }
-
-                    }
-                }
-            }
-            $mergedParticipantVotes = $resultParticipantVotes;
-        }
-
-
         //count number of vote
-        $countParticipantsVoted = $mergedParticipantVotes->count();
+        $countParticipantsVoted = $optionDates['participants']->count();
 
         $totalVote = [];
         // check option have image?
@@ -288,12 +259,6 @@ class LinkController extends Controller
 
             Session::forget('isInputPassword');
 
-            $isUserVoted = false;
-
-            if (auth()->check()) {
-                $isUserVoted = $this->pollRepository->checkUserVoted($poll->id, $this->voteRepository);
-            }
-
             $isOwnerPoll = \Gate::allows('ownerPoll', $poll);
 
             $viewOption = $this->pollRepository->getDataPollSystem()['jsonData'];
@@ -305,12 +270,12 @@ class LinkController extends Controller
                 'isLimit', //setting number limit of poll
                 'isSetIp', //setting vote one time
                 'requiredPassword', //setting password of poll
-                'isUserVoted', 'isParticipantVoted', // vote type
+                'isParticipantVoted', // vote type
                 'isTimeOut', //time out of poll
                 'isAllowAddOption',// allow to voter add new option
                 'isNoTheSameEmail',// setting not same email when setting had required email
                 'isEditVoted', // Allow edit vote of poll
-                'optionRateBarChart', 'dataTableResult', 'mergedParticipantVotes', //result
+                'optionRateBarChart', 'dataTableResult', //result
                 'countParticipantsVoted', 'isHaveImages', 'nameOptions', 'dataToDrawPieChart',
                 'isOwnerPoll', 'fontSize', 'messageImage',
                 'viewOption',
@@ -334,7 +299,7 @@ class LinkController extends Controller
 
             return view('user.poll.manage_poll', compact(
                 'poll', 'tokenLinkUser', 'tokenLinkAdmin', 'numberOfVote',
-                'linkUser', 'mergedParticipantVotes', 'isHaveImages',
+                'linkUser', 'optionDates', 'isHaveImages',
                 'settings', 'data', 'page', 'statistic', 'dataTableResult',
                 'optionRateBarChart', 'optionRatePieChart', 'countParticipantsVoted',
                 'isHaveImages', 'nameOptions', 'dataToDrawPieChart', 'fontSize'

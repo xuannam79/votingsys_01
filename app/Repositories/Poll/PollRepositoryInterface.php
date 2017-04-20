@@ -44,4 +44,8 @@ interface PollRepositoryInterface
 
     // Show option with date
     public function showOptionDate($poll);
+
+    public function getSocketOption($poll);
+
+    public function getSocketChart($poll);
 }
