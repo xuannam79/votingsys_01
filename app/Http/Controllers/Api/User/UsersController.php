@@ -6,22 +6,25 @@ use App\RepositoriesApi\Contracts\UserRepositoryInterface;
 use App\RepositoriesApi\Contracts\PollRepositoryInterface;
 use App\Http\Controllers\Api\ApiController;
 use App\Http\Requests\Api\UserEditRequest;
+use App\Services\PassportService;
 use Auth;
 use Input;
 
 class UsersController extends ApiController
 {
-
     protected $userRepository;
     protected $pollRepository;
+    protected $passportService;
 
     public function __construct(
         UserRepositoryInterface $userRepository,
-        PollRepositoryInterface $pollRepository
+        PollRepositoryInterface $pollRepository,
+        PassportService $passportService
     ) {
         parent::__construct();
         $this->userRepository = $userRepository;
         $this->pollRepository = $pollRepository;
+        $this->passportService = $passportService;
     }
 
     public function show($id)
@@ -54,7 +57,12 @@ class UsersController extends ApiController
             return $this->falseJson(API_RESPONSE_CODE_UNPROCESSABLE, trans('messages.error.update_profile_error'));
         }
 
-        return $this->trueJson($result, trans('user.update_profile_successfully'));
+        $this->currentUser->token()->revoke();
+
+        return $this->trueJson([
+            'user' => $result,
+            'token' => $this->passportService->getTokenByUser($result),
+        ], trans('user.update_profile_successfully'));
     }
 
     public function getProfile()
