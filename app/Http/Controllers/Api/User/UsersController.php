@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\User;
 
 use App\RepositoriesApi\Contracts\UserRepositoryInterface;
+use App\RepositoriesApi\Contracts\PollRepositoryInterface;
 use App\Http\Controllers\Api\ApiController;
 use App\Http\Requests\Api\UserEditRequest;
 use Auth;
@@ -12,11 +13,15 @@ class UsersController extends ApiController
 {
 
     protected $userRepository;
+    protected $pollRepository;
 
-    public function __construct(UserRepositoryInterface $userRepository)
-    {
+    public function __construct(
+        UserRepositoryInterface $userRepository,
+        PollRepositoryInterface $pollRepository
+    ) {
         parent::__construct();
         $this->userRepository = $userRepository;
+        $this->pollRepository = $pollRepository;
     }
 
     public function show($id)
@@ -50,5 +55,18 @@ class UsersController extends ApiController
         }
 
         return $this->trueJson($result, trans('user.update_profile_successfully'));
+    }
+
+    public function getProfile()
+    {
+        if (empty($this->currentUser)) {
+            return $this->falseJson(API_RESPONSE_CODE_UNPROCESSABLE, trans('polls.message.not_found_user'));
+        }
+
+        $user = clone $this->currentUser;
+        $user['countParticipatedPoll'] = $this->pollRepository->getParticipatedPolls($this->currentUser)->count();
+        $user['countCreatedPoll'] = $this->currentUser->polls()->count();
+
+        return $this->trueJson($user);
     }
 }

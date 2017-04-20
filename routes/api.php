@@ -69,5 +69,6 @@ Route::group(['prefix' => 'v1', 'namespace' => 'Api'], function () {
         Route::get('getClosedPolls', 'PollController@loadClosedPolls');
         Route::get('getParticipatedPolls', 'PollController@getParticipantedPolls');
         Route::patch('updateLink', 'LinkController@update');
+        Route::get('getProfile', 'User\UsersController@getProfile');
     });
 });
