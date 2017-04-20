@@ -170,4 +170,22 @@ $(document).ready(function(){
             window.location.href = $.parseJSON(data).link_user;
         }
     });
+
+    socket.on('emit-close-poll', function (data) {
+        if (link = data.link) {
+            window.location.href = link;
+        }
+    })
+
+    // auto close poll when time out
+    var userLink = $('.js-date-close').data('link');
+    var dateClose = $('.js-date-close').data('date-close');
+    var now = moment().unix();
+    var timeStart = ((dateClose - now) * 1000) + 1000;
+
+    if (dateClose != '' && now < dateClose) {
+        setTimeout(function () {
+            socket.emit('close-poll', userLink);
+        }, timeStart)
+    }
 });
