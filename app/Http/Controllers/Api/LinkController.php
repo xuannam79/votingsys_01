@@ -31,6 +31,10 @@ class LinkController extends ApiController
 
         $poll->load('user', 'settings', 'options.participants', 'options.users', 'comments', 'links');
 
+        $poll->options->each(function ($option) {
+            $option->setNameMix();
+        });
+
         $data = [
             'poll' => $poll,
             'token_type' => $link->link_admin,
