@@ -47,7 +47,6 @@ class VoteController extends Controller
 
     public function store(VoteRequest $request)
     {
-        //get MAC address of Client
         $client  = @$_SERVER['HTTP_CLIENT_IP'];
         $forward = @$_SERVER['HTTP_X_FORWARDED_FOR'];
         $remote  = $_SERVER['REMOTE_ADDR'];
@@ -71,6 +70,8 @@ class VoteController extends Controller
         $isNotSameEmail = false;
         $isLimit = false;
         $isAllowAddOption = false;
+
+        $poll->load('options.users', 'options.participants');
 
         //get all settings of poll
         $listSettings = [];
@@ -108,7 +109,10 @@ class VoteController extends Controller
             }
         }
 
-        if ($voteLimit && $poll->countParticipants() >= $voteLimit) {
+        // count voters
+        $optionDates = $this->pollRepository->showOptionDate($poll);
+
+        if ($voteLimit && $optionDates['participants']->count() >= $voteLimit) {
             $isLimit = true;
         }
 
@@ -312,130 +316,31 @@ class VoteController extends Controller
             }
         }
 
-        $listVoter = $poll->options->reduce(function ($lookup, $item) {
-            $lookup[$item->id] = $item->listVoter();
+        // Set Cookie
+        if (isset($participant)) {
+            $cookie = (array) $request->cookie('participant_id');
 
-            return $lookup;
-        });
+            array_push($cookie, $participant->id);
 
-        //get data of poll
-        $voteIds = $this->pollRepository->getVoteIds($poll->id);
-        $votes = $this->voteRepository->getVoteWithOptionsByVoteId($voteIds);
-        $participantVoteIds = $this->pollRepository->getParticipantVoteIds($poll->id);
-        $participantVotes = $this->participantVoteRepository->getVoteWithOptionsByVoteId($participantVoteIds);
-        $mergedParticipantVotes = $votes->toBase()->merge($participantVotes->toBase());
-
-        // Show result options
-        $optionDates = $this->pollRepository->showOptionDate($poll);
-
-        if ($mergedParticipantVotes->count()) {
-            foreach ($mergedParticipantVotes as $mergedParticipantVote) {
-                $createdAt[] = $mergedParticipantVote->first()->created_at;
-            }
-
-            $sortedParticipantVotes = collect($createdAt)->sort();
-            $resultParticipantVotes = collect();
-            foreach ($sortedParticipantVotes as $sortedParticipantVote) {
-                foreach ($mergedParticipantVotes as $mergedParticipantVote) {
-                    foreach ($mergedParticipantVote as $participantVote) {
-                        if ($participantVote->created_at == $sortedParticipantVote) {
-                            $resultParticipantVotes->push($mergedParticipantVote);
-                            break;
-                        }
-
-                    }
-                }
-            }
-            $mergedParticipantVotes = $resultParticipantVotes;
+            \Cookie::queue('participant_id', $cookie, config('settings.cookie_expire'));
         }
 
-        $isHaveImages = false;
-
-        foreach ($poll->options as $option) {
-            if ($option->image) {
-                $isHaveImages = true;
-                break;
-            }
-        }
-
-        $numberOfVote = config('settings.default_value');
-        $html = view('user.poll.vote_details_layouts', compact('optionDates'))->render();
-
-         //data for draw chart
-        $optionRateBarChart = [];
-        $totalVote = config('settings.default_value');
-
-        foreach ($poll->options as $option) {
-            $totalVote += $option->countVotes();
-        }
-
-        if ($totalVote) {
-            foreach ($poll->options as $option) {
-                $countOption = $option->countVotes();
-                if ($countOption > 0) {
-                    if ($isHaveImages) {
-                        $optionRateBarChart[] = ['<img src="' . $option->showImage() .'" class="image-option-poll">' . '<span class="name-option-poll">' . $option->name . '</span>', $countOption];
-                    } else {
-                        $optionRateBarChart[] = ['<p>' . $option->name . '</p>', $countOption];
-                    }
-                }
-            }
-        } else {
-            $optionRateBarChart = null;
-        }
-
-        $optionRateBarChart = json_encode($optionRateBarChart);
-
-        $optionRatePieChart = json_encode($this->pollRepository->getDataToDrawPieChart($poll, $isHaveImages));
-
-        $chartNameData = json_encode($this->pollRepository->getNameOptionToDrawChart($poll, $isHaveImages));
-        $fontSize = $this->pollRepository->getSizeChart($poll)['fontSize'];
-
-        //get data result to sort number of vote
-        $dataTableResult = $this->pollRepository->getDataTableResult($poll);
-
-        //sort option and count vote by number of vote
-        $dataTableResult = array_values(array_reverse(array_sort($dataTableResult, function($value)
-        {
-            return $value['numberOfVote'];
-        })));
-
-        // Show result options
-        $optionDates = $this->pollRepository->showOptionDate($poll);
-
-        //use socket.io
         $redis = LRedis::connection();
-        $redis->publish('votes', json_encode([
-            'result' => $poll->countVotesWithOption(),
-            'poll_id' => $poll->id,
-            'count_participant' => $mergedParticipantVotes->count(),
-            'success' => true,
-            'html' => $html,
-            'horizontalOption' => view(
-                '.user.poll.option_horizontal',
-                compact('settingsPoll', 'poll', 'isHaveImages', 'isLimit', 'listVoter')
-            )->render(),
-            'verticalOption' => view(
-                '.user.poll.option_vertical',
-                compact('settingsPoll', 'poll', 'isHaveImages', 'isLimit')
-            )->render(),
-            'timelineOption' => view(
-                '.user.poll.option_timeline',
-                compact('poll', 'isLimit', 'settingsPoll', 'optionDates')
-            )->render(),
-            'html_result_vote' => view('user.poll.result_vote_layouts', compact('dataTableResult', 'isHaveImages'))->render(),
-            'html_pie_bar_manage_chart' => view('user.poll.pie_bar_manage_chart_layouts')->render(),
-            'html_pie_bar_chart' => view('user.poll.pie_bar_chart_layouts')->render(),
-            'htmlPieChart' => view('user.poll.piechart_layouts', [
-                'optionRatePieChart' => $optionRatePieChart,
-                'isHaveImages' => $isHaveImages,
-            ])->render(),
-            'htmlBarChart' => view('user.poll.barchart_layouts', [
-                'optionRateBarChart' => $optionRateBarChart,
-                'chartNameData' => $chartNameData,
-                'fontSize' => $fontSize,
-            ])->render(),
-        ]));
+
+        // update eagle loading voter
+        $poll->load('options.users', 'options.participants');
+
+        // Get view option
+        $viewOptions = $this->pollRepository->getSocketOption($poll);
+
+        // Get view chart
+        $chart = $this->pollRepository->getSocketChart($poll);
+
+        $dataSocket['success'] = true;
+
+        $dataSocket = array_merge($viewOptions, $chart, $dataSocket);
+
+        $redis->publish('votes', json_encode($dataSocket));
 
         Session::put('isVotedSuccess', true);
 
@@ -465,7 +370,13 @@ class VoteController extends Controller
     public function ajaxCheckIfExistEmailVote(Request $request)
     {
         if ($request->ajax()) {
-            $status = $this->pollRepository->checkIfEmailVoterExist($request->all());
+            $input = $request->only([
+                'pollId',
+                'emailVote',
+                'emailIgnore',
+            ]);
+
+            $status = $this->pollRepository->checkIfEmailVoterExist($input);
 
             return response()->json(['status' => $status]);
         }
@@ -477,147 +388,21 @@ class VoteController extends Controller
         if ($this->pollRepository->editVoted($id, $input)) {
             $poll = $this->pollRepository->findPollById($id);
 
-            $listVoter = $poll->options->reduce(function ($lookup, $item) {
-                $lookup[$item->id] = $item->listVoter();
+            $poll->load('options.users', 'options.participants');
 
-                return $lookup;
-            });
-
-            //get data of poll for socket
-            $voteIds = $this->pollRepository->getVoteIds($poll->id);
-            $votes = $this->voteRepository->getVoteWithOptionsByVoteId($voteIds);
-            $participantVoteIds = $this->pollRepository->getParticipantVoteIds($poll->id);
-            $participantVotes = $this->participantVoteRepository->getVoteWithOptionsByVoteId($participantVoteIds);
-            $mergedParticipantVotes = $votes->toBase()->merge($participantVotes->toBase());
-            $settingsPoll = $this->pollRepository->getSettingsPoll($id);
-
-            // Show result options
-            $optionDates = $this->pollRepository->showOptionDate($poll);
-
-            if ($mergedParticipantVotes->count()) {
-                foreach ($mergedParticipantVotes as $mergedParticipantVote) {
-                    $createdAt[] = $mergedParticipantVote->first()->created_at;
-                }
-
-                $sortedParticipantVotes = collect($createdAt)->sort();
-                $resultParticipantVotes = collect();
-                foreach ($sortedParticipantVotes as $sortedParticipantVote) {
-                    foreach ($mergedParticipantVotes as $mergedParticipantVote) {
-                        foreach ($mergedParticipantVote as $participantVote) {
-                            if ($participantVote->created_at == $sortedParticipantVote) {
-                                $resultParticipantVotes->push($mergedParticipantVote);
-                                break;
-                            }
-                        }
-                    }
-                }
-
-                $mergedParticipantVotes = $resultParticipantVotes;
-            }
-
-            $isHaveImages = false;
-
-            foreach ($poll->options as $option) {
-                if ($option->image) {
-                    $isHaveImages = true;
-                    break;
-                }
-            }
-
-            $numberOfVote = config('settings.default_value');
-            $html = view('user.poll.vote_details_layouts', compact('optionDates'))->render();
-
-             //data for draw chart
-            $optionRateBarChart = [];
-            $totalVote = config('settings.default_value');
-
-            foreach ($poll->options as $option) {
-                $totalVote += $option->countVotes();
-            }
-
-            if ($totalVote) {
-                foreach ($poll->options as $option) {
-                    $countOption = $option->countVotes();
-                    if ($countOption) {
-                        if ($isHaveImages) {
-                            $optionRateBarChart[] = ['<img src="' . $option->showImage() .'" class="image-option-poll">' . '<span class="name-option-poll">' . $option->name . '</span>', $countOption];
-                        } else {
-                            $optionRateBarChart[] = ['<p>' . $option->name . '</p>', $countOption];
-                        }
-                    }
-                }
-            } else {
-                $optionRateBarChart = null;
-            }
-
-            $optionRateBarChart = json_encode($optionRateBarChart);
-
-            $optionRatePieChart = json_encode($this->pollRepository->getDataToDrawPieChart($poll, $isHaveImages));
-
-            $chartNameData = json_encode($this->pollRepository->getNameOptionToDrawChart($poll, $isHaveImages));
-            $fontSize = $this->pollRepository->getSizeChart($poll)['fontSize'];
-
-            //get data result to sort number of vote
-            $dataTableResult = $this->pollRepository->getDataTableResult($poll);
-
-            //sort option and count vote by number of vote
-            $dataTableResult = array_values(array_reverse(array_sort($dataTableResult, function ($value) {
-                return $value['numberOfVote'];
-            })));
-
-            // Get result option horizontal
-            $isTimeOut = false;
-            $isHaveImages = false;
-            $isLimit = false;
-            $voteLimit = $settingsPoll[config('settings.setting.set_limit')]['value'];
-            //count number of vote
-            $countParticipantsVoted = $mergedParticipantVotes->count();
-
-            foreach ($poll->options as $option) {
-                if ($option->image) {
-                    $isHaveImages = true;
-
-                    break;
-                }
-            }
-
-            if ($voteLimit && $countParticipantsVoted >= $voteLimit) {
-                $isLimit = true;
-            }
-
-            //use socket.io
             $redis = LRedis::connection();
-            $redis->publish('votes', json_encode([
-                'result' => $poll->countVotesWithOption(),
-                'poll_id' => $poll->id,
-                'count_participant' => $mergedParticipantVotes->count(),
-                'success' => true,
-                'html' => $html,
-                'horizontalOption' => view(
-                    '.user.poll.option_horizontal',
-                    compact('settingsPoll', 'poll', 'isHaveImages', 'isLimit', 'listVoter')
-                )->render(),
-                'verticalOption' => view(
-                    '.user.poll.option_vertical',
-                    compact('settingsPoll', 'poll', 'isHaveImages', 'isLimit')
-                )->render(),
-                'timelineOption' => view(
-                    '.user.poll.option_timeline',
-                    compact('poll', 'isLimit', 'settingsPoll', 'optionDates')
-                )->render(),
-                'html_result_vote' => view('user.poll.result_vote_layouts', compact('dataTableResult', 'isHaveImages'))->render(),
-                'html_pie_bar_manage_chart' => view('user.poll.pie_bar_manage_chart_layouts')->render(),
-                'html_pie_bar_chart' => view('user.poll.pie_bar_chart_layouts')->render(),
-                'htmlPieChart' => view('user.poll.piechart_layouts', [
-                    'optionRatePieChart' => $optionRatePieChart,
-                    'isHaveImages' => $isHaveImages,
-                ])->render(),
-                'htmlBarChart' => view('user.poll.barchart_layouts', [
-                    'optionRateBarChart' => $optionRateBarChart,
-                    'chartNameData' => $chartNameData,
-                    'fontSize' => $fontSize,
-                ])->render(),
-            ]));
+
+            // Get view option
+            $viewOptions = $this->pollRepository->getSocketOption($poll);
+
+            // Get view chart
+            $chart = $this->pollRepository->getSocketChart($poll);
+
+            $dataSocket['success'] = true;
+
+            $dataSocket = array_merge($viewOptions, $chart, $dataSocket);
+
+            $redis->publish('votes', json_encode($dataSocket));
 
             flash(trans('polls.message.update_option_success'), 'success');
 
@@ -658,5 +443,68 @@ class VoteController extends Controller
         } catch (Exception $e) {
             throw new Exception(trans('message.find_error'));
         }
+    }
+
+    public function editVote(Request $request)
+    {
+        $input = $request->only('id', 'option', 'vote_id', 'poll_id', 'user_id', 'name', 'email');
+
+        $status = $this->participantRepository->updateOption($input);
+
+        if ($status) {
+            $redis = LRedis::connection();
+
+            // Get data for socket
+            $poll = $this->pollRepository->find($input['poll_id']);
+
+            $poll->load('options.users', 'options.participants');
+
+            // Get view option
+            $viewOptions = $this->pollRepository->getSocketOption($poll);
+
+            // Get view chart
+            $chart = $this->pollRepository->getSocketChart($poll);
+
+            $dataSocket['success'] = true;
+
+            $dataSocket = array_merge($viewOptions, $chart, $dataSocket);
+
+            $redis->publish('votes', json_encode($dataSocket));
+        }
+
+        return json_encode(['status' => $status]);
+    }
+
+    public function deleteVote(Request $request)
+    {
+        $input = $request->only('id', 'option', 'vote_id', 'poll_id', 'name', 'email');
+
+        $status = $this->participantRepository->deleteVoter($input);
+        $response = ['status' => $status];
+
+        if ($status) {
+            $redis = LRedis::connection();
+
+            // Get data for socket
+            $poll = $this->pollRepository->find($input['poll_id']);
+
+            $poll->load('options.users', 'options.participants', 'links', 'settings');
+
+            // Get view option
+            $viewOptions = $this->pollRepository->getSocketOption($poll);
+
+            // Get view chart
+            $chart = $this->pollRepository->getSocketChart($poll);
+
+            $dataSocket['success'] = true;
+
+            $dataSocket = array_merge($viewOptions, $chart, $dataSocket);
+
+            $redis->publish('votes', json_encode($dataSocket));
+        } else {
+            $response['message'] = trans('polls.message_client.error_occurs');
+        }
+
+        return json_encode($response);
     }
 }

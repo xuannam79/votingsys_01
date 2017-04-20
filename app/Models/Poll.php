@@ -279,6 +279,13 @@ class Poll extends Model
         return  $dateNow > $dateClosePoll ? true : false;
     }
 
+    public function isImages()
+    {
+        return $this->options->contains(function ($option) {
+            return $option->image;
+        });
+    }
+
     public function getPassword()
     {
         $settingPassword = $this->settings->where('key', config('settings.setting.set_password'))->first();

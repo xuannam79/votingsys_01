@@ -183,6 +183,8 @@ return [
         'twitter',
     ],
 
+    'cookie_expire' => 60 * 24 * 365,
+
     'languages' => [
         'en',
         'vi',

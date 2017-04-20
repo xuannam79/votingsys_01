@@ -74,4 +74,12 @@ class ParticipantController extends Controller
 
         return redirect()->to($poll->getAdminLink())->with('messages', trans('polls.delete_all_participants_successfully'));
     }
+
+    public function getCookie()
+    {
+        $data['cookie'] = request()->cookie('participant_id');
+        $data['user'] = auth()->user();
+
+        return json_encode($data);
+    }
 }

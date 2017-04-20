@@ -176,6 +176,7 @@ return [
         Torann\DatabaseBackup\DatabaseBackupServiceProvider::class,
         Laravel\Passport\PassportServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
+        Barryvdh\Debugbar\ServiceProvider::class,
 
 
         /*
@@ -253,6 +254,7 @@ return [
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
         'Flashy' => MercurySeries\Flashy\Flashy::class,
         'Image' => Intervention\Image\Facades\Image::class,
+        'Debugbar' => Barryvdh\Debugbar\Facade::class,
 
     ],
 
