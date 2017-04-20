@@ -153,4 +153,5 @@ return [
     'top' => 'ページ先頭へ',
     'tutorial' => 'ガイド',
     'feedback' => 'フィードバックを送信',
+    'more_tool' => 'More Tools',
 ];
