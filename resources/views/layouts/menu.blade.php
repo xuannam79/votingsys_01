@@ -23,6 +23,11 @@
                         <span class="fa fa-commenting"></span> {{ trans('label.feedback') }}
                     </a>
                 </li>
+                <li>
+                    <a href="{{ config('settings.other_link.more_tool') }}" target="_blank">
+                        <span class="fa fa-wrench"></span> {{ trans('label.more_tool') }}
+                    </a>
+                </li>
                 @if (auth()->check())
                     <li {!! Request::is('user/poll') ? 'class="active"' : '' !!}>
                         <a href="{{ URL::action('User\PollController@index') }}">

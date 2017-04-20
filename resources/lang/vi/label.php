@@ -155,4 +155,5 @@ return [
     'top' => 'Đầu trang',
     'tutorial' => 'Hướng dẫn',
     'feedback' => 'Gởi phản hồi',
+    'more_tool' => 'Ứng dụng khác',
 ];

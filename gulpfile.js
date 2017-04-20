@@ -18,6 +18,6 @@ elixir(function (mix) {
     mix.scripts('requiredPassword.js');
     mix.scripts('chart.js');
     mix.scripts('jqAddImageOption.js');
-    mix.copy('public/bower/bootstrap/fonts', 'public/fonts/bootstrap');
+    mix.copy('public/bower/bootstrap/fonts', 'public/build/fonts/bootstrap');
     mix.version(['public/css/**/*.css', 'public/js/**/*.js']);
 });

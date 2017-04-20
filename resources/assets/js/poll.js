@@ -997,9 +997,11 @@ function addSize(item)
 
 function createFixedTfoot()
 {
+    $('.td-fixed-check').remove();
+
     var $box = $('<div>').addClass('td-fixed-check');
 
-    var $checkOption = $('.tf-check-option tr');
+    var $checkOption = $('.tf-check-option tr.tr-input');
 
     var style = addSize($checkOption);
 
@@ -1008,7 +1010,9 @@ function createFixedTfoot()
 
     $box.css(style);
 
-    $('.tf-check-option tr td').each(function (index, item) {
+    var total = $('.tf-check-option tr.tr-input td').length;
+
+    $('.tf-check-option tr.tr-input td').each(function (index, item) {
         var $chirenBox = $('<div>');
         var $boxTemp = $(item);
 
@@ -1018,9 +1022,19 @@ function createFixedTfoot()
             }
         });
 
+        var size = addSize($boxTemp);
+
+        if (index === 0) {
+            size.width = size.width + 1;
+        }
+
+        if (index === total - 1) {
+            size.width = size.width - 1;
+        }
+
         $chirenBox.addClass('pull-left');
 
-        $chirenBox.css(addSize($boxTemp)).html($boxTemp.html());
+        $chirenBox.css(size).html($boxTemp.html());
 
         $box.append($chirenBox);
     });
@@ -1044,14 +1058,15 @@ function createWaypointThead()
 
             $('.thead tr').each(function (eq, value) {
                 var $tr = $("<div>").addClass('clearfix');
-
                 $tr.css(addSize($(value)));
+
+                var total = $(value).find('td').length;
 
                 $(value).find('td').each(function (index, tdTemp) {
                     var $td = $("<div>").addClass('pull-left td-text text-center');
                     var $tdTemp = $(tdTemp);
 
-                    if ($tdTemp.is('.hname, .hemail, .msep, .dsep') || $tdTemp.attr('colspan') == 2) {
+                    if ($tdTemp.is('.hname, .hemail, .msep, .dsep') || $tdTemp.attr('colspan') == 3) {
                         $td.removeClass('text-center');
                     }
 
@@ -1059,7 +1074,17 @@ function createWaypointThead()
                         $td.addClass('td-not-bg');
                     }
 
-                    $td.css(addSize($tdTemp)).html($tdTemp.html());
+                    var size = addSize($tdTemp);
+
+                    if (index === 0) {
+                        size.width = size.width + 1;
+                    }
+
+                    if (index === total - 1) {
+                        size.width = size.width - 1;
+                    }
+
+                    $td.css(size).html($tdTemp.html());
 
                     $tr.append($td);
                 })
@@ -1067,7 +1092,8 @@ function createWaypointThead()
                 $thead.append($tr);
             })
 
-            $('#timeline').prepend($thead);
+            //$('#timeline').prepend($thead);
+            $('.table.option-date.tb-option').before($thead);
         }
     }, {
         context: '#timeline'

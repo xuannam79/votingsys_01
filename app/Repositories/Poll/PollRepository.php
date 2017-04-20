@@ -1817,11 +1817,12 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
         //get data result to sort number of vote
         $dataTableResult = $this->getDataTableResult($poll);
 
-        //sort option and count vote by number of vote
-        $dataTableResult = array_values(array_reverse(array_sort($dataTableResult, function ($value)
-        {
-            return $value['numberOfVote'];
-        })));
+        // sort option and count vote by number of vote
+        $dataTableResult = collect($dataTableResult)->sortByDesc(function ($data) {
+            return $data['numberOfVote'];
+        })
+        ->values()
+        ->toArray();
 
         // html result vote
         $dataChart['html_result_vote'] = view(

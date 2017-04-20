@@ -80,6 +80,6 @@ class ParticipantController extends Controller
         $data['cookie'] = request()->cookie('participant_id');
         $data['user'] = auth()->user();
 
-        return json_encode($data);
+        return response()->json($data);
     }
 }

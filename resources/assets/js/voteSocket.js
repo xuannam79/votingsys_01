@@ -22,8 +22,8 @@ $(document).ready(function(){
                 $('.result-vote-poll').empty();
                 $('.result-vote-poll').append(socketData.html_result_vote)
                 $('.model-show-details').empty();
+                $('.model-show-details').off('keyup');
                 $('.model-show-details').append(socketData.html);
-                $('.model-show-details').off();
                 $('.search-row-detail').searchRow();
             });
 
@@ -38,17 +38,44 @@ $(document).ready(function(){
             }
 
             if (typeof socketData.timelineOption != 'undefined') {
-                $('.tb-option').remove();
+                var $table = $(socketData.timelineOption);
+                var url = $('#timeline').data('get-cookie');
 
-                if ($('.fixed-header').length) {
-                    $('.fixed-header').after(socketData.timelineOption);
+                $.get(url, function (data) {
+                    $('.tb-option').remove();
 
-                    createWaypointThead();
+                    $table.find('.nsep.action-box').each(function (index) {
+                        var $actionbox = $(this);
+                        var dataAction = $actionbox.find('.inline-edit').data('edit-voted')
 
-                    return;
-                }
+                        // Condition to allow edit or delete option that was voted
+                        var userChoiceSingle = data.user && dataAction.vote_id && data.user.id == dataAction.id;
+                        var userChoiceMutiple = data.user && dataAction.user_id && data.user.id == dataAction.user_id;
+                        var haveCookie = data.cookie && data.cookie.indexOf(dataAction.id) > -1;
+                        var participantChoice = !dataAction.vote_id && !dataAction.user_id && haveCookie;
 
-                $('#timeline').prepend(socketData.timelineOption);
+                        if (userChoiceSingle || userChoiceMutiple || participantChoice) {
+                            $actionbox.removeClass('hide');
+                        } else {
+                            $actionbox.removeClass('hide').empty();
+                        }
+                    });
+
+                    if ($('.fixed-header').length) {
+                        $('.fixed-header').after($table);
+
+                        createWaypointThead();
+
+                        $('.td-fixed-check').remove();
+                        createFixedTfoot();
+
+                        return;
+                    }
+
+                    $('#timeline').append($table);
+
+                    createFixedTfoot();
+                }, 'json');
             }
 
             if ($('.bar-pie-chart').html() == "") {

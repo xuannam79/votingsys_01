@@ -192,4 +192,7 @@ return [
     ],
 
     'hour_default' => '00:00',
+    'other_link' => [
+        'more_tool' => 'http://education.framgia.vn/tools',
+    ],
 ];

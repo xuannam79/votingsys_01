@@ -63,7 +63,7 @@ $(document).ready(function(){
         if (contentTab.indexOf('timeline') !== -1) {
             createWaypointThead();
 
-            if ($('#timeline').prop('scrollHeight') > $('#timeline').height() && !$('.td-fixed-check').length) {
+            if ($('#timeline').prop('scrollHeight') > $('#timeline').height()) {
                 createFixedTfoot();
             }
 
@@ -78,6 +78,7 @@ $(document).ready(function(){
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
     });
+
     $('.loader').hide();
 
     $.extend({
@@ -111,6 +112,240 @@ $(document).ready(function(){
             });
             // Return the response text
             return theResponse;
+        }
+    });
+
+    $('#timeline').on('click', '.js-edit-vote', function (e) {
+        var $this = $(this);
+        var data = $this.closest('.inline-edit').data('edit-voted');
+        var $tr = $this.closest('tr');
+        var nameVote = $tr.find('.name-voter').text();
+        var emailVote = $tr.find('.email-voter').text();
+
+        $tr.hide();
+
+        $('.js-voter-box').not($tr).show();
+
+        $('.tf-check-option').addClass('hide');
+
+        $('.row-temp').remove();
+
+        // set data global for button save
+        data.email = emailVote;
+        $('#data-voter').data('dataRequest', data);
+
+        var $optionChoose = $('.tf-check-option tr').clone().addClass('row-temp');
+
+        // Remove class button action edit and cancel
+        $optionChoose.get(1).classList.remove('hide');
+
+        // Show input text to edit information of voter or hide input text if authentication was
+        if (data.vote_id || data.user_id) {
+            $optionChoose.find('.td-name-temp').html(nameVote);
+            $optionChoose.find('.td-email-temp').html(emailVote);
+        } else {
+            $optionChoose.find('input[name=name]').val(nameVote).removeClass('hide');
+            $optionChoose.find('input[name=email]').val(emailVote).removeClass('hide');
+        }
+
+        // Show option to edit
+        $optionChoose.find('*').removeAttr('onclick id');
+        var $optionEdit = $optionChoose.find('.opsep input')
+            .prop('checked', false)
+            .attr({'name': 'optionedit[]', 'class': 'data-edit-option'});
+
+        $tr.find('.opsep').each(function (index, value) {
+            if ($(this).hasClass('pop')) {
+                $optionEdit.eq(index).prop('checked', true);
+            }
+        });
+
+        $('.td-fixed-check').remove();
+
+        $(this).closest('tr').after($optionChoose);
+    });
+
+    $('#timeline').on('click', '.save-edit-vote', function () {
+        var $this = $(this);
+        var object = $('.js-data-validate').data();
+        var name = $('.input-name').val().trim();
+        var email = $('.input-email').val().trim();
+        var dataRequest = $('#data-voter').data('dataRequest');
+
+        // Validate when dom show errror if exists
+        if ($('.tr-input.row-temp span').removeClass('hide').length > 0) {
+            var testEmail = /^[A-Z0-9._%+-]+@([A-Z0-9-]+\.)+[A-Z]{2,4}$/i;
+
+            if (name && name.length > 100) {
+                $('.js-show-error-name').text(object.voteLimitName);
+
+                return false;
+            }
+
+            if (email && !testEmail.test(email)) {
+                $('.js-show-error-email').text(object.messageValidateEmail);
+
+                return false;
+            }
+
+            if (object.isRequiredNameAndEmail && name == '' && email == '') {
+                $('.js-show-error-name').text(object.messageRequiredNameAndEmail);
+
+                return false;
+            }
+
+            if (object.isRequiredNameAndEmail || object.isRequiredEmail) {
+
+                if (email == '') {
+                    $('.js-show-error-email').text(object.messageRequiredEmail);
+
+                    return false;
+                }
+
+                if (object.isAccecptTypeMail && !checkAccecptTypeEmail(object.typeEmail.trim(), email)) {
+                    $('.js-show-error-email').text(object.messageRequiredTypeEmail);
+
+                    return false;
+                }
+
+                // Check email exist if propety require email
+                if (object.isNotSameEmail
+                    && $.xResponse(
+                        object.urlCheckExistEmail,
+                        {pollId: object.idPoll, emailVote: email, emailIgnore: dataRequest.email}
+                    )
+                ) {
+                    $('.js-show-error-email').text(object.messageEmailExists);
+
+                    return false;
+                }
+
+                $('.js-show-error-email').empty();
+            }
+
+            if (object.isRequiredNameAndEmail || object.isRequiredName) {
+                if (name == '') {
+                    $('.js-show-error-name').text(object.messageRequiredName);
+
+                    return false;
+                }
+
+                if (name.length > 100) {
+                    $('.js-show-error-name').text(object.voteLimitName);
+
+                    return false;
+                }
+
+                $('.js-show-error-name').empty();
+            }
+        }
+
+        // Set data to request to edit vote of option by voter
+        var dataRequest = $('#data-voter').data('dataRequest');
+        var urlRequest = $this.data('url-edit');
+
+        if (typeof name != 'undefined' && typeof email != 'undefined') {
+            dataRequest.name = name;
+            dataRequest.email = email;
+        }
+
+        dataRequest.poll_id = $this.parent().data('poll-id');
+        dataRequest.option = $('.data-edit-option:checked').map(function () {
+            return $(this).val();
+        })
+        .get();
+
+        // Request input option when voted
+        if (dataRequest.option.length === 0) {
+            $this.siblings('.mess-option').removeClass('hide');
+
+            return false;
+        }
+
+        $this.siblings('.mess-option').addClass('hide');
+
+        $.ajax({
+            url: urlRequest,
+            type: 'POST',
+            data: dataRequest,
+            dataType: 'json',
+            async: false,
+
+            beforeSend: function () {
+                $('.loader').show();
+            },
+
+            success: function(respText) {
+                if (!respText.status) {
+                    $this.siblings('.mess-error').removeClass('hide');
+                } else {
+                    $this.siblings('.mess-error').addClass('hide');
+                }
+            },
+
+            complete: function () {
+                $('.loader').hide();
+            },
+        });
+    });
+
+    $('#timeline').on('click', '.cancel-edit-vote', function () {
+        $('.row-temp').remove();
+        $('.td-fixed-check').remove();
+
+        $('.js-voter-box:hidden').show();
+        $('.tf-check-option').removeClass('hide');
+
+        if ($('#timeline').prop('scrollHeight') > $('#timeline').height()) {
+            createFixedTfoot();
+        }
+    });
+
+    $('#timeline').on('click', '.js-delete-vote', function () {
+        // Set data to request to delete vote of option by voter
+        var dataRequest = $(this).closest('.inline-edit').data('edit-voted');
+        var dataVoter = $(this).data();
+
+        dataRequest._method = 'DELETE';
+        dataRequest.option = dataVoter.option;
+        dataRequest.poll_id = dataVoter.pollId;
+
+        swal({
+            title: dataVoter.message,
+            type: "info",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Yes",
+            closeOnConfirm: true
+        }, function () {
+            $('.loader').show();
+            $.ajax({
+                url: dataVoter.urlDelete,
+                type: 'DELETE',
+                data: dataRequest,
+                dataType: 'json',
+                async: false,
+                success: function(respText) {
+                    if (!respText.status) {
+                        alert(respText.message);
+                    }
+                },
+
+                complete: function () {
+                    $('.loader').hide();
+                },
+            });
+        });
+    });
+
+    $(window).resize(function () {
+        if ($('#timeline').is(':visible')) {
+            destroyDom();
+            createWaypointThead();
+
+            if ($('#timeline').prop('scrollHeight') > $('#timeline').height()) {
+                createFixedTfoot();
+            }
         }
     });
 

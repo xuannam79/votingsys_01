@@ -156,4 +156,5 @@ return [
     'tutorial' => 'Tutorial',
     'feedback' => 'Feedback',
     'top' => 'Top',
+    'more_tool' => 'More Tools',
 ];
