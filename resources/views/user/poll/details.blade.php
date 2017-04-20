@@ -894,6 +894,10 @@
             </div>
         </div>
     </div>
+    <div class="js-date-close"
+        data-date-close="{{ $poll->date_close ? strtotime($poll->date_close) : '' }}"
+        data-link="{{ $linkUser }}">
+    </div>
 </div>
 @endsection
 @push('detail-scripts')

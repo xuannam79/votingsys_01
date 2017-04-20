@@ -14,6 +14,10 @@ io.on('connection', function (socket) {
         socket.emit(channel, message);
     });
 
+    socket.on('close-poll', function (link) {
+        socket.emit('emit-close-poll', {link : link});
+    });
+
     socket.on('disconnect', function() {
         redisClient.quit();
     });
