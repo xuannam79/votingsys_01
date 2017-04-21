@@ -72,8 +72,7 @@ class UserRepositoryEloquent extends AbstractRepositoryEloquent implements UserR
         $oldImage = $currentUser->avatar;
 
         if ($avatar) {
-            $inputs['avatar'] = uploadImage($avatar,
-                public_path(config('settings.avatar_path')), $oldImage);
+            $inputs['avatar'] = uploadImage($avatar, config('settings.avatar_path'), $oldImage);
         } else {
             $inputs['avatar'] = $oldImage;
         }
