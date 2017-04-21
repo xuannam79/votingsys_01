@@ -65,6 +65,11 @@ class UserRepositoryEloquent extends AbstractRepositoryEloquent implements UserR
             $inputs['password'] = $currentUser->password;
         }
 
+        if (!empty($inputs['email']) && $inputs['email'] != $currentUser->email) {
+            $inputs['token_verification'] = str_random(20);
+            $inputs['is_active'] = false;
+        }
+
         if (!$inputs['gender']) {
             $inputs['gender'] = null;
         }
@@ -82,6 +87,8 @@ class UserRepositoryEloquent extends AbstractRepositoryEloquent implements UserR
             $user = $this->model->find($id);
             $user->update($inputs);
             DB::commit();
+
+            Mail::to($inputs['email'])->queue(new RegisterUser($user));
 
             return $user;
         } catch (Exception $e) {

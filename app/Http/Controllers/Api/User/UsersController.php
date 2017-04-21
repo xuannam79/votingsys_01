@@ -61,8 +61,8 @@ class UsersController extends ApiController
 
         return $this->trueJson([
             'user' => $result,
-            'token' => $this->passportService->getTokenByUser($result),
-        ], trans('user.update_profile_successfully'));
+            'token' => $result->is_active ? $this->passportService->getTokenByUser($result) : null,
+        ], $result->is_active ? trans('user.update_profile_successfully') : trans('user.account_unactive'));
     }
 
     public function getProfile()
