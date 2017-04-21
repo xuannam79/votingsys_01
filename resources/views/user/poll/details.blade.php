@@ -677,7 +677,7 @@
                                             </h4>
                                         </div>
                                         <div class="panel-body">
-                                            <div class="hide" data-route="{{ url('user/comment') }}" data-confirm-remove="{{ trans('polls.confirmRemove') }}">
+                                            <div class="hide js-remove-comment" data-route="{{ url('user/comment') }}" data-confirm-remove="{{ trans('polls.confirmRemove') }}">
                                             </div>
                                             <div class="comments">
                                                 @foreach ($poll->comments as $comment)
