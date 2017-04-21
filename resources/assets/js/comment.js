@@ -42,7 +42,7 @@ $(document).ready(function(){
         e.preventDefault();
         divChangeAmount = $(this).parent();
         var pollId = divChangeAmount.data('pollId');
-        var route = $('.hide').data('route');
+        var route = $('#form-comment').attr('action');
         var user = divChangeAmount.data('user');
         var content = $('#content' + pollId).val();
         var name = $('#name' + pollId).val();
@@ -115,13 +115,13 @@ $(document).ready(function(){
 
     $(document).on( 'click', '.delete-comment', function (e) {
         e.preventDefault();
-        var confirmRemove = $('.hide').data('confirmRemove');
+        var confirmRemove = $('.js-remove-comment').data('confirmRemove');
 
         if (confirm(confirmRemove)) {
             divChangeAmount = $(this).parent();
             var commentId = divChangeAmount.data('commentId');
             var pollId = divChangeAmount.data('pollId');
-            var route = $('.hide').data('route');
+            var route = $('.js-remove-comment').data('route');
 
             $.ajax({
                 type: 'POST',
