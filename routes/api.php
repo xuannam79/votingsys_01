@@ -70,5 +70,6 @@ Route::group(['prefix' => 'v1', 'namespace' => 'Api'], function () {
         Route::get('getParticipatedPolls', 'PollController@getParticipantedPolls');
         Route::patch('updateLink', 'LinkController@update');
         Route::get('getProfile', 'User\UsersController@getProfile');
+        Route::post('resetPassword', 'Auth\ResetPasswordController@resetPassword');
     });
 });

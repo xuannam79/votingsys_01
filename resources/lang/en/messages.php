@@ -16,11 +16,15 @@ return [
         'register_faild' => 'Register user faild',
         'update_profile_error' => 'Update Profile Error',
         'not_found_language' => 'Not found language',
+        'password_false' => 'Password is false',
+        'reset_password_error' => 'Reset password error',
+        'is_social_account' => 'Account is social account, not reset password',
     ],
 
     'success' => [
         'rule_category_create' => 'Rule category create was successful',
         'invite_success' => 'Invite member success',
+        'reset_password' => 'Reset password success',
     ],
 
     'api' => [

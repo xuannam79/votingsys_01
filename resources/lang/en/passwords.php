@@ -21,4 +21,19 @@ return [
     'token' => 'This password reset token is invalid.',
     'user' => "We can't find a user with that e-mail address.",
 
+    'validate' => [
+        'old_password' => [
+            'required' => 'Please enter old password!',
+            'min' => 'Please enter a value larger than or equal to 6 characters',
+        ],
+        'password' => [
+            'required' => 'Please enter password!',
+            'min' => 'Please enter a value larger than or equal to 6 characters',
+            'confirmed' => 'Password confirm incorrect, please check again!',
+        ],
+        'password_confirmation' => [
+            'required' => 'Please enter password confirmation!',
+            'min' => 'Please enter a value larger than or equal to 6 characters',
+        ],
+    ],
 ];
