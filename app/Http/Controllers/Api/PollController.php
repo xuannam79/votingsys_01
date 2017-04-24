@@ -80,13 +80,14 @@ class PollController extends ApiController
 
         $poll = $this->pollRepository->find($id);
 
+        $pollValidate = new PollRequest;
+
         if ($poll) {
             // Load eager loading
             $poll->load('options', 'settings', 'user', 'activities', 'links')->withoutAppends();
 
             if ($button == config('settings.btn_edit_poll.save_info')) {
                 // Validate edit information poll
-                $pollValidate = new PollRequest;
                 $validator = Validator::make($request->all(), $pollValidate->rules(), $pollValidate->messages());
 
                 // If fails to send message
@@ -101,7 +102,19 @@ class PollController extends ApiController
 
                 return $this->falseJson(API_RESPONSE_CODE_UNPROCESSABLE, trans('polls.message.update_poll_info_fail'));
             } elseif ($button == config('settings.btn_edit_poll.save_option')) {
-                $input = $request->only(['optionImage', 'optionText']);
+                $input = $request->only('option');
+
+                $validator = Validator::make($input, [
+                    'option' => 'required|array|min:1',
+                    'option.*.id' => 'integer|exists:options',
+                    'option.*.name' => 'required|max:255',
+                    'option.*.image' => 'image',
+                ]);
+
+                // If fails to send message
+                if ($validator->fails()) {
+                    return $pollValidate->formatErrors($validator);
+                }
 
                 // Save options of poll
                 if ($this->pollRepository->editOption($poll, $input)) {

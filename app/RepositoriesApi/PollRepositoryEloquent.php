@@ -233,50 +233,75 @@ class PollRepositoryEloquent extends AbstractRepositoryEloquent implements PollR
 
     public function editOption($poll, $input)
     {
-        try {
-            $optionText = $input['optionText'];
-            $optionImage = $input['optionImage'];
+        $options = $poll->options;
 
-            if (!$optionText || !$poll) {
-                return false;
+        $wrongOption = collect($input)
+            ->flatten(1)
+            ->contains(function ($item) use ($options) {
+                if (isset($item['id'])) {
+                    return !$options->contains('id', $item['id']);
+                }
+            });
+
+        if (!$input['option'] || !$poll || $wrongOption) {
+            return false;
+        }
+
+        try {
+            DB::beginTransaction();
+
+            $create = [];
+            $updated = [];
+
+            foreach ($input['option'] as $option) {
+                $isId = isset($option['id']) ? true : false;
+
+                $realOption = $isId ? $options->where('id', $option['id'])->first() : null;
+
+                if (isset($option['image'])) {
+                    $oldImage = $realOption ? $realOption->image : null;
+                    $option['image'] = uploadImage($option['image'], config('settings.option.path_image'), $oldImage);
+                }
+
+                if ($isId) {
+                    $poll->options()->whereId($option['id'])->update($option);
+                    $updated[] = $option['id'];
+                } else {
+                    $create[] = new Option($option);
+                }
             }
 
-            $options = $poll->options;
-
-            foreach ($optionText as $key => $text) {
-                if ($text) {
-                    $isOldOption = $options->contains('id', $key);
-
-                    $option = $options->where('id', $key)->first();
-
-                    $id =  $isOldOption ? $option->id : 0;
-
-                    $image = isset($optionImage[$key])
-                        ? $optionImage[$key]
-                        : null
-                    ;
-
-                    $oldImage = $isOldOption && isset($optionImage[$key])
-                        ? $option->image
-                        : null
-                    ;
-
-                    $values = [
-                        'name' => $text,
-                        'image' => $isOldOption && is_null($image)
-                            ? $option->image
-                            : uploadImage($image, config('settings.option.path_image'), $oldImage),
-                    ];
-
-                    $poll->options()->updateOrCreate(['id' => $id], $values);
+            $options->reject(function ($option) use ($updated) {
+                return in_array($option->id, $updated);
+            })->each(function ($option) {
+                // Delete Image
+                if ($option->image) {
+                    deleteImage(config('settings.option.path_image'), $option->image);
                 }
+
+                // Delete Partipants
+                $option->participants()->delete();
+                $option->participants()->detach();
+
+                // Delete User
+                $option->users()->detach();
+            });
+
+            $poll->options()->whereNotIn('id', $updated)->delete();
+
+            if (count($create)) {
+                $poll->options()->saveMany($create);
             }
 
             //Save activity of poll
             $this->createActivity($poll, config('settings.activity.edit_poll'));
 
+            DB::commit();
+
             return true;
         } catch (Exception $e) {
+            DB::rollBack();
+
             return false;
         }
     }
