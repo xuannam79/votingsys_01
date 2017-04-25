@@ -59,12 +59,6 @@ class UserRepositoryEloquent extends AbstractRepositoryEloquent implements UserR
     {
         $currentUser = $this->model->find($id);
 
-        if (!empty($inputs['password'])) {
-            $inputs['password'] = bcrypt($inputs['password']);
-        } else {
-            $inputs['password'] = $currentUser->password;
-        }
-
         if (!empty($inputs['email']) && $inputs['email'] != $currentUser->email) {
             $inputs['token_verification'] = str_random(20);
             $inputs['is_active'] = false;
@@ -91,6 +85,27 @@ class UserRepositoryEloquent extends AbstractRepositoryEloquent implements UserR
             Mail::to($inputs['email'])->queue(new RegisterUser($user));
 
             return $user;
+        } catch (Exception $e) {
+            DB::rollBack();
+
+            return false;
+        }
+    }
+
+    public function resetPassword($inputs = [], $currentUser)
+    {
+        if (!empty($inputs['password'])) {
+            $inputs['password'] = bcrypt($inputs['password']);
+        } else {
+            $inputs['password'] = $currentUser->password;
+        }
+
+        DB::beginTransaction();
+        try {
+            $currentUser->update($inputs);
+            DB::commit();
+
+            return true;
         } catch (Exception $e) {
             DB::rollBack();
 

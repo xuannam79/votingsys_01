@@ -20,4 +20,20 @@ return [
     'user' => "Không tìm thấy người dùng với địa chỉ email này",
     'send_password_reset_link' => 'Gửi link để reset mật khẩu',
     'reset_password' => 'Reset mật khẩu',
+
+    'validate' => [
+        'old_password' => [
+            'required' => 'Nhập mật khẩu cũ!',
+            'min' => 'Mật khẩu phải ít nhất 6 ký tự',
+        ],
+        'password' => [
+            'required' => 'Nhập mật khẩu',
+            'min' => 'Mật khẩu phải ít nhất 6 ký tự',
+            'confirmed' => 'Nhập lại mật khẩu không đúng',
+        ],
+        'password_confirmation' => [
+            'required' => 'Nhập mật khẩu xác thực',
+            'min' => 'Mật khẩu phải ít nhất 6 ký tự',
+        ],
+    ],
 ];
