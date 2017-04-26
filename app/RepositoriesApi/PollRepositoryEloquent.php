@@ -233,7 +233,7 @@ class PollRepositoryEloquent extends AbstractRepositoryEloquent implements PollR
 
     public function editOption($poll, $input)
     {
-        $options = $poll->options;
+        $options = $poll->options->load('participants');
 
         $wrongOption = collect($input)
             ->flatten(1)
@@ -258,13 +258,19 @@ class PollRepositoryEloquent extends AbstractRepositoryEloquent implements PollR
 
                 $realOption = $isId ? $options->where('id', $option['id'])->first() : null;
 
-                if (isset($option['image'])) {
+                if (!empty($option['image'])) {
                     $oldImage = $realOption ? $realOption->image : null;
                     $option['image'] = uploadImage($option['image'], config('settings.option.path_image'), $oldImage);
                 }
 
                 if ($isId) {
+                    if (isset($option['image']) && trim($option['image']) == '' && $realOption->image) {
+                        deleteImage(config('settings.option.path_image'), $realOption->image);
+                        $option['image'] = null;
+                    }
+
                     $poll->options()->whereId($option['id'])->update($option);
+
                     $updated[] = $option['id'];
                 } else {
                     $create[] = new Option($option);
@@ -280,7 +286,11 @@ class PollRepositoryEloquent extends AbstractRepositoryEloquent implements PollR
                 }
 
                 // Delete Partipants
-                $option->participants()->delete();
+                $idParticipant = $option->participants->pluck('id')->all();
+                if ($idParticipant) {
+                    Participant::whereIn('id', $idParticipant)->delete();
+                }
+
                 $option->participants()->detach();
 
                 // Delete User

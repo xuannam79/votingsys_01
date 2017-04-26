@@ -87,7 +87,7 @@ class VoteController extends ApiController
             }
         }
 
-        if ($options->pluck('id')->diff($input['option'])->count() == $options->count()) {
+        if ($input['option'] && $options->pluck('id')->diff($input['option'])->count() == $options->count()) {
             return $this->falseJson(API_RESPONSE_CODE_UNPROCESSABLE, trans('polls.invalid_option_voted'));
         }
 
