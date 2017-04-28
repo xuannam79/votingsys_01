@@ -92,7 +92,7 @@ class UserRepositoryEloquent extends AbstractRepositoryEloquent implements UserR
         }
     }
 
-    public function resetPassword($inputs = [], $currentUser)
+    public function changePassword($inputs = [], $currentUser)
     {
         if (!empty($inputs['password'])) {
             $inputs['password'] = bcrypt($inputs['password']);

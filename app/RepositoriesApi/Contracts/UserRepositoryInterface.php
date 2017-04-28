@@ -6,5 +6,5 @@ interface UserRepositoryInterface
 {
     public function createUser($input = []);
     public function updateUser($inputs = [], $avatar = null, $id);
-    public function resetPassword($inputs = [], $currentUser);
+    public function changePassword($inputs = [], $currentUser);
 }

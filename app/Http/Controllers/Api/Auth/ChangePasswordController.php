@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\Api\Auth;
 
 use App\Http\Controllers\Api\ApiController;
-use App\Http\Requests\Api\ResetPasswordRequest;
+use App\Http\Requests\Api\ChangePasswordRequest;
 use App\RepositoriesApi\Contracts\UserRepositoryInterface;
 use Illuminate\Support\Facades\Hash;
 
-class ResetPasswordController extends ApiController
+class ChangePasswordController extends ApiController
 {
     protected $userRepository;
 
@@ -17,7 +17,7 @@ class ResetPasswordController extends ApiController
         $this->userRepository = $userRepository;
     }
 
-    public function resetPassword(ResetPasswordRequest $request)
+    public function changePassword(ChangePasswordRequest $request)
     {
         $inputs = $request->only('old_password', 'password');
 
@@ -33,7 +33,7 @@ class ResetPasswordController extends ApiController
             return $this->falseJson(API_RESPONSE_CODE_UNPROCESSABLE, trans('messages.error.password_false'));
         }
 
-        if (!$this->userRepository->resetPassword($inputs, $this->currentUser)) {
+        if (!$this->userRepository->changePassword($inputs, $this->currentUser)) {
             return $this->falseJson(API_RESPONSE_CODE_UNPROCESSABLE, trans('messages.error.reset_password_error'));
         }
 
