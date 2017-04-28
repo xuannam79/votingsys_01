@@ -17,7 +17,7 @@ class ApiChangePasswordTest extends TestCase
     public function testNotLogin()
     {
         $newPassword = str_random(10);
-        $this->post('api/v1/resetPassword', [
+        $this->post('api/v1/changePassword', [
             'old_password' => str_random(10),
             'password' => $newPassword,
             'password_confirmation' => $newPassword,
@@ -41,7 +41,7 @@ class ApiChangePasswordTest extends TestCase
         $user = factory(User::class)->create([
             'password' => $password
         ]);
-        $this->post('api/v1/resetPassword', [
+        $this->post('api/v1/changePassword', [
             'old_password' => $password,
             'password' => str_random(11),
             'password_confirmation' => str_random(10),
@@ -74,7 +74,7 @@ class ApiChangePasswordTest extends TestCase
             'provider_user_id' => random_int(10000000000, 20000000000),
             'provider' => str_random(5),
         ]);
-        $this->post('api/v1/resetPassword', [
+        $this->post('api/v1/changePassword', [
             'old_password' => $password,
             'password' => $newPassword,
             'password_confirmation' => $newPassword,
@@ -107,7 +107,7 @@ class ApiChangePasswordTest extends TestCase
         $user = factory(User::class)->create([
             'password' => str_random(10)
         ]);
-        $this->post('api/v1/resetPassword', [
+        $this->post('api/v1/changePassword', [
             'old_password' => str_random(10),
             'password' => $newPassword,
             'password_confirmation' => $newPassword,
@@ -141,7 +141,7 @@ class ApiChangePasswordTest extends TestCase
         $user = factory(User::class)->create([
             'password' => $password
         ]);
-        $this->post('api/v1/resetPassword', [
+        $this->post('api/v1/changePassword', [
             'old_password' => $password,
             'password' => $newPassword,
             'password_confirmation' => $newPassword,

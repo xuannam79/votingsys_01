@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests\Api;
 
-class ResetPasswordRequest extends AbstractRequest
+class ChangePasswordRequest extends AbstractRequest
 {
     /**
      * Determine if the user is authorized to make this request.
