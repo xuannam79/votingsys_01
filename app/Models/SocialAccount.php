@@ -7,6 +7,9 @@ use App\Models\User;
 
 class SocialAccount extends Model
 {
+    const FRAMGIA_DRIVER = 'framgia';
+    const FRAMGIA_PROVIDER = 'FramgiaProvider';
+
     protected $fillable = [
         'user_id',
         'provider_user_id',

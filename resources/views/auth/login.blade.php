@@ -135,7 +135,20 @@
                                     </a>
                                 </div>
                             </div>
+
+                            <div class="row btn-social-custom">
+                                <div class="col-lg-10 col-lg-offset-1
+                                            col-md-10 col-md-offset-1
+                                            col-sm-10 col-sm-offset-1
+                                            col-xs-10 col-xs-offset-1
+                                            col-xs-login col-xs-btn-login">
+                                    <a class="btn btn-login btn-block btn-social btn-tumblr" href="{{ url('redirect/framgia') }}">
+                                        <span class="fa fa-foursquare"></span>
+                                        {{ trans('auth.framgia_login') }}
+                                    </a>
+                                </div>
                             </div>
+                        </div>
                             <hr>
                             <div class="row">
                                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 col-xs-login">

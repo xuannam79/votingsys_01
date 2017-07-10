@@ -19,7 +19,7 @@ class SocialAccountService
         $this->userRepository = $userRepository;
     }
 
-    public function createOrGetUser(Provider $provider)
+    public function createOrGetUser($provider)
     {
         $providerUser = $provider->user();
 
@@ -39,7 +39,7 @@ class SocialAccountService
         }
 
         $account = new SocialAccount([
-            'provider_user_id' => $providerUser->getId(),
+            'provider_user_id' => $providerName == SocialAccount::FRAMGIA_PROVIDER ? $providerUser->getEmail() : $providerUser->getId(),
             'provider' => $providerName,
         ]);
 

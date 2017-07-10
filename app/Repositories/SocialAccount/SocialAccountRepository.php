@@ -14,8 +14,11 @@ class SocialAccountRepository extends BaseRepository
 
     public function getAccount($providerName, $providerUser)
     {
+        // now checking provider_user_id from social_acounts table is email. If authentication attempts by auth framgia
+        $id = $providerName == SocialAccount::FRAMGIA_PROVIDER ? $providerUser->getEmail() : $providerUser->getId();
+
         $account = $this->model->whereProvider($providerName)
-            ->whereProviderUserId($providerUser->getId())
+            ->whereProviderUserId($id)
             ->first();
 
         return $account;
