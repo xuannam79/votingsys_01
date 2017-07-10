@@ -5,6 +5,7 @@ namespace App\Providers;
 use Laravel\Passport\Passport;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use App\Models\SocialAccount;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -32,6 +33,10 @@ class AuthServiceProvider extends ServiceProvider
 
         Gate::define('ownerPoll', function ($user, $poll) {
             return $user->id == $poll->user_id;
+        });
+
+        Gate::define('framgia-provider', function ($user) {
+            return $user->socialAccounts()->whereProvider(SocialAccount::FRAMGIA_PROVIDER)->exists();
         });
 
         Passport::routes();

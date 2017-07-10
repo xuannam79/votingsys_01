@@ -177,6 +177,7 @@ return [
         Laravel\Passport\PassportServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
         Barryvdh\Debugbar\ServiceProvider::class,
+        Framgia\Education\Auth\FramgiaAuthServiceProvider::class,
 
 
         /*
@@ -255,7 +256,7 @@ return [
         'Flashy' => MercurySeries\Flashy\Flashy::class,
         'Image' => Intervention\Image\Facades\Image::class,
         'Debugbar' => Barryvdh\Debugbar\Facade::class,
-
+        'FAuth' => Framgia\Education\Auth\Facades\FramgiaAuth::class,
     ],
 
 ];

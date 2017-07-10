@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use Socialite;
 use App\Services\SocialAccountService;
+use FAuth;
+use App\Models\SocialAccount;
 
 class SocialAuthController extends Controller
 {
@@ -16,7 +18,7 @@ class SocialAuthController extends Controller
     */
     public function redirectToProvider($provider)
     {
-        return Socialite::driver($provider)->redirect();
+        return $provider === SocialAccount::FRAMGIA_DRIVER ? FAuth::redirect() : Socialite::driver($provider)->redirect();
     }
 
     /**
@@ -26,13 +28,15 @@ class SocialAuthController extends Controller
     */
     public function handleProviderCallback(SocialAccountService $service, $provider)
     {
+        $driver = $provider === SocialAccount::FRAMGIA_DRIVER ? FAuth::driver($provider) : Socialite::driver($provider);
+
         try {
-            $user = $service->createOrGetUser(Socialite::driver($provider));
+            $user = $service->createOrGetUser($driver);
 
             if ($user) {
               auth()->login($user);
 
-              return redirect()->to(action('User\UsersController@index'))->withMessage(trans('user.login_successfully'));
+              return redirect()->to(url('/'));
             }
         } catch (\Exception $ex) {
             return redirect()->to(url('/login'));
