@@ -37,7 +37,7 @@ class LinkController extends ApiController
 
         $data = [
             'poll' => $poll,
-            'token_type' => $link->link_admin,
+            'token_type' => (bool) $link->link_admin,
             'countParticipant' => $poll->countParticipants(),
             'countComments' => $poll->comments()->count(),
             'result_voted' => $poll->countVotesWithOption(),
