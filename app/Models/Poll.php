@@ -210,7 +210,7 @@ class Poll extends Model
     public function getMultipleAttribute($value)
     {
         if ($this->withoutAppends) {
-            return $value;
+            return (bool) $value;
         }
 
         return ($value == config('settings.type_poll.multiple_choice')
@@ -221,7 +221,7 @@ class Poll extends Model
     public function getStatusAttribute($value)
     {
         if ($this->withoutAppends) {
-            return $value;
+            return (bool) $value;
         }
 
         return ($value == config('settings.status.open')

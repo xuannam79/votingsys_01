@@ -49,6 +49,10 @@ class User extends Authenticatable
         'pivot',
     ];
 
+    protected $casts = [
+        'is_active' => 'boolean',
+    ];
+
     public function polls()
     {
         return $this->hasMany(Poll::class);
