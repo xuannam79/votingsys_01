@@ -50,6 +50,7 @@ class SocialAccountService
                 'email' => $providerUser->getEmail(),
                 'name' => $providerUser->getName(),
                 'avatar' => $providerUser->getAvatar(),
+                'is_active' => User::ACTIVE,
             ];
 
             $user = $this->userRepository->createUserSocial($datas);
