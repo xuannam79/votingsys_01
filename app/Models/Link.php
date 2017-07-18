@@ -14,6 +14,10 @@ class Link extends Model
         'link_admin',
     ];
 
+    protected $casts = [
+        'link_admin' => 'boolean',
+    ];
+
     public function poll()
     {
         return $this->belongsTo(Poll::class);
