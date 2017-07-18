@@ -20,6 +20,7 @@ class User extends Authenticatable
     use Notifiable, HasApiTokens;
 
     const IS_ADMIN = 1;
+    const ACTIVE = 1;
 
     /**
      * The attributes that are mass assignable.
