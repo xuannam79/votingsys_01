@@ -215,7 +215,7 @@ jqAddImageOption.prototype.confirmYes = function () {
                 style : ''
             }).removeAttr('style');
 
-            this.elParentOption.find('input[type=hidden]').remove();
+            this.elParentOption.find('input[type=hidden]').not('input[name^=optionDescription]').remove();
             this.elParentOption.prepend(elCloneInputFile);
             this.frInputHiddenTemp = '';
         }

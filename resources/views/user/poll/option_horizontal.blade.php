@@ -3,7 +3,8 @@
     $isTimeOut = $poll->isTimeOut();
 @endphp
 @foreach ($poll->options as $option)
-    <li class="list-group-item parent-vote li-parent-vote perform-option clearfix" onclick="voted('{{ $option->id }}', 'horizontal')">
+    <li class="list-group-item parent-vote li-parent-vote perform-option clearfix {{ $poll->haveDetail() ? 'is-description' : '' }}"
+        onclick="voted('{{ $option->id }}', 'horizontal')">
         <div class="option-info pull-left">
             @if (!$isLimit && !$poll->isClosed() && !$isTimeOut)
                 @if ($poll->multiple == trans('polls.label.multiple_choice'))
@@ -34,22 +35,6 @@
                 @endphp
                 <p class="content-option-choose">{{ $option->name ? $option->name : '' }}</p>
             @endif
-            @if ($isHaveImages)
-                <!--START: Win-Frame Add Image -->
-                <div class="box-media-image-option image-option-detail {{ isset($hideChoose) ? 'image-option-detail-fix' : '' }}">
-                    <a class="media-image pick-media-image" href="javascript:void(0)">
-                        <div class="image-frame">
-                            <div class="image-ratio">
-                                <img src="{{ $option->showImage() }}" class="thumbOption image-option-choose" />
-                            </div>
-                            <span class="cz-label label-new">
-                                {{ trans('polls.label_for.option_image') }}
-                            </span>
-                        </div>
-                    </a>
-                </div>
-                <!--END: Win-Frame Add Image -->
-            @endif
         </div>
         <div class="voters-info pull-right">
             @if (!$isHideResult || Gate::allows('administer', $poll))
@@ -73,4 +58,31 @@
             @endif
         </div>
     </li>
+    @if ($isHaveImages)
+        <!--START: Win-Frame Add Image -->
+        <div class="box-media-image-option image-option-detail {{ isset($hideChoose) ? 'image-option-detail-fix' : '' }}">
+            <a class="media-image pick-media-image" href="javascript:void(0)">
+                <div class="image-frame">
+                    <div class="image-ratio">
+                        <img src="{{ $option->showImage() }}" class="thumbOption image-option-choose" />
+                    </div>
+                    <span class="cz-label label-new">
+                        {{ trans('polls.label_for.option_image') }}
+                    </span>
+                </div>
+            </a>
+        </div>
+        <!--END: Win-Frame Add Image -->
+    @endif
+    @if ($option->description)
+        <div class="clearfix"></div>
+        <div class="des-child-option">
+            <span class="item-description-icon">
+                <i class="fa fa-quote-right" aria-hidden="true"></i>
+            </span>
+            <div class="description-body">
+                {!! $option->description !!}
+            </div>
+        </div>
+    @endif
 @endforeach

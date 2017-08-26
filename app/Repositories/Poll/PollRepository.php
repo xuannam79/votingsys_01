@@ -350,6 +350,8 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
         try {
             $options = $input['optionText'];
             $images = $input['optionImage'];
+            $descriptions = $input['optionDescription'];
+
             if ($images) {
                 foreach ($images as $key => $value) {
                     if (!$value) {
@@ -371,6 +373,7 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
                         'name' => ($option) ? $option : null,
                         'image' => $image,
                         'created_at' => $now,
+                        'description' => $descriptions[$key] ?: null,
                     ];
                 }
             }

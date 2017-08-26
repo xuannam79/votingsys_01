@@ -324,4 +324,11 @@ class Poll extends Model
 
         return $this;
     }
+
+    public function haveDetail()
+    {
+        return $this->options->contains(function ($option) {
+            return $option->description;
+        });
+    }
 }

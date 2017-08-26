@@ -60,7 +60,7 @@ class PollController extends Controller
     {
         $input = $request->only(
             'title', 'location', 'description', 'name', 'email', 'chatwork_id', 'type', 'closingTime',
-            'optionText', 'optionImage',
+            'optionText', 'optionImage', 'optionDescription',
             'setting', 'value', 'setting_child',
             'member'
         );
