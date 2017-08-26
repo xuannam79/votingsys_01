@@ -7,6 +7,13 @@
 
     <!-- DATETIME PICKER: time close of poll -->
     {!! Html::style('bower/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css') !!}
+
+    <!-- THEME QUILL EDITOR: bubble -->
+    {!! Html::style('bower/quill/quill.bubble.css') !!}
+
+    <!-- THEME QUILL EDITOR: core -->
+    {!! Html::style('bower/quill/quill.core.css') !!}
+
 @endpush
 @extends('layouts.app')
 @section('title')
@@ -213,6 +220,9 @@
     <!-- ---------------------------------
         Javascript of create poll
     ---------------------------------------->
+
+    <!-- FORM WINZARD: form step -->
+    {!! Html::script('bower/quill/quill.min.js') !!}
 
     <!-- FORM WINZARD: form step -->
     {!! Html::script('bower/twitter-bootstrap-wizard/jquery.bootstrap.wizard.js') !!}

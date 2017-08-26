@@ -1359,6 +1359,48 @@ $(document).ready(function () {
         $('#imageOfOptionPreview').attr("src", image);
         $('#modalImageOption').modal('show');
     });
+
+    // Add scale menu
+    $('.poll-option').on('click', '.tooltip-control', function () {
+        $(this).parent().toggleClass('is-scale')
+    })
+
+    $('.poll-option').on('click', '.js-add-des-for-option', function (event) {
+        var elScaleBox = $(this).closest('.box-des-option');
+        var elQuill = elScaleBox.siblings('.des-quill-editor').get(0)
+
+        // hide scale box
+        elScaleBox.find('.inline-tooltip').removeClass('is-scale')
+
+        if (!elQuill.innerHTML.trim()) {
+            var configuration = {
+                modules: {
+                    toolbar: [
+                            ['bold', 'italic', 'underline', 'strike'],
+                            [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                            ['link'],
+                            [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+                            [{ 'color': [] }, { 'background': [] }],
+                            [{ 'align': [] }],
+                        ]
+                },
+                placeholder: 'Type a description of option...',
+                theme: 'bubble'  // or 'bubble'
+            };
+
+            var quill = new Quill(elQuill, configuration);
+            quill.focus();
+
+            quill.on('text-change', function (delta) {
+                var content = JSON.stringify(quill.getContents())
+                var html = elScaleBox.siblings('.des-quill-editor')
+                    .find('.ql-editor')
+                    .html()
+                    .replace(new RegExp('<p><br></p>$'), '')
+                elScaleBox.siblings('input[name^=optionDescription]').val(html)
+            })
+        }
+    })
 });
 
 $(window).on('load', function() {
