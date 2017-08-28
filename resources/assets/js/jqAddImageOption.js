@@ -1,7 +1,8 @@
 /**
  * Add Image For Option
  */
-function jqAddImageOption(config = {}) {
+function jqAddImageOption(config) {
+    var config = config || config;
     this.initDom(config);
     this.bindEvents();
 }
