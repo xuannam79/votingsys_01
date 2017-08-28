@@ -329,7 +329,7 @@
                                         <div id="horizontal" class="tab-pane fade in active vote-style-detail">
                                             <div class="col-lg-12 horizontal-overflow">
                                                 @foreach ($poll->options as $option)
-                                                    <li class="list-group-item parent-vote li-parent-vote perform-option clearfix {{ $poll->haveDetail() ? 'is-description' : 'not-description' }}"
+                                                    <li class="list-group-item parent-vote li-parent-vote perform-option clearfix {{ $poll->haveDetail() || $isHaveImages ? 'is-description' : 'not-description' }}"
                                                         onclick="voted('{{ $option->id }}', 'horizontal')">
                                                         <div class="option-info pull-left">
                                                             @if (!$isLimit && !$poll->isClosed() && !$isTimeOut)
