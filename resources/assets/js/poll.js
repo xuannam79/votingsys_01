@@ -783,11 +783,10 @@ function changeLinkUser() {
  * @param input
  * @returns {boolean}
  */
-function checkOptionSame(input, message = null) {
+function checkOptionSame(input, message) {
     var valuesSoFar = [];
     var isDuplicate = false;
-    var message = message ? message : pollData.message.option_duplicate;
-
+    var message = message || pollData.message.option_duplicate;
 
     if (typeof input !== 'undefined') {
         // show notity if duplicate
