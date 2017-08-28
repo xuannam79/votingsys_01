@@ -352,7 +352,7 @@
                                                                             ])
                                                                         !!}
                                                                 @endif
-                                                                    <label class="content-option-choose">{{ $option->name ? $option->name : '' }}</label>
+                                                                    <label class="content-option-choose"><span>{{ $option->name ? $option->name : '' }}</span></label>
                                                                     <br>
                                                                 </div>
                                                             @else
@@ -401,14 +401,22 @@
                                                         <!--END: Win-Frame Add Image -->
                                                     @endif
                                                     @if ($option->description)
+                                                        @php
+                                                            $haveShowMore = $option->paragraphTimes()
+                                                        @endphp
                                                         <div class="clearfix"></div>
                                                         <div class="des-child-option">
                                                             <span class="item-description-icon">
                                                                 <i class="fa fa-quote-right" aria-hidden="true"></i>
                                                             </span>
-                                                            <div class="description-body">
+                                                            <div class="description-body {{ $haveShowMore ? 'show-more' : ''}}">
                                                                 {!! $option->description !!}
                                                             </div>
+                                                            @if ($haveShowMore)
+                                                                <button type="button" class="btn-show-more">
+                                                                    <span>{{ trans('polls.message_client.show_more') }}</span>
+                                                                </button>
+                                                            @endif
                                                         </div>
                                                     @endif
                                                 @endforeach

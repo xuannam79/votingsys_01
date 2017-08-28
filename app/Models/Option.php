@@ -9,6 +9,8 @@ use App\Models\ParticipantVote;
 
 class Option extends Model
 {
+    const LIMIT_DESCRIPTION = 4;
+
     protected $fillable = [
         'poll_id',
         'name',
@@ -115,5 +117,14 @@ class Option extends Model
 
             return $this->name = "$string ; $dateOption";
         }
+    }
+
+    public function paragraphTimes()
+    {
+        $dom = new \DOMDocument;
+
+        $dom->loadHTML($this->description);
+
+        return $dom->getElementsByTagName('p')->length > self::LIMIT_DESCRIPTION;
     }
 }

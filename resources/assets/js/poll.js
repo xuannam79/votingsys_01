@@ -1235,7 +1235,8 @@ $(document).ready(function () {
                 } else {
                     error.insertAfter(element);
                 }
-            }
+            },
+            onfocusout: false
         });
 
 
@@ -1363,6 +1364,7 @@ $(document).ready(function () {
     // Add scale menu
     $('.poll-option').on('click', '.tooltip-control', function () {
         $(this).parent().toggleClass('is-scale')
+        $(this).parent().find('[data-toggle="tooltip"]').tooltip()
     })
 
     $('.poll-option').on('click', '.js-add-des-for-option', function (event) {
@@ -1384,7 +1386,7 @@ $(document).ready(function () {
                             [{ 'align': [] }],
                         ]
                 },
-                placeholder: 'Type a description of option...',
+                placeholder: $('.hide').data('poll').message.type_option_description,
                 theme: 'bubble'  // or 'bubble'
             };
 
@@ -1400,6 +1402,12 @@ $(document).ready(function () {
                 elScaleBox.siblings('input[name^=optionDescription]').val(html)
             })
         }
+    })
+
+    $('#horizontal').on('click', '.btn-show-more', function () {
+        var label = $('.vote-style').data('option')['message'];
+        $(this).siblings('.description-body').toggleClass('show-more');
+        $(this).text($(this).text().trim() == label.show_more ? label.show_less : label.show_more);
     })
 });
 
