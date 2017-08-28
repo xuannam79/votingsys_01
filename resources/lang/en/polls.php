@@ -56,6 +56,8 @@ return [
         'search_all' => 'All',
         'no_data' => 'No data',
         'input_date' => 'Only type date',
+        'add_an_image' => 'Add an image',
+        'add_a_description' => 'Add a description',
     ],
     'label_for' => [
         'full_name' => 'name',
@@ -267,6 +269,9 @@ return [
         'success_comment' => 'Comment was successful',
         'fail_comment' => 'Comment fail',
         'type_email_invalid' => 'Type of email was invalid',
+        'show_more' => 'show more',
+        'show_less' => 'show less',
+        'type_option_description' => 'Type a description of option...',
     ],
     'mail' => [
         'label' => [

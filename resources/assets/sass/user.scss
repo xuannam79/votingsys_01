@@ -1061,7 +1061,7 @@ textarea#description {
         margin-bottom: 0px !important;
         label {
             color: #555555;
-            font-weight: 600;
+            font-weight: 500;
             font-size: 16px;
             &:hover {
                 color: #141414;
@@ -1643,8 +1643,16 @@ input[type="radio"] .styled:checked + label::after {
     padding: 5px 10px 5px 10px;
     background-color: rgba(0, 0, 0, 0.03);
     margin-left: 16px;
+    border-bottom: 1px solid rgb(222, 222, 222);
+    border-top: 1px solid rgb(222, 222, 222);
+    border-right: 1px solid rgb(222, 222, 222);
     .description-body {
         padding-left: 10px;
+        &.show-more {
+            max-height: 80px;
+            overflow: hidden;
+        }
+
         p {
             margin: 0 !important;
         }
@@ -1652,16 +1660,46 @@ input[type="radio"] .styled:checked + label::after {
     .item-description-icon {
         z-index: 2;
         float: left;
-        width: 32px;
-        height: 32px;
-        margin-left: -28px;
-        line-height: 28px;
-        color: #586069;
+        width: 20px;
+        height: 20px;
+        margin-left: -21px;
+        margin-top: -8px;
+        line-height: 20px;
+        color: #fff;
         text-align: center;
-        background-color: #e6ebf1;
-        border: 2px solid #fff;
-        border-radius: 50%;
+        background-color: #9c9c9c;
+        border: 1px solid #fff;
         position: relative;
+        font-size: 8px;
+        i {
+            margin-left: 1px;
+        }
+    }
+}
+
+.btn-show-more {
+    display: block;
+    margin-top: 10px;
+    width: 100%;
+    height: 28px;
+    border: solid 1px transparent;
+    padding: 0 10px;
+    outline: 0;
+    font-weight: 500;
+    font-size: 11px;
+    text-decoration: none;
+    white-space: nowrap;
+    word-wrap: normal;
+    line-height: normal;
+    vertical-align: middle;
+    cursor: pointer;
+    border-radius: 2px;
+    background-color: rgb(247, 247, 247);
+    border-top: 1px solid #e2e2e2;
+    text-transform: uppercase;
+    color: #767676;
+    &:hover {
+        color: #222;
     }
 }
 

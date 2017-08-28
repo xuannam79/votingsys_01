@@ -58,6 +58,8 @@ return [
         'search_all' => 'Tất cả',
         'no_data' => 'Không có dữ liệu',
         'input_date' => 'Chỉ nhập ngày',
+        'add_an_image' => 'Thêm hình ảnh',
+        'add_a_description' => 'Thêm mô tả',
     ],
     'label_for' => [
         'full_name' => 'tên',
@@ -266,6 +268,9 @@ return [
         'success_comment' => 'Bình luận thành công',
         'fail_comment' => 'Bình luận thất bại! Vui lòng kiểm tra lại',
         'type_email_invalid' => 'Loại email này không hợp lệ',
+        'show_more' => 'hiển thị nội dung',
+        'show_less' => 'ẩn nội dung',
+        'type_option_description' => 'Nhập mô tả của tùy chọn...',
     ],
     'mail' => [
         'label' => [

@@ -16,9 +16,6 @@
             <span class="glyphicon glyphicon-calendar"></span>
         </span>
         <span class="input-group-btn">
-            <!-- <button class="btn btn-darkcyan-not-shadow upload-photo" type="button">
-                <span class="glyphicon glyphicon-picture"></span>
-            </button> -->
             <button class="btn btn-danger btn-remove-option" type="button" onclick="removeOpion('idOption')">
                 <span class="glyphicon glyphicon-trash"></span>
             </button>
@@ -48,10 +45,10 @@
                 <i class="fa fa-plus" aria-hidden="true"></i>
             </a>
             <div class="inline-tooltip-menu">
-                <a class="btn btn-scale upload-photo">
+                <a class="btn btn-scale upload-photo" data-toggle="tooltip" title="{{ trans('polls.label.add_an_image') }}">
                     <i class="fa fa-file-image-o" aria-hidden="true"></i>
                 </a>
-                <a class="btn btn-scale js-add-des-for-option">
+                <a class="btn btn-scale js-add-des-for-option" data-toggle="tooltip" title="{{ trans('polls.label.add_a_description') }}">
                     <i class="fa fa-pencil" aria-hidden="true"></i>
                 </a>
             </div>
