@@ -59,7 +59,7 @@ class VoteController extends Controller
             $ip = $remote;
         }
 
-        $inputs = $request->only('option', 'nameVote', 'emailVote', 'pollId', 'optionImage', 'optionText', 'newOption');
+        $inputs = $request->only('option', 'nameVote', 'emailVote', 'pollId', 'optionImage', 'optionText', 'newOption', 'optionDescription');
         $poll = $this->pollRepository->findPollById($inputs['pollId']);
         $settingsPoll = $this->pollRepository->getSettingsPoll($poll->id);
         $isSetIp = false;

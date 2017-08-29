@@ -11,6 +11,12 @@
     <!-- SOCKET IO -->
     {!! Html::script('bower/socket.io-client/dist/socket.io.min.js') !!}
 
+    <!-- THEME QUILL EDITOR: bubble -->
+    {!! Html::style('bower/quill/quill.bubble.css') !!}
+
+    <!-- THEME QUILL EDITOR: core -->
+    {!! Html::style('bower/quill/quill.core.css') !!}
+
 @endpush
 @section('meta')
     <meta property="fb:app_id" content="708640145978561"/>
@@ -326,7 +332,7 @@
                                         </div>
 
                                         <!-- VOTE OPTION HORIZONTAL-->
-                                        <div id="horizontal" class="tab-pane fade in active vote-style-detail">
+                                        <div id="horizontal" class="tab-pane fade in active vote-style-detail clearfix">
                                             <div class="col-lg-12 horizontal-overflow">
                                                 @foreach ($poll->options as $option)
                                                     <li class="list-group-item parent-vote li-parent-vote perform-option clearfix {{ $poll->haveDetail() || $isHaveImages ? 'is-description' : 'not-description' }}"
@@ -475,62 +481,7 @@
                                         <!--END: Show Option With Time line -->
 
                                         @if ($isAllowAddOption && !$isLimit && !$poll->isClosed() && !$isTimeOut)
-                                            @php
-                                                $idNewOption = rand();
-                                            @endphp
-                                            <div class="parent-vote-new-option li-parent-vote" id="{{ $idNewOption }}">
-                                                    @if ($poll->multiple == trans('polls.label.multiple_choice'))
-                                                        <div class="checkbox checkbox-primary">
-                                                        {!! Form::checkbox('newOption[' . $idNewOption . ']', null, false, [
-                                                                'class' => 'poll-new-option poll-option-detail-not-image new-option checkbox',
-                                                            ])
-                                                        !!}
-                                                    @else
-                                                        <div class="radio radio-primary">
-                                                        {!! Form::radio('newOption[' . $idNewOption . ']', null, false, [
-                                                                'class' => 'poll-new-option poll-option-detail-not-image new-option',
-                                                            ])
-                                                        !!}
-                                                    @endif
-                                                    <label>
-                                                        <div class="input-group date date-time-picker">
-                                                            {!! Form::text('optionText[' . $idNewOption . ']', null, [
-                                                                'class' => 'text-new-option form-control',
-                                                                'autocomplete' => 'off',
-                                                                'placeholder' => trans('polls.placeholder.option'),
-                                                            ]) !!}
-                                                            <span class="input-group-addon pick-date">
-                                                                <span class="glyphicon glyphicon-calendar"></span>
-                                                            </span>
-                                                            <span class="input-group-btn btn-file-img upload-photo">
-                                                                <button class="btn btn-darkcyan-not-shadow" type="button">
-                                                                    <span class="glyphicon glyphicon-picture"></span>
-                                                                </button>
-                                                            </span>
-                                                        </div>
-                                                    </label>
-                                                    <br>
-                                                </div>
-                                                <input type="file" id="input-file-image" name="optionImage[]">
-                                                <!--START: Win-Frame Add Image -->
-                                                <div class="box-media-image box-frame">
-                                                    <a class="media-image upload-photo" href="javascript:void(0)">
-                                                        <div class="image-frame">
-                                                            <div class="image-ratio">
-                                                                <img src="" id="preview-idOption" class="render-img thumbOption"/>
-                                                            </div>
-                                                            <span class="cz-label label-new">
-                                                                {{ trans('polls.label_for.option_image') }}
-                                                            </span>
-                                                        </div>
-                                                    </a>
-                                                    <div class="fa fa-times deleteImg"></div>
-                                                </div>
-                                                <!--END: Win-Frame Add Image -->
-                                                <div class="has-error" id="error_option" data-message="{{ json_encode($messageImage) }}">
-                                                    <span id="title-error" class="help-block"></span>
-                                                </div>
-                                            </div>
+                                            @include('user.poll.option_adding')
                                         @endif
                                     </div>
                                 </div>
@@ -927,6 +878,8 @@
     <!-- FORM WINZARD: form step -->
     {!! Html::script('bower/twitter-bootstrap-wizard/jquery.bootstrap.wizard.js') !!}
 
+    {!! Html::script('bower/quill/quill.min.js') !!}
+
     <!-- DATETIME PICKER: time close of poll -->
     {!! Html::script('/bower/moment/min/moment.min.js') !!}
     {!! Html::script('/bower/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js') !!}
@@ -963,4 +916,3 @@
 
 
 @endpush
-

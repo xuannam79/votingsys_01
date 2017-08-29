@@ -402,7 +402,8 @@ li {
     padding: 0;
     padding-top: 5px;
     .box-media-image {
-        margin-top: 0;
+        margin-top: 10px;
+        margin-left: 5px;
     }
 }
 
@@ -1706,4 +1707,3 @@ input[type="radio"] .styled:checked + label::after {
 .is-description {
     border-bottom: none;
 }
-

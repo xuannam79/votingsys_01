@@ -16,9 +16,14 @@ class XSS
     public function handle($request, Closure $next)
     {
         $input = $request->all();
-        array_walk_recursive($input, function(&$input) {
-            $input = htmlentities($input);
-        });
+
+        $callback = function (&$value) use ($input) {
+            if (!array_key_exists('optionDescription', $input)) {
+                $value = htmlentities($value);
+            }
+        };
+
+        array_walk_recursive($input, $callback);
         $request->merge($input);
 
         return $next($request);

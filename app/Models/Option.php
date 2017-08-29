@@ -9,12 +9,13 @@ use App\Models\ParticipantVote;
 
 class Option extends Model
 {
-    const LIMIT_DESCRIPTION = 4;
+    const LIMIT_DESCRIPTION = 2;
 
     protected $fillable = [
         'poll_id',
         'name',
         'image',
+        'description',
     ];
 
     protected $hidden = ['image', 'votes', 'participantVotes'];
