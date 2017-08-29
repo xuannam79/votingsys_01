@@ -1361,12 +1361,12 @@ $(document).ready(function () {
     });
 
     // Add scale menu
-    $('.poll-option').on('click', '.tooltip-control', function () {
+    $('.js-execute-options').on('click', '.tooltip-control', function () {
         $(this).parent().toggleClass('is-scale')
         $(this).parent().find('[data-toggle="tooltip"]').tooltip()
     })
 
-    $('.poll-option').on('click', '.js-add-des-for-option', function (event) {
+    $('.js-execute-options').on('click', '.js-add-des-for-option', function (event) {
         var elScaleBox = $(this).closest('.box-des-option');
         var elQuill = elScaleBox.siblings('.des-quill-editor').get(0)
 
@@ -1374,6 +1374,10 @@ $(document).ready(function () {
         elScaleBox.find('.inline-tooltip').removeClass('is-scale')
 
         if (!elQuill.innerHTML.trim()) {
+            var placeholder = $('#error_option').data('message')
+                ? $('#error_option').data('message').type_option_description
+                : $('.hide').data('poll').message.type_option_description;
+
             var configuration = {
                 modules: {
                     toolbar: [
@@ -1385,7 +1389,7 @@ $(document).ready(function () {
                             [{ 'align': [] }],
                         ]
                 },
-                placeholder: $('.hide').data('poll').message.type_option_description,
+                placeholder: placeholder,
                 theme: 'bubble'  // or 'bubble'
             };
 

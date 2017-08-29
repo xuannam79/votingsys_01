@@ -10,3 +10,4 @@ Homestead.yaml
 /public/js
 /public/uploads
 /storage
+npm-debug.log

@@ -156,7 +156,7 @@
                         </div>
                     </div>
                     <div class="tab-pane" id="option">
-                        <div class="panel panel-darkcyan">
+                        <div class="panel panel-darkcyan js-execute-options">
                             <div class="panel-heading panel-heading-darkcyan">
                                 {{ trans('polls.label.step_2') }}
                             </div>
