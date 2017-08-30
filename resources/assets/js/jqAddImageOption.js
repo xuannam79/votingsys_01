@@ -148,7 +148,9 @@ jqAddImageOption.prototype.addImageByLink = function () {
                 value: ''
             });
 
-            var elOldUrlText = this.elParentOption.find('input[type=hidden]').not('input[name^=optionDeleteImage]');
+            var elOldUrlText = this.elParentOption.find('input[type=hidden]')
+                .not('input[name^=optionDeleteImage]')
+                .not('input[name^=optionDescription]');
 
             if (elOldUrlText.length) {
                 elOldUrlText.remove();
@@ -204,6 +206,7 @@ jqAddImageOption.prototype.confirmYes = function () {
         if (this.addByLink) {
             this.elParentOption.find('input[type=hidden]')
                 .not('input[name^=optionDeleteImage]')
+                .not('input[name^=optionDescription]')
                 .val(this.frInputHiddenTemp);
         } else {
             var elCloneInputFile = $(this.frInputFileTemp).clone();
@@ -266,18 +269,27 @@ jqAddImageOption.prototype.preImage = function (e) {
 
     this.addByLink = false;
 
-    if (this.checkExtensionImage(input.value)) {
-        this.removeMessage();
-
-        if (input.files && input.files[0]) {
-            var reader = new FileReader();
-            reader.onload = function(e) {
-                $(self.frPreImage).attr('src', e.target.result);
-            }
-            reader.readAsDataURL(input.files[0]);
-        }
-    } else {
+    if (!this.checkExtensionImage(input.value)) {
         this.showMessage(this.messages.image);
+
+        return;
+    }
+
+    if (!this.checkSizeImage(input.files[0])) {
+        this.showMessage(this.messages.max_size_image)
+
+        return;
+    }
+
+    // passing validate successfully
+    this.removeMessage();
+
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function(e) {
+            $(self.frPreImage).attr('src', e.target.result);
+        }
+        reader.readAsDataURL(input.files[0]);
     }
 }
 
@@ -318,6 +330,11 @@ jqAddImageOption.prototype.checkExtensionImage = function (value) {
     }
 
     return false;
+}
+
+jqAddImageOption.prototype.checkSizeImage = function (file) {
+    // ~ 2MB
+    return (file.size / 1000) < 1024 * 2;
 }
 
 jqAddImageOption.prototype.scrollToDiv = function (){

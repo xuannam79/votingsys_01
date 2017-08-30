@@ -296,38 +296,42 @@
                                     </div>
                                     <div class="tab-content tab-content-detail box-style-option">
                                         <div class="col-lg-12">
-                                            <div class="col-lg-3 col-lg-offset-9 vote-style" data-option="{{ $viewOption }}">
-                                                <ul class="nav nav-pills nav-border">
+                                            <div class="vote-style" data-option="{{ $viewOption }}">
+                                                <ul class="nav nav-pills poll-tabs">
                                                     @if($isEditVoted && !$isLimit && !$poll->isClosed() && !$isTimeOut)
-                                                        <li>
-                                                            <a href="javascript:void(0)" class="btn-vote-style edit-each-option">
+                                                        <li class="s-tab">
+                                                            <a href="javascript:void(0)" class="btn-vote-style edit-each-option tab-link">
                                                                 <i class="fa fa-pencil" aria-hidden="true"></i>
                                                             </a>
                                                         </li>
                                                     @endif
                                                     @if (!$isHideResult || Gate::allows('administer', $poll))
-                                                        <li>
-                                                            <a id="hide" class="btn-show-result-poll btn-vote-style" onclick="showResultPoll()">
+                                                        <!-- <li class="s-tab">
+                                                            <a id="hide" class="btn-show-result-poll btn-vote-style tab-link" onclick="showResultPoll()">
                                                                 <i class="fa fa-eye-slash li-show-result-poll" aria-hidden="true"></i>
                                                             </a>
-                                                        </li>
+                                                        </li> -->
                                                     @endif
-                                                    <li>
-                                                        <a data-toggle="tab" href="#vertical" class="btn-vote-style">
-                                                            <i class="fa fa-th" aria-hidden="true"></i>
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a data-toggle="tab" href="#timeline" class="btn-vote-style">
-                                                            <i class="fa fa-calendar" aria-hidden="true"></i>
-                                                        </a>
-                                                    </li>
-                                                    <li class="active">
-                                                        <a data-toggle="tab" href="#horizontal" class="btn-vote-style">
+                                                    <li class="active s-tab">
+                                                        <a data-toggle="tab" href="#horizontal" class="btn-vote-style tab-link">
                                                             <i class="fa fa-bars" aria-hidden="true"></i>
+                                                            <span>{{ trans('polls.button.horizontal') }}</span>
+                                                        </a>
+                                                    </li>
+                                                    <li class="s-tab">
+                                                        <a data-toggle="tab" href="#timeline" class="btn-vote-style tab-link">
+                                                            <i class="fa fa-calendar" aria-hidden="true"></i>
+                                                            <span>{{ trans('polls.button.timeline') }}</span>
+                                                        </a>
+                                                    </li>
+                                                    <li class="s-tab">
+                                                        <a data-toggle="tab" href="#vertical" class="btn-vote-style tab-link">
+                                                            <i class="fa fa-th" aria-hidden="true"></i>
+                                                            <span>{{ trans('polls.button.vertical') }}</span>
                                                         </a>
                                                     </li>
                                                 </ul>
+                                                <div class="hl animated"></div>
                                             </div>
                                         </div>
 

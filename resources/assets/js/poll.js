@@ -1412,6 +1412,16 @@ $(document).ready(function () {
         $(this).siblings('.description-body').toggleClass('show-more');
         $(this).text($(this).text().trim() == label.show_more ? label.show_less : label.show_more);
     })
+
+    $('a[data-toggle="tab"].tab-link').on('shown.bs.tab', function (e) {
+        var elLi = $(e.target).parent();
+        $('.hl').css({ left: elLi.get(0).offsetLeft, width: elLi.outerWidth(false) });
+    })
+
+    var elLi = $('.poll-tabs').find('.s-tab.active')
+    if (elLi.length > 0) {
+        $('.hl').css({ left: elLi.get(0).offsetLeft, width: elLi.outerWidth(false) });
+    }
 });
 
 $(window).on('load', function() {
