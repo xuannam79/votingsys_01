@@ -1707,3 +1707,40 @@ input[type="radio"] .styled:checked + label::after {
 .is-description {
     border-bottom: none;
 }
+
+.vote-style {
+    position: relative;
+    .poll-tabs {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 25px;
+        margin-top: 10px;
+        float: none !important;
+        font-size: 16px;
+        position: relative;
+        li.s-tab {
+            &.active {
+                a.tab-link {
+                    background-color: transparent !important;
+                }
+            }
+            a.tab-link {
+                color: #282F34 !important;
+                padding: 12px 10px !important;
+                &:hover {
+                    background-color: transparent !important;
+                    color: #282F34 !important;
+                }
+            }
+        }
+    }
+    .hl {
+        background-color: #282F34;
+        position: absolute;
+        height: 3px;
+        bottom: 0;
+        transition: all 0.15s;
+    }
+}
