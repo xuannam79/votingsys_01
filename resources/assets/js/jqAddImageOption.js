@@ -213,25 +213,14 @@ jqAddImageOption.prototype.confirmYes = function () {
             var idOption = this.elParentOption.attr('id');
 
             // Add attribute for file input option
-            // elCloneInputFile.attr({
-            //     name: 'optionImage[' + idOption + ']',
-            //     class : 'file',
-            //     style : ''
-            // }).removeAttr('style');
-
-            var inputUrlText = $('<input>').attr({
-                type: 'hidden',
+            elCloneInputFile.attr({
                 name: 'optionImage[' + idOption + ']',
-                value: srcPreImage
-            });
+                class : 'file',
+                style : ''
+            }).removeAttr('style');
 
-            this.elParentOption.find('input[type=hidden]')
-                .not('input[name^=optionDescription]')
-                .not('input[name^=optionDeleteImage]')
-                .remove();
-
-            this.elParentOption.prepend(inputUrlText);
-
+            this.elParentOption.find('input[type=hidden]').not('input[name^=optionDescription]').remove();
+            this.elParentOption.prepend(elCloneInputFile);
             this.frInputHiddenTemp = '';
         }
 
@@ -344,8 +333,8 @@ jqAddImageOption.prototype.checkExtensionImage = function (value) {
 }
 
 jqAddImageOption.prototype.checkSizeImage = function (file) {
-    // ~ 5MB
-    return (file.size / 1000) < 1024 * 5;
+    // ~ 1MB
+    return (file.size / 1000) < 1024;
 }
 
 jqAddImageOption.prototype.scrollToDiv = function (){

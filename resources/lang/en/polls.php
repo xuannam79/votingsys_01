@@ -267,7 +267,7 @@ return [
         'empty_link_image' => 'Enter a url or click upload',
         'not_type_url_image' => 'The image URL does not point to an image or the correct type of image.',
         'time_out_url_image' => 'The image URL was not reachable.  Check that the URL is correct.',
-        'max_size_image' => 'The image may not be greater than 5MB',
+        'max_size_image' => 'The image may not be greater than 1024KB (1MB)',
         'email_exists' => 'Email exist in system. Please enter a new email to vote',
         'error_occurs' => 'Error occurs while processing',
         'success_comment' => 'Comment was successful',
