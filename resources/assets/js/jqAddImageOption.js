@@ -213,14 +213,25 @@ jqAddImageOption.prototype.confirmYes = function () {
             var idOption = this.elParentOption.attr('id');
 
             // Add attribute for file input option
-            elCloneInputFile.attr({
-                name: 'optionImage[' + idOption + ']',
-                class : 'file',
-                style : ''
-            }).removeAttr('style');
+            // elCloneInputFile.attr({
+            //     name: 'optionImage[' + idOption + ']',
+            //     class : 'file',
+            //     style : ''
+            // }).removeAttr('style');
 
-            this.elParentOption.find('input[type=hidden]').not('input[name^=optionDescription]').remove();
-            this.elParentOption.prepend(elCloneInputFile);
+            var inputUrlText = $('<input>').attr({
+                type: 'hidden',
+                name: 'optionImage[' + idOption + ']',
+                value: srcPreImage
+            });
+
+            this.elParentOption.find('input[type=hidden]')
+                .not('input[name^=optionDescription]')
+                .not('input[name^=optionDeleteImage]')
+                .remove();
+
+            this.elParentOption.prepend(inputUrlText);
+
             this.frInputHiddenTemp = '';
         }
 
@@ -333,8 +344,8 @@ jqAddImageOption.prototype.checkExtensionImage = function (value) {
 }
 
 jqAddImageOption.prototype.checkSizeImage = function (file) {
-    // ~ 2MB
-    return (file.size / 1000) < 1024 * 2;
+    // ~ 5MB
+    return (file.size / 1000) < 1024 * 5;
 }
 
 jqAddImageOption.prototype.scrollToDiv = function (){

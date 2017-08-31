@@ -326,6 +326,12 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
             if ($images) {
                 foreach ($images as $key => $image) {
                     $img = Image::make($image);
+                    // resize the image to a height of 350 and constrain aspect ratio (auto width)
+                    $img->resize(null, 350, function ($constraint) {
+                        $constraint->aspectRatio();
+                        $constraint->upsize();
+                    });
+
                     $pathFrom = config('settings.option.path_image') . $imageNames['optionImage'][$key];
                     $img->save(ltrim($pathFrom, '/'));
                 }
