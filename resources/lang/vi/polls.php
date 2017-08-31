@@ -266,7 +266,7 @@ return [
         'empty_link_image' => 'Nhập link hình ảnh hoặc là tải hình ảnh lên',
         'not_type_url_image' => 'Link hình ảnh không hợp lệ!',
         'time_out_url_image' => 'Link hình ảnh không tìm thấy. Vui lòng check lại link hình ảnh',
-        'max_size_image' => 'Kích thước tối đa của hình ảnh là 5MB',
+        'max_size_image' => 'Kích thước tối đa của hình ảnh là 1024KB (1MB)',
         'email_exists' => 'Địa chỉ email đã tồn tại trong hệ thống, vui lòng chọn địa chỉ email khác để bầu chọn',
         'error_occurs' => 'Có lỗi xảy ra trong quá trình xử lý',
         'success_comment' => 'Bình luận thành công',
