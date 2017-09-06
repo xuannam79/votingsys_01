@@ -18,6 +18,6 @@ return [
     'facebook_login' => 'Facebook',
     'twitter_login' => 'Twitter',
     'google_login' => 'Google',
-    'framgia_login' => 'Framgia',
+    'wsm_login' => 'Wsm',
 
 ];
