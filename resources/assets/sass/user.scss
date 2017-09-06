@@ -1744,3 +1744,9 @@ input[type="radio"] .styled:checked + label::after {
         transition: all 0.15s;
     }
 }
+
+.wsm {
+    img {
+        width: 21px;
+    }
+}
