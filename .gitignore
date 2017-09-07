@@ -8,6 +8,6 @@ Homestead.yaml
 /public/bower
 /public/css
 /public/js
-/public/uploads
+/public/uploads/avatar
 /storage
 npm-debug.log
