@@ -142,8 +142,8 @@
                                             col-sm-10 col-sm-offset-1
                                             col-xs-10 col-xs-offset-1
                                             col-xs-login col-xs-btn-login">
-                                    <a class="btn btn-login btn-block btn-social btn-reddit" href="{{ url('redirect/framgia') }}">
-                                        <span class="fa wsm"> <img src="{{ asset('uploads/images/wsm.ico') }}" alt="WSM"></span>
+                                    <a class="btn btn-login btn-block btn-social btn-wsm" href="{{ url('redirect/framgia') }}">
+                                        <span class="fa wsm"> <img src="{{ asset('uploads/images/white_wsm.png') }}" alt="WSM"></span>
                                         {{ trans('auth.wsm_login') }}
                                     </a>
                                 </div>
