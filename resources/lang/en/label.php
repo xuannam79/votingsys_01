@@ -148,7 +148,7 @@ return [
         'name' => 'FEATURES',
         'vote' => 'Create a poll fast and easily',
         'chart' => 'Result illustrated by bar chart and pie chart ',
-        'security' => 'guaranteed security by password of poll',
+        'security' => 'Guaranteed security by password of poll',
         'export' => 'Export result to PDF and EXCEL files',
         'share' => 'Share poll on facebook',
         'responsive' => 'Support multiple deceives: laptop and mobile',
