@@ -50,7 +50,7 @@
                     </li>
                 @else
                     <li {!! Request::is('user/profile') ? 'class="active"' : '' !!}>
-                        <a href="{{ Gate::allows('framgia-provider') ? URL::to('/') : URL::action('User\UsersController@index') }}">
+                        <a href="{{ URL::action('User\UsersController@index') }}">
                                     <span>
                                         <img class="img-circle img-profile-header" src="{{ auth()->user()->getAvatarPath() }}">
                                         {{ str_limit(auth()->user()->name, 10) }}
