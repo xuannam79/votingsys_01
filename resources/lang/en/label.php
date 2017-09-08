@@ -146,12 +146,12 @@ return [
      */
     'feature' => [
         'name' => 'FEATURES',
-        'vote' => 'Create a poll fast and easy',
+        'vote' => 'Create a poll fast and easily',
         'chart' => 'Result illustrated by bar chart and pie chart ',
-        'security' => 'Guaranteed security by password of poll',
-        'export' => 'Can export result to PDF file or EXCEL file',
-        'share' => 'Share poll by facebook',
-        'responsive' => 'Support multiple deceive: laptop or mobie',
+        'security' => 'guaranteed security by password of poll',
+        'export' => 'Export result to PDF and EXCEL files',
+        'share' => 'Share poll on facebook',
+        'responsive' => 'Support multiple deceives: laptop and mobile',
     ],
     'tutorial' => 'Tutorial',
     'feedback' => 'Feedback',

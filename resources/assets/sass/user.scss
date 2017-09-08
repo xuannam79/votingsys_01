@@ -1750,3 +1750,11 @@ input[type="radio"] .styled:checked + label::after {
         width: 21px;
     }
 }
+
+.btn-wsm {
+    background-color: #f55c2b;
+    color: #fff;
+    &:hover {
+        color: #fff;
+    }
+}
