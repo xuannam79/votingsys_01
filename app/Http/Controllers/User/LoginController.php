@@ -25,7 +25,7 @@ class LoginController extends Controller
                     return redirect()->route('admin.user.index');
                 }
 
-                return redirect()->to(action('User\UsersController@index'))->withMessage(trans('user.login_successfully'));
+                return redirect()->to('/')->withMessage(trans('user.login_successfully'));
             } else {
                 return redirect()->to(url('/login'))->withMessages(trans('user.login_fail'));
             }
