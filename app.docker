@@ -1,0 +1,18 @@
+FROM php:7-fpm
+
+# Install git and php + extension php
+RUN apt-get update && apt-get install -y git zip unzip && apt-get install -y libmcrypt-dev mysql-client \
+  && docker-php-ext-install mcrypt pdo_mysql
+
+# Install composer
+RUN curl -sS https://getcomposer.org/installer -o composer-setup.php \
+  && php composer-setup.php --install-dir=/usr/local/bin --filename=composer
+
+# Install Node.js and other dependencies
+RUN apt-get update && \
+  apt-get -y install curl && \
+  curl -sL https://deb.nodesource.com/setup_6.x | bash - && \
+  apt-get -y install python build-essential nodejs && \
+  npm install -g yarn
+
+WORKDIR /var/www

@@ -51,6 +51,7 @@ return [
             'not_same_email' => 'Not the same email when vote',
             'allow_edit_vote_of_poll' => 'Allow edit vote of poll',
             'add_type_mail' => 'Add type of email when voted',
+            'required_auth_wsm' => 'Login by wsm to vote',
         ],
         'step_4' => '投票者',
         'invite' => '特定のメール宛に投票参加招待のメールを送信する場合は下記枠に入力してください',
@@ -268,6 +269,7 @@ return [
         'show_more' => 'show more',
         'show_less' => 'show less',
         'type_option_description' => 'Type a description of option...',
+        'required_auth_wsm' => 'この投票はWSMでのログインが必要です。',
     ],
     'mail' => [
         'label' => [

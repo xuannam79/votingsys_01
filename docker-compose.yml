@@ -1,0 +1,46 @@
+version: '2'
+
+services:
+  web:
+    build:
+      context: ./
+      dockerfile: web.docker
+    container_name: poll-web
+    volumes:
+      - ./:/var/www
+    ports:
+      - "8080:80"
+    links:
+      - app
+  app:
+    build:
+      context: ./
+      dockerfile: app.docker
+    container_name: poll-app
+    volumes:
+      - ./:/var/www
+    links:
+      - db
+      - redis
+    environment:
+      - DB_PORT=3306
+      - DB_HOST=db
+      - REDIS_PORT=6379
+      - REDIS_HOST=redis
+  db:
+    image: mysql:5.7
+    container_name: poll-db
+    environment:
+      - MYSQL_ROOT_PASSWORD=secret
+      - MYSQL_DATABASE=fpoll
+    volumes:
+      - ./data/mysql:/var/lib/mysql
+    ports:
+      - "33062:3306"
+  redis:
+    image: redis:3.0
+    container_name: poll-redis
+    volumes:
+      - ./data/redis:/data
+    ports:
+      - "63792:6379"

@@ -70,6 +70,7 @@ class VoteController extends Controller
         $isNotSameEmail = false;
         $isLimit = false;
         $isAllowAddOption = false;
+        $isRequiredAuthWsm = false;
 
         $poll->load('options.users', 'options.participants');
 
@@ -107,6 +108,10 @@ class VoteController extends Controller
             if (collect($listSettings)->contains(config('settings.setting.allow_add_option'))) {
                 $isAllowAddOption = true;
             }
+
+            if (collect($listSettings)->contains(config('settings.setting.required_auth_wsm'))) {
+                $isRequiredAuthWsm = true;
+            }
         }
 
         // count voters
@@ -127,29 +132,36 @@ class VoteController extends Controller
         }
 
         // check setting's poll have require input name
-        if ($isRequiredName && !$inputs['nameVote']) {
+        if (($isRequiredAuthWsm || $isRequiredName) && !$inputs['nameVote']) {
             flash(trans('polls.message_validate_name'), config('settings.notification.danger'));
 
             return back();
         }
 
         // check setting's poll have require input email
-        if ($isRequiredEmail && !$inputs['emailVote']) {
+        if (($isRequiredAuthWsm || $isRequiredEmail) && !$inputs['emailVote']) {
             flash(trans('polls.message_required_email'), config('settings.notification.danger'));
 
             return back();
         }
 
         // check setting's poll have require input name and email
-        if ($isRequiredEmailName && !$inputs['emailVote'] && !$inputs['nameVote']) {
+        if (($isRequiredAuthWsm || $isRequiredEmailName) && !$inputs['emailVote'] && !$inputs['nameVote']) {
             flash(trans('polls.message_validate_name_and_email'), config('settings.notification.danger'));
 
             return back();
         }
 
         // Check same email when vote if have setting not the same email
-        if ($isNotSameEmail && $this->pollRepository->checkIfEmailVoterExist($inputs)) {
+        if (($isRequiredAuthWsm || $isNotSameEmail) && $this->pollRepository->checkIfEmailVoterExist($inputs)) {
             flash(trans('polls.message_client.email_exists'), config('settings.notification.danger'));
+
+            return back();
+        }
+
+        // Check email of wsm that settings required
+        if ($isRequiredAuthWsm && auth()->check() && (!auth()->user()->haveWsmAction() || auth()->user()->email != $inputs['emailVote'])) {
+            flash(trans('polls.message_vote_one_time'), config('settings.notification.danger'));
 
             return back();
         }

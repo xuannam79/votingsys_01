@@ -108,6 +108,7 @@ class LinkController extends Controller
         $isNoTheSameEmail = false;
         $isAccecptTypeMail = false;
         $isEditVoted = false;
+        $isRequiredAuthWsm = false;
         $poll = $link->poll;
         $totalVote = config('settings.default_value');
         $messageImage = trans('polls.message_client');
@@ -221,6 +222,26 @@ class LinkController extends Controller
                     $isRequiredEmail = true;
                 }
 
+                if (collect($listSettings)->contains(config('settings.setting.required_auth_wsm'))) {
+                    
+                    $isRequiredAuthWsm = true;
+                    $logined = auth()->check();
+
+                    if ($isRequiredAuthWsm
+                        && (!$logined ||
+                            ($logined && !auth()->user()->haveWsmAction())
+                        )) {
+                        
+                        if (!Session::has('tokenSettingRequireAuthWsm')) {
+                            Session::put('tokenSettingRequireAuthWsm', $link->token);
+                        }
+
+                        return view('errors.wsm_errors')
+                            ->with('message', trans('polls.message_client.required_auth_wsm'))
+                            ->with('token', $link->token);
+                    }
+                }
+
                 if (collect($listSettings)->contains(config('settings.setting.hide_result'))) {
                     $isHideResult = true;
                 }
@@ -245,7 +266,7 @@ class LinkController extends Controller
                     $isLimit = true;
                 }
             }
-
+            
             if(! Session::has('isInputPassword')) {
                 if ($requiredPassword) {
 
@@ -275,6 +296,7 @@ class LinkController extends Controller
                 'isAllowAddOption',// allow to voter add new option
                 'isNoTheSameEmail',// setting not same email when setting had required email
                 'isEditVoted', // Allow edit vote of poll
+                'isRequiredAuthWsm', // Setting which only login by WSM system in framgia to vote (internal in framgia)
                 'optionRateBarChart', 'dataTableResult', //result
                 'countParticipantsVoted', 'isHaveImages', 'nameOptions', 'dataToDrawPieChart',
                 'isOwnerPoll', 'fontSize', 'messageImage',

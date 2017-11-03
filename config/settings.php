@@ -98,6 +98,7 @@ return [
         'not_same_email' => 10,
         'allow_edit_vote_of_poll' => 11,
         'add_type_mail' => 12,
+        'required_auth_wsm' => 13,
     ],
     'email' => [
         'link_vote' => '/link/',
