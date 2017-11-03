@@ -146,4 +146,10 @@ class User extends Authenticatable
             ? $avatar
             : asset('/' . config('settings.avatar_path') . '/' . $avatar);
     }
+
+    public function haveWsmAction()
+    {
+        return $this->socialAccounts()->where('provider', SocialAccount::FRAMGIA_PROVIDER)->first()
+            && preg_match("/@framgia\.com$/", $this->email);
+    }
 }

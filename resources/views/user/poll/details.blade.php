@@ -502,6 +502,7 @@
                                                     {!!
                                                         Form::text('nameVote', auth()->check() ? auth()->user()->name : null, [
                                                             'class' => 'form-control nameVote',
+                                                            'readonly' => auth()->check() && auth()->user()-> haveWsmAction() ? 'readonly' : false,
                                                             'placeholder' => trans('polls.placeholder.enter_name')
                                                         ])
                                                     !!}
@@ -515,6 +516,7 @@
                                                     {!!
                                                         Form::email('emailVote', auth()->check() ? auth()->user()->email : null, [
                                                             'class' => 'form-control emailVote',
+                                                            'readonly' => auth()->check() && auth()->user()-> haveWsmAction() ? 'readonly' : false,
                                                             'placeholder' => trans('polls.placeholder.email')
                                                         ])
                                                     !!}

@@ -8,6 +8,7 @@ use Socialite;
 use App\Services\SocialAccountService;
 use FAuth;
 use App\Models\SocialAccount;
+use Session;
 
 class SocialAuthController extends Controller
 {
@@ -26,7 +27,7 @@ class SocialAuthController extends Controller
       * @param $provider
      * @return mixed
     */
-    public function handleProviderCallback(SocialAccountService $service, $provider)
+    public function handleProviderCallback(Request $request, SocialAccountService $service, $provider)
     {
         $driver = $provider === SocialAccount::FRAMGIA_DRIVER ? FAuth::driver($provider) : Socialite::driver($provider);
 
@@ -34,9 +35,17 @@ class SocialAuthController extends Controller
             $user = $service->createOrGetUser($driver);
 
             if ($user) {
-              auth()->login($user);
+                auth()->login($user);
+                
+                if (Session::has('tokenSettingRequireAuthWsm')) {
+                    $token = Session::get('tokenSettingRequireAuthWsm');
 
-              return redirect()->to(url('/'));
+                    Session::put('tokenSettingRequireAuthWsm', '');
+
+                    return redirect()->action('LinkController@show', ['token' => $token]);
+                }
+
+                return redirect()->to(url('/'));
             }
         } catch (\Exception $ex) {
             return redirect()->to(url('/login'));

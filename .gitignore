@@ -10,4 +10,5 @@ Homestead.yaml
 /public/js
 /public/uploads/avatar
 /storage
+/data
 npm-debug.log

@@ -51,6 +51,7 @@ return [
             'not_same_email' => 'Không cho trùng email khi bầu chọn',
             'allow_edit_vote_of_poll' => 'Cho phép chỉnh sửa tùy chọn',
             'add_type_mail' => 'Thêm loại mail khi bầu chọn',
+            'required_auth_wsm' => 'Yêu cầu phải đăng nhập tài khoản wsm',
         ],
         'step_4' => 'Người tham gia',
         'invite' => 'Nếu bạn muốn gởi thư mời tham gia bầu chọn đến email cụ thể, hãy nhập vào ô dưới đây',
@@ -275,6 +276,7 @@ return [
         'show_more' => 'hiển thị nội dung',
         'show_less' => 'ẩn nội dung',
         'type_option_description' => 'Nhập mô tả của tùy chọn...',
+        'required_auth_wsm' => 'Poll này yêu cầu phải login hoặc nếu bạn đã login rồi thì vui lòng chuyển sang đăng nhập bằng wsm của framgia cung cấp để tham gia hệ thống bình chọn này. Click vào link bên dưới để đăng nhập',
     ],
     'mail' => [
         'label' => [

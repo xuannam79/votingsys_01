@@ -49,6 +49,7 @@ return [
             'not_same_email' => 'Not the same email when vote',
             'allow_edit_vote_of_poll' => 'Allow edit vote of poll',
             'add_type_mail' => 'Add type of email when voted',
+            'required_auth_wsm' => 'Login by wsm to vote',
         ],
         'step_4' => 'Participant',
         'invite' => 'If you want send mail to participants, let enter email into below textbox!',
@@ -276,6 +277,7 @@ return [
         'show_more' => 'show more',
         'show_less' => 'show less',
         'type_option_description' => 'Type a description of option...',
+        'required_auth_wsm' => 'This required poll must login to use system or you logined it that please switch wsm account of provided framgia. Click link below to login page',
     ],
     'mail' => [
         'label' => [

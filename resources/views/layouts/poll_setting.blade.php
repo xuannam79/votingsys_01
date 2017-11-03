@@ -56,6 +56,15 @@
                 <div class="required-input">
                     <div class="st">
                         <label class="radio-inline radio-setting-required">
+                            {{ Form::radio('setting_child[required]', config('settings.setting.required_auth_wsm'), (isset($page)
+                                    && ($page == 'edit' || $page == 'duplicate')
+                                    && $settingKey == config('settings.setting.required_auth_wsm')
+                                    && array_key_exists(config('settings.setting.required_auth_wsm'), $setting)) ? true : null) }}
+                            {{ trans('polls.label.setting.required_auth_wsm') }}
+                        </label>
+                    </div>
+                    <div class="st">
+                        <label class="radio-inline radio-setting-required">
                             {{ Form::radio('setting_child[required]', config('settings.setting.required_name'), true) }}
                             {{ trans('polls.label.setting.required_name') }}
                         </label>
