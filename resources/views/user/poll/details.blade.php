@@ -205,7 +205,7 @@
                             data-title-chart="{{ $poll->title }}"
                             data-font-size="{{ $fontSize }}"
                             data-has-image="{{ $isHaveImages }}"></div>
-    <div class="container">
+    <div class="container container-mobile">
         <div class="row">
             <div class="loader"></div>
             @include('noty.message')
@@ -214,16 +214,17 @@
                                             col-md-10 col-md-offset-1
                                             col-sm-10 col-sm-offset-1
                                             wrap-poll">
-                <div class="navbar panel panel-default panel-detail-poll">
+                <div class="navbar panel panel-default panel-detail-poll panel-detail-poll-mobile">
                     <div class="panel-body navbar-inner col-lg-12 panel-body-detail-poll">
                         <div class="col-lg-6 col-lg-offset-3
                                     col-md-6 col-md-offset-3
                                     col-sm-8 col-sm-offset-2
                                     col-xs-8 col-xs-offset-2
-                                    panel-heading panel-test">
-                            <ul>
+                                    panel-heading panel-test
+                                    tag-info-mobile">
+                            <ul class="center-mobile">
                                 <li><a href="#vote" data-toggle="tab">{{ trans('polls.nav_tab_edit.voting') }}</a></li>
-                                <li><a href="#info" data-toggle="tab">{{ trans('polls.nav_tab_edit.info') }}</a></li>
+                                <li class="none-tag-mobile"><a href="#info" data-toggle="tab">{{ trans('polls.nav_tab_edit.info') }}</a></li>
                                 @if (Session::has('isVotedSuccess') && Session::get('isVotedSuccess'))
                                     <li class="active"><a href="#result" data-toggle="tab">{{ trans('polls.nav_tab_edit.result') }}</a></li>
                                 @else
@@ -273,8 +274,8 @@
                         {!! Form::open(['route' => 'vote.store','id' => 'form-vote', 'files' => true]) !!}
                             <!-- VOTE OPTION -->
                             <div class="panel panel-default panel-vote-option">
-                                <div class="panel-body panel-body-vote-option">
-                                    <div class="col-lg-12">
+                                <div class="panel-body panel-body-vote-option vote-option-mobile">
+                                    <div class="col-lg-12 title-poll-mobile">
                                         <h4>{{ $poll->title }}</h4>
                                         <p class="description-poll">{!! cleanText($poll->description) !!}</p>
                                         <label class="poll-count">
@@ -295,7 +296,7 @@
                                         </label>
                                     </div>
                                     <div class="tab-content tab-content-detail box-style-option">
-                                        <div class="col-lg-12">
+                                        <div class="col-lg-12 none-tag-mobile">
                                             <div class="vote-style" data-option="{{ $viewOption }}">
                                                 <ul class="nav nav-pills poll-tabs">
                                                     @if($isEditVoted && !$isLimit && !$poll->isClosed() && !$isTimeOut)
@@ -315,19 +316,19 @@
                                                     <li class="active s-tab">
                                                         <a data-toggle="tab" href="#horizontal" class="btn-vote-style tab-link">
                                                             <i class="fa fa-bars" aria-hidden="true"></i>
-                                                            <span>{{ trans('polls.button.horizontal') }}</span>
+                                                            <span class="fa-bar-moblie">{{ trans('polls.button.horizontal') }}</span>
                                                         </a>
                                                     </li>
                                                     <li class="s-tab">
                                                         <a data-toggle="tab" href="#timeline" class="btn-vote-style tab-link">
                                                             <i class="fa fa-calendar" aria-hidden="true"></i>
-                                                            <span>{{ trans('polls.button.timeline') }}</span>
+                                                            <span class="fa-bar-moblie">{{ trans('polls.button.timeline') }}</span>
                                                         </a>
                                                     </li>
                                                     <li class="s-tab">
                                                         <a data-toggle="tab" href="#vertical" class="btn-vote-style tab-link">
                                                             <i class="fa fa-th" aria-hidden="true"></i>
-                                                            <span>{{ trans('polls.button.vertical') }}</span>
+                                                            <span class="fa-bar-moblie">{{ trans('polls.button.vertical') }}</span>
                                                         </a>
                                                     </li>
                                                 </ul>
@@ -337,14 +338,14 @@
 
                                         <!-- VOTE OPTION HORIZONTAL-->
                                         <div id="horizontal" class="tab-pane fade in active vote-style-detail clearfix">
-                                            <div class="col-lg-12 horizontal-overflow">
+                                            <div class="col-lg-12 horizontal-overflow vote-content-mobile">
                                                 @foreach ($poll->options as $option)
                                                     <li class="list-group-item parent-vote li-parent-vote perform-option clearfix {{ $poll->haveDetail() || $isHaveImages ? 'is-description' : 'not-description' }}"
                                                         onclick="voted('{{ $option->id }}', 'horizontal')">
                                                         <div class="option-info pull-left">
                                                             @if (!$isLimit && !$poll->isClosed() && !$isTimeOut)
                                                                 @if ($poll->multiple == trans('polls.label.multiple_choice'))
-                                                                    <div class="checkbox checkbox-primary">
+                                                                    <div class="checkbox checkbox-primary checkbox-primary-mobile">
                                                                         {!!
                                                                             Form::checkbox('option[]', $option->id, false, [
                                                                                 'onClick' => 'voted("' . $option->id  . '", "horizontal")',
@@ -362,7 +363,23 @@
                                                                             ])
                                                                         !!}
                                                                 @endif
-                                                                    <label class="content-option-choose"><span>{{ $option->name ? $option->name : '' }}</span></label>
+                                                                    <label class="content-option-choose">
+                                                                        <span>
+                                                                            @if ($isHaveImages)
+                                                                                <a class="media-image pick-media-image" href="javascript:void(0)">
+                                                                                    <div class="image-frame image-frame-mobile none-in-laptop">
+                                                                                        <div class="image-ratio">
+                                                                                            <img src="{{ $option->showImage() }}" class="thumbOption image-option-choose" />
+                                                                                        </div>
+                                                                                        <span class="cz-label label-new">
+                                                                                            {{ trans('polls.label_for.option_image') }}
+                                                                                        </span>
+                                                                                    </div>
+                                                                                </a>
+                                                                            @endif
+                                                                            {{ $option->name ? $option->name : '' }}
+                                                                        </span>
+                                                                    </label>
                                                                     <br>
                                                                 </div>
                                                             @else
@@ -372,18 +389,18 @@
                                                                 <p class="content-option-choose">{{ $option->name ? $option->name : '' }}</p>
                                                             @endif
                                                         </div>
-                                                        <div class="voters-info pull-right">
+                                                        <div class="voters-info pull-right voters-info-mobile">
                                                             @if (!$isHideResult || Gate::allows('administer', $poll))
-                                                                <div class="voters clearfix result-poll {{ isset($hideChoose) ? 'voters-fix' : '' }}">
+                                                                <div class="voters clearfix result-poll {{ isset($hideChoose) ? 'voters-fix' : '' }} result-poll-mobile">
                                                                     @foreach (array_slice($listVoter[$option->id], 0, config('settings.limit_voters_option')) as $voter)
-                                                                        <div class="voter-avatar" data-toggle="tooltip"
+                                                                        <div class="voter-avatar voter-avatar-mobile" data-toggle="tooltip"
                                                                             data-placement="{{ $loop->parent->last ? 'top' : 'bottom'}}"
                                                                             title="{{ $voter['name'] }}">
                                                                             <img src="{{ $voter['avatar'] }}">
                                                                         </div>
                                                                     @endforeach
                                                                     @if ($option->countVotes() > config('settings.limit_voters_option'))
-                                                                        <div class="voter-avatar">
+                                                                        <div class="voter-avatar voter-avatar-mobile">
                                                                             <div class="hidden-counter"
                                                                                 data-url-modal-voter="{{ action('User\VoteController@getModalOptionVoters', $option->id) }}">
                                                                                 <span>+{{ $option->countVotes() - config('settings.limit_voters_option') }}</span>
@@ -393,10 +410,32 @@
                                                                 </div>
                                                             @endif
                                                         </div>
+                                                        @if ($option->description)
+                                                            @php
+                                                                $haveShowMore = $option->paragraphTimes()
+                                                            @endphp
+                                                            <div class="clearfix none-in-laptop"></div>
+                                                            <div class="des-child-option none-in-laptop">
+                                                                <span class="item-description-icon">
+                                                                    <i class="fa fa-quote-right" aria-hidden="true"></i>
+                                                                </span>
+                                                                <div class="description-body {{ $haveShowMore ? 'show-more' : ''}}">
+                                                                    {!! $option->description !!}
+                                                                </div>
+                                                                @if ($haveShowMore)
+                                                                    <button type="button" class="btn-show-more">
+                                                                        <span>{{ trans('polls.message_client.show_more') }}</span>
+                                                                    </button>
+                                                                @endif
+                                                            </div>
+                                                        @endif
                                                     </li>
                                                     @if ($isHaveImages)
                                                         <!--START: Win-Frame Add Image -->
-                                                        <div class="box-media-image-option image-option-detail {{ isset($hideChoose) ? 'image-option-detail-fix' : '' }}">
+                                                        <div class="box-media-image-option
+                                                            image-option-detail
+                                                            {{ isset($hideChoose) ? 'image-option-detail-fix' : '' }}
+                                                            none-tag-mobile">
                                                             <a class="media-image pick-media-image" href="javascript:void(0)">
                                                                 <div class="image-frame">
                                                                     <div class="image-ratio">
@@ -414,8 +453,8 @@
                                                         @php
                                                             $haveShowMore = $option->paragraphTimes()
                                                         @endphp
-                                                        <div class="clearfix"></div>
-                                                        <div class="des-child-option">
+                                                        <div class="clearfix none-tag-mobile"></div>
+                                                        <div class="des-child-option none-tag-mobile">
                                                             <span class="item-description-icon">
                                                                 <i class="fa fa-quote-right" aria-hidden="true"></i>
                                                             </span>
@@ -494,7 +533,7 @@
                                     @if (!$isLimit && !$poll->isClosed() && !$isTimeOut)
                                         {!! Form::hidden('pollId', $poll->id) !!}
                                         <div class="row">
-                                            <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 col-xs-name-vote">
+                                            <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 col-xs-name-vote name-vote-mobile">
                                                 <div class="input-group  {{ ($isRequiredName || $isRequiredNameAndEmail) ? "required" : "" }}">
                                                     <span class="input-group-addon">
                                                         <i class="fa fa-user" aria-hidden="true"></i>
@@ -508,7 +547,7 @@
                                                     !!}
                                                 </div>
                                             </div>
-                                            <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 col-xs-email-vote">
+                                            <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 col-xs-email-vote email-vote-mobile">
                                                 <div class="input-group {{ ($isRequiredEmail || $isRequiredNameAndEmail) ? "required" : "" }}">
                                                     <span class="input-group-addon">
                                                         <i class="glyphicon glyphicon-envelope" aria-hidden="true"></i>
@@ -522,7 +561,7 @@
                                                     !!}
                                                 </div>
                                             </div>
-                                            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 col-btn-xs-vote">
+                                            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 col-btn-xs-vote btn-vote-mobile">
                                                 <span class="input-group-btn js-data-validate"
                                                     data-message-email="{{ trans('polls.message_email') }}"
                                                     data-id-poll="{{ $poll->id }}"
@@ -569,7 +608,7 @@
                             </div>
                         {!! Form::close() !!}
                     </div>
-                    <div class="tab-pane" id="info">
+                    <div class="tab-pane none-tag-mobile" id="info">
                         <div class="message-validation"></div>
                         <div class="panel panel-default panel-vote-option">
                             <div class="panel-body panel-body-vote-option">
@@ -733,13 +772,13 @@
                         @php
                             Session::forget('isVotedSuccess');
                         @endphp
-                        <div class="tab-pane active" id="result">
+                        <div class="tab-pane active vote-option-mobile" id="result">
                     @else
                         <div class="tab-pane" id="result">
                     @endif
                             <div class="panel panel-default panel-vote-option">
                                 @if (!$isHideResult || Gate::allows('administer', $poll))
-                                    <div class="bar-pie-chart">
+                                    <div class="bar-pie-chart bar-pie-chart-mobile">
                                         @if ($optionRateBarChart != "null")
                                             <div class="panel-heading panel-result-detail">
                                                 <ul class="nav nav-pills">
@@ -777,15 +816,51 @@
                                                     </button>
                                                 </div>
 
-                                                <div class="modal fade model-show-details" id="myModal" role="dialog">
+                                                <div class="modal fade model-show-details model-show-details-mobile" id="myModal" role="dialog">
                                                     @include('user.poll.vote_details_layouts')
                                                 </div>
-                                                <div class="col-lg-12 table-poll-result result-vote-poll">
-                                                    <table class="table table-hover">
+                                                <div class="col-lg-12 table-poll-result result-vote-poll result-vote-poll-mobile">
+                                                    <div class="row header-table-mobile none-in-laptop">
+                                                        <div class="col-xs-2 col-sm-1 no-of-result-mobile">
+                                                            {{ trans('polls.no') }}
+                                                        </div>
+                                                        <div class="col-xs-7 col-sm-8">
+                                                            {{ trans('polls.label.option') }}
+                                                        </div>
+                                                        <div class="col-xs-3 col-sm-3 padding-vote-mobile">
+                                                            {{ trans('polls.number_vote') }}
+                                                        </div>
+                                                    </div>
+                                                    @php
+                                                        $maxVote = max(array_column($dataTableResult, 'numberOfVote'));
+                                                        $voted = true;
+                                                    @endphp
+                                                    @foreach ($dataTableResult as $key => $data)
+                                                        <div class="row none-in-laptop">
+                                                            <div class="col-xs-2 col-sm-1 no-of-result-mobile">
+                                                                {{ $key + 1 }}
+                                                            </div>
+                                                            <div class="col-xs-7 col-sm-8 content-mobile no-of-result-mobile">
+                                                                <p>{{ $data['name'] }}</p>
+                                                            </div>
+                                                            <div class="col-xs-3 col-sm-3 padding-vote-mobile">
+                                                                <span class="badge">{{ $data['numberOfVote'] }}</span>
+                                                                @if ($maxVote == $data['numberOfVote'] && $voted)
+                                                                    @php
+                                                                        $voted = false;
+                                                                    @endphp
+                                                                    <img src="{{ asset(config('settings.option.path_trophy')) }}" class="trophy">
+                                                                @endif
+                                                            </div>
+                                                        </div>
+                                                    @endforeach
+
+
+                                                    <table class="table table-hover none-tag-mobile">
                                                         <thead>
                                                             <tr>
-                                                                <th>{{ trans('polls.no') }}</th>
-                                                                <th>{{ trans('polls.label.option') }}</th>
+                                                                <th class="no-mobile">{{ trans('polls.no') }}</th>
+                                                                <th class="answer-mobile">{{ trans('polls.label.option') }}</th>
                                                                 <th>{{ trans('polls.number_vote') }}</th>
                                                                 <th></th>
                                                             </tr>
@@ -797,8 +872,8 @@
                                                             @endphp
                                                             @foreach ($dataTableResult as $key => $data)
                                                                 <tr>
-                                                                    <td>{{ $key + 1 }}</td>
-                                                                    <td class="{{ ($isHaveImages) ? 'td-poll-result' : '' }}">
+                                                                    <td class="no-mobile">{{ $key + 1 }}</td>
+                                                                    <td class="{{ ($isHaveImages) ? 'td-poll-result' : '' }} answer-mobile">
                                                                         @if ($isHaveImages)
                                                                             <img src="{{ asset($data['image']) }}">
                                                                         @endif

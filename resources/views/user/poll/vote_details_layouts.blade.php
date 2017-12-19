@@ -1,6 +1,6 @@
-<div class="modal-dialog">
+<div class="modal-dialog modal-dialog-mobile">
     <div class="modal-content">
-        <div class="modal-body scroll-result">
+        <div class="modal-body scroll-result scroll-result-mobile">
             <div class="input-group col-xs-5 search-row">
                 {!! Form::text('searchTD', null, [
                     'class' => 'form-control search-row-detail',
@@ -15,7 +15,7 @@
                 </div>
             </div>
             <!--START: Show option details-->
-            <table class="table option-date" cellspacing="0" cellpadding="0">
+            <table class="table option-date details-vote-mobile" cellspacing="0" cellpadding="0">
                 <tbody>
                     @if($optionDates['hours'])
                         <!--START: Show month + year of option -->

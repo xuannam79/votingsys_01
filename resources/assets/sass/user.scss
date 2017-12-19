@@ -1758,3 +1758,185 @@ input[type="radio"] .styled:checked + label::after {
         color: #fff;
     }
 }
+
+@media (min-width: 768px) {
+    .none-in-laptop {
+        display: none;
+    }
+}
+@media (max-width: 768px) {
+    .wrap-poll {
+        margin-bottom: 0;
+        position: relative;
+        padding-right: 0;
+        padding-left: 0;
+        padding-top: 0;
+        min-height: 0 !important
+    }
+    .container-mobile {
+        padding-right: 0 ;
+        padding-left: 0 ;
+    }
+    .navbar-mobile {
+        margin-bottom: 0;
+    }
+    .panel-vote-option {
+        margin-bottom: 0;
+    }
+    .fa-bar-moblie {
+        display: none;
+    }
+    .none-tag-mobile {
+        display: none !important;
+    }
+    .title-poll-mobile {
+        padding: 0px;
+        &:first-letter {
+            text-transform: capitalize;
+        }
+        h4 {
+            word-wrap: break-word;
+        }
+    }
+    .tag-info-mobile {
+        padding-bottom: 0px;
+        margin-left: 0px;
+        padding-left: 5px;
+        border-bottom: 0px;
+    }
+    .vote-content-mobile {
+        padding: 0px;
+        li {
+            padding-left: 0px;
+            padding-bottom: 12px !important;
+            border-bottom: 1px solid #cccccc;
+            div {
+                display: block;
+                width: 100%;
+                span {
+                    word-wrap: break-word;
+                }
+            }
+        }
+    }
+    .name-vote-mobile, .email-vote-mobile {
+        padding: 0px;
+    }
+    .btn-vote-mobile {
+        text-align: center;
+        button {
+            width: 100px;
+            border-radius: 30px !important;
+        }
+    }
+    .modal-dialog-mobile {
+        width: 100% !important;
+        margin: 0px;
+        .details-vote-mobile {
+            table-layout: fixed;
+            td {
+                word-wrap: break-word;
+                padding-left: 3px;
+                padding-right: 5px;
+            }
+        }
+        .scroll-result {
+            max-height: 100%;
+        }
+        .modal-footer {
+            button {
+                border-radius: 30px !important;
+                width: 75px;
+            }
+        }
+    }
+    .model-show-details-mobile {
+        margin-top: 60px;
+    }
+    .result-vote-poll-mobile {
+        .row {
+            background-color: #e9e9e9;
+            border-bottom: 1px solid white;
+            .padding-vote-mobile {
+                padding-left: 5px;
+                padding-top: 5px;
+            }
+            div {
+                padding: 0px;
+                p {
+                    width: 100%;
+                    overflow-wrap: break-word;
+                }
+            }
+            .content-mobile {
+                border-left: 1px solid white;
+                border-right: 1px solid white;
+            }
+        }
+        table {
+            .answer-mobile {
+                p {
+                    word-wrap: break-word;
+                    width: 50%;
+                }
+            }
+        }
+    }
+    html {
+        overflow-x: hidden;
+    }
+    body {
+        overflow-x: hidden;
+    }
+    .scroll-result-mobile {
+        overflow-x: hidden;
+    }
+    .panel-detail-poll-mobile {
+        border-bottom: 0px;
+    }
+    .vote-option-mobile {
+        border-top: 1px solid #218b8b;
+    }
+    .result-poll-mobile {
+        margin-left: 0px;
+        width: fit-content;
+        .tooltip {
+            display: none !important;
+        }
+    }
+    .voter-avatar-mobile {
+        width: auto !important;
+    }
+    .checkbox-primary-mobile {
+        margin-bottom: 0px;
+    }
+    .image-frame-mobile {
+        width: 60px !important;
+        float: left;
+        margin-right: 7px;
+        img {
+            width: 50px;
+        }
+    }
+    .voters-info-mobile {
+        width: auto !important;
+    }
+    .no-mobile {
+        width: 15px;
+        padding-left: 2px !important;
+        padding-right: 0px !important;
+    }
+    .header-table-mobile {
+        font-weight: 800;
+        background-color: #e9e9e9;
+        margin-bottom: 1px;
+        margin-top: 3px;
+    }
+    .no-of-result-mobile {
+        padding-left: 5px !important;
+        padding-left: 3px !important;
+    }
+    .bar-pie-chart-mobile {
+        border-top: 1px solid #218b8b;
+    }
+}

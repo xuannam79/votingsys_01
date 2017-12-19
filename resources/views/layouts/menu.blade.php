@@ -1,4 +1,4 @@
-<nav class="navbar navbar-default  animated fadeInDown">
+<nav class="navbar navbar-default  animated fadeInDown navbar-mobile">
     <div class="container-fluid">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#menu">

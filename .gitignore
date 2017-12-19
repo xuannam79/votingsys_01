@@ -12,3 +12,4 @@ Homestead.yaml
 /storage
 /data
 npm-debug.log
+package-lock.json
