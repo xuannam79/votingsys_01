@@ -105,7 +105,7 @@
                                                 wrap-poll animated fadeInLeft">
                 @include('layouts.error')
                 @include('layouts.message')
-                <div class="progress cz-progress">
+                <div class="progress cz-progress cz-progress-mobile">
                     <div class="progress-bar progress-bar-success progress-bar-striped bar" role="progressbar"
                          aria-valuenow="40" aria-valuemin="0" aria-valuemax="100">
                     </div>
@@ -146,21 +146,21 @@
 
                 <div class="tab-content">
                     <div class="tab-pane" id="info">
-                        <div class="panel panel-darkcyan">
+                        <div class="panel panel-darkcyan panel-darkcyan-mobile">
                             <div class="panel-heading panel-heading-darkcyan">
                                 {{ trans('polls.label.step_1') }}
                             </div>
-                            <div class="panel-body">
+                            <div class="panel-body panel-body-mobile">
                                 @include('layouts.poll_info')
                             </div>
                         </div>
                     </div>
                     <div class="tab-pane" id="option">
-                        <div class="panel panel-darkcyan js-execute-options">
+                        <div class="panel panel-darkcyan js-execute-options panel-darkcyan-mobile">
                             <div class="panel-heading panel-heading-darkcyan">
                                 {{ trans('polls.label.step_2') }}
                             </div>
-                            <div class="panel-body">
+                            <div class="panel-body panel-body-mobile">
                                 @foreach ($data['viewData']['configOptions'] as $key => $text)
                                     <label class="config-option">
                                         {!!
@@ -183,27 +183,32 @@
                         </div>
                     </div>
                     <div class="tab-pane" id="setting">
-                        <div class="panel panel-darkcyan">
+                        <div class="panel panel-darkcyan panel-darkcyan-mobile">
                             <div class="panel-heading panel-heading-darkcyan">
                                 {{ trans('polls.label.step_3') }}
                             </div>
-                            <div class="panel-body">
+                            <div class="panel-body panel-body-mobile">
                                 @include('layouts.poll_setting')
                             </div>
                         </div>
                     </div>
                     <div class="tab-pane" id="participant">
-                        <div class="panel panel-darkcyan">
+                        <div class="panel panel-darkcyan panel-darkcyan-mobile">
                             <div class="panel-heading panel-heading-darkcyan">
                                 {{ trans('polls.label.step_4') }}
                             </div>
-                            <div class="panel-body">
+                            <div class="panel-body panel-body-mobile">
                                 @include('layouts.poll_participant')
                             </div>
                         </div>
                     </div>
                     <ul class="pager wizard">
-                        <li class="finish"><a href="javascript:void(0);" class="btn btn-change-step btn-darkcyan btn-finish">{{ trans('polls.button.finish') }}</a></li>
+                        <li class="finish">
+                            <a href="javascript:void(0);"
+                                class="btn btn-change-step btn-darkcyan btn-finish">
+                                    {{ trans('polls.button.finish') }}
+                            </a>
+                        </li>
                         <li class="previous"><a href="javascript:void(0);" class="btn-change-step btn btn-darkcyan">{{ trans('polls.button.previous') }}</a></li>
                         <li class="next"><a href="javascript:void(0);" class="btn-change-step btn btn-darkcyan">{{ trans('polls.button.continue') }}</a></li>
                     </ul>

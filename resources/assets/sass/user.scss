@@ -1801,7 +1801,7 @@ input[type="radio"] .styled:checked + label::after {
     .tag-info-mobile {
         padding-bottom: 0px;
         margin-left: 0px;
-        padding-left: 5px;
+        padding-left: 0px;
         border-bottom: 0px;
     }
     .vote-content-mobile {
@@ -1890,6 +1890,9 @@ input[type="radio"] .styled:checked + label::after {
     }
     .scroll-result-mobile {
         overflow-x: hidden;
+        .search-row {
+            padding-left: 5px;
+        }
     }
     .panel-detail-poll-mobile {
         border-bottom: 0px;
@@ -1938,5 +1941,58 @@ input[type="radio"] .styled:checked + label::after {
     }
     .bar-pie-chart-mobile {
         border-top: 1px solid #218b8b;
+    }
+    .cz-progress-mobile {
+        margin-top: 1px;
+    }
+    .panel-darkcyan-mobile {
+        border: none;
+    }
+    .panel-body-mobile {
+        padding-left: 3px;
+    }
+    .container-fluid-mobile {
+        padding: 5px 0px 0px 0px;
+    }
+    .create-poll-finish-mobile {
+        padding: 0px;
+    }
+    .panel-heading-darkcyan-mobile {
+        display: none;
+    }
+    .darkcyan-profile-mobile {
+        margin-bottom: 0px;
+    }
+    .center-mobile {
+        li {
+            a {
+                font-size: 12px !important;
+                font-weight: 700;
+            }
+        }
+    }
+    .title-create-finish-mobile {
+        margin-top: 0px;
+    }
+    .des-child-option-mobile {
+        margin-left: 33px;
+        padding-right: 30px;
+        padding-top: 0px;
+    }
+    .show-more-mobile {
+        display:none !important;
+    }
+    .btn-show-more-mobile {
+        margin-top: 0px;
+    }
+    .modal-list-user-mobile {
+        padding-left: 7px;
+        padding-right: 7px;
+    }
+    .poll-count-mobile {
+        display: block !important;
+        .glyphicon-comment {
+            display: none;
+        }
     }
 }

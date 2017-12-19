@@ -30,3 +30,10 @@ function sendMailAgain() {
         }
     });
 }
+
+//added in 19/12 when fix view for mobile
+$(function () {
+    //add class container-fluid-mobile to div.container-fluid when at page result create poll
+    $('.create-poll-finish-mobile').parent().addClass('container-fluid-mobile')
+})
+
