@@ -1755,17 +1755,43 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
 
         $isHaveImages = $poll->isImages();
 
+        $isHideResult = $settingsPoll[config('settings.setting.hide_result')]['isHave'];
+
         // layout result option for voted
         $dataView['html'] = view(
             'user.poll.vote_details_layouts',
             compact('optionDates')
         )->render();
 
+        foreach ($poll->options as $option) {
+            $viewListVoters = view(
+                '.user.poll.option_horizontal_list_voter',
+                compact(
+                    'option',
+                    'settingsPoll',
+                    'poll',
+                    'isHaveImages',
+                    'isLimit',
+                    'listVoter'
+                )
+            );
+
+            $optionDetail[$option->id] = [
+                'list_voters' => $viewListVoters->render(),
+                'nameOption' => $option->name,
+            ];
+        }
+
+
         // layout horizontal options
-        $dataView['horizontalOption'] = view(
-            '.user.poll.option_horizontal',
-            compact('settingsPoll', 'poll', 'isHaveImages', 'isLimit', 'listVoter')
-        )->render();
+        $dataView['horizontalOption'] = [
+            'optionDetail' => $optionDetail,
+            'isLimit' => $isLimit,
+            'isClosed' => $poll->isClosed(),
+            'isTimeOut' => $poll->isTimeOut(),
+            'isOwner' => \Gate::allows('administer', $poll),
+            'isHideResult' => $isHideResult,
+        ];
 
         // layout vertical options
         $dataView['verticalOption'] = view(
