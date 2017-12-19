@@ -28,7 +28,23 @@ $(document).ready(function(){
             });
 
             if (typeof socketData.horizontalOption != 'undefined') {
-                $('.horizontal-overflow').html(socketData.horizontalOption);
+                let settings = socketData.horizontalOption;
+                let options = settings.optionDetail;
+
+                for (let idOption in options) {
+                    if (!settings.isHideResult && !settings.isOwner) {
+                        $(".list-option-" + idOption).find(".voters-info").html(options[idOption]["list_voters"]);
+                    }
+
+                    if (settings.isLimit || settings.isClosed || settings.isTimeOut) {
+                        let $optionInfo = $(".list-option-" + idOption).find(".option-info");
+                        let $overrideContent = $('<p>').addClass('content-option-choose').text(options[idOption]["nameOption"]);
+
+                        $optionInfo.empty();
+                        $optionInfo.html($overrideContent)
+                    }
+                }
+
                 $('[data-toggle="tooltip"]').tooltip();
             }
 
