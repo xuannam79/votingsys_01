@@ -1407,9 +1407,9 @@ $(document).ready(function () {
         }
     })
 
-    $('#horizontal').on('click', '.btn-show-more', function () {
+    $('#horizontal').on('click', '.btn-show-more',function () {
         var label = $('.vote-style').data('option')['message'];
-        $(this).siblings('.description-body').toggleClass('show-more');
+        $(this).siblings('.description-body').toggleClass('show-more show-more-mobile');
         $(this).text($(this).text().trim() == label.show_more ? label.show_less : label.show_more);
     })
 
@@ -1447,3 +1447,24 @@ if (document.getElementById('location') != null) {
         });
     });
 }
+
+//in screen mobile click button.show-more not check option of poll
+$('.des-child-option-mobile').on('click', function (e) {
+    e.stopPropagation()
+})
+
+//show modal image of option in sreen mobile
+$('.pick-media-image-mobile').on('click', function (e) {
+    var image = $(this).find('img').prop('src');
+    $('#imageOfOptionPreview').attr("src", image);
+    $('#modalImageOption').modal('show');
+    e.stopPropagation();
+});
+
+//show more description in screen mobile
+$('.btn-show-more-mobile-js').on('click', function (e) {
+    var label = $('.vote-style').data('option')['message'];
+    $(this).siblings('.description-body').toggleClass('show-more show-more-mobile');
+    $(this).text($(this).text().trim() == label.show_more ? label.show_less : label.show_more);
+    e.stopPropagation();
+})

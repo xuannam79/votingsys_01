@@ -185,7 +185,7 @@
 
     <!-- START: List voters-->
     <div class="modal fade" tabindex="-1" role="dialog" id="voters-modal">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog modal-list-user-mobile" role="document">
             <div class="modal-content">
                 <div class="modal-body" id="result-voters">
 
@@ -278,7 +278,7 @@
                                     <div class="col-lg-12 title-poll-mobile">
                                         <h4>{{ $poll->title }}</h4>
                                         <p class="description-poll">{!! cleanText($poll->description) !!}</p>
-                                        <label class="poll-count">
+                                        <label class="poll-count poll-count-mobile">
                                             <span class="label label-primary glyphicon glyphicon-user poll-details">
                                                 <span class="count-participant">{{ $countParticipantsVoted }}</span>
                                             </span>
@@ -366,8 +366,8 @@
                                                                     <label class="content-option-choose">
                                                                         <span>
                                                                             @if ($isHaveImages)
-                                                                                <a class="media-image pick-media-image" href="javascript:void(0)">
-                                                                                    <div class="image-frame image-frame-mobile none-in-laptop">
+                                                                                <a class="media-image pick-media-image-mobile none-in-laptop" href="javascript:void(0)">
+                                                                                    <div class="image-frame image-frame-mobile">
                                                                                         <div class="image-ratio">
                                                                                             <img src="{{ $option->showImage() }}" class="thumbOption image-option-choose" />
                                                                                         </div>
@@ -415,15 +415,15 @@
                                                                 $haveShowMore = $option->paragraphTimes()
                                                             @endphp
                                                             <div class="clearfix none-in-laptop"></div>
-                                                            <div class="des-child-option none-in-laptop">
+                                                            <div class="des-child-option des-child-option-mobile none-in-laptop">
                                                                 <span class="item-description-icon">
                                                                     <i class="fa fa-quote-right" aria-hidden="true"></i>
                                                                 </span>
-                                                                <div class="description-body {{ $haveShowMore ? 'show-more' : ''}}">
+                                                                <div class="description-body {{ $haveShowMore ? 'show-more show-more-mobile' : ''}}">
                                                                     {!! $option->description !!}
                                                                 </div>
                                                                 @if ($haveShowMore)
-                                                                    <button type="button" class="btn-show-more">
+                                                                    <button type="button" class="btn-show-more btn-show-more-mobile btn-show-more-mobile-js">
                                                                         <span>{{ trans('polls.message_client.show_more') }}</span>
                                                                     </button>
                                                                 @endif
