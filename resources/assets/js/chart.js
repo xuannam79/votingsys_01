@@ -25,36 +25,53 @@ $(function () {
         },
 
         title: {
-            text: '',
+            text: ''
         },
 
         tooltip: {
             useHTML: true,
-            positioner: function () {
-                return { x: 300, y: 10 };
-            },
-            pointFormat: '<b style="color: red; font-size: 20px">{point.y}</b><br/>',
+            pointFormat: '<b style="color: red; font-size: 13px">{point.y}</b><br/>'
         },
+
         xAxis: {
             categories: chartNameData,
+            min: 0,
             labels: {
                 useHTML: true,
                 style: {
                     fontSize: fontSizeChart + 'px'
-                }
+                },
+                overflow: 'justify'
             }
         },
+
         yAxis: {
             tickInterval: 1,
             title: {
                 text: ""
             }
         },
+
         series: [{
             name:'',
             data: chartData,
             color: 'darkcyan'
         }],
+
+        plotOptions: {
+            column: {
+                pointPadding: 0.2,
+                borderWidth: 0
+            },
+            series: {
+                borderWidth: 0,
+                dataLabels: {
+                    enabled: true,
+                    format: '{point.y}'
+                }
+            }
+        },
+
     });
 
     /**
@@ -63,13 +80,11 @@ $(function () {
     var myPieChart = Highcharts.chart('chart_div', {
         chart: {
             type: 'pie',
-            width: 800,
-            marginLeft: 100,
             options3d: {
                 enabled: true,
                 alpha: 45,
                 beta: 0
-            }
+            },
         },
 
         title: {
@@ -84,7 +99,7 @@ $(function () {
             pie: {
                 allowPointSelect: true,
                 cursor: 'pointer',
-                depth: 50,
+                depth: 15,
                 dataLabels: {
                     enabled: true,
                     formatter: function() {
@@ -92,27 +107,82 @@ $(function () {
                     }
                 },
                 showInLegend: true
-            }
+            },
+        },
+
+        responsive: {
+            rules: [{
+                condition: {
+                    maxWidth: 500
+                },
+                chartOptions: {
+                    chart: {
+                        height: 400
+                    },
+                    subtitle: {
+                        text: null
+                    },
+                    navigator: {
+                        enabled: false
+                    }
+                }
+            }]
         },
 
         legend: {
             useHTML: true,
             align: 'left',
-            maxHeight: 100,
+            minHeight: 100,
             labelFormatter: function () {
                 if (isHasImage) {
                     return (this.name.length > 154) ? this.name.substring(0, 200) + "..." : this.name;
                 }
 
                 return  (this.name.length > 100) ? this.name.substring(0, 100) + "..." : this.name;
-            }
+            },
         },
         tooltip: {
-            useHTML: true,
-            pointFormat: '<b style="color: red; font-size: 20px">{point.y}</b><br/>',
+            enabled: true
         },
         series: [{
             data: chartPieData
         }]
+    });
+});
+
+$(document).ready(function () {
+    var width = $(window).width();
+    pieChart = $('#chart_div').highcharts();
+    columChart = $('#chart').highcharts();
+    var pieSize = 0;
+    var columnSize = 0;
+    if (width < 768) {
+        pieSize = width - (width * 0.03);
+    }
+
+    if (width == 768) {
+        pieSize = width - (width * 0.21);
+    }
+
+    if (width >= 1024) {
+        pieSize = width - (width * 0.3);
+        columnSize = width - (width * 0.35);
+    }
+
+    if (width >= 1850) {
+        pieSize = width - (width * 0.51);
+        columnSize = width - (width * 0.55);
+    }
+
+    pieChart.setSize(pieSize);
+    columChart.setSize(columnSize);
+
+    $(window).resize(function(){
+        var chart = $('#chart_div').highcharts();
+        var w = $('#chart_div').closest("#pieChart").width();
+
+        chart.setSize(
+            w,w * (3/4),false
+        );
     });
 });

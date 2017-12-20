@@ -194,14 +194,12 @@ li {
 #chart_div {
     max-width: 900px;
     height: 500px;
-    overflow: scroll;
     //float: left;
 }
 
 #chart {
     max-width: 900px;
     height: 500px;
-    overflow: scroll;
     //float: right;
 }
 
@@ -1994,5 +1992,12 @@ input[type="radio"] .styled:checked + label::after {
         .glyphicon-comment {
             display: none;
         }
+    }
+    .bar-chart-mobile {
+        display: none !important;
+    }
+    .with-bar-mobile {
+        padding-left: 0px !important;
+        padding-right: 0px !important;
     }
 }
