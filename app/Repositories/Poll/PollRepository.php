@@ -1413,7 +1413,7 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
             }
 
             $countOption = $option->countVotes();
-            if ($countOption > 0) {
+            // if ($countOption > 0) {
                 $nameOfOptions[] = [
                     view('layouts.chart_option_data', [
                         'isHasImage' => $isHasImage,
@@ -1424,7 +1424,7 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
                         'optionFullName' => $option->name,
                     ])->render()
                 ];
-            }
+            // }
         }
 
         return $nameOfOptions;

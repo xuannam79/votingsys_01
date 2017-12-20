@@ -901,7 +901,7 @@
                                                 <div class="show-piechart tab-pane fade" id="pieChart" role="dialog">
                                                     <div class="col-lg-12 with-bar-mobile">
                                                         <!-- pie chart -->
-                                                        <div id="chart_div"></div>
+                                                        <div id="chart_div" class="chart_div_mobile"></div>
                                                     </div>
                                                 </div>
                                             @endif
