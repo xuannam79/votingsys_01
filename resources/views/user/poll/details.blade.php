@@ -787,7 +787,7 @@
                                                             <i class="fa fa-table" aria-hidden="true"></i>
                                                         </a>
                                                     </li>
-                                                    <li>
+                                                    <li class="bar-chart-mobile">
                                                         <a class="tab-bar-chart" data-toggle="tab" href="#barChart">
                                                             <i class="fa fa-bar-chart" aria-hidden="true"></i>
                                                         </a>
@@ -899,7 +899,7 @@
                                             <!-- MODEL VOTE CHART-->
                                             @if ($optionRateBarChart)
                                                 <div class="show-piechart tab-pane fade" id="pieChart" role="dialog">
-                                                    <div class="col-lg-12">
+                                                    <div class="col-lg-12 with-bar-mobile">
                                                         <!-- pie chart -->
                                                         <div id="chart_div"></div>
                                                     </div>
