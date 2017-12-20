@@ -1,6 +1,6 @@
 <div class="modal-dialog modal-dialog-mobile">
     <div class="modal-content">
-        <div class="modal-body scroll-result scroll-result-mobile">
+        <div class="modal-body scroll-result">
             <div class="input-group col-xs-5 search-row">
                 {!! Form::text('searchTD', null, [
                     'class' => 'form-control search-row-detail',

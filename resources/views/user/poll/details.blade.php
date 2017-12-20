@@ -184,7 +184,7 @@
     @endif
 
     <!-- START: List voters-->
-    <div class="modal fade" tabindex="-1" role="dialog" id="voters-modal">
+    <div class="modal fade voters-modal-mobile" tabindex="-1" role="dialog" id="voters-modal">
         <div class="modal-dialog modal-list-user-mobile" role="document">
             <div class="modal-content">
                 <div class="modal-body" id="result-voters">
