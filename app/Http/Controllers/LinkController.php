@@ -148,22 +148,22 @@ class LinkController extends Controller
 
         $optionRateBarChart = [];
 
-        if (array_sum($totalVote)) {
+        // if (array_sum($totalVote)) {
             foreach ($poll->options as $option) {
                 $countOption = $totalVote[$option->id];
 
-                if ($countOption > 0) {
+                // if ($countOption > 0) {
                     if ($isHaveImages) {
                         $optionRateBarChart[] = ['<img src="' . $option->showImage() .'" class="image-option-poll">' . '<span class="name-option-poll">' . $option->name . '</span>', $countOption];
                     } else {
                         $optionRateBarChart[] = ['<p>' . $option->name . '</p>', $countOption];
                     }
 
-                }
+                // }
             }
-        } else {
-            $optionRateBarChart = null;
-        }
+        // } else {
+        //     $optionRateBarChart = null;
+        // }
 
         $nameOptions = json_encode($this->pollRepository->getNameOptionToDrawChart($poll, $isHaveImages));
         $dataToDrawPieChart = json_encode($this->pollRepository->getDataToDrawPieChart($poll, $isHaveImages));
@@ -223,7 +223,7 @@ class LinkController extends Controller
                 }
 
                 if (collect($listSettings)->contains(config('settings.setting.required_auth_wsm'))) {
-                    
+
                     $isRequiredAuthWsm = true;
                     $logined = auth()->check();
 
@@ -231,7 +231,7 @@ class LinkController extends Controller
                         && (!$logined ||
                             ($logined && !auth()->user()->haveWsmAction())
                         )) {
-                        
+
                         if (!Session::has('tokenSettingRequireAuthWsm')) {
                             Session::put('tokenSettingRequireAuthWsm', $link->token);
                         }
@@ -266,7 +266,7 @@ class LinkController extends Controller
                     $isLimit = true;
                 }
             }
-            
+
             if(! Session::has('isInputPassword')) {
                 if ($requiredPassword) {
 

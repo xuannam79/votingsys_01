@@ -2000,4 +2000,7 @@ input[type="radio"] .styled:checked + label::after {
         padding-left: 0px !important;
         padding-right: 0px !important;
     }
+    .chart_div_mobile {
+        height: auto !important;
+    }
 }
