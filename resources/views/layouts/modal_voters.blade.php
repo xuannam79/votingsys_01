@@ -7,7 +7,7 @@
         {{ Form::button('<i class="glyphicon glyphicon-search"></i>', ['class' => 'btn btn-yes']) }}
     </div>
 </div>
-<ul class="nav listing-sppoll">
+<ul class="nav listing-sppoll listing-sppoll-mobile">
     @foreach ($voters as $voter)
         <li class="voters-row">
             <p class="voters-box">

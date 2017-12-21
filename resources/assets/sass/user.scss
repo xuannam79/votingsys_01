@@ -1824,14 +1824,18 @@ input[type="radio"] .styled:checked + label::after {
         text-align: center;
         button {
             width: 100px;
-            border-radius: 30px !important;
         }
     }
     .modal-dialog-mobile {
         width: 100% !important;
         margin: 0px;
+        height: 100%;
+        .modal-content {
+            height: 100%;
+        }
         .details-vote-mobile {
-            table-layout: fixed;
+            min-width: 500px;
+            margin-top: 35px;
             td {
                 word-wrap: break-word;
                 padding-left: 3px;
@@ -1839,17 +1843,25 @@ input[type="radio"] .styled:checked + label::after {
             }
         }
         .scroll-result {
-            max-height: 100%;
+            max-height: 90%;
+            padding-top: 0px !important;
+            .search-row {
+                position: fixed !important;
+                padding-right: 7px;
+                padding-left: 0px;
+            }
         }
         .modal-footer {
+            padding-bottom: 2px;
             button {
-                border-radius: 30px !important;
                 width: 75px;
             }
         }
     }
     .model-show-details-mobile {
-        margin-top: 60px;
+        margin-top: 10%;
+        margin-bottom: 10%;
+        overflow: hidden;
     }
     .result-vote-poll-mobile {
         .row {
@@ -1974,18 +1986,35 @@ input[type="radio"] .styled:checked + label::after {
     }
     .des-child-option-mobile {
         margin-left: 33px;
-        padding-right: 30px;
-        padding-top: 0px;
+        padding: 0px;
+        width: auto !important;
+        .description-body {
+            padding-right: 5px;
+        }
     }
     .show-more-mobile {
         display:none !important;
     }
     .btn-show-more-mobile {
         margin-top: 0px;
+        border-top: none;
+        background-color: #c8c8c8;
     }
     .modal-list-user-mobile {
         padding-left: 7px;
         padding-right: 7px;
+        margin-top: 0px;
+        margin-bottom: 0px;
+        height: 400px;
+        overflow-y: hidden;
+        top: 80px !important;
+        .modal-content {
+            height: 100%;
+            #result-voters {
+                padding-top: 2px;
+                height: 100%;
+            }
+        }
     }
     .poll-count-mobile {
         display: block !important;
