@@ -133,7 +133,7 @@
                                 <i class="fa fa-angle-double-up" aria-hidden="true"></i>
                             </a>
                         </div>
-                        <div class="des-quill-editor-edit">
+                        <div class="des-quill-editor-edit des-quill-editor">
                         </div>
                         {!! Form::hidden('oldOptionDescription[' . $option->id . ']', $option->description, [
                             'id' => 'optionDescription-' . $option->id,
