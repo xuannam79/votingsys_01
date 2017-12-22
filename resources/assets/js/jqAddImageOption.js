@@ -334,7 +334,7 @@ jqAddImageOption.prototype.checkExtensionImage = function (value) {
 
 jqAddImageOption.prototype.checkSizeImage = function (file) {
     // ~ 1MB
-    return (file.size / 1000) < 1024;
+    return (file.size / 1000) < 10240;
 }
 
 jqAddImageOption.prototype.scrollToDiv = function (){

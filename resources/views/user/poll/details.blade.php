@@ -232,7 +232,7 @@
                                 @endif
                             </ul>
                         </div>
-                        <div class="col-lg-3 col-auth-detail">
+                        <div class="col-lg-3 col-auth-detail none-tag-mobile">
                             @if (auth()->user() && auth()->user()->id == $poll->user_id)
                                 <a href="{{ $poll->getAdminLink() }}" class="btn btn-darkcyan btn-primary btn-xs btn-auth-detail">
                                     <span class="glyphicon glyphicon-pencil"></span>

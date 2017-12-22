@@ -18,11 +18,16 @@
      data-host="{{ config('app.key_program.socket_host') }}"
      data-port="{{ config('app.key_program.socket_port') }}">
 </div>
-<div class="col-lg-4 col-lg-offset-4">
+<div class="col-lg-4 col-lg-offset-4 info-mobile info-destop">
     <div class="hide-poll-closed"></div>
     <div class="panel panel-default panel-darkcyan">
-        <div class="panel-heading panel-heading-darkcyan">
+        <div class="panel-heading panel-heading-darkcyan none-tag-mobile">
             <span class="glyphicon glyphicon-info-sign"></span> {{ trans('label.errors') }}
+        </div>
+        <div class="panel-heading panel-heading-message-mobile none-in-laptop">
+            <div class="tag-info-mobile tag-message-mobile">
+                <span class="glyphicon glyphicon-info-sign"></span> {{ trans('label.errors') }}
+            </div>
         </div>
         <div class="panel-body">
             <h5 class="text-danger">

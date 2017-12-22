@@ -20,7 +20,7 @@ return [
     'home' => 'ホームページ',
     'admin_page' => 'ホームページ管理者',
     'errors' => 'エラー',
-    'send_feedback' => 'Gửi phản hồi',
+    'send_feedback' => 'Send Feedback',
 
     /**
      * MASTER ADMIN
@@ -116,11 +116,11 @@ return [
             'link_admin' => '投票管理する為に下記のリンクをクリックしてください',
         ],
         'feedback' => [
-            'header_content' => 'Đây là phản hồi của người dùng về Fpoll webiste:',
-            'subject' => '[Fpoll] Phản hồi từ khách hàng',
+            'header_content' => 'Here is feedback form customer about which Fpoll website:',
+            'subject' => '[Fpoll] Feedback from customer',
         ],
     ],
-    'paginations' => 'Hiển thị :start đến :finish của :numberOfRecords mục|Đang hiển thị :start đến :finish of :numberOfRecords mục',
+    'paginations' => 'Showing :start to :finish of :numberOfRecords entry|Showing :start to :finish of :numberOfRecords entries',
     'gender' => [
         '' => '',
         '0' => '女性',
@@ -129,7 +129,7 @@ return [
     ],
     'footer' => [
         'location' => 'ベトナム、ハノイ市、Nam Tu Liem区、Pham Hung町、Keangnam Landmark 72ビル、13階',
-        'copyright' => 'Copyright 2016 Framgia, Inc. <br>All rights reserved.',
+        'copyright' => '© 2017 By Framgia - Human Development Division - Education Section - All rights reserved.',
         'email' => 'hr_team@framgia.com',
         'phone' => ' 84-4-3795-5417',
         'about' => 'Fpoll - 簡単・効果・便利',

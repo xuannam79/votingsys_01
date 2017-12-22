@@ -124,7 +124,7 @@ return [
     ],
     'footer' => [
         'location' => '13F Keangnam Landmark 72 Tower, Plot E6, Pham Hung Road, Nam Tu Liem, Ha Noi, Viet Nam',
-        'copyright' => 'Copyright 2016 Framgia, Inc. <br>All rights reserved.',
+        'copyright' => '© 2017 By Framgia - Human Development Division - Education Section - All rights reserved.',
         'email' => 'hr_team@framgia.com',
         'phone' => ' 84-4-3795-5417',
         'about' => 'Fpoll - a simple, convinient and powerfull Poll System',
