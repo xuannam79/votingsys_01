@@ -1468,3 +1468,8 @@ $('.btn-show-more-mobile-js').on('click', function (e) {
     $(this).text($(this).text().trim() == label.show_more ? label.show_less : label.show_more);
     e.stopPropagation();
 })
+
+//add class container-fluid-mobile-js for div.container-fluid when in screen mobile
+$(function () {
+    $('.frame-upload-image-mobile-js').parent().addClass('remove-margin-mobile')
+})

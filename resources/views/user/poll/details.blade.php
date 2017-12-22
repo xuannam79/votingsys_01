@@ -28,7 +28,7 @@
 @endsection
 @section('content')
     <!-- START: Frame Upload Image By Link Or Upload File-->
-    <div class="modal fade" tabindex="-1" role="dialog" id="frame-upload-image">
+    <div class="modal fade frame-upload-image-mobile-js" tabindex="-1" role="dialog" id="frame-upload-image">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -778,9 +778,9 @@
                     @endif
                             <div class="panel panel-default panel-vote-option">
                                 @if (!$isHideResult || Gate::allows('administer', $poll))
-                                    <div class="bar-pie-chart bar-pie-chart-mobile">
+                                    <div class="bar-pie-chart">
                                         @if ($optionRateBarChart != "null")
-                                            <div class="panel-heading panel-result-detail">
+                                            <div class="panel-heading panel-result-detail vote-option-mobile">
                                                 <ul class="nav nav-pills">
                                                     <li class="active">
                                                         <a data-toggle="tab" href="#table">
@@ -802,7 +802,7 @@
                                         @endif
                                     </div>
                                 @endif
-                                <div class="panel-body panel-body-vote-option">
+                                <div class="panel-body panel-body-vote-option vote-option-mobile">
                                     @if (!$isHideResult || Gate::allows('administer', $poll))
                                     <!-- if have not vote -> hide tab style result -->
                                         <div class="tab-content">
