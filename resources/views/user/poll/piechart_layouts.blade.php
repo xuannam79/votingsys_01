@@ -10,13 +10,11 @@
             var myPieChart = Highcharts.chart('chart_div', {
                 chart: {
                     type: 'pie',
-                    width: 800,
-                    marginLeft: 100,
                     options3d: {
                         enabled: true,
                         alpha: 45,
                         beta: 0
-                    }
+                    },
                 },
 
                 title: {
@@ -31,7 +29,7 @@
                     pie: {
                         allowPointSelect: true,
                         cursor: 'pointer',
-                        depth: 50,
+                        depth: 15,
                         dataLabels: {
                             enabled: true,
                             formatter: function() {
@@ -39,28 +37,82 @@
                             }
                         },
                         showInLegend: true
-                    }
+                    },
+                },
+
+                responsive: {
+                    rules: [{
+                        condition: {
+                            maxWidth: 500
+                        },
+                        chartOptions: {
+                            chart: {
+                                height: 400
+                            },
+                            subtitle: {
+                                text: null
+                            },
+                            navigator: {
+                                enabled: false
+                            }
+                        }
+                    }]
                 },
 
                 legend: {
                     useHTML: true,
-                    maxHeight: 100,
                     align: 'left',
+                    minHeight: 100,
                     labelFormatter: function () {
                         if (isHasImage) {
                             return (this.name.length > 154) ? this.name.substring(0, 200) + "..." : this.name;
                         }
 
                         return  (this.name.length > 100) ? this.name.substring(0, 100) + "..." : this.name;
-                    }
+                    },
                 },
                 tooltip: {
-                    useHTML: true,
-                    pointFormat: '<b style="color: red; font-size: 20px">{point.y}</b><br/>',
+                    enabled: true
                 },
                 series: [{
                     data:  {!! $optionRatePieChart !!}
                 }]
+            });
+        });
+
+        $(document).ready(function () {
+            var width = $(window).width();
+            console.log()
+            pieChart = $('#chart_div').highcharts();
+            var pieSize = 0;
+            var columnSize = 0;
+            if (width < 768) {
+                pieSize = width - (width * 0.03);
+            }
+
+            if (width == 768) {
+                pieSize = width - (width * 0.21);
+            }
+
+            if (width >= 1024) {
+                pieSize = width - (width * 0.3);
+                columnSize = width - (width * 0.35);
+            }
+
+            if (width >= 1850) {
+                pieSize = width - (width * 0.51);
+                columnSize = width - (width * 0.55);
+            }
+
+            pieChart.setSize(pieSize);
+
+            $(window).resize(function(){
+                var chart = $('#chart_div').highcharts();
+                var w = $('#chart_div').closest("#pieChart").width();
+
+                chart.setSize(
+                    w,w * (3/4),false
+                );
             });
         });
     </script>
