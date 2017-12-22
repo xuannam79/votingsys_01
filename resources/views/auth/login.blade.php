@@ -73,11 +73,14 @@
                                         col-sm-11 col-sm-offset-1
                                         col-xs-10 col-xs-offset-1
                                         col-xs-login">
-                                <div class="checkbox">
-                                    <label>
-                                        {{ Form::checkbox('remember') }}
-                                        {{ trans('label.remember') }}
+                                <div class="checkbox checkbox-primary checkbox-primary-mobile">
+                                    {{ Form::checkbox('remember') }}
+                                    <label class="content-option-choose">
+                                        <span>
+                                            {{ trans('label.remember') }}
+                                        </span>
                                     </label>
+                                    <br>
                                 </div>
                             </div>
                         </div>
