@@ -1761,6 +1761,12 @@ input[type="radio"] .styled:checked + label::after {
     .none-in-laptop {
         display: none;
     }
+    .info-destop {
+        margin-top: 50px;
+    }
+    .footer-destop {
+        height: auto !important;
+    }
 }
 @media (max-width: 768px) {
     .wrap-poll {
@@ -1819,6 +1825,15 @@ input[type="radio"] .styled:checked + label::after {
     }
     .name-vote-mobile, .email-vote-mobile {
         padding: 0px;
+        div {
+            padding-left: 3px;
+            padding-right: 3px;
+        }
+    }
+    .email-vote-mobile {
+        span {
+            font-size: 10px !important;
+        }
     }
     .btn-vote-mobile {
         text-align: center;
@@ -2031,5 +2046,29 @@ input[type="radio"] .styled:checked + label::after {
     }
     .chart_div_mobile {
         height: auto !important;
+    }
+    .info-mobile {
+        padding-left: 0px;
+        padding-right: 0px;
+    }
+    .footer-mobile {
+        height: auto;
+        max-height: 400px !important;
+    }
+    .container-fluid-info-mobile {
+        padding: 0px;
+    }
+    .tag-message-mobile {
+        width: 100px;
+        text-align: center;
+        background-color: darkcyan;
+        height: 100%;
+        color: white;
+    }
+    .panel-heading-message-mobile {
+        padding: 0px;
+        height: 40px;
+        line-height: 36px;
+        border-bottom-color: #008b8b !important;
     }
 }

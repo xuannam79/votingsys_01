@@ -103,3 +103,8 @@ function copyToClipboard(element, link) {
     document.execCommand("copy");
     $temp.remove();
 }
+
+$(function () {
+    //add class container-fluid-info-mobile to div.container-fluid when at page show info of poll
+    $('.info-mobile').parent().addClass('container-fluid-info-mobile')
+})

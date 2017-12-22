@@ -1,4 +1,4 @@
-<footer>
+<footer class="footer-mobile footer-destop">
     <div class="col-lg-3 col-md-3 col-sm-3 footer-left">
         <p><b class="char-app">F</b><label>poll</label></p>
         <p>

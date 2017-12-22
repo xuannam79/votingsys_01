@@ -130,7 +130,7 @@ return [
     ],
     'footer' => [
         'location' => 'Tầng 13, Keangnam Landmark 72, Đường Phạm Hùng, Nam Từ Liêm, Hà Nội, Việt Nam',
-        'copyright' => 'Copyright 2016 Framgia, Inc. <br>All rights reserved.',
+        'copyright' => '© 2017 By Framgia - Human Development Division - Education Section - All rights reserved.',
         'email' => 'hr_team@framgia.com',
         'phone' => ' 84-4-3795-5417',
         'about' => 'Fpoll - một hệ thống bình chọn đơn giản, mạnh mẽ và tiện lợi',
