@@ -58,7 +58,11 @@
                         <center>
                             @if (isset($item->user_id))
                                 <td>{{ $item->user->name }}</td>
-                                <td>{{ $item->user->email }}</td>
+                                @if ($item->user->accountFramgia())
+                                    <td>{{ $item->user->accountFramgia()->provider_user_id }}</td>
+                                @else
+                                    <td>{{ $item->user->email }}</td>
+                                @endif
                             @else
                                 <td>{{ $item->participant->showName() }}</td>
                                 <td>{{ $item->participant->email }}</td>
