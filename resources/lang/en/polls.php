@@ -277,7 +277,7 @@ return [
         'show_more' => 'show more',
         'show_less' => 'show less',
         'type_option_description' => 'Type a description of option...',
-        'required_auth_wsm' => 'You have to log in to access or if you have already logged in, then please witch to WSM account to participate in this voting system. Click on the link below to sign in',
+        'required_auth_wsm' => 'Please sign in the WSM account provided by Framgia to vote',
     ],
     'mail' => [
         'label' => [

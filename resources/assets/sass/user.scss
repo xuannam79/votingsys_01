@@ -2053,6 +2053,7 @@ input[type="radio"] .styled:checked + label::after {
     }
     .container-fluid-info-mobile {
         padding: 0px;
+        margin-bottom: 0px !important;
     }
     .tag-message-mobile {
         width: 100px;
