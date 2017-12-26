@@ -2080,4 +2080,14 @@ input[type="radio"] .styled:checked + label::after {
     .mes-not-open-mobile {
         padding-left: 0px;
     }
+    .span-date-close-mobile {
+        display: block !important;
+        margin-left: 0px;
+        float: unset;
+        font-weight: 100;
+        margin-top: 5px;
+        i {
+            color: red;
+        }
+    }
 }

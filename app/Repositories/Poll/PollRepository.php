@@ -1032,11 +1032,12 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
         $pollId = $id;
         $now = Carbon::now();
         try {
+            DB::beginTransaction();
             $oldSettings = $this->showSetting($poll->settings);
             $poll->settings()->delete();
             $this->addSetting($input, $id);
 
-            if (array_key_exists(config('settings.setting.custom_link'), $input['setting'])) {
+            if (!empty($input['setting']) && array_key_exists(config('settings.setting.custom_link'), $input['setting'])) {
                 Link::where([
                     'poll_id' => $id,
                     'link_admin' => config('settings.link_poll.vote'),
@@ -1065,9 +1066,9 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
                 'name' => null,
             ]);
             $message = trans('polls.message.update_setting_success');
+            DB::commit();
         } catch (Exception $ex) {
             DB::rollBack();
-
             $message = trans('polls.message.update_setting_fail');
         }
 
