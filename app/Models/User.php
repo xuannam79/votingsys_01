@@ -152,4 +152,9 @@ class User extends Authenticatable
         return $this->socialAccounts()->where('provider', SocialAccount::FRAMGIA_PROVIDER)->first()
             && preg_match("/@framgia\.com$/", $this->email);
     }
+
+    public function accountFramgia()
+    {
+        return $this->socialAccounts->where('provider', SocialAccount::FRAMGIA_PROVIDER)->first();
+    }
 }

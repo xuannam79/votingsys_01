@@ -31,7 +31,7 @@ class VoteRepository extends BaseRepository implements VoteRepositoryInterface
 
     public function getVoteWithOptionsByVoteId($voteIds)
     {
-        return $this->model->whereIn('id', $voteIds)->with('user', 'option')->get()->groupBy('id');
+        return $this->model->whereIn('id', $voteIds)->with('user.socialAccounts', 'option')->get()->groupBy('id');
     }
 
     public function getVotesByVoteId($voteIds)

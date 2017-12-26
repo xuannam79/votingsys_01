@@ -92,6 +92,11 @@ class ExportController extends Controller
 
             $mergedParticipantVotes = $resultParticipantVotes;
         }
+
+        $mergedParticipantVotes = $mergedParticipantVotes->sortBy(function ($participant) {
+            return $participant->first()->option_id;
+        });
+
         $dataRender = [
             'votes' => $mergedParticipantVotes,
             'poll' => $poll,
