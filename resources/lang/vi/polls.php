@@ -276,7 +276,7 @@ return [
         'show_more' => 'hiển thị nội dung',
         'show_less' => 'ẩn nội dung',
         'type_option_description' => 'Nhập mô tả của tùy chọn...',
-        'required_auth_wsm' => 'Poll này yêu cầu phải login hoặc nếu bạn đã login rồi thì vui lòng chuyển sang đăng nhập bằng wsm của framgia cung cấp để tham gia hệ thống bình chọn này. Click vào link bên dưới để đăng nhập',
+        'required_auth_wsm' => 'Vui lòng đăng nhập bằng tài khoản WSM do Framgia cung cấp để bình chọn',
     ],
     'mail' => [
         'label' => [
