@@ -1756,6 +1756,12 @@ input[type="radio"] .styled:checked + label::after {
         color: #fff;
     }
 }
+.mes-not-open {
+    color: red;
+    font-style: italic;
+    font-weight: 500;
+    padding-left: 15px;
+}
 
 @media (min-width: 768px) {
     .none-in-laptop {
@@ -2070,5 +2076,8 @@ input[type="radio"] .styled:checked + label::after {
     }
     .remove-margin-mobile {
         margin-bottom: 0px !important;
+    }
+    .mes-not-open-mobile {
+        padding-left: 0px;
     }
 }

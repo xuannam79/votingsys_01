@@ -52,7 +52,7 @@ return [
             'allow_edit_vote_of_poll' => '投票券を編集できます',
             'add_type_mail' => '投票する時メールアドレスを入力してください',
             'required_auth_wsm' => '投票するためにWSMアカウントでログイン',
-            'disable_voting' => 'Disable voting (Only see options of poll but don\'t vote those)',
+            'disable_voting' => ' 投票を無効にする（見るのみです。投票できません）',
         ],
         'step_4' => '投票者',
         'invite' => '特定のメール宛に投票参加招待のメールを送信する場合は下記枠に入力してください',
@@ -422,4 +422,5 @@ return [
     'only_one_voted' => '一度のみ投票してください。',
     'invalid_option_voted' => '投票オプションが間違っています。',
     'surely_delete_voter' => 'この参加者を削除してもよろしいですか？',
+    'poll_not_open' => '現在,、この投票が開かれていません。後ほどお戻りください。',
 ];
