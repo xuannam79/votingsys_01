@@ -275,6 +275,9 @@
                             <!-- VOTE OPTION -->
                             <div class="panel panel-default panel-vote-option">
                                 <div class="panel-body panel-body-vote-option vote-option-mobile">
+                                    @if (isset($isDisableVoting))
+                                        <label class="mes-not-open-mobile mes-not-open">{{ trans('polls.poll_not_open') }}</label>
+                                    @endif
                                     <div class="col-lg-12 title-poll-mobile">
                                         <h4>{{ $poll->title }}</h4>
                                         <p class="description-poll">{!! cleanText($poll->description) !!}</p>

@@ -50,7 +50,7 @@ return [
             'allow_edit_vote_of_poll' => 'Allow edit vote of poll',
             'add_type_mail' => 'Add type of email when voted',
             'required_auth_wsm' => 'Login by wsm to vote',
-            'disable_voting' => 'Disable voting (Only see options of poll but don\'t vote those)',
+            'disable_voting' => 'Disable voting (Only see options of poll but can\'t vote those)',
         ],
         'step_4' => 'Participant',
         'invite' => 'If you want send mail to participants, let enter email into below textbox!',
@@ -431,4 +431,5 @@ return [
     'only_one_voted' => 'You must choose only voted once',
     'invalid_option_voted' => 'Voting option invalid',
     'surely_delete_voter' => 'Do you really want to delete this participant',
+    'poll_not_open' => 'This poll is currently not open. Please come back later.',
 ];

@@ -430,4 +430,5 @@ return [
     'only_one_voted' => 'Bầu chọn không hợp lệ! Bạn chỉ chọn được một bầu chọn duy nhất',
     'invalid_option_voted' => 'Bầu chọn không hợp lệ',
     'surely_delete_voter' => 'Bạn có chắc chắn là muốn xóa người bầu chọn này',
+    'poll_not_open' => 'Bình chọn này hiện đang chưa được mở. Vui lòng quay lại sau.',
 ];
