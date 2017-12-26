@@ -11,6 +11,7 @@ $(document).ready(function(){
     //socket vote poll
     socket.on('votes', function (data) {
         var pollId = $('.hide-vote').data('pollId');
+        var isOwnerPoll = $('.hide-vote').data('isOwnerPoll');
         var socketData = $.parseJSON(data);
 
         if (socketData.success && socketData.poll_id == pollId) {
@@ -26,19 +27,18 @@ $(document).ready(function(){
                 $('.model-show-details').append(socketData.html);
                 $('.search-row-detail').searchRow();
             });
-
             if (typeof socketData.horizontalOption != 'undefined') {
-                let settings = socketData.horizontalOption;
-                let options = settings.optionDetail;
+                var settings = socketData.horizontalOption;
+                var options = settings.optionDetail;
 
-                for (let idOption in options) {
-                    if (!settings.isHideResult && !settings.isOwner) {
+                for (var idOption in options) {
+                    if (!settings.isHideResult || isOwnerPoll ) {
                         $(".list-option-" + idOption).find(".voters-info").html(options[idOption]["list_voters"]);
                     }
 
                     if (settings.isLimit || settings.isClosed || settings.isTimeOut) {
-                        let $optionInfo = $(".list-option-" + idOption).find(".option-info");
-                        let $overrideContent = $('<p>').addClass('content-option-choose').text(options[idOption]["nameOption"]);
+                        var $optionInfo = $(".list-option-" + idOption).find(".option-info");
+                        var $overrideContent = $('<p>').addClass('content-option-choose').text(options[idOption]["nameOption"]);
 
                         $optionInfo.empty();
                         $optionInfo.html($overrideContent)

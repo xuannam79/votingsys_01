@@ -53,8 +53,8 @@ return [
         'update_fail' => '更新できませんでした',
         'delete_success' => '削除できました',
         'delete_fail' => '削除できませんでした',
-        'feedback_success' => 'Cảm ơn bạn đã gửi feedback cho chúng tôi.',
-        'feedback_fail' => 'Quá trình gửi feedback của bạn thất bại! Xin vui lòng thử lại',
+        'feedback_success' => 'フィードバックを送ることはありがたいです',
+        'feedback_fail' => 'フィードバックを送ることは失敗のでもう一度試しください',
     ],
     'tooltip' => [
         'edit' => 'このユーザーを編集する',
@@ -90,8 +90,8 @@ return [
             'max' => 'パスワードは最大' . config('settings.length_user.password') . ' 文字です',
         ],
         'feedback' => [
-            'required' => 'Hãy nhập phản hồi của bạn',
-            'max' => 'Feedback phải nhỏ hơn hoặc bằng ' . config('settings.length_user.name') . ' ký tự',
+            'required' => 'フィードバックを入力してください',
+            'max' => 'フィードバックは ' . config('settings.length_user.name') . ' 文字以下は必要です',
         ],
     ],
     'update_profile_successfully' => 'プロフィールは更新されました',
@@ -107,15 +107,15 @@ return [
             'password' => 'パスワードを入力してください',
         ],
     ],
-    'logout_fail' => 'Đăng xuất thất bại, vui lòng thử lại',
-    'logout_success' => 'Đăng xuất thành công',
+    'logout_fail' => 'ログアウトすることは失敗したのでもう一度試しください',
+    'logout_success' => 'ログアウトすることは成功です',
     'register' => [
         'placeholder' => [
             'name' => '名前を入力してください',
             'email' => 'メールアドレスを入力してください',
             'password' => 'パスワードを入力してください',
             'password_confirm' => 'パスワードを再度入力してください',
-            'feedback' => 'Nhập phản hồi của bạn...',
+            'feedback' => 'フィードバックを入力します...',
         ],
     ],
 ];
