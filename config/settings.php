@@ -99,6 +99,7 @@ return [
         'allow_edit_vote_of_poll' => 11,
         'add_type_mail' => 12,
         'required_auth_wsm' => 13,
+        'disable_voting' => 14,
     ],
     'email' => [
         'link_vote' => '/link/',

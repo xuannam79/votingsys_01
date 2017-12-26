@@ -52,6 +52,7 @@ return [
             'allow_edit_vote_of_poll' => '投票券を編集できます',
             'add_type_mail' => '投票する時メールアドレスを入力してください',
             'required_auth_wsm' => '投票するためにWSMアカウントでログイン',
+            'disable_voting' => 'Disable voting (Only see options of poll but don\'t vote those)',
         ],
         'step_4' => '投票者',
         'invite' => '特定のメール宛に投票参加招待のメールを送信する場合は下記枠に入力してください',

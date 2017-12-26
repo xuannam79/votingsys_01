@@ -109,6 +109,7 @@ class LinkController extends Controller
         $isAccecptTypeMail = false;
         $isEditVoted = false;
         $isRequiredAuthWsm = false;
+        $isDisableVoting = false;
         $poll = $link->poll;
         $totalVote = config('settings.default_value');
         $messageImage = trans('polls.message_client');
@@ -262,6 +263,10 @@ class LinkController extends Controller
                     $isAccecptTypeMail = true;
                 }
 
+                if (collect($listSettings)->contains(config('settings.setting.disable_voting'))) {
+                    $isDisableVoting = true;
+                }
+
                 if ($voteLimit && $countParticipantsVoted >= $voteLimit) {
                     $isLimit = true;
                 }
@@ -297,6 +302,7 @@ class LinkController extends Controller
                 'isNoTheSameEmail',// setting not same email when setting had required email
                 'isEditVoted', // Allow edit vote of poll
                 'isRequiredAuthWsm', // Setting which only login by WSM system in framgia to vote (internal in framgia)
+                'isDisableVoting', // Disable voting (Only see options of poll but don\'t vote those)
                 'optionRateBarChart', 'dataTableResult', //result
                 'countParticipantsVoted', 'isHaveImages', 'nameOptions', 'dataToDrawPieChart',
                 'isOwnerPoll', 'fontSize', 'messageImage',
