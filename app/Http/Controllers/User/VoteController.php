@@ -70,6 +70,7 @@ class VoteController extends Controller
         $isNotSameEmail = false;
         $isLimit = false;
         $isAllowAddOption = false;
+        $isDisableVoting = false;
         $isRequiredAuthWsm = false;
 
         $poll->load('options.users', 'options.participants');
@@ -111,6 +112,10 @@ class VoteController extends Controller
 
             if (collect($listSettings)->contains(config('settings.setting.required_auth_wsm'))) {
                 $isRequiredAuthWsm = true;
+            }
+
+            if (collect($listSettings)->contains(config('settings.setting.disable_voting'))) {
+                $isDisableVoting = true;
             }
         }
 
@@ -180,6 +185,13 @@ class VoteController extends Controller
 
         if ($isAllowAddOption && empty($inputs['optionText']) && empty($inputs['option'])) {
             flash(trans('polls.message_client.option_required'), config('settings.notification.danger'));
+
+            return back();
+        }
+
+        // Check have setting disable voting
+        if ($isDisableVoting) {
+            flash(trans('polls.invalid_option_voted'), config('settings.notification.danger'));
 
             return back();
         }

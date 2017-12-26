@@ -209,6 +209,7 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
             'settings' => [
                 $settingPollConfig['required'] => $pollTrans['setting']['required'],
                 $settingPollConfig['hide_result'] => $pollTrans['setting']['hide_result'],
+                $settingPollConfig['disable_voting'] => $pollTrans['setting']['disable_voting'],
                 $settingPollConfig['custom_link'] => $pollTrans['setting']['custom_link'],
                 $settingPollConfig['set_limit'] => $pollTrans['setting']['set_limit'],
                 $settingPollConfig['set_password'] => $pollTrans['setting']['set_password'],

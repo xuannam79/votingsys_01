@@ -50,6 +50,7 @@ return [
             'allow_edit_vote_of_poll' => 'Allow edit vote of poll',
             'add_type_mail' => 'Add type of email when voted',
             'required_auth_wsm' => 'Login by wsm to vote',
+            'disable_voting' => 'Disable voting (Only see options of poll but don\'t vote those)',
         ],
         'step_4' => 'Participant',
         'invite' => 'If you want send mail to participants, let enter email into below textbox!',

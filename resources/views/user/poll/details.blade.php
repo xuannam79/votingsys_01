@@ -529,8 +529,8 @@
                                     </div>
                                 </div>
                                 <div class="message-validation"></div>
-                                <div class="panel-footer">
-                                    @if (!$isLimit && !$poll->isClosed() && !$isTimeOut)
+                                @if (!$isLimit && !$poll->isClosed() && !$isTimeOut && !$isDisableVoting)
+                                    <div class="panel-footer">
                                         {!! Form::hidden('pollId', $poll->id) !!}
                                         <div class="row">
                                             <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 col-xs-name-vote name-vote-mobile">
@@ -585,8 +585,8 @@
                                                 </span>
                                             </div>
                                         </div>
-                                    @endif
-                                </div>
+                                    </div>
+                                @endif
                             </div>
 
                             <!-- MODAL VIEW IMAGE-->
