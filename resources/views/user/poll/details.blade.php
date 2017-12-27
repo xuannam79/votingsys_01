@@ -246,7 +246,6 @@
                 @if (session('message'))
                     <div class="alert alert-info message-infor-detail alert-dismissable">
                         <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                        <i class="icon fa fa-info"></i> {!! session('message') !!}
                     </div>
                 @endif
                 @if (isset($message))
@@ -275,7 +274,7 @@
                             <!-- VOTE OPTION -->
                             <div class="panel panel-default panel-vote-option">
                                 <div class="panel-body panel-body-vote-option vote-option-mobile">
-                                    @if (isset($isDisableVoting))
+                                    @if ($isDisableVoting)
                                         <label class="mes-not-open-mobile mes-not-open">{{ trans('polls.poll_not_open') }}</label>
                                     @endif
                                     <div class="col-lg-12 title-poll-mobile">
@@ -292,7 +291,7 @@
                                                 {{ $poll->created_at }}
                                             </span>
                                             @if ($poll->date_close)
-                                                <span class="span-date-close" data-placement="top" data-toggle="tooltip" title="{{ trans('polls.label.time_close') }}">
+                                                <span class="span-date-close span-date-close-mobile" data-placement="top" data-toggle="tooltip" title="{{ trans('polls.label.time_close') }}">
                                                     {{ trans('polls.label.time_close') }}: <i>{{ $poll->date_close }}</i>
                                                 </span>
                                             @endif
