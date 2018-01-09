@@ -221,6 +221,8 @@ function readURL(input, idShow) {
             var reader = new FileReader();
             reader.onload = function (e) {
                 $('#' + idShow).show().attr('src', e.target.result);
+                $('.' + idShow).val(input.files[0].name);
+                $('.fa_' + idShow).removeClass('fa-arrow-right-hidden');
                 checkImageSame();
             };
 
@@ -239,22 +241,54 @@ function readURL(input, idShow) {
  * @param action
  */
 function removeOpion(idOption, action) {
-    if (typeof pollData !== "undefined"
-        && typeof action !== "undefined"
-        && action == "edit") {
+    if (dataAction == 'edit' && typeof action !== "undefined") {
         if (confirmDelete(pollData.message.confirm_delete_option)) {
-            $("#" + idOption).remove();
+            $("#" + idOption).remove()
         }
     } else {
-        $("#" + idOption).remove();
-        var optionLists = $('input[name^="optionText"]');
+        $("#" + idOption).remove()
+    }
 
-        if (optionLists.length == 0) {
-            $('.error_option').addClass('has-error')
-                .html('<span id="title-error" class="help-block">' + pollData.message.option_minimum + '</span>');
-            var viewOption = pollData.view.option;
-            createOption(viewOption);
+    var optionListsAll = $('input[name^="option"].form-control')
+    var optionListsNew = $('input[name^="optionText"].form-control')
+
+    if (optionListsAll.length == 0) {
+        $('.error_option').addClass('has-error')
+            .html('<span id="title-error" class="help-block">' + pollData.message.option_minimum + '</span>')
+    }
+
+    if (optionListsNew.length == 0) {
+        var viewOption = pollData.view.option
+        createOption(viewOption)
+    }
+
+    var listNameOptions = optionListsAll.map((index, value) => {
+        var val = $(value).val()
+
+        if (val) {
+            return val
         }
+    })
+    var isDuplicate = 0;
+    optionListsAll.map((index, value) => {
+        var val = $(value).val()
+        var count = 0
+        $.each(listNameOptions, (index, el) => {
+            if (val == el) {
+                count++
+            }
+        })
+
+        if (count <=1) {
+            $(value).removeClass('duplication');
+        } else {
+            isDuplicate++
+        }
+    })
+
+    if (!isDuplicate) {
+        $('.error_option').removeClass('has-error').html(null);
+        $('.btn-edit-info').length && $('.btn-edit-info').prop('disabled', false);
     }
 }
 
@@ -792,7 +826,7 @@ function checkOptionSame(input, message) {
         // show notity if duplicate
         var value = $(input).val().trim();
 
-        $('input[name^="optionText"]').not($(input)).each(function (index, item) {
+        $('input[name^="option"].form-control').not($(input)).each(function (index, item) {
             if (value && item.value == value && !$(item).hasClass('duplication')) {
                 $(input).addClass('duplication');
 
@@ -804,7 +838,7 @@ function checkOptionSame(input, message) {
     }
 
 
-    $('input[name^="optionText"]').each(function () {
+    $('input[name^="option"].form-control').each(function () {
         var value = $(this).val().trim();
         if (valuesSoFar.indexOf(value) !== -1 && value != "") {
             isDuplicate = true;
@@ -818,7 +852,7 @@ function checkOptionSame(input, message) {
     } else {
         $('.error_option').removeClass('has-error').html('');
         $('.btn-edit-submit').length && $('.btn-edit-submit').prop('disabled', false);
-        $('input[name^="optionText"]').removeClass('duplication');
+        $('input[name^="option"].form-control').removeClass('duplication');
     }
 
     return isDuplicate;
@@ -1361,12 +1395,12 @@ $(document).ready(function () {
     });
 
     // Add scale menu
-    $('.js-execute-options').on('click', '.tooltip-control', function () {
+    $('.poll-option').on('click', '.tooltip-control', function () {
         $(this).parent().toggleClass('is-scale')
         $(this).parent().find('[data-toggle="tooltip"]').tooltip()
     })
 
-    $('.js-execute-options').on('click', '.js-add-des-for-option', function (event) {
+    $('.poll-option').on('click', '.js-add-des-for-option', function (event) {
         var elScaleBox = $(this).closest('.box-des-option');
         var elQuill = elScaleBox.siblings('.des-quill-editor').get(0)
 
@@ -1472,4 +1506,83 @@ $('.btn-show-more-mobile-js').on('click', function (e) {
 //add class container-fluid-mobile-js for div.container-fluid when in screen mobile
 $(function () {
     $('.frame-upload-image-mobile-js').parent().addClass('remove-margin-mobile')
+})
+
+// add when edit options at 1/2018
+$(function () {
+    $('.old-option').on('click', '.delete-img-old-option', function() {
+        var idOption = $(this).data('id-option')
+        $(this).siblings('input[name^="imageOptionDelete["]').prop('value', idOption)
+        $(this).hide()
+        $(this).siblings('.restore-img-old-option').removeClass('hidden-restore').show()
+        $(this).siblings('img').css('opacity', 0.3)
+    })
+    $('.old-option').on('click', '.restore-img-old-option', function() {
+        $(this).siblings('input[name^="imageOptionDelete["]').removeProp('value')
+        $(this).hide()
+        $(this).siblings('.delete-img-old-option').show()
+        $(this).siblings('img').css('opacity', 1)
+    })
+    $('.old-option').on('click', '.change-img-old-option', function() {
+        $(this).siblings('input').click()
+    })
+})
+function resetChangeImgOldOption(currentElement, idOption) {
+    $('.' + idOption).val('')
+    $('#' + idOption).hide().attr('src', null)
+    $('.fa_' + idOption).addClass('fa-arrow-right-hidden');
+    $(currentElement).parent().siblings('span').find('input').val(null)
+}
+$(function() {
+    $('.edit-description-old-js i.fa-angle-double-up, .edit-description-old-js p.hide-description-edit').hide();
+})
+$('.old-option').on('click', '.edit-description-old-js', function (event) {
+    var isHide = $(this).data('hide')
+    var elScaleBox = $(this)
+    var elQuill = elScaleBox.siblings('.des-quill-editor-edit').get(0)
+    var oldDescription = $(this).siblings('input')
+    if(isHide) {
+        if (!elQuill.innerHTML.trim()) {
+            var placeholder = $('.hide').data('poll').message.type_option_description;
+            var configuration = {
+                modules: {
+                    toolbar: [
+                            ['bold', 'italic', 'underline', 'strike'],
+                            [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                            ['link'],
+                            [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+                            [{ 'color': [] }, { 'background': [] }],
+                            [{ 'align': [] }],
+                        ]
+                },
+                placeholder: placeholder,
+                theme: 'bubble'  // or 'bubble'
+            };
+
+            var quill = new Quill(elQuill, configuration);
+            quill.clipboard.dangerouslyPasteHTML(oldDescription.val())
+
+            quill.on('text-change', function (delta) {
+                var content = JSON.stringify(quill.getContents())
+                var html = elScaleBox.siblings('.des-quill-editor-edit')
+                    .find('.ql-editor')
+                    .html()
+                    .replace(new RegExp('<p><br></p>$'), '')
+                elScaleBox.siblings('input[name^=oldOptionDescription]').val(html)
+            })
+        }
+        $(this).find('.show-description-edit').hide()
+        $(this).find('.hide-description-edit').show()
+        $(this).find('i.fa-angle-double-down').hide()
+        $(this).find('i.fa-angle-double-up').show()
+        $(this).data('hide', false)
+        $(elQuill).show()
+    } else {
+        $(this).find('.show-description-edit').show()
+        $(this).find('.hide-description-edit').hide()
+        $(this).find('i.fa-angle-double-down').show()
+        $(this).find('i.fa-angle-double-up').hide()
+        $(this).data('hide', true)
+        $(elQuill).hide()
+    }
 })

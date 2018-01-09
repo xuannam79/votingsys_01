@@ -9,7 +9,7 @@
             data-email-token="{{ csrf_token() }}"
             data-email-message="{{ json_encode(trans('polls.message_client')) }}" >
         </div>
-        <div class="panel panel-default animated fadeInDown panel-darkcyan-profile darkcyan-profile-mobile">
+        <div class="panel panel-default animated fadeInDown result_create_poll-admin panel-darkcyan-profile darkcyan-profile-mobile">
             <div class="panel-heading panel-heading-darkcyan panel-heading-darkcyan-mobile">
                 {{ trans('polls.result_create.head') }}
             </div>

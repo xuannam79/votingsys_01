@@ -885,6 +885,7 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
                             'name' => $option,
                             'image' => $nameOptionImage['optionImage'][$key],
                             'created_at' => $now,
+                            'description' => $input['optionDescription'][$key],
                         ];
                     } elseif ($option && ! $optionImage) {
                         $dataOption[] = [
@@ -892,6 +893,7 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
                             'name' => $option,
                             'image' => null,
                             'created_at' => $now,
+                            'description' => $input['optionDescription'][$key],
                         ];
                     } elseif (! $option && $optionImage) {
                         $dataOption[] = [
@@ -899,6 +901,7 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
                             'name' => null,
                             'image' => $nameOptionImage['optionImage'][$key],
                             'created_at' => $now,
+                            'description' => $input['optionDescription'][$key],
                         ];
                     }
                 }
@@ -917,7 +920,7 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
 
                     try {
                         $path = public_path() . config('settings.option.path_image');
-                        $pathFileOption = $path . $nameOptionImage['optionImage'][$key];;
+                        $pathFileOption = $path . $nameOptionImage['optionImage'][$key];
                         $optionImage->move($path, $pathFileOption);
                     } catch (Exception $ex) {
                         throw new Exception(trans('polls.message.upload_image_fail'));
@@ -943,24 +946,40 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
             foreach ($options as $option) {
                 if (array_get($input['option'], $option->id) && $option->name != $input['option'][$option->id]) {
                     $newData[$option->id][] = [
-                        'name' => $input['option'][$option->id]
+                        'name' => $input['option'][$option->id],
+                    ];
+                }
+
+                if (in_array($option->id, $input['imageOptionDelete'])) {
+                    $pathDelete = public_path() . config('settings.option.path_image') . $option->image;
+
+                    if (File::exists($pathDelete)) {
+                        File::delete($pathDelete);
+                    }
+
+                    $newData[$option->id][] = [
+                        'image' => null,
                     ];
                 }
 
                 if (array_get($input['image'], $option->id) && $option->image != $input['image'][$option->id]) {
                     $newData[$option->id][] = [
-                        'image' => $nameImage['image'][$option->id]
+                        'image' => $nameImage['image'][$option->id],
+                    ];
+                }
+
+                if (array_get($input['oldOptionDescription'], $option->id)
+                    && $option->description != $input['oldOptionDescription'][$option->id]) {
+                    $newData[$option->id][] = [
+                        'description' => $input['oldOptionDescription'][$option->id],
                     ];
                 }
             }
-
-
 
             //handle images
             if ($input['image']) {
                 foreach ($input['image'] as $optionId => $image) {
                     try {
-
                         //remove old file
                         $option = Option::find($optionId);
                         if ($option) {

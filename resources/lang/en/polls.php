@@ -108,6 +108,8 @@ return [
         'enter_name' => 'Enter your name...',
         'token_link' => 'Please enter a token...',
         'type_email' => 'Please enter type email...',
+        'type_email' => 'Please enter type email...',
+        'choose_a_file' => 'Choose a file...',
     ],
     'button' => [
         'search_poll' => 'SEARCH NOW',
@@ -134,6 +136,8 @@ return [
         'horizontal' => 'Horizontal',
         'vertical' => 'Vertical',
         'timeline' => 'Timeline',
+        'choose' => 'Choose',
+        'reset' => 'Reset',
     ],
     'message' => [
         'create_success' => 'Create poll SUCCESS',
@@ -432,4 +436,6 @@ return [
     'invalid_option_voted' => 'Voting option invalid',
     'surely_delete_voter' => 'Do you really want to delete this participant',
     'poll_not_open' => 'This poll is currently not open. Please come back later.',
+    'show_description_to_edit' => 'Show description to edit',
+    'hide_description' => 'Hide description',
 ];

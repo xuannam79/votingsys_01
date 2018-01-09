@@ -110,6 +110,7 @@ return [
         'enter_name' => 'Nhập tên của bạn...',
         'token_link' => 'Vui lòng nhập token...',
         'type_email' => 'Vui lòng nhập loại email...',
+        'choose_a_file' => 'Chọn một tệp ảnh...',
     ],
     'button' => [
         'search_poll' => 'TÌM KIẾM',
@@ -136,6 +137,8 @@ return [
         'horizontal' => 'Hiển thị theo chiều dọc',
         'vertical' => 'Hiển thị theo chiều ngang',
         'timeline' => 'Hiển thị theo thời gian',
+        'choose' => 'Chọn',
+        'reset' => 'Reset',
     ],
     'message' => [
         'create_success' => 'Tạo Poll THÀNH CÔNG',
@@ -431,4 +434,6 @@ return [
     'invalid_option_voted' => 'Bầu chọn không hợp lệ',
     'surely_delete_voter' => 'Bạn có chắc chắn là muốn xóa người bầu chọn này',
     'poll_not_open' => 'Bình chọn này hiện đang chưa được mở. Vui lòng quay lại sau.',
+    'show_description_to_edit' => 'Hiển thị mô tả để chỉnh sửa',
+    'hide_description' => 'Ẩn mô tả',
 ];

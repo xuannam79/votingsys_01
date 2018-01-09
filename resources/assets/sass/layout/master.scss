@@ -18,6 +18,9 @@ a:hover, .navbar-default .navbar-nav > .active > a:focus {
   border: darkcyan !important;
   box-shadow: 2px 2px 20px black;
   border-radius: 0 !important;
+  z-index: 99999999;
+  position: fixed;
+  width: 100%;
 }
 
 .dropdown-menu > li > a:hover {
@@ -204,9 +207,6 @@ footer {
 }
 
 @media (max-width: 400px) {
-  body > .container-fluid {
-    margin-bottom: 380px ;
-  }
   footer {
     height: 380px;
   }
@@ -217,9 +217,6 @@ footer {
 }
 
 @media (min-width: 400px) and (max-width: 767px) {
-  body > .container-fluid {
-    margin-bottom: 335px ;
-  }
   footer {
     height: 335px;
   }
@@ -526,7 +523,6 @@ span.round-tabs.four{
   margin: 0 auto;
 }
 /* END ICON ADD POLL */
-
 #create_poll_wizard .tab-pane {
   padding-top: 0;
 }
@@ -567,10 +563,6 @@ span.round-tabs.four{
 }
 
 /* user.poll.create */
-.row-create-poll {
-  margin-bottom: 15px;
-}
-
 .bar {
   background: darkcyan;
 }
@@ -1541,7 +1533,7 @@ EDIT POLL
 }
 
 .panel-darkcyan-profile {
-      border-radius: 0;
+    border-radius: 0;
     border-color: darkcyan;
 }
 
