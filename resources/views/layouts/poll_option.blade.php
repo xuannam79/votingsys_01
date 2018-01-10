@@ -10,8 +10,7 @@
             'onfocus' => "addAutoOption('idOption')",
             'onclick' => "addAutoOption('idOption')",
             'onblur' => "checkOptionSame(this)",
-            'onkeyup' => "checkOptionSame(this)",
-            'onchange' => "validateAddOptionInEdit(this)"
+            'onkeyup' => "checkOptionSame(this)"
         ]) !!}
         <span class="input-group-addon pick-date">
             <span class="glyphicon glyphicon-calendar"></span>
