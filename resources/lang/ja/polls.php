@@ -109,6 +109,7 @@ return [
         'enter_name' => '名前',
         'token_link' => 'トークンを入力してください',
         'type_email' => 'メールタイプを入力してください...',
+        'choose_a_file' => 'Choose a file...',
     ],
     'button' => [
         'search_poll' => '検索',
@@ -135,6 +136,8 @@ return [
         'horizontal' => '横l',
         'vertical' => '縦',
         'timeline' => 'タイムライン',
+        'choose' => 'Choose',
+        'reset' => 'Reset',
     ],
     'message' => [
         'create_success' => '作成できました',
@@ -423,4 +426,6 @@ return [
     'invalid_option_voted' => '投票オプションが間違っています。',
     'surely_delete_voter' => 'この参加者を削除してもよろしいですか？',
     'poll_not_open' => '現在,、この投票が開かれていません。後ほどお戻りください。',
+    'show_description_to_edit' => 'Show description to edit',
+    'hide_description' => 'Hide description',
 ];

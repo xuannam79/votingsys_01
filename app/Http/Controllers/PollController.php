@@ -100,7 +100,7 @@ class PollController extends Controller
         $link = $this->linkRepository->getPollByToken($token);
 
         if ($link) {
-            $poll = $link->poll;
+            $poll = $link->poll->load('options');
             $data = $this->pollRepository->getDataPollSystem();
             $setting = $poll->settings->pluck('value', 'key')->toArray();
             $page = 'edit';
@@ -142,7 +142,10 @@ class PollController extends Controller
                 'image',
                 'optionImage',
                 'optionText',
-                'setting'
+                'setting',
+                'optionDescription',
+                'imageOptionDelete',
+                'oldOptionDescription'
             );
             $message = $this->pollRepository->editPollOption($input, $id);
         } else {
