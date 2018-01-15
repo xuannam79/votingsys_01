@@ -16,6 +16,7 @@
         && $settingKey == config('settings.setting.required')
         && (array_key_exists(config('settings.setting.required_email'), $setting)
             || array_key_exists(config('settings.setting.required_name'), $setting)
+            || array_key_exists(config('settings.setting.required_auth_wsm'), $setting)
             || array_key_exists(config('settings.setting.required_name_and_email'), $setting)))
         <div class="form-group">
             <label>
@@ -50,6 +51,7 @@
                                 && $settingKey == config('settings.setting.required')
                                 && (array_key_exists(config('settings.setting.required_email'), $setting)
                                     || array_key_exists(config('settings.setting.required_name'), $setting)
+                                    || array_key_exists(config('settings.setting.required_auth_wsm'), $setting)
                                     || array_key_exists(config('settings.setting.required_name_and_email'), $setting))) ? "" : "setting-advance" }}"
              id="setting-required">
             <div class="nav">
@@ -58,14 +60,18 @@
                         <label class="radio-inline radio-setting-required">
                             {{ Form::radio('setting_child[required]', config('settings.setting.required_auth_wsm'), (isset($page)
                                     && ($page == 'edit' || $page == 'duplicate')
-                                    && $settingKey == config('settings.setting.required_auth_wsm')
                                     && array_key_exists(config('settings.setting.required_auth_wsm'), $setting)) ? true : null) }}
                             {{ trans('polls.label.setting.required_auth_wsm') }}
                         </label>
                     </div>
                     <div class="st">
                         <label class="radio-inline radio-setting-required">
-                            {{ Form::radio('setting_child[required]', config('settings.setting.required_name'), true) }}
+                            @if (isset($page) && ($page == 'edit' || $page == 'duplicate'))
+                                {{ Form::radio('setting_child[required]', config('settings.setting.required_name'),
+                                    array_key_exists(config('settings.setting.required_name'), $setting) ? true : null) }}
+                            @else
+                                {{ Form::radio('setting_child[required]', config('settings.setting.required_name'), true) }}
+                            @endif
                             {{ trans('polls.label.setting.required_name') }}
                         </label>
                     </div>

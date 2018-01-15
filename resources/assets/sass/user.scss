@@ -2177,10 +2177,18 @@ input[type="radio"] .styled:checked + label::after {
 }
 .des-quill-editor-edit {
     border: 1px solid #e9e9e9;
-    max-height: 400px;
-    overflow-y: scroll;
+    overflow: visible;
     background-color: rgba(233, 233, 233, 0.13);
+    margin-top: 0px !important;
 }
 .row-create-poll {
     margin-top: 50px;
+}
+.datetimepicker {
+    z-index:0;
+}
+.input-file {
+    input, button {
+        z-index: 0 !important;
+    }
 }
