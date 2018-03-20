@@ -1785,6 +1785,8 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
 
         $isHideResult = $settingsPoll[config('settings.setting.hide_result')]['isHave'];
 
+        $numberOfVote = $settingsPoll[config('settings.setting.number_of_vote')]['isHave'];
+
         // layout result option for voted
         $dataView['html'] = view(
             'user.poll.vote_details_layouts',
@@ -1800,7 +1802,8 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
                     'poll',
                     'isHaveImages',
                     'isLimit',
-                    'listVoter'
+                    'listVoter',
+                    'numberOfVote'
                 )
             );
 
