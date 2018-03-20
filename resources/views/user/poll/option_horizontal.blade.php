@@ -81,8 +81,6 @@
             @endif
         </div>
 
-
-
         @if ($option->description)
             @php
                 $haveShowMore = $option->paragraphTimes()
