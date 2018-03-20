@@ -721,7 +721,7 @@ $(document).ready(function(){
         $('#frame-edit-poll').modal('show');
     });
 
-    $('#horizontal').on('click', '.hidden-counter', function () {
+    $('#horizontal').on('click', '.modal-voter', function () {
         var url = $(this).data('url-modal-voter');
 
         $.ajax({
