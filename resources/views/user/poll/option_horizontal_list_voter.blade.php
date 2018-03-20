@@ -20,7 +20,7 @@
 
                 @if ($option->countVotes() > config('settings.limit_voters_option'))
                     <div class="voter-avatar voter-avatar-mobile">
-                        <div class="hidden-counter"
+                        <div class="hidden-counter modal-voter"
                             data-url-modal-voter="{{ action('User\VoteController@getModalOptionVoters', $option->id) }}">
                             <span>+{{ $option->countVotes() - config('settings.limit_voters_option') }}</span>
                         </div>
