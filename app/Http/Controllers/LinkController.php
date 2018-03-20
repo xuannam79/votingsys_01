@@ -113,6 +113,7 @@ class LinkController extends Controller
         $poll = $link->poll;
         $totalVote = config('settings.default_value');
         $messageImage = trans('polls.message_client');
+        $numberOfVote = false;
 
         $poll->load('options.users', 'options.participants', 'options.votes');
 
@@ -267,6 +268,10 @@ class LinkController extends Controller
                     $isDisableVoting = true;
                 }
 
+                if (collect($listSettings)->contains(config('settings.setting.number_of_vote'))) {
+                    $numberOfVote = true;
+                }
+
                 if ($voteLimit && $countParticipantsVoted >= $voteLimit) {
                     $isLimit = true;
                 }
@@ -309,7 +314,8 @@ class LinkController extends Controller
                 'viewOption',
                 'optionDates',
                 'isAccecptTypeMail', 'typeEmail', // Setting for only accecpt that mail
-                'listVoter'
+                'listVoter',
+                'numberOfVote'
             ));
         } else {
             foreach ($poll->links as $link) {

@@ -313,6 +313,10 @@ function settingAdvance(key) {
             switchSettingValue('setting-required', key);
 
             break;
+        case pollData.config.setting.parent_hide_result:
+            switchSettingValue('setting-hide-result', key);
+
+            break;
         case pollData.config.setting.custom_link:
             switchSettingValue('setting-link', key);
 
