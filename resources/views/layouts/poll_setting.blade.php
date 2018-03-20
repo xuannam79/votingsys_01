@@ -29,6 +29,22 @@
                 <span class='span-text-setting'>{{ $settingText }} </span>
             </label>
         </div>
+    @elseif (isset($page)
+        && ($page == 'edit' || $page == 'duplicate')
+        && $settingKey == config('settings.setting.parent_hide_result')
+        && (array_key_exists(config('settings.setting.hide_result'), $setting)
+            || array_key_exists(config('settings.setting.number_of_vote'), $setting)))
+        <div class="form-group">
+            <label>
+                {{
+                    Form::checkbox('setting[' . $settingKey . ']', $settingKey, true, [
+                        'onchange' => 'settingAdvance(' . $settingKey . ')',
+                        'class' => 'switch-checkbox-setting'
+                    ])
+                }}
+                <span class='span-text-setting'>{{ $settingText }} </span>
+            </label>
+        </div>
     @else
         <div class="form-group setting-{{ $settingKey }}">
             <label>
@@ -185,6 +201,40 @@
                 </div>
             </div>
         </div>
+    @elseif ($settingKey == config('settings.setting.parent_hide_result'))
+        <div class="form-group {{ (isset($page)
+            && ($page == 'edit' || $page == 'duplicate')
+            && $settingKey == config('settings.setting.parent_hide_result')
+            && (array_key_exists(config('settings.setting.hide_result'), $setting)
+                || array_key_exists(config('settings.setting.number_of_vote'), $setting))) ? "" : "setting-advance" }}"
+         id="setting-hide-result">
+        <div class="nav">
+            <div class="required-input">
+                <div class="st">
+                    <label class="radio-inline radio-setting-required">
+                        @if (isset($page) && ($page == 'edit' || $page == 'duplicate'))
+                            {{ Form::radio('setting_child[parent_hide_result]', config('settings.setting.hide_result'),
+                                array_key_exists(config('settings.setting.hide_result'), $setting) ? true : null) }}
+                        @else
+                            {{ Form::radio('setting_child[parent_hide_result]', config('settings.setting.hide_result'), true) }}
+                        @endif
+                        {{ trans('polls.label.setting.hide_result') }}
+                    </label>
+                </div>
+                <div class="st">
+                    <label class="radio-inline radio-setting-required">
+                        @if (isset($page) && ($page == 'edit' || $page == 'duplicate'))
+                            {{ Form::radio('setting_child[parent_hide_result]', config('settings.setting.number_of_vote'),
+                                array_key_exists(config('settings.setting.number_of_vote'), $setting) ? true : null) }}
+                        @else
+                            {{ Form::radio('setting_child[parent_hide_result]', config('settings.setting.number_of_vote'), true) }}
+                        @endif
+                        {{ trans('polls.label.setting.number_of_vote') }}
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
     @elseif ($settingKey == config('settings.setting.custom_link'))
         <div class="form-group
             {{ (isset($page)

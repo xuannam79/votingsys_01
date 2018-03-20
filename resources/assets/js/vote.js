@@ -264,6 +264,12 @@ $(document).ready(function(){
 
         $this.siblings('.mess-option').addClass('hide');
 
+        if ( $(this).data('requestRunning') ) {
+            return;
+        }
+
+        $(this).data('requestRunning', true);
+
         $.ajax({
             url: urlRequest,
             type: 'POST',
@@ -285,6 +291,7 @@ $(document).ready(function(){
 
             complete: function () {
                 $('.loader').hide();
+                $(this).data('requestRunning', false);
             },
         });
     });

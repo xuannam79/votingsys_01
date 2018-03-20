@@ -208,7 +208,7 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
             ],
             'settings' => [
                 $settingPollConfig['required'] => $pollTrans['setting']['required'],
-                $settingPollConfig['hide_result'] => $pollTrans['setting']['hide_result'],
+                $settingPollConfig['parent_hide_result'] => $pollTrans['setting']['parent_hide_result'],
                 $settingPollConfig['disable_voting'] => $pollTrans['setting']['disable_voting'],
                 $settingPollConfig['custom_link'] => $pollTrans['setting']['custom_link'],
                 $settingPollConfig['set_limit'] => $pollTrans['setting']['set_limit'],
@@ -428,6 +428,13 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
                         $dataSettingInserted[] = [
                             'poll_id' => $pollId,
                             'key' => $settingChilds['required'],
+                            'value' => null,
+                            'created_at' => $now,
+                        ];
+                    } elseif ($setting == config('settings.setting.parent_hide_result')) {
+                        $dataSettingInserted[] = [
+                            'poll_id' => $pollId,
+                            'key' => $settingChilds['parent_hide_result'],
                             'value' => null,
                             'created_at' => $now,
                         ];

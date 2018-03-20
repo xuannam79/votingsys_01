@@ -100,6 +100,8 @@ return [
         'add_type_mail' => 12,
         'required_auth_wsm' => 13,
         'disable_voting' => 14,
+        'number_of_vote' => 15,
+        'parent_hide_result' => 16,
     ],
     'email' => [
         'link_vote' => '/link/',

@@ -64,6 +64,7 @@ class PollController extends Controller
             'setting', 'value', 'setting_child',
             'member'
         );
+
         $input['page'] = 'create';
         $data = $this->pollRepository->store($input);
 
