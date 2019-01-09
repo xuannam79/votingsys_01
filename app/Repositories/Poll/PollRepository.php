@@ -651,7 +651,7 @@ class PollRepository extends BaseRepository implements PollRepositoryInterface
              */
             $password = false;
 
-            if (count($input['setting'])) {
+            if ($input['setting'] && count($input['setting'])) {
                 $password = in_array(config('settings.setting.set_password'), $input['setting'])
                             ? $input['value']['password'] : false;
             }
